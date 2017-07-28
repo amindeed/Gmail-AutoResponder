@@ -1,5 +1,12 @@
 # Work Log
 
+## 2017-07-28
+Continuation de l’étude et développement du script « Google Apps Script » pour l’envoie des réponses automatiques aux messages reçus dans des plages horaires spécifiques:
+- Fin de développement de la première version du script.
+- Première exécution (automatique) de test pour la boîte email « operations@mycompany.com » prévue entre 28/07/2017, 20:00GMT et 29/07/2017 06:00GMT.
+
+![2017-07-28 - Gmail-Autoresponder](/assets/2017-07-28%20-%20Gmail-Autoresponder.png)
+
 ## 2017-07-27
 Continuation de l’étude et développement du script « Google Apps Script » pour l’envoie de réponses automatiques aux messages reçus dans des plages horaires spécifiques.
 - **Spécifications et cahier de charges** :
