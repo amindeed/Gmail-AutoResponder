@@ -1,5 +1,8 @@
 # Work Log
 
+## 2017-08-01
+Coordination avec l’équipe des opérations et discussions à propos de la meilleure stratégie à adopter pour la programmation des messages de réponse automatique envisagée hors les heures de travail.
+
 ## 2017-07-29
 - Véirication des résultats de la première exécution du script de réponse automatique programmée entre 06:00GMT et 20:00GMT.
 - **Idées pour amélioration:**
