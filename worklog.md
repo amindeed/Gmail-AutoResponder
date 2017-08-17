@@ -1,5 +1,42 @@
 # Work Log
 
+## 2017-08-17
+Optimisation du code du script « Google Apps Script » de réponse email automatique hors les heures de travail:
+- Améliorations apportées ou en cours de développement :
+    - Lecture de configurations depuis un document « Google Spreadsheets » (« Autorespond-config »),
+    - Enregistrement (journalisation) et vérification des informations identifiant les messages traités dans/depuis un document « Google Spreadsheets » (« Autorespond-log »),
+    - Définition de fonctions génériques pour vérifier les données des en-têtes des messages contre les données extraites des fichiers précités,
+    - Récupération du message de réponse automatique (corps HTML) depuis un emplacement sécurisé sur l’espace d’hébergement web fourni par « ADK-Media »,
+    - Utilisation d’une combinaison de configurations pour filtrer les messages à traiter,
+- Une dernière version (draft) du code source est en pièce jointe (fichier « code.txt »).
+
+## 2017-08-11
+Continuation du développement du script de réponse mail automatique hors les heures de travail.
+Test et évaluation de la lecture et écriture de données sur des fichiers en ligne « Google Spreadsheet », pour la journalisation des opérations et la lecture de configurations.
+
+## 2017-08-09
+Continuation du développement du script de réponse mail automatique hors les heures de travail.
+Améliorations du code : Premiers essais et évaluation d’une journalisation des opérations vers des fichiers « Google Spreadsheet » hébergés sous « Google Drive ».
+
+## 2017-08-08
+Continuation du développement du script de réponse mail automatique hors les heures de travail.
+La solution finalement retenue et implémentée pour le stockage et l’importation du contenu du corps du message de réponse automatique et l’hébergement d’un fichier HTML sur notre espace web, sous un répertoire protégé par nom d’utilisateur et mot de passe. Tests et validation.
+
+## 2017-08-07
+Continuation du développement du script de réponse mail automatique hors les heures de travail.
+**_Problématique_** : Inclusion d’un texte unique dans le corps du message de réponse sans aucune mention d’informations de contact  au format texte . La solution envisagée et d’inclure un tableau de contacts sous format « Image » dans le corps du message.
+Améliorations étudiées :
+- Inclusion du corps du message au format HTML depuis un fichier externe :
+    - Cas d’un fichier texte au format HTML stocké sur « Google Drive ». **Difficulté** : Aucune procédure simple et fonctionnelle n’a été trouvée pour lire le contenu brut d’un fichier texte stcocké sur « Google Drive ».
+    - Cas d’un document « Google Docs » exporté au format HTML. **Difficulté** : Il était possible de récupérer le contenu d’un document « Google Docs » sous forme de code HTML et l’insérer dans le corps du message de réponse, mais l’image est par défaut bloquée par la plupart des clients de messagerie modernes puisqu’elle est hébergée en externe .
+    - Cas d’un fichier texte au format HTML récupéré via un URL : Un fichier contenant le contenu du corps du message au format HTML a été stocké sur notre espace d’hébergement web, et récupéré via l’URL « http://mycompany.com/email_body.html » . L’image présentant le tableau des contacts y a été codée en Base64 . **Difficulté** : Le corps du message généré dépasse ainsi la taille maximale autorisée sur « Google Apps Script ».
+
+## 2017-08-02
+Optimisation du code source du script de réponse automatique qui sera associé à la boîte email operations@mycompany.com :
+- Exclusion des messages (souvent spam) dont la destination est anonyme (« undisclosed-recipients »)
+- Exclusion des messages automatiques envoyés depuis des administrateurs de serveurs de messagerie (mailer-daemon, postmaster)
+- Exclusion des accusés de lecture et des rapports de remise.
+
 ## 2017-08-01
 Coordination avec l’équipe des opérations et discussions à propos de la meilleure stratégie à adopter pour la programmation des messages de réponse automatique envisagée hors les heures de travail.
 
