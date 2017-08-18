@@ -1,5 +1,3 @@
-/******** DRAFT // 17-08-2017 **********/
-
 function autoReply() {
   var interval = 10;    //  To execute teh script after each 10 min.
   var date = new Date();
@@ -29,6 +27,18 @@ function autoReply() {
     return Matches;
   }
 
+  function ColumnValues(sheet, column){
+    var AllCellsValues = sheet.getRange(column + "1:" + column + sheet.getMaxRows()).getValues();
+    return AllCellsValues.filter(String);
+
+    /**** Other Method to filter out 'blank' cells ****
+    return AllCellsValues.filter(function(d) {
+      return d.length && d[0] !== '';
+      });
+    ***************************************************/
+  }
+
+  Logger.log("Flag A");
   ///// if ((hour < 6) || (hour >= 20)) { // Commented out for testing
 
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * interval;
@@ -37,13 +47,13 @@ function autoReply() {
   // Log
   var log = SpreadsheetApp.openById(LogSSId);
   var log_sheet = log.setActiveSheet(log.getSheets()[0]);
-  var log_values = log_sheet.getDataRange().getValues();
+  var log_values = ColumnValues(log_sheet,"B");
 
   // Configs
   var config = SpreadsheetApp.openById(ConfigSSId);
-  var From_regex_blacklist = config.getSheetByName("From_regex_blacklist").getDataRange().getValues();
-  var To_blacklist = config.getSheetByName("To_blacklist").getDataRange().getValues();
-  var msgHeaders_blacklist = config.getSheetByName("msgHeaders_blacklist").getDataRange().getValues();
+  var From_regex_blacklist = ColumnValues(config.getSheetByName("From_regex_blacklist"),"A");
+  var To_blacklist = ColumnValues(config.getSheetByName("To_blacklist"),"A");
+  var msgHeaders_blacklist = ColumnValues(config.getSheetByName("msgHeaders_blacklist"),"A");
 
 
   /****** Retrieve HTML body content from a "Google Docs" document *********
@@ -58,6 +68,7 @@ function autoReply() {
   var body = UrlFetchApp.fetch(url,param).getContentText();
   **************************************************************************/
 
+  Logger.log("Flag B");
 
   var WEB_USERNAME = 'user0';
   var WEB_PWD = 'p@s$wOrD';
@@ -69,8 +80,11 @@ function autoReply() {
   };
   var body = UrlFetchApp.fetch(url,params).getContentText();
 
+  Logger.log(threads.length);
 
-    for (var i = 0; i < threads.length; i++) {
+    for (i = 0; i < threads.length; i++) {
+
+        Logger.log("Flag C-bis");
 
         var messages = threads[i].getMessages();
         var lastMsg = messages.length -1;
@@ -78,12 +92,15 @@ function autoReply() {
         var msgTo = messages[lastMsg].getTo();
         Logger.log(messages[lastMsg].getFrom());
 
+      Logger.log("Flag D");
+
       if( !MatchesRegex(msgFrom,From_regex_blacklist)
-        && log_values[1].indexOf(messages[lastMsg].getId()) === -1
+        && log_values.indexOf(messages[lastMsg].getId()) === -1
         && !ContainsString(msgTo,To_blacklist)
         && !ContainsString(messages[lastMsg].getRawContent(),msgHeaders_blacklist) ) {
 
-				var msgDate = messages[lastMsg].getDate();
+				Logger.log("Flag E");
+                var msgDate = messages[lastMsg].getDate();
 				var msgSubject = messages[lastMsg].getSubject();
 				var msgCc = messages[lastMsg].getCc();
 				var msgBody = messages[lastMsg].getBody();

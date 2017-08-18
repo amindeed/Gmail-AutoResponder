@@ -1,6 +1,11 @@
 # Work Log
 
-## 2017-08-17
+## 2017-08-18
+Continuation de développement du script « Google Apps Script » de réponse mail automatique :
+- Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents « Google Spreadsheet » (configurations et journaux « Logs »).
+- Test et débogage  du code.
+
+## 2017-08-17 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/7b38eeb9cf3d04cd02d41b10599a1f3b11bb6a75/Code.js)
 Optimisation du code du script « Google Apps Script » de réponse email automatique hors les heures de travail:
 - Améliorations apportées ou en cours de développement :
     - Lecture de configurations depuis un document « Google Spreadsheets » (« Autorespond-config »),
@@ -50,14 +55,14 @@ Coordination avec l’équipe des opérations et discussions à propos de la mei
         - Voir la possibilité de vérifier l’authenticité des expéditeurs (signatures des e-mails…)
         - Externaliser les filtres et les contenus personnalisés pour une meilleure portabilité du code.
 
-## 2017-07-28
+## 2017-07-28 [(Code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/b78bde10064fd74e9e1279eb01b5e662f196a04f/Code.js)
 Continuation de l’étude et développement du script « Google Apps Script » pour l’envoie des réponses automatiques aux messages reçus dans des plages horaires spécifiques:
 - Fin de développement de la première version du script.
 - Première exécution (automatique) de test pour la boîte email « operations@mycompany.com » prévue entre 28/07/2017, 20:00GMT et 29/07/2017 06:00GMT.
 
 ![2017-07-28 - Gmail-Autoresponder](/assets/2017-07-28%20-%20Gmail-Autoresponder.png)
 
-## 2017-07-27
+## 2017-07-27 [(Code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/640a75ff3bfc40c81f542dca60bc39c1ca9753c5/Code.js)
 Continuation de l’étude et développement du script « Google Apps Script » pour l’envoie de réponses automatiques aux messages reçus dans des plages horaires spécifiques.
 - **Spécifications et cahier de charges** :
     - Le script sera configuré pour exécution automatique régulière entre 20h et 6h sur chaque compte utilisateur Google .
@@ -67,7 +72,7 @@ Continuation de l’étude et développement du script « Google Apps Script » 
     - Traitement des messages : Envoie de corp de la réponse automatique sous forme de texte riche (HTML) suivie des informations (date, expéditeur, destinataires, objet) et une citation du contenu du message traité.
     - Attribution du libellé Gmail « _autoRep » pour marquer le message comme traité.
 
-## 2017-07-26
+## 2017-07-26 [(Code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/52cb442af57432b3a2a4068077d0438806896a43/Code.js)
 Etude de faisabilité et début de développement d’un premier prototype d’un script permettant l’envoie de réponses automatiques aux messages reçus dans des plages horaires spécifiques.
 
 ![2017-07-26 - Gmail-AutoResponder](/assets/2017-07-26%20-%20Gmail-AutoResponder.png)
