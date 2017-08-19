@@ -1,9 +1,17 @@
 # Work Log
 
-## 2017-08-18
+## 2017-08-19
+Continuation du développement et de l’analyse du code source de l’auto-répondeur mail.
+Problèmes en cours de traitement :
+- Le contenu extrait des cellules de la feuille `From_regex_blacklist` du document « Google Spreadsheet » `Autorespond-config`, par la fonction `MatchesRegex()` ne semble pas être correctement interprété comme étant une expression régulière contre laquelle l’expéditeur devrait être vérifié afin d’exclure les adresses email de MyCompany ainsi que les adresses emails d’administrateur système réservées `postmaster@...` et `mailer-daemon@...`.
+- La fonction `ContainsString()` appliquée sur le code source de l’email ne détecte pas la présence des expressions `report-type=disposition-notification` et `report-type=delivery-status` ce qui permettrait l’exclusion des accusés de lecture et des rapports de remise.
+
+## 2017-08-18 [(Code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/de409cff65ad04844a45fc67e21cc4371d0bb9c7/Code.js)
 Continuation de développement du script « Google Apps Script » de réponse mail automatique :
 - Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents « Google Spreadsheet » (configurations et journaux « Logs »).
 - Test et débogage  du code.
+
+![2017-08-18 - Gmail-AutoResponder](/assets/2017-08-18%20-%20Gmail-AutoResponder.png)
 
 ## 2017-08-17 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/7b38eeb9cf3d04cd02d41b10599a1f3b11bb6a75/Code.js)
 Optimisation du code du script « Google Apps Script » de réponse email automatique hors les heures de travail:
