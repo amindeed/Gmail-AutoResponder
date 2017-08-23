@@ -1,27 +1,30 @@
 function autoReply() {
+
   var interval = 10;    //  To execute teh script after each 10 min.
   var date = new Date();
+  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * interval;
   var hour = date.getHours();    // Returns current hour only. ex. 12:33 --> 12
-  var LogSSId = 'LOG-SPREADSHEET-ID';
-  var ConfigSSId = 'CONFIG-SPREADSHEET-ID';
+  var threads = [];
+
 
   function ContainsString(InputStr, checklist) {
     var Contains = false;
     var i = 0;
     while (!Contains && i < checklist.length) {
-      if (InputStr.toLowerCase().indexOf(checklist[i]) !== -1) {
-        Exists = true;
+      if (InputStr.indexOf(checklist[i]) !== -1) {
+        Contains = true;
       } else {i++;}
     }
     return Contains;
   }
 
-  function MatchesRegex(InputStr, regex) {
+  function MatchesRegex(InputStr, regexStr) {
     var Matches = false;
     var i = 0;
-    while (!Matches && i < regex.length) {
-      if (InputStr.toLowerCase().match(regex[i]) !== -1) {
-        Exists = true;
+    while (!Matches && i < regexStr.length) {
+      var regex = new RegExp(regexStr[i],'i');
+      if (InputStr.match(regex)) {
+        Matches = true;
       } else {i++;}
     }
     return Matches;
@@ -29,77 +32,50 @@ function autoReply() {
 
   function ColumnValues(sheet, column){
     var AllCellsValues = sheet.getRange(column + "1:" + column + sheet.getMaxRows()).getValues();
-    return AllCellsValues.filter(String);
-
-    /**** Other Method to filter out 'blank' cells ****
-    return AllCellsValues.filter(function(d) {
-      return d.length && d[0] !== '';
-      });
-    ***************************************************/
+    return [].concat.apply([], AllCellsValues.filter(String))
   }
 
-  Logger.log("Flag A");
-  ///// if ((hour < 6) || (hour >= 20)) { // Commented out for testing
 
-  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * interval;
-  var threads = GmailApp.search('is:inbox after:' + timeFrom);
+  if (((hour < 6) || (hour >= 20)) && ((threads = GmailApp.search('is:inbox after:' + timeFrom)).length !== 0)) {
 
   // Log
+  var LogSSId = 'LOG-SPREADSHEET-ID';
   var log = SpreadsheetApp.openById(LogSSId);
   var log_sheet = log.setActiveSheet(log.getSheets()[0]);
-  var log_values = ColumnValues(log_sheet,"B");
+  var log_values = ColumnValues(log_sheet,"C");
 
   // Configs
+  var ConfigSSId = 'CONFIG-SPREADSHEET-ID';
   var config = SpreadsheetApp.openById(ConfigSSId);
   var From_regex_blacklist = ColumnValues(config.getSheetByName("From_regex_blacklist"),"A");
   var To_blacklist = ColumnValues(config.getSheetByName("To_blacklist"),"A");
   var msgHeaders_blacklist = ColumnValues(config.getSheetByName("msgHeaders_blacklist"),"A");
 
-
-  /****** Retrieve HTML body content from a "Google Docs" document *********
-  var MsgBdyDocId = "MSG-BODY-CONTENT-GOOGLE-DOC-ID";
-  var forDriveScope = DriveApp.getStorageUsed();
-  var url = "https://docs.google.com/feeds/download/documents/export/Export?id="+MsgBdyDocId+"&exportFormat=html";
-  var param = {
-  method      : "get",
-  headers     : {"Authorization": "Bearer " + ScriptApp.getOAuthToken()},
-  muteHttpExceptions:true,
-  };
-  var body = UrlFetchApp.fetch(url,param).getContentText();
-  **************************************************************************/
-
-  Logger.log("Flag B");
-
+  // Message body
   var WEB_USERNAME = 'user0';
   var WEB_PWD = 'p@s$wOrD';
-  var url = 'http://mycompany.com/prv/email_body.html';
+  var URL_HTML_BODY = 'https://mycompany.com/prv/email_body.html';
   var headers = {"Authorization" : "Basic " + Utilities.base64Encode(WEB_USERNAME + ':' + WEB_PWD)};
   var params = {
     "method":"POST",
-    "headers":headers
+    "headers":headers,
+    "validateHttpsCertificates":false
   };
-  var body = UrlFetchApp.fetch(url,params).getContentText();
-
-  Logger.log(threads.length);
+  var body = UrlFetchApp.fetch(URL_HTML_BODY,params).getContentText();
 
     for (i = 0; i < threads.length; i++) {
-
-        Logger.log("Flag C-bis");
 
         var messages = threads[i].getMessages();
         var lastMsg = messages.length -1;
         var msgFrom = messages[lastMsg].getFrom();
         var msgTo = messages[lastMsg].getTo();
-        Logger.log(messages[lastMsg].getFrom());
-
-      Logger.log("Flag D");
+        var msgId = messages[lastMsg].getId();
 
       if( !MatchesRegex(msgFrom,From_regex_blacklist)
-        && log_values.indexOf(messages[lastMsg].getId()) === -1
+        && log_values.indexOf(msgId) === -1
         && !ContainsString(msgTo,To_blacklist)
         && !ContainsString(messages[lastMsg].getRawContent(),msgHeaders_blacklist) ) {
 
-				Logger.log("Flag E");
                 var msgDate = messages[lastMsg].getDate();
 				var msgSubject = messages[lastMsg].getSubject();
 				var msgCc = messages[lastMsg].getCc();
@@ -119,9 +95,9 @@ function autoReply() {
 				  , cc: "amine@mycompany.com"
 				});
 
-                // log processed message to "Autorespond-log" sheet
-                log_sheet.appendRow([msgDate, messages[lastMsg].getId(), threads[i].getId(), msgFrom, msgSubject]);
+                // Ajouter l'opération au journal
+                log_sheet.appendRow([msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
       }
     }
-  ////// }
+  }
 }

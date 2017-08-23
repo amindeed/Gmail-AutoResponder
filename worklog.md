@@ -1,5 +1,15 @@
 # Work Log
 
+## 2017-08-23 (code)
+Fin du développement de la deuxième version (améliorée) du code du programme de réponse mail automatique hors les heures de travail.
+- Tests appliqués et réussis :
+    - Exclusion des conversations Gmail (avec de nouveau message) au-delà des dernières 10 minutes
+    - Exclusions des messages envoyés depuis des adresses avec les alias `MAILER-DAEMON@*` et `postmaster@*`
+    - Exclusion des messages en provenance des adresses emails de MyCompany (domaine principal + tous les domaines alias)
+    - Exclusion des accusés de lecture
+    - Exclusion des messages avec des destinations anonymes (`undisclosed-recipients`)
+    - Exclusion des messages déjà traités (i.e. journalisés sur le fichier `Autorespond-log`)
+
 ## 2017-08-22
 Correction et amélioration du code du script de réponse mail automatique :
 - Résolu : Interprétation comme expression régulière des chaînes de caractères extraites des fichiers de configuration.
