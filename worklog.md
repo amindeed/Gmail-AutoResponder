@@ -1,6 +1,17 @@
 # Work Log
 
-## 2017-08-23 (code)
+## 2017-08-24
+Bilan de l’exécution du programme de réponse mail automatique pour le compte « operations@mycompany.com » :
+- 24 réponses automatiques envoyées entre 21:06 et 06:26 (heure locale).
+- La stratégie adoptée par les services et applications Google pour déterminer l’heure exacte des événements (l’heure de réception des messages en l’occurrence) porte plutôt à confusion. Par conséquent, comme Google affirme  qu’elle [utilise l’heure UTC](https://support.google.com/calendar/answer/37064?hl=en) sur ses services en ligne, une plage horaire plus large sera utilisée pour que l’intervalle **20h-06h** (heure locale) soit toujours couvert malgré les éventuels changements (i.e. début, suspension et fin de l’heure d’été). La ligne de code suivante :
+    - `if (((hour < 6) || (hour >= 20)) && ((threads = GmailApp.search('is:inbox after:' + timeFrom)).length !== 0)) {` sera donc modifié en :
+    - **`if (((hour < 6) || (hour >= 19)) && ((threads = GmailApp.search('is:inbox after:' + timeFrom)).length !== 0)) {`**.
+- Confirmation avec l'équipe des Opérations de la liste des contacts à exclure de la réponse automatique.
+- Désinscription de quelques newsletters via les liens fournis dans les corps de leurs messages respectifs.
+- Modification du message de réponse automatique : l’adresse de modération « amine@mycompany.com » en `Cci` au lieu de `Cc`.
+- Groupement des fichiers du programme dans un même dossier sous « Google Drive ». Partage avec le compte Google de « AMINE » (lecture et modification) pour faciliter les consultations et les mises à jour.
+
+## 2017-08-23 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/3ca7290fbebeb6a83c92497c2132bf717bc42a4d/Code.js)
 Fin du développement de la deuxième version (améliorée) du code du programme de réponse mail automatique hors les heures de travail.
 - Tests appliqués et réussis :
     - Exclusion des conversations Gmail (avec de nouveau message) au-delà des dernières 10 minutes
@@ -26,7 +37,7 @@ Continuation de développement du script « Google Apps Script » de réponse ma
 - Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents « Google Spreadsheet » (configurations et journaux « Logs »).
 - Test et débogage  du code.
 
-![2017-08-18 - Gmail-AutoResponder](/assets/2017-08-18%20-%20Gmail-AutoResponder.png)
+![2017-08-18 - Gmail-AutoResponder](assets/2017-08-18%20-%20Gmail-AutoResponder.png)
 
 ## 2017-08-17 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/7b38eeb9cf3d04cd02d41b10599a1f3b11bb6a75/Code.js)
 Optimisation du code du script « Google Apps Script » de réponse email automatique hors les heures de travail:
@@ -83,7 +94,7 @@ Continuation de l’étude et développement du script « Google Apps Script » 
 - Fin de développement de la première version du script.
 - Première exécution (automatique) de test pour la boîte email « operations@mycompany.com » prévue entre 28/07/2017, 20:00GMT et 29/07/2017 06:00GMT.
 
-![2017-07-28 - Gmail-Autoresponder](/assets/2017-07-28%20-%20Gmail-Autoresponder.png)
+![2017-07-28 - Gmail-Autoresponder](assets/2017-07-28%20-%20Gmail-Autoresponder.png)
 
 ## 2017-07-27 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/640a75ff3bfc40c81f542dca60bc39c1ca9753c5/Code.js)
 Continuation de l’étude et développement du script « Google Apps Script » pour l’envoie de réponses automatiques aux messages reçus dans des plages horaires spécifiques.
