@@ -1,5 +1,16 @@
 # Work Log
 
+## 2017-08-25 (code)
+Bilan de l’exécution du programme de réponse mail automatique sur le compte « operations@mycompany.com » pour le 24/08/2017 :
+- 17 réponses automatiques envoyées entre 20:28 et 06:35 (heure locale)
+- Amélioration du programme :
+    - Réorganisation des lignes de déclaration des variables pour une meilleure lisibilité et portabilité du code.
+    - Enregistrement des configurations sur une seule feuille du document `Autorespond-config`. Adaptation du code.
+- Rajout d’une valeur de décalage pour faciliter l’ajustement de la plage horaire d’exécution en cas de changement de l’heure locale.
+- Utilisation d’une adresse générique `no-reply` afin de dissuader les destinataires de répondre directement aux messages automatiques. Par ailleurs, cela nous épargnera de configurer et maintenir sur chaque installation du logiciel Outlook un filtre pour en supprimer les copies reçues.
+- Exclusion des adresses email contenant les mots `noreply` et `no-reply`.
+- Journalisation de tous les emails, traités et sautés.
+
 ## 2017-08-24
 Bilan de l’exécution du programme de réponse mail automatique pour le compte « operations@mycompany.com » :
 - 24 réponses automatiques envoyées entre 21:06 et 06:26 (heure locale).
