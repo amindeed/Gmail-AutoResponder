@@ -1,6 +1,14 @@
 # Work Log
 
-## 2017-08-25 (code)
+## 2017-08-26
+Evaluation des performances du programme de réponse mail automatique associé au compte `operations@mycompany.com` durant son exécution entre 25/08/2017 à 20:00 et 26/08/2017 à 06:00 :
+- **32/33** des messages reçus dans la plage horaire 20h-06h ont été traités.
+    - **1** message non détecté. Il s’agit d’un deuxième accusé de lecture du même message par le même destinataire. Vu que les deux emails font partie de la même conversation (thread) Gmail, seul le plus récent a été traité.
+    - **3** réponses automatiques envoyées
+    - **29** messages exclus pour des raisons valides
+- Vu le résultat assez satisfaisant de son exécution, le code source -en sa dernière version- sera retenu.
+
+## 2017-08-25 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/8db67d4c1b5e18294b05233e5290f9672235f75f/Code.js)
 Bilan de l’exécution du programme de réponse mail automatique sur le compte « operations@mycompany.com » pour le 24/08/2017 :
 - 17 réponses automatiques envoyées entre 20:28 et 06:35 (heure locale)
 - Amélioration du programme :
