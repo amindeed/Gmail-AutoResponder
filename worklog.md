@@ -139,3 +139,11 @@ Evaluation des performances du programme de réponse mail automatique associé a
     - Ajout d’une nouvelle feuille dans le fichier de journalisation `Autorespond-log` pour l’éventuel enregistrement de l’heure d’exécution ainsi que le nombre de conversations (threads) Gmail du dernier intervalle de temps (prédéfini, et après lequel le programme se ré-exécute).
     - Marquage de la fin de session d’exécution globale (20h-06h) sur chacune des feuilles du journal afin d’en faciliter la lecture et l’analyse.
     - Le code source sera publié le 30/08/2017
+
+## 2017-08-29
+Confirmation de l’exécution optimale de la session du 28/07/2017 du programme de réponse mail automatique associé au compte Google « operations@mycompany.com » avec les dernières mises à jours du code.
+- Améliorations du code :
+    - Inclusion du code HTML constituant le corps du message de réponse dans un fichier HTML du même projet « Google Apps Script », au lieu de l’importer depuis un fichier externe hébergé sur un espace d’hébergement web tiers.
+    - Rajout d’un fichier de script supplémentaire au même projet et sa programmation pour exécution automatique mensuelle. Le script archivera les opérations (i.e. réponses envoyées, et messages sautés) de chaque mois dans une nouvelle feuille du fichier log Spreadsheet « Autorespond-log » afin d’alléger la feuille principale du journal.
+    - Le code source sera publié le 30/08/2017
+- Configuration provisoire pour test et validation : le script « Archive_log.gs » a été paramétré pour exécution automatique mensuelle le 30 de chaque mois ; en l’occurrence, une première exécution aurait lieu lendemain 30/08/2017.
