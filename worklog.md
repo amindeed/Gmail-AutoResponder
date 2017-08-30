@@ -147,3 +147,8 @@ Confirmation de l’exécution optimale de la session du 28/07/2017 du programme
     - Rajout d’un fichier de script supplémentaire au même projet et sa programmation pour exécution automatique mensuelle. Le script archivera les opérations (i.e. réponses envoyées, et messages sautés) de chaque mois dans une nouvelle feuille du fichier log Spreadsheet « Autorespond-log » afin d’alléger la feuille principale du journal.
     - Le code source sera publié le 30/08/2017
 - Configuration provisoire pour test et validation : le script « Archive_log.gs » a été paramétré pour exécution automatique mensuelle le 30 de chaque mois ; en l’occurrence, une première exécution aurait lieu lendemain 30/08/2017.
+
+## 2017-08-30 (code)
+Confirmation de l’exécution optimale de la session du 29/07/2017 du programme de réponse mail automatique associé au compte Google « operations@mycompany.com ».
+Le test d’archivage du journal des messages traités s’est exécuté comme planifié et avec succès. Dorénavant, au début de chaque mois, l’historique des opérations du mois précédent sera archivé dans une feuille séparée du même fichier.
+Etude en cours de la possibilité de gérer les réponses automatiques de toutes les boîtes emails de la société avec un seul programme lisant les configurations depuis un même fichier et enregistrant toutes les opérations exécutées dans le même journal. Si cela s’avère faisable, une révision considérable du tout le code source serait nécessaire.
