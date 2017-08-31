@@ -148,7 +148,20 @@ Confirmation de l’exécution optimale de la session du 28/07/2017 du programme
     - Le code source sera publié le 30/08/2017
 - Configuration provisoire pour test et validation : le script « Archive_log.gs » a été paramétré pour exécution automatique mensuelle le 30 de chaque mois ; en l’occurrence, une première exécution aurait lieu lendemain 30/08/2017.
 
-## 2017-08-30 (code)
+## 2017-08-30 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/273cde78e38378e1cdc70fdfd5ee867936f573ac/app)
 Confirmation de l’exécution optimale de la session du 29/07/2017 du programme de réponse mail automatique associé au compte Google « operations@mycompany.com ».
 Le test d’archivage du journal des messages traités s’est exécuté comme planifié et avec succès. Dorénavant, au début de chaque mois, l’historique des opérations du mois précédent sera archivé dans une feuille séparée du même fichier.
 Etude en cours de la possibilité de gérer les réponses automatiques de toutes les boîtes emails de la société avec un seul programme lisant les configurations depuis un même fichier et enregistrant toutes les opérations exécutées dans le même journal. Si cela s’avère faisable, une révision considérable du tout le code source serait nécessaire.
+
+## 2017-08-31
+Evaluation de l’exécution de la session du 31/07/2017 du programme de réponse mail automatique.
+- 50 mails traités, dont 37 sautés.
+- Ajoutée des adresses à la liste d’exclusion
+- Un message « SPAM » sans une vraie adresse `envelop sender` ni `From :` a déclenché une erreur, puisque la méthode [`GmailMessage.getFrom()`](https://developers.google.com/apps-script/reference/gmail/gmail-message#getfrom) dans le code a retourné la valeur `Judith Pin  <>` qui n’est pas une adresse valide pour envoyer une réponse avec la méthode [`GmailThread.reply(body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-thread#replybody-options). Bien que l’erreur n’était pas bloquante et ait été bien reportée par email, il serait plus judicieux de journaliser de tels cas avec le message d’erreur comme note. Cette suggestion peut faire objet d’une future amélioration du code avec des éventuels [traitements d’exceptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch).
+- Exécution du programme sur toutes les boîtes emails depuis un même programme central. _Idées et prévisions_:
+    - La méthode la plus sûr serait de communiquer, depuis le script « operations », avec d’autres scripts « Google Apps » associés aux autres comptes, en utilisant des requêtes HTTP POST sur des connexions chiffrées (SSL/TLS).
+    - Comme prérequis, il va falloir d’abord publier chacun des autres scripts en tant qu’application web (avec d’éventuelles restrictions d’accès pour protéger les données).
+    - Les autres scripts auraient les droits suivant :
+        - Modification du fichier « Google Spreadsheet » : Autorespond-log, propriété du compte operations@mycompany.com.
+        - Lecture du fichier « Google Spreadsheet » : Autorespond-config, propriété du compte operations@mycompany.com.
+    - Consultation en cours des documentations ainsi que les forums d’aide et support officiels aux sujets précités.
