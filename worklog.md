@@ -165,3 +165,8 @@ Evaluation de l’exécution de la session du 31/07/2017 du programme de répons
         - Modification du fichier « Google Spreadsheet » : Autorespond-log, propriété du compte operations@mycompany.com.
         - Lecture du fichier « Google Spreadsheet » : Autorespond-config, propriété du compte operations@mycompany.com.
     - Consultation en cours des documentations ainsi que les forums d’aide et support officiels aux sujets précités.
+
+## 2017-09-05
+Évaluation de l’exécution du programme de réponses mail automatique pour le compte de « OPERATIONS » entre le 31/08/2017 (soir) et le 05/09/2017 (matinée):
+- 162 threads détectés, dont 114 sautés et 48 réponses envoyées.
+- Ajout d'adresse mails à la liste d’exclusion.
