@@ -170,3 +170,12 @@ Evaluation de l’exécution de la session du 31/07/2017 du programme de répons
 Évaluation de l’exécution du programme de réponses mail automatique pour le compte de « OPERATIONS » entre le 31/08/2017 (soir) et le 05/09/2017 (matinée):
 - 162 threads détectés, dont 114 sautés et 48 réponses envoyées.
 - Ajout d'adresse mails à la liste d’exclusion.
+
+## 2017-09-06
+Analyse des résultats de la session d’exécution du 05/09/2017 :
+- 57 messages traités : 18 réponses envoyées, 39 messages sautés pour des raisons valides.
+- Les réponses automatiques envoyées ont couverts tous les « threads » Gmail reçus dans la plage horaire [20h-06h].
+- Mises à jour mineures du code source.
+- Documentation sur les améliorations envisagées :
+    - Utilisation du [Cache](https://developers.google.com/apps-script/reference/cache/) : pour le stockage temporaire et la consultation rapide des identifiants des derniers messages traités , au lieu d’extraire et rechercher dans toutes les valeurs de la colonne D « Message ID » de la première feuille du fichier « Google Spreadsheet » de journalisation « Autorespond-log ».
+    - Etude d’une nouvelle architecture « Master/Slave » du programme pour déclencher simultanément les réponses automatiques de plusieurs comptes depuis un même script asynchrone avec des requêtes « HTTP POST ».
