@@ -1,3 +1,6 @@
+/* Comments with asterisk have been added just to mark
+variables to be watched while debugging code */
+
 function autoReply() {
 
   var INTERVAL = 10;    // To execute the script after each 10 min.
@@ -14,12 +17,12 @@ function autoReply() {
 
   // Configs #1
   var config = SpreadsheetApp.openById(ConfigSSId);
-  var config_sheet = config.setActiveSheet(config.getSheets()[0]);
+  var config_sheet = config.getSheets()[0];
 
   // Logs #1
   var log = SpreadsheetApp.openById(LogSSId);
-  var ops_log_sheet = log.setActiveSheet(log.getSheets()[0]);
-  var exec_log_sheet = log.setActiveSheet(log.getSheets()[1]);
+  var ops_log_sheet = log.getSheets()[0];
+  var exec_log_sheet = log.getSheets()[1];
 
 
   function ContainsString(InputStr, checklist) {
@@ -53,13 +56,15 @@ function autoReply() {
   }
 
 
+  //if (((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) && ((threads = GmailApp.search(GM_SEARCH_QUERY)).length !== 0)) {
+  if ((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) {
 
-  if (((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) && ((threads = GmailApp.search(GM_SEARCH_QUERY)).length !== 0)) {
-
-  exec_log_sheet.appendRow([new Date().toLocaleString(), threads.length]);
+  // log execution time and number of messages retrieved
+  /**/threads = GmailApp.search(GM_SEARCH_QUERY);
+  exec_log_sheet.appendRow([GM_SEARCH_QUERY, new Date().toLocaleString(), threads.length]);
 
   // Logs #2
-  var log_msgIDs = ColumnValues(ops_log_sheet,"D",1);
+  var log_msgIDs = ColumnValues(ops_log_sheet,"D",1); /*****************************************/
 
   // Configs #2
   var From_regex_blacklist = ColumnValues(config_sheet,"D",1);
@@ -76,9 +81,9 @@ function autoReply() {
         var msgFrom = messages[lastMsg].getFrom();
         var msgTo = messages[lastMsg].getTo();
         var msgId = messages[lastMsg].getId();
-        var msgIdNdx = log_msgIDs.indexOf(msgId);
+        var msgIdNdx = log_msgIDs.indexOf(msgId); /*****************************************/
 
-      if( msgIdNdx === -1
+      if( msgIdNdx === -1  /*****************************************/
         && !ContainsString(msgTo,To_blacklist)
         && !MatchesRegex(msgFrom,From_regex_blacklist)
         && !ContainsString(messages[lastMsg].getRawContent(),Headers_blacklist) ) {
@@ -114,7 +119,7 @@ function autoReply() {
           ops_log_sheet.appendRow(['SKIPPED', msgDate, '', msgId, threads[i].getId(), msgFrom, msgSubject]);
         }
     }
-  } else if ( (hour === FINISH_HOUR) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
+  } else if ( (hour === FINISH_HOUR + TIME_OFFSET) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
 
     // Mark session end on both sheets
 
