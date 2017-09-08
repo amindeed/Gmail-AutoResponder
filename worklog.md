@@ -180,7 +180,7 @@ Analyse des résultats de la session d’exécution du 05/09/2017 :
     - Utilisation du [Cache](https://developers.google.com/apps-script/reference/cache/) : pour le stockage temporaire et la consultation rapide des identifiants des derniers messages traités , au lieu d’extraire et rechercher dans toutes les valeurs de la colonne D « Message ID » de la première feuille du fichier « Google Spreadsheet » de journalisation « Autorespond-log ».
     - Etude d’une nouvelle architecture « Master/Slave » du programme pour déclencher simultanément les réponses automatiques de plusieurs comptes depuis un même script asynchrone avec des requêtes « HTTP POST ».
 
-## 2017-09-07 (code)
+## 2017-09-07 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/c2b1040cf1342dff6689a13129b02c971ae9f55d/app)
 Analyse des résultats de la session d’exécution du 06/09/2017 :
 - Le projet Google Apps Script « AutoRespond » est configuré  avec un déclencheur en fonctions du temps qui se lance après chaque 10 minute. Les heures des premières et dernières exécutions effectives  du programme sont respectivement 19:06 (GMT) et 04:56 (GMT). _En effet, le programme s’exécute continument après chaque 10 minute durant toutes les 24 heures. Cependant le traitement des messages reçus n’est effectué que si la condition est satisfaite, à savoir : être dans la plage horaire [20h-06h]._
 - Comme les messages Gmail sont organisés sous forme de « [threads](https://developers.google.com/apps-script/reference/gmail/gmail-thread#) » (conversations), le programme récupère à chaque exécution les nouveaux « threads » ainsi que ceux mis à jour _(c.à.d. réception de nouvelles réponses à une ancienne conversation (échange))_ dans les dernières 10 minutes et traite ensuite leurs derniers messages respectifs.
@@ -195,3 +195,6 @@ Analyse des résultats de la session d’exécution du 06/09/2017 :
         - Vu que le dernier message du « thread » venait d’une adresse mail exclue, il a été sauté.
         - Le présent cas laisse à penser à d’autres cas probables pouvant être critique, comme celui d’un message répondant à tous les critères de réponse automatique suivi juste après, dans le même « thread », d’un mail exclu mais sans qu’il soit envoyé depuis une autre adresse email de « My Company »; cas d’un accusé de lecture d’un ancien message dans le même « thread » reçu du même expéditeur, par exemple.
         - Etude en cours d’améliorations et méthodes alternatives pour traiter avec plus de prudence les files des derniers messages reçus.
+
+## 2017-09-08
+Evaluation des résultats de la session d’exécution du **07/09/2017** : **36** messages traités, dont **27** sautées pour des raisons valides et **9** réponses envoyées.
