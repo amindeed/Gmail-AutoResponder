@@ -198,3 +198,14 @@ Analyse des résultats de la session d’exécution du 06/09/2017 :
 
 ## 2017-09-08
 Evaluation des résultats de la session d’exécution du **07/09/2017** : **36** messages traités, dont **27** sautées pour des raisons valides et **9** réponses envoyées.
+
+## 2017-09-09
+Analyse des résultats de la session d’exécution du 08/09/2017 :
+- **58** messages traités, dont **44** sautées pour des raisons valides et **14** réponses envoyées.
+- **2** messages non traités :
+    - **MESSAGE (1):** L’heure de réception du message était très proche (en amont) de l’instant de l’itération du programme qui a eu lieu exactement à 19:06 (GMT).
+    - **MESSAGE (2):** Le message a été reçu sur la boîte email « operations@OldMailServer.com » et récupéré sur la boîte principale « operations@mycompany.com ».
+        - Rédaction en cours d'un script de tests afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des « threads » auxquels appartiennent les messages envoyés [exclusivement] à l’adresse « operations@OldMailServer.com ». Vérifier les valeurs récupérées contre les journaux des messages traités._
+
+## 2017-09-11
+Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/2017 : **73** messages traités, dont **51** sautées et **22** réponses automatiques envoyées.
