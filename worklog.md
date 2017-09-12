@@ -212,3 +212,4 @@ Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/201
 
 ## 2017-09-12
 Evaluation des résultats de la session d’exécution du 11/09/2017 : **60** itérations correctes du programme ayant récupérés **66** « threads ».  **66** messages traités, dont **45** sautées et **21** réponses automatiques envoyées.
+Un message récupéré depuis la boîte email « operations@OldMailServer.com » n’a pas été traité. L’hypothèse établie dans le rapport 09/09/2017 se tient.
