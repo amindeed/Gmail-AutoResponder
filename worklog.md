@@ -209,3 +209,6 @@ Analyse des résultats de la session d’exécution du 08/09/2017 :
 
 ## 2017-09-11
 Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/2017 : **73** messages traités, dont **51** sautées et **22** réponses automatiques envoyées.
+
+## 2017-09-12
+Evaluation des résultats de la session d’exécution du 11/09/2017 : **60** itérations correctes du programme ayant récupérés **66** « threads ».  **66** messages traités, dont **45** sautées et **21** réponses automatiques envoyées.
