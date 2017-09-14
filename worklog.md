@@ -216,3 +216,7 @@ Un message récupéré depuis la boîte email « operations@OldMailServer.com »
 
 ## 2017-09-13
 Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** itérations correctes du programme ayant récupérés **53** « threads ».  **53** messages traités, dont **42** sautées et 11 réponses automatiques envoyées.
+
+## 2017-09-14
+Evaluation des résultats de la session d’exécution du 13/09/2017 : **60** itérations correctes du programme ayant récupérés **33** « threads ». **33** messages traités, dont **19** sautées et **14** réponses automatiques envoyées.
+Déploiement de versions adaptées du programme pour les deux comptes « OPERATIONS2 » et « OPERATIONS3 ».
