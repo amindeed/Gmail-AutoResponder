@@ -103,7 +103,7 @@ function autoReply() {
                   + '<br/><b>Cc : </b>' + msgCc
                   + '</span>'
                   + '<br/><br/>' + msgBody + '<br/>',
-				  bcc: "amine@mycompany.com",
+				  cc: "it-operations@mycompany.com", // alias of 'amine@mycompany.com'
                   noReply: true
 				});
 
