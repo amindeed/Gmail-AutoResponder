@@ -199,13 +199,13 @@ Analyse des résultats de la session d’exécution du 06/09/2017 :
 ## 2017-09-08
 Evaluation des résultats de la session d’exécution du **07/09/2017** : **36** messages traités, dont **27** sautées pour des raisons valides et **9** réponses envoyées.
 
-## 2017-09-09
+## 2017-09-09 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/4cbad223f9cc08557e861f9770a31eae552a68fa/app)
 Analyse des résultats de la session d’exécution du 08/09/2017 :
 - **58** messages traités, dont **44** sautées pour des raisons valides et **14** réponses envoyées.
 - **2** messages non traités :
     - **MESSAGE (1):** L’heure de réception du message était très proche (en amont) de l’instant de l’itération du programme qui a eu lieu exactement à 19:06 (GMT).
     - **MESSAGE (2):** Le message a été reçu sur la boîte email « operations@OldMailServer.com » et récupéré sur la boîte principale « operations@mycompany.com ».
-        - Rédaction en cours d'un script de tests _[(check code, added in 2017-09-16 commit)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/4cbad223f9cc08557e861f9770a31eae552a68fa/app/test_2017-09-09.js)_ afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des « threads » auxquels appartiennent les messages envoyés [exclusivement] à l’adresse « operations@OldMailServer.com ». Vérifier les valeurs récupérées contre les journaux des messages traités._
+        - Rédaction en cours d'un script de tests afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des « threads » auxquels appartiennent les messages envoyés [exclusivement] à l’adresse « operations@OldMailServer.com ». Vérifier les valeurs récupérées contre les journaux des messages traités._
 
 ## 2017-09-11
 Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/2017 : **73** messages traités, dont **51** sautées et **22** réponses automatiques envoyées.
@@ -228,3 +228,14 @@ Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/201
     - Modification du code pour la mise en copie normale « Cc » (au lieu de « Cci ») des adresses d’administration « IT »  pour un meilleur filtrage et suivi des réponses automatiques envoyées (i.e. pour une meilleure lisibilité sur l’application web « Gmail » avec des libellés personnalisés, par exemple). L'adresse mise en copie est en effet un [alias](https://support.google.com/a/answer/33327?hl=en) de **« amine@mycompany.com »** utilisées pour filtrer les messages de suivi et pour l'administration système; Dans le cas des réponses automatiques programmées jusqu’au 16/09/2017, les alias sont respectivement : **it-operations@mycompany.com**, **it-operations2@mycompany.com**, **it-operations3@mycompany.com**.
     - OPERATIONS2 & OPERATIONS3 : A partir de la session d’exécution du 16/09/2017, le système de filtrage des messages reçus par destination vérifiera les champs « Cc : » et « Cci : » en plus du champ « To : ».
     - _Prévisions :_ Comme [un identifiant unique](https://developers.google.com/apps-script/reference/gmail/gmail-message#getid) est attribué à chaque version d’un même message envoyé à plusieurs destinataires de **`*@mycompany.*`**, il va falloir penser à un autre critère de filtrage de tels messages pour qu’ils ne soient pas traités plusieurs fois. L’identifiant **« Message-ID »**, selon les spécifications du document **[« RFC 822 »](https://www.w3.org/Protocols/rfc822/)** de l’ **« IETF »**, répond le plus aux critères requis. Une expression régulière pour l’extraction de cet identifiant a été développée et préparée pour utilisation dans de prochaines versions du programme : **```^Message-ID:\s*[<A-Za-z0-9!#$%&'*+-/=?^_`{}|~.@]*```**
+
+## 2017-09-18 (code)
+Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/2017 : **31** réponses automatiques envoyées :
+- OPERATIONS :
+    - **120** itérations du programme ayant récupérés **84** « threads ». **84** messages traités, dont **63** sautées et **21** réponses automatiques envoyées.
+- OPERATIONS2 :
+    - **120** itérations du programme ayant récupérés **53** « threads ».  **53** messages traités, dont **51** sautées et **2** réponses automatiques envoyées.
+- OPERATIONS3 :
+    - **120** itérations du programme ayant récupérés **95** « threads ».  **95** messages traités, dont **88** sautées et **7** réponses automatiques envoyées.
+- _Améliorations et mises à jour_ :
+    - Les codes source ont été mis à jour pour activer le suivi (= ajouter « une étoile » au message sur le client webmail « Gmail ») de chaque message traité.

@@ -74,6 +74,8 @@ function autoReply() {
   // Message body
   var body = HtmlService.createHtmlOutputFromFile('body.html').getContent();
 
+  /***#####*** declare 2D array of processed messages ***#####***/
+
     for (i = 0; i < threads.length; i++) {
 
         var messages = threads[i].getMessages();
@@ -108,17 +110,22 @@ function autoReply() {
 				});
 
                 // Log processed message
-                ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
-                var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
-                last_OpsLog_row.setBackgroundRGB(252,229,205);
+                /***#####***/ ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
+                /***#####***/ var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
+                /***#####***/ last_OpsLog_row.setBackgroundRGB(252,229,205);
 
         } else if ( msgIdNdx === -1 ) {
 
+          messages[lastMsg].star();
+
           // Log skipped message
           var msgDate = messages[lastMsg].getDate(), msgSubject = messages[lastMsg].getSubject();
-          ops_log_sheet.appendRow(['SKIPPED', msgDate, '', msgId, threads[i].getId(), msgFrom, msgSubject]);
+          /***#####***/ ops_log_sheet.appendRow(['SKIPPED', msgDate, '', msgId, threads[i].getId(), msgFrom, msgSubject]);
         }
     }
+
+    /****** Save 2D array of processed message to log sheet *********/
+
   } else if ( (hour === FINISH_HOUR + TIME_OFFSET) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
 
     // Mark session end on both sheets
