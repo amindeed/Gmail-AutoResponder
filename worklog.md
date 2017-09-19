@@ -229,7 +229,7 @@ Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/201
     - OPERATIONS2 & OPERATIONS3 : A partir de la session d’exécution du 16/09/2017, le système de filtrage des messages reçus par destination vérifiera les champs « Cc : » et « Cci : » en plus du champ « To : ».
     - _Prévisions :_ Comme [un identifiant unique](https://developers.google.com/apps-script/reference/gmail/gmail-message#getid) est attribué à chaque version d’un même message envoyé à plusieurs destinataires de **`*@mycompany.*`**, il va falloir penser à un autre critère de filtrage de tels messages pour qu’ils ne soient pas traités plusieurs fois. L’identifiant **« Message-ID »**, selon les spécifications du document **[« RFC 822 »](https://www.w3.org/Protocols/rfc822/)** de l’ **« IETF »**, répond le plus aux critères requis. Une expression régulière pour l’extraction de cet identifiant a été développée et préparée pour utilisation dans de prochaines versions du programme : **```^Message-ID:\s*[<A-Za-z0-9!#$%&'*+-/=?^_`{}|~.@]*```**
 
-## 2017-09-18 (code)
+## 2017-09-18 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/08dc17b8f5093e67425b3b0bba5a68a785cb597d/app/Code.js)
 Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/2017 : **31** réponses automatiques envoyées :
 - OPERATIONS :
     - **120** itérations du programme ayant récupérés **84** « threads ». **84** messages traités, dont **63** sautées et **21** réponses automatiques envoyées.
@@ -239,3 +239,28 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
     - **120** itérations du programme ayant récupérés **95** « threads ».  **95** messages traités, dont **88** sautées et **7** réponses automatiques envoyées.
 - _Améliorations et mises à jour_ :
     - Les codes source ont été mis à jour pour activer le suivi (= ajouter « une étoile » au message sur le client webmail « Gmail ») de chaque message traité.
+
+## 2017-09-19 (code)
+- Evaluation des résultats des sessions d’exécution du 18/09/2017: **19** réponses automatiques envoyées :
+    - **OPERATIONS** : **60** itérations du programme ayant récupérés **68** « threads ». **68** messages traités, dont **50** sautés et **18** réponses automatiques envoyées.
+    - **OPERATIONS2** :
+        - **60** itérations du programme ayant récupérés **38** « threads ».  **38** messages traités et  sautés.
+        - **1** message non traité:
+            - L’heure de réception a coïncidé avec le déclenchement de la deuxième itération du programme pendant la session d’exécution du 18/09/2017. La partie du code recherchant et récupérant les derniers mails reçus l’aurait, par conséquent, raté.
+            - Le script du compte « OPERATIONS3 » a détecté et sauté le message, comme il est configuré pour exclure les messages à destination de OPERATIONS et OPERATIONS2 (adresses respectives ajoutées à la colonne `TO_BLACKLIST` du fichier de configuration `Autorespond-config` de la version de l'application associée au compte Google `OPERATIONS3`).
+            - Le script du compte « OPERATIONS » n’a pas détecté le message vu que l’itération qu’il l’aurait traité (exécutée à 19:26:02 GMT) a détecté un message plus récent dans la même conversation et auquel une réponse a été en effet envoyée.
+            - De toute façon, le message a été traité peu après par l’équipe « OPERATIONS2 » même.
+    - **OPERATIONS3** : **60** itérations du programme ayant récupérés **25** « threads ». **25** messages traités, dont **24** sautés et une réponse envoyée.
+- Ajout du fichier `Autorespond-config-OPS3.xlsx` au code source:
+    - Un deuxième modèle du fichier `Autorespond-config` a été ajouté au code source, illustrant -à titre d'exemple- la configuration utilisée pour l'application associée au compte **`OPERATIONS3`**, l'empêchant d'envoyer une réponse à un message réçu si celui-ci est aussi destiné au moins à l'une des adresses `operations@mycompany.com` et `operations3@mycompany.com` et serait donc traité par l'une des applications respectives leur étant associées.
+    - A cet égard, les 3 instances en exécution sont en effet configurées comme suit:
+        - _OPERATIONS :_ Traite tous les messages répondant aux critères préconfigurés, soient:
+            - Les accusés de lectures
+            - Les messages d'administration système (`postmaster`, `mailer-daemon`)
+            - Les messages en provenance des adresses mail de la société (`*@mycompany.*`)
+            - Les messages en provenance des adresses avec l'alias `noreply/no-reply`.
+            - Adresses ajoutées au fur et à mesure à la liste d'exclusion `FROM_REGEX_BLACKLIST`
+            - Messages à destinations anonymes `undisclosed-recipients`.
+        - _OPERATIONS2 :_ ne traite pas les messages destinés aussi à `operations@mycompany.com`.
+        - _OPERATIONS3 :_ ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
+    - Une même approche sera adoptée pour les autres instances de l'application qui seraient ultérieurement ajoutées et associées à d'autres adresses.
