@@ -240,7 +240,7 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
 - _Améliorations et mises à jour_ :
     - Les codes source ont été mis à jour pour activer le suivi (= ajouter « une étoile » au message sur le client webmail « Gmail ») de chaque message traité.
 
-## 2017-09-19 (code)
+## 2017-09-19 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/9b825e3b7dafaad3b451870d59593596bdb3afdb/app/Autorespond-config-OPS3.xlsx)
 - Evaluation des résultats des sessions d’exécution du 18/09/2017: **19** réponses automatiques envoyées :
     - **OPERATIONS** : **60** itérations du programme ayant récupérés **68** « threads ». **68** messages traités, dont **50** sautés et **18** réponses automatiques envoyées.
     - **OPERATIONS2** :
@@ -264,3 +264,7 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
         - _OPERATIONS2 :_ ne traite pas les messages destinés aussi à `operations@mycompany.com`.
         - _OPERATIONS3 :_ ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
     - Une même approche sera adoptée pour les autres instances de l'application qui seraient ultérieurement ajoutées et associées à d'autres adresses.
+
+## 2017-09-20 (code)
+- Evaluation des résultats des sessions d’exécution du 19/09/2017: **26** réponses envoyées :
+- **Mise à jour du code:** Extension de deux minutes de l’intervalle de recherche des derniers emails reçus sur chacune des trois boîtes emails à chaque itération du programme afin de ne pas rater les emails coïncidant avec l’instant d’exécution.

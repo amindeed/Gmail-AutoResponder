@@ -8,7 +8,7 @@ function autoReply() {
   var FINISH_HOUR = 6;    // Local time
   var TIME_OFFSET = -1;
   var date = new Date();
-  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * INTERVAL;
+  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
   var hour = date.getHours();    // Returns current hour only. ex. 12:33 --> 12
   var ConfigSSId = 'CONFIG-SPREADSHEET-ID';
