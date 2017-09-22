@@ -265,6 +265,9 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
         - _OPERATIONS3 :_ ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
     - Une même approche sera adoptée pour les autres instances de l'application qui seraient ultérieurement ajoutées et associées à d'autres adresses.
 
-## 2017-09-20 (code)
+## 2017-09-20 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/43faa05d138d3c951af9ed6533ff9110e2d855f1/app/Code.js)
 - Evaluation des résultats des sessions d’exécution du 19/09/2017: **26** réponses envoyées :
 - **Mise à jour du code:** Extension de deux minutes de l’intervalle de recherche des derniers emails reçus sur chacune des trois boîtes emails à chaque itération du programme afin de ne pas rater les emails coïncidant avec l’instant d’exécution.
+
+## 2017-09-22
+Evaluation des résultats des sessions d’exécution du 20/09/2017 et 21/09/2017: **23** réponses envoyées.
