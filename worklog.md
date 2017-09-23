@@ -271,3 +271,6 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
 
 ## 2017-09-22
 Evaluation des résultats des sessions d’exécution du 20/09/2017 et 21/09/2017: **23** réponses envoyées.
+
+## 2017-09-23
+- Configuration du programme de réponses mail automatique pour un quatrième compte Google: **`OPERATIONS4 <operations4@mycompany.com>`**.
