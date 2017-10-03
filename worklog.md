@@ -274,3 +274,10 @@ Evaluation des résultats des sessions d’exécution du 20/09/2017 et 21/09/201
 
 ## 2017-09-23
 - Configuration du programme de réponses mail automatique pour un quatrième compte Google: **`OPERATIONS4 <operations4@mycompany.com>`**.
+
+## 2017-10-03
+Retour sur les résultats des sessions d’exécution des programmes de réponses mail automatiques associés aux comptes OPERATIONS, OPERATIONS2, OPERATIONS3 et OPERATIONS4 entre le 22/09/2017 et 02/10/2017.
+- _Premières remarques_ :
+    - Aucun filtrage n’a été appliqué aux messages reçus durant la session du 01/10/2017 et le 02/10/2017 du programme de OPERATIONS2. Une réponse automatique a été envoyée pour chaque message détecté et traité.
+    - La nécessité d’ajouter une colonne au journal contenant l’éventuelle raison d’exclusion d’un message se confirme.
+    - La couleur de remplissage des lignes, distinguant les messages sautés des réponses automatiques envoyée, n’a pas été correctement appliquée entre le 24/09/2017 et le 30/09/2017 aux journaux de OPERATIONS et OPERATIONS. Il ne peut s’agir que d’un bug/disfonctionnement du programme.
