@@ -281,3 +281,15 @@ Retour sur les résultats des sessions d’exécution des programmes de réponse
     - Aucun filtrage n’a été appliqué aux messages reçus durant la session du 01/10/2017 et le 02/10/2017 du programme de OPERATIONS2. Une réponse automatique a été envoyée pour chaque message détecté et traité.
     - La nécessité d’ajouter une colonne au journal contenant l’éventuelle raison d’exclusion d’un message se confirme.
     - La couleur de remplissage des lignes, distinguant les messages sautés des réponses automatiques envoyée, n’a pas été correctement appliquée entre le 24/09/2017 et le 30/09/2017 aux journaux de OPERATIONS et OPERATIONS. Il ne peut s’agir que d’un bug/disfonctionnement du programme.
+
+## 2017-10-05
+Etudes, rectification et suggestion d’amélioration suite aux remarques formulées dans le rapport du 03/10/2017:
+- Rectification du fichier de configuration du programme de OPERATIONS2 auquel une opération d’archivage a été appliquée par erreur ; ce qui causait le traitement de l’intégralité des messages reçu sans aucun filtrage.
+- Une amélioration du code est à envisager suite aux erreurs reportées par le service « Google Apps Script » :
+
+    ![2017-10-05 - Gmail-AutoResponder](/assets/2017-10-05%20-%20Gmail-AutoResponder.png)
+
+    - Les messages d’erreur `Argument too large: subject (line 97, file "Code") et Limit Exceeded: Email Body Size. (line 97, file "Code")` indiquent que le corps du message de réponse composé du texte informatif principal et de l’historique de la conversation peut potentiellement dépasser la limite de [la taille maximale du corps de message de réponse](https://developers.google.com/apps-script/reference/gmail/gmail-thread#reply(String)).
+    - Le concept permettant de contourner ce problème peut être résumé comme suit :
+        - L’ensemble du message (texte informatif + historique de la conversation) sera initialement stocké dans une chaîne de caractère (String).
+        - Si la taille de la chaîne dépasse 20Ko l’excédent sera éliminé et remplacé par des points de suspension.
