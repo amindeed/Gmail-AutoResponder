@@ -293,3 +293,7 @@ Etudes, rectification et suggestion d’amélioration suite aux remarques formul
     - Le concept permettant de contourner ce problème peut être résumé comme suit :
         - L’ensemble du message (texte informatif + historique de la conversation) sera initialement stocké dans une chaîne de caractère (String).
         - Si la taille de la chaîne dépasse 20Ko l’excédent sera éliminé et remplacé par des points de suspension.
+
+## 2017-10-21
+Configurations de programmes de réponses mail automatiques pour les comptes OPERATIONS5 « operations5@mycompany.com »  et OPERATIONS6 « operations6@mycompany.com ».
+Les premières sessions seront exécutées le jour même à partir de 20:00 (heure locale).
