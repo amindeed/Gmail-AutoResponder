@@ -273,7 +273,7 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
 Evaluation des résultats des sessions d’exécution du 20/09/2017 et 21/09/2017: **23** réponses envoyées.
 
 ## 2017-09-23
-- Configuration du programme de réponses mail automatique pour un quatrième compte Google: **`OPERATIONS4 <operations4@mycompany.com>`**.
+Configuration du programme de réponses mail automatique pour un quatrième compte Google: **`OPERATIONS4 <operations4@mycompany.com>`**.
 
 ## 2017-10-03
 Retour sur les résultats des sessions d’exécution des programmes de réponses mail automatiques associés aux comptes OPERATIONS, OPERATIONS2, OPERATIONS3 et OPERATIONS4 entre le 22/09/2017 et 02/10/2017.
@@ -297,3 +297,10 @@ Etudes, rectification et suggestion d’amélioration suite aux remarques formul
 ## 2017-10-21
 Configurations de programmes de réponses mail automatiques pour les comptes OPERATIONS5 « operations5@mycompany.com »  et OPERATIONS6 « operations6@mycompany.com ».
 Les premières sessions seront exécutées le jour même à partir de 20:00 (heure locale).
+
+## 2017-10-23
+Les deux premières sessions d’exécution des programmes de réponses mail automatiques associés aux comptes **OPERATIONS5** et **OPERATIONS6** ont été respectivement exécuté le **21/10/2017** et le **22/10/2017**.
+**4** réponses automatiques ont été envoyées, **9** messages reçus sautés.
+Les adresses expéditrices avec la mention **`do-not-reply`** ont été ajoutées à la liste d’exclusion.
+Les résultats des sessions **OPERATIONS5** et **OPERATIONS6** seront suivis durant toute la semaine afin de corriger toute éventuelle anomalie.
+_**N.B. :**_ Depuis l’exécution de la première session de réponse mail automatique le 23/08/2017, **1203** réponses ont été envoyées.
