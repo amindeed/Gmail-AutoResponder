@@ -304,3 +304,6 @@ Les deux premières sessions d’exécution des programmes de réponses mail aut
 Les adresses expéditrices avec la mention **`do-not-reply`** ont été ajoutées à la liste d’exclusion.
 Les résultats des sessions **OPERATIONS5** et **OPERATIONS6** seront suivis durant toute la semaine afin de corriger toute éventuelle anomalie.
 _**N.B. :**_ Depuis l’exécution de la première session de réponse mail automatique le 23/08/2017, **1203** réponses ont été envoyées.
+
+## 2017-10-30
+Les codes sources des programmes de réponses mail automatiques ont été mis à jour suite au changement de l’heure locale qui a eu lieu le 29/10/2017.
