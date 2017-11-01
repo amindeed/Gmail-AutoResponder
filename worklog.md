@@ -307,3 +307,8 @@ _**N.B. :**_ Depuis l’exécution de la première session de réponse mail auto
 
 ## 2017-10-30
 Les codes sources des programmes de réponses mail automatiques ont été mis à jour suite au changement de l’heure locale qui a eu lieu le 29/10/2017.
+
+## 2017-11-01
+Vérification des programmes (journaux et configurations) de réponses mail automatiques :
+- L’archivage des journaux du mois d’octobre a été correctement exécuté pour toutes les instances du programme.
+- Adresses ajoutées à la liste d’exclusion « From » de chacun des fichiers de configuration.
