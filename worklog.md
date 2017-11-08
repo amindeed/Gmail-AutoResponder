@@ -312,3 +312,7 @@ Les codes sources des programmes de réponses mail automatiques ont été mis à
 Vérification des programmes (journaux et configurations) de réponses mail automatiques :
 - L’archivage des journaux du mois d’octobre a été correctement exécuté pour toutes les instances du programme.
 - Adresses ajoutées à la liste d’exclusion « From » de chacun des fichiers de configuration.
+
+## 2017-11-08
+Début d’optimisation du code source du programme de réponses mail automatiques pour une  meilleure performance d’exécution :
+**_Mise à jour du code envisagés :_** Au lieu d’extraire, à chaque exécution, tous les identifiants des messages traités durant tout le mois depuis le journal des opérations ; afin de vérifier si un message n’a pas été déjà traité, le programme vérifierait juste les identifiants des messages traités dans la dernière occurrence qui seraient déjà mis en cache.
