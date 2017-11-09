@@ -316,3 +316,6 @@ Vérification des programmes (journaux et configurations) de réponses mail auto
 ## 2017-11-08
 Début d’optimisation du code source du programme de réponses mail automatiques pour une  meilleure performance d’exécution :
 **_Mise à jour du code envisagés :_** Au lieu d’extraire, à chaque exécution, tous les identifiants des messages traités durant tout le mois depuis le journal des opérations ; afin de vérifier si un message n’a pas été déjà traité, le programme vérifierait juste les identifiants des messages traités dans la dernière occurrence qui seraient déjà mis en cache.
+
+## 2017-11-09
+Continuation du développement et test des premières améliorations du code source du programme des réponses mail automatiques pour une meilleure performance d’exécution.
