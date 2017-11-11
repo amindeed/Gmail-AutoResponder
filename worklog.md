@@ -322,3 +322,6 @@ Continuation du développement et test des premières améliorations du code sou
 
 ## 2017-11-10
 Continuation du développement du code amélioré du programme des réponses mail automatiques.
+
+## 2017-11-11
+Fin de la nouvelle version du code source du programme de réponses mail automatiques. Premier déploiement pour le compte OPERATIONS. Le code sera au fur et à mesure amélioré selon les résultats.
