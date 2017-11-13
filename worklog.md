@@ -221,7 +221,7 @@ Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** it
 Evaluation des résultats de la session d’exécution du 13/09/2017 : **60** itérations correctes du programme ayant récupérés **33** « threads ». **33** messages traités, dont **19** sautées et **14** réponses automatiques envoyées.
 Déploiement de versions adaptées du programme pour les deux comptes **« OPERATIONS2 »** et **« OPERATIONS3 »**.
 
-## 2017-09-16
+## 2017-09-16 (code)
 Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/2017.
 - Améliorations et mises à jour :
     - Ajout d'une nouvelle adresse aux listes d’exclusions respectives « From : » de chaque compte (i.e. OPERATIONS, OPERATIONS2, OPERATIONS3).
