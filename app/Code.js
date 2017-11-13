@@ -1,12 +1,15 @@
-/* Comments with asterisk have been added just to mark
-variables to be watched while debugging code */
+/* Conventions :
+There are two types of processed messages:
+1) Messages that have been responded to.
+2) Skipped messages (matching an exclusion criteria).
+*/
 
 function autoReply() {
 
   var INTERVAL = 10;    // To execute the script after each 10 min.
   var START_HOUR = 20;    // Local time
   var FINISH_HOUR = 6;    // Local time
-  var TIME_OFFSET = -1;
+  var TIME_OFFSET = 0; // Changed from '-1' to '0' due to DST status change
   var date = new Date();
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
@@ -60,12 +63,14 @@ function autoReply() {
   if ((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) {
 
   // log execution time and number of messages retrieved
-  /**/threads = GmailApp.search(GM_SEARCH_QUERY);
+  threads = GmailApp.search(GM_SEARCH_QUERY);
   exec_log_sheet.appendRow([GM_SEARCH_QUERY, new Date().toLocaleString(), threads.length]);
 
   // Logs #2
-  var log_msgIDs = ColumnValues(ops_log_sheet,"D",1); /*****************************************/
-
+  ///// var log_msgIDs = ColumnValues(ops_log_sheet,"D",1);
+  /** Get cached IDs of messages processed in the previous session **/
+  var cache = CacheService.getScriptCache();
+  
   // Configs #2
   var From_regex_blacklist = ColumnValues(config_sheet,"D",1);
   var To_blacklist = ColumnValues(config_sheet,"G",1);
@@ -83,9 +88,10 @@ function autoReply() {
         var msgFrom = messages[lastMsg].getFrom();
         var msgTo = messages[lastMsg].getTo();
         var msgId = messages[lastMsg].getId();
-        var msgIdNdx = log_msgIDs.indexOf(msgId); /*****************************************/
-
-      if( msgIdNdx === -1  /*****************************************/
+        //// var msgIdNdx = log_msgIDs.indexOf(msgId);
+        var isProcessed = cache.get(msgId);
+      
+      if( /* msgIdNdx === -1 */ isProcessed === null
         && !ContainsString(msgTo,To_blacklist)
         && !MatchesRegex(msgFrom,From_regex_blacklist)
         && !ContainsString(messages[lastMsg].getRawContent(),Headers_blacklist) ) {
@@ -108,19 +114,24 @@ function autoReply() {
 				  cc: "it-operations@mycompany.com", // alias of 'amine@mycompany.com'
                   noReply: true
 				});
-
-                // Log processed message
-                /***#####***/ ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
-                /***#####***/ var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
-                /***#####***/ last_OpsLog_row.setBackgroundRGB(252,229,205);
-
-        } else if ( msgIdNdx === -1 ) {
-
+                // Correction: star messages that have been responded to
+                messages[lastMsg].star();
+              
+                // Log message that has been responded to
+                ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
+                var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
+                last_OpsLog_row.setBackgroundRGB(252,229,205);
+                cache.put(msgId, '', 960); // Cache ID of processed message
+          
+        } else if ( /* msgIdNdx === -1 */ isProcessed === null ) { 
+          
+          // Star skipped message
           messages[lastMsg].star();
 
           // Log skipped message
           var msgDate = messages[lastMsg].getDate(), msgSubject = messages[lastMsg].getSubject();
-          /***#####***/ ops_log_sheet.appendRow(['SKIPPED', msgDate, '', msgId, threads[i].getId(), msgFrom, msgSubject]);
+          ops_log_sheet.appendRow(['SKIPPED', msgDate, '', msgId, threads[i].getId(), msgFrom, msgSubject]);
+          cache.put(msgId, '', 960); // Cache ID of processed (skipped) message
         }
     }
 

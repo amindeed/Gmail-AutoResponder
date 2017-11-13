@@ -325,3 +325,8 @@ Continuation du développement du code amélioré du programme des réponses mai
 
 ## 2017-11-11
 Fin de la nouvelle version du code source du programme de réponses mail automatiques. Premier déploiement pour le compte OPERATIONS. Le code sera au fur et à mesure amélioré selon les résultats.
+
+## 2017-11-13 (code)
+Les sessions d’exécution du **11/11/2017** et le **12/11/2017** du programme de réponses mail automatiques du compte **OPERATIONS** se sont correctement déroulées après la dernière mise à jour du code source.
+Les changements ont été généralisés sur les autres programmes des comptes **OPERATIONS2**, **OPERATIONS3**, **OPERATIONS4**, **OPERATIONS5** et **OPERATIONS6**.
+Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrences de chaque session d’exécution des programmes ont été ajoutées à leurs codes source respectifs.

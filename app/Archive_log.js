@@ -20,5 +20,9 @@ function archive_log() {
   log.moveActiveSheet(log.getNumSheets());
   var range = ops_log_sheet.getRange(2,1,ops_log_sheet.getLastRow()-1,ops_log_sheet.getLastColumn());
   range.clear();
-
+  
+  /** Logged execution sessions **/
+  var exec_log_sheet = log.getSheets()[1];
+  exec_log_sheet.deleteRows(2, exec_log_sheet.getLastRow() - 1);
+  
 }
