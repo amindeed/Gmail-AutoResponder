@@ -221,7 +221,7 @@ Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** it
 Evaluation des résultats de la session d’exécution du 13/09/2017 : **60** itérations correctes du programme ayant récupérés **33** « threads ». **33** messages traités, dont **19** sautées et **14** réponses automatiques envoyées.
 Déploiement de versions adaptées du programme pour les deux comptes **« OPERATIONS2 »** et **« OPERATIONS3 »**.
 
-## 2017-09-16 (code)
+## 2017-09-16 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/c95da9a06c657b4c1d620d27da1c83cce9196f1e/app/test_2017-09-16.js)
 Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/2017.
 - Améliorations et mises à jour :
     - Ajout d'une nouvelle adresse aux listes d’exclusions respectives « From : » de chaque compte (i.e. OPERATIONS, OPERATIONS2, OPERATIONS3).
@@ -330,3 +330,6 @@ Fin de la nouvelle version du code source du programme de réponses mail automat
 Les sessions d’exécution du **11/11/2017** et le **12/11/2017** du programme de réponses mail automatiques du compte **OPERATIONS** se sont correctement déroulées après la dernière mise à jour du code source.
 Les changements ont été généralisés sur les autres programmes des comptes **OPERATIONS2**, **OPERATIONS3**, **OPERATIONS4**, **OPERATIONS5** et **OPERATIONS6**.
 Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrences de chaque session d’exécution des programmes ont été ajoutées à leurs codes source respectifs.
+
+## 2017-11-14
+En vérifiant les journaux des messages traités ainsi que les occurrences d’exécution de la session du 13/11/2017 des programmes de réponses mail automatiques : la session s’est déroulée correctement après les dernières mises à jours des codes source.
