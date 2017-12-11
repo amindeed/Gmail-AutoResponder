@@ -333,3 +333,6 @@ Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrence
 
 ## 2017-11-14
 En vérifiant les journaux des messages traités ainsi que les occurrences d’exécution de la session du 13/11/2017 des programmes de réponses mail automatiques : la session s’est déroulée correctement après les dernières mises à jours des codes source.
+
+## 2017-12-11 (code)
+Modification des codes source des programmes de réponses mail automatiques afin de rectifier un problème empêchant la réinitialisation mensuelle de la feuille du journal des sessions d’exécutions.

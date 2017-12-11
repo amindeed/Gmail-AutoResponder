@@ -23,6 +23,8 @@ function archive_log() {
   
   /** Logged execution sessions **/
   var exec_log_sheet = log.getSheets()[1];
-  exec_log_sheet.deleteRows(2, exec_log_sheet.getLastRow() - 1);
+  /* exec_log_sheet.deleteRows(2, exec_log_sheet.getLastRow() - 1); */
+  var range = exec_log_sheet.getRange(2,1,exec_log_sheet.getLastRow()-1,exec_log_sheet.getLastColumn());
+  range.clear();
   
 }
