@@ -326,7 +326,7 @@ Continuation du développement du code amélioré du programme des réponses mai
 ## 2017-11-11
 Fin de la nouvelle version du code source du programme de réponses mail automatiques. Premier déploiement pour le compte OPERATIONS. Le code sera au fur et à mesure amélioré selon les résultats.
 
-## 2017-11-13 (code)
+## 2017-11-13 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/24fe16e77e851b4ecd04e4995d1001d1de136279/app)
 Les sessions d’exécution du **11/11/2017** et le **12/11/2017** du programme de réponses mail automatiques du compte **OPERATIONS** se sont correctement déroulées après la dernière mise à jour du code source.
 Les changements ont été généralisés sur les autres programmes des comptes **OPERATIONS2**, **OPERATIONS3**, **OPERATIONS4**, **OPERATIONS5** et **OPERATIONS6**.
 Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrences de chaque session d’exécution des programmes ont été ajoutées à leurs codes source respectifs.
@@ -334,5 +334,8 @@ Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrence
 ## 2017-11-14
 En vérifiant les journaux des messages traités ainsi que les occurrences d’exécution de la session du 13/11/2017 des programmes de réponses mail automatiques : la session s’est déroulée correctement après les dernières mises à jours des codes source.
 
-## 2017-12-11 (code)
+## 2017-12-11 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/323bb1078531ae50034ddcaa058ff43d0dafdd5e/app/Archive_log.js)
 Modification des codes source des programmes de réponses mail automatiques afin de rectifier un problème empêchant la réinitialisation mensuelle de la feuille du journal des sessions d’exécutions.
+
+## 2018-09-10
+Revue du code source de l’application web Google Apps Script d’envoi de réponses automatiques aux emails reçus 1 hors les heures de travail des opérations, après plus d’un an d’exécution continue en production, avec plus de 6700 réponses automatiques envoyées.
