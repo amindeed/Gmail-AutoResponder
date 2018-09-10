@@ -339,3 +339,19 @@ Modification des codes source des programmes de réponses mail automatiques afin
 
 ## 2018-09-10
 Revue du code source de l’application web Google Apps Script d’envoi de réponses automatiques aux emails reçus 1 hors les heures de travail des opérations, après plus d’un an d’exécution continue en production, avec plus de 6700 réponses automatiques envoyées.
+
+Liste exhaustive des types d'erreurs reportées par **Google Apps Scripts** (résumés envoyés par mail) durant l'année, illustré chacun par un exemple. Informations à prendre en considération dans les prochaines améliorations du code:
+
+| Start            | Function    | Error Message                                                                                                                                    | Trigger    | End              |
+|------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------|
+| 10/07/2018 20:06 | autoReply   | Limit Exceeded: Email Body Size. (line 99, file "Code")                                                                                          | time-based | 10/07/2018 20:06 |
+| 10/04/2018 20:43 | autoReply   | Document {DOCUMENT-ID-DELETED} is missing (perhaps it was deleted, or you don't have read access?) (line 22, file "Code") | time-based | 10/04/2018 20:44 |
+| 9/17/18 12:53 AM | autoReply   | Service error: Spreadsheets (line 63, file "Code")                                                                                               | time-based | 9/17/18 12:53 AM |
+| 7/26/18 11:16 PM | autoReply   | Gmail operation not allowed. (line 62, file "Code")                                                                                              | time-based | 7/26/18 11:16 PM |
+| 4/24/18 4:52 AM  | autoReply   | Service timed out: Spreadsheets (line 63, file "Code")                                                                                           | time-based | 4/24/18 4:53 AM  |
+| 3/23/18 10:46 PM | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again.                                                                           | time-based | 3/23/18 10:46 PM |
+| 1/25/18 8:22 PM  | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again. (line 125, file "Code")                                                   | time-based | 1/25/18 8:24 PM  |
+| 12/01/2017 08:45 | archive_log | Sorry, it is not possible to delete all non-frozen rows. (line 26, file "Archive_Log")                                                           | time-based | 12/01/2017 08:45 |
+| 10/02/2017 20:58 | autoReply   | Argument too large: subject (line 97, file "Code")                                                                                               | time-based | 10/02/2017 20:58 |
+| 10/01/2017 08:02 | archive_log | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
+| 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
