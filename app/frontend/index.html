@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -12,247 +12,208 @@
     <link rel="stylesheet" href="https://rawgit.com/CreativeIT/getmdl-select/master/getmdl-select.min.css">
     <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <!--<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />-->
-    <!-- [Multirange](https://github.com/LeaVerou/multirange) -->
-    <link rel="stylesheet" href="css/multirange.css">
-    <script defer src="js/multirange.js"></script>
-    <!-- End multirange -->
 </head>
 
 <body>
-
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header administration">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-      <div class="current-user">
-        <!-- <i class="material-icons">account_circle</i> -->
-        <i class="material-icons">local_airport</i>
-        <!-- <span>Tony</span> -->
-        <span>Amine</span>
-      </div>
-      <div class="mdl-layout-spacer"></div>
-      <div class="mdl-navigation__link">
-        <label for="toggle-dashboard" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-          <input type="checkbox" id="toggle-dashboard" class="mdl-switch__input">
-          <span id="toggle-label" class="mdl-switch__label">Disabled</span>
-        </label>
-      </div>
-      <!-- Search bar
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
-            <span>Quick Search</span>
-            <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-              <i class="material-icons">search</i>
-            </label>
-            <div class="mdl-textfield__expandable-holder">
-              <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
-            </div>
-          </div>
-      -->
-    </div>
-  </header>
-  <div class="mdl-layout__drawer">
-    <!-- -->
-    <div class="avatar">
-        <img src="img/sending-mail.jpg" alt="Sample Image" class="circle-image">
-    </div>
-    <!-- -->
-    <!-- <span class="mdl-layout-title title">Gmail Autoresponder</span> -->
-    <span class="mdl-layout-title">Gmail Autoresponder</span>
-    <nav class="mdl-navigation">
-      <a class="mdl-navigation__link active" href=""><i class="material-icons">settings</i><span class="drawer-nav-item">Settings</span></a>
-    </nav>
-    <div class="mdl-layout-spacer"></div>
-    <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="https://www.github.com/amindeed"><i class="material-icons">code</i><span class="drawer-nav-item">Github</span></a>
-    </nav>
-  </div>
-
-  <main class="mdl-layout__content">
-
-    <div class="page-content">
-      <!-- content start -->
-          <!-- page full path
-              <div class="breadcrumbs">
-                <a href="">Home</a>
-                <i class="material-icons">arrow_forward</i>
-                <a href="">Customer Search</a>
-                <i class="material-icons">arrow_forward</i>
-                <a href="">Search Results</a>
-              </div>
-          -->
-
-      <h3>Settings</h3>
-      <p>Put a description here if you want; or a counter of automatic responses that have been sent so far by the application.</p>
-      <div class="mdl-card mdl-shadow--2dp customer-search">
-        <!-- <div class="mdl-card__title">Customer Search</div> -->
-        <div class="mdl-card__actions">
-          <form action="#">
-
-            <div class="expander-title">
-              <i class="material-icons">description</i>
-              <p class="search-toggle" id="toggleNameSearch">Filters & Logs</p>
-            </div>
-            <div class="settings-block" id="searchBlockName">
-              <div class="flex-row">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="lastName">
-                  <label class="mdl-textfield__label" for="lastName">Filters sheet ID</label>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header administration">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <div class="current-user">
+                    <!-- <i class="material-icons">account_circle</i> -->
+                    <i class="material-icons">local_airport</i>
+                    <!-- <span>Tony</span> -->
+                    <span>Amine</span>
                 </div>
-            <!-- </div>
-            <div class="flex-row"> -->
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="firstName">
-                  <label class="mdl-textfield__label" for="lastName">Logs sheet ID</label>
-                </div>
-              </div>
-            </div>
-
-              <div class="expander-title">
-                <i class="material-icons">watch_later</i>
-                <p class="search-toggle" id="toggleLocationSearch">Time</p>
-              </div>
-              <div class="settings-block" id="searchBlockLocation">
-                <div class="flex-row">
-                    <p><input type="range" multiple value="0,23" /></p>
-                    <p><input type="range" class="mdl-slider mdl-js-slider" multiple value="0,23" /></p>
-                    <p><input id="range-rtl" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="0" tabindex="0"></p>
-                </div>
-                <div class="flex-row">
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="address">
-                    <label class="mdl-textfield__label" for="address">Address</label>
-                  </div>
-                </div>
-                <div class="flex-row">
-                  <!-- **[Material Design Lite - getmdl-select](https://creativeit.github.io/getmdl-select/)** -->
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
-                      <!-- Amine: `getmdl-select__fix-height` doesn't seem to be mandatory -->
-                      <input type="text" value="" class="mdl-textfield__input" id="sample6" readonly>
-                      <input type="hidden" value="" name="sample6">
-                      <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                      <label for="sample6" class="mdl-textfield__label">Country</label>
-                      <ul for="sample6" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
-                          <li class="mdl-menu__item" data-val="BY" data-selected="true">Belarus</li>
-                          <!-- Amine: `data-selected="true"` causes error and item is not selected -->
-                          <li class="mdl-menu__item" data-val="BR">Brazil</li>
-                          <li class="mdl-menu__item" data-val="ES">Estonia</li>
-                          <li class="mdl-menu__item" data-val="FI">Finland</li>
-                          <li class="mdl-menu__item" data-val="FR">France</li>
-                          <li class="mdl-menu__item" data-val="DE">Germany</li>
-                          <li class="mdl-menu__item" data-val="PL">Poland</li>
-                          <li class="mdl-menu__item" data-val="RU">Russia</li>
-                      </ul>
-                  </div>
-                  <!-- **** -->
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--small">
-                    <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="zip">
-                    <label class="mdl-textfield__label" for="zip">ZIP</label>
-                    <span class="mdl-textfield__error">Input is not a number!</span>
-                  </div>
-                </div> <!-- flex-row -->
-              </div>
-
-            <div class="expander-title">
-              <i class="material-icons">email</i>
-              <p class="search-toggle" id="toggleContactSearch">Message</p>
-            </div>
-            <div class="settings-block" id="searchBlockContact">
-              <div class="flex-row">
-                  <ul class="mdl-list">
-                      <!-- <li class="mdl-list__item mdl-list__item--two-line"> -->
-                      <li class="mdl-list__item mdl-list__item--three-line">
-                          <span class="mdl-list__item-primary-content">
-                            <span>No-reply</span>
-                                <!-- <span class="mdl-list__item-sub-title"> -->
-                                <span class="mdl-list__item-text-body">
-                                    Send using a `no-reply` address. Only possible for G-Suite accounts, not Gmail users.
-                                </span>
-                          </span>
-                          <span class="mdl-list__item-secondary-content">
-                              <a class="mdl-list__item-secondary-action" href="#">
-                                  <label for="toggle-noreply2" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="toggle-noreply2" class="mdl-switch__input">
-                                  </label>
-                              </a>
-                          </span>
-                      </li>
-                  </ul>
-              <!-- </div> -->
-              <!-- <div class="flex-row">
-                <div class="toggle-option mdl-textfield">
-                  <label for="toggle-noreply" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                      <input type="checkbox" id="toggle-noreply" class="mdl-switch__input">
-                      <span id="noreply-label" class="mdl-switch__label">Send from <strong>no-reply</strong> <i id="info-noreply" class="material-icons md-18 md-dark">info</i></span>
-                      <span class="mdl-tooltip" for="info-noreply">Send using a `no-reply` address. Only possible for G-Suite accounts, not Gmail users.</span>
-                  </label>
-                </div>
-              </div> -->
-              <!-- <div class="flex-row"> -->
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="CcAddr">
-                  <label class="mdl-textfield__label" for="email">Cc address (Optional)</label>
-                </div>
-                <div class="message-body">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
-                        <textarea class="mdl-textfield__input" name="notes" formControlName="notes" rows="4" cols="350"></textarea>
-                        <label class="mdl-textfield__label" for="notes">Response message body</label>
-                    </div>
-                </div>
-              </div>
-              <!-- <div class="flex-row">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="phoneSecondary">
-                  <label class="mdl-textfield__label" for="phoneSecondary">Secondary Phone</label>
-                  <span class="mdl-textfield__error">Input is not a number!</span>
-                </div>
-              </div> -->
-            </div>
-
-            <div class="expander-title">
-              <i class="material-icons">build</i>
-              <p class="search-toggle" id="">Advanced</p>
-            </div>
-            <div class="settings-block" id="">
-                <div class="flex-row">
-                    <div class="toggle-option mdl-textfield">
-                        <i>Coming soon...</i>
-                    </div>
+                <div class="mdl-layout-spacer"></div>
+                <div class="mdl-navigation__link">
+                    <label for="toggle-app-status" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" id="toggle_style_override">
+                        <input type="checkbox" id="toggle-app-status" class="mdl-switch__input">
+                        <span id="toggle-label" class="mdl-switch__label">Disabled</span>
+                    </label>
                 </div>
             </div>
-
-            <div class="btn-wrap">
-              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Apply</button>
+        </header>
+        <div class="mdl-layout__drawer">
+            <div class="avatar">
+                <img src="img/sending-mail.jpg" alt="GM-Autoresponder" class="circle-image">
             </div>
-          </form>
+            <span class="mdl-layout-title">Gmail Autoresponder</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link active" href=""><i class="material-icons">settings</i><span class="drawer-nav-item">Settings</span></a>
+            </nav>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="https://www.github.com/amindeed" target="_blank">
+                    <i class="material-icons">code</i>
+                    <span class="drawer-nav-item">Github</span>
+                </a>
+            </nav>
         </div>
-      </div>
-      <!-- content end -->
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                <h3>Settings</h3>
+                <!-- <p>Put a description here if you want; or a counter of automatic responses that have been sent so far by the application.</p> -->
+                <div class="mdl-card mdl-shadow--2dp settings-content">
+                    <div class="mdl-card__actions">
+                        <form action="#">
+                            <div class="expander-title">
+                                <i class="material-icons">description</i>
+                                <p class="setting-toggle" id="settingsCategory">Filters & Logs</p>
+                            </div>
+                            <div class="settings-block">
+                                <div class="flex-row">
+                                    <p>Set IDs of <i>filters</i> and <i>logs</i> Google spreadsheets. <a href="https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app#openbyidid" target="_blank"><i class="material-icons md-18 md-dark">info</i></a></p>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="filtersId">
+                                        <label class="mdl-textfield__label" for="filtersId">Filters sheet ID</label>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="logsId">
+                                        <label class="mdl-textfield__label" for="logsId">Logs sheet ID</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="expander-title">
+                                <i class="material-icons">watch_later</i>
+                                <p class="setting-toggle" id="settingsCategory">Time</p>
+                            </div>
+                            <div class="settings-block">
+                                <div class="flex-row">
+                                    <p>Set the time interval (UTC) in which the automatic responses will be sent. <i id="info-tinterval" class="material-icons md-18 md-dark">info</i></p><span class="mdl-tooltip" for="info-tinterval"><b>e.g. </b>From 06:00 PM (day <b>D</b>), to 08:00 AM (day <b>D+1</b>)</span>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                                        <input type="text" value="" class="mdl-textfield__input" id="time_from" readonly>
+                                        <input type="hidden" value="" name="time_from">
+                                        <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        <label for="time_from" class="mdl-textfield__label">From:</label>
+                                        <ul for="time_from" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li class="mdl-menu__item" data-val="12">12 PM</li>
+                                            <li class="mdl-menu__item" data-val="13">01 PM</li>
+                                            <li class="mdl-menu__item" data-val="14">02 PM</li>
+                                            <li class="mdl-menu__item" data-val="15">03 PM</li>
+                                            <li class="mdl-menu__item" data-val="16">04 PM</li>
+                                            <li class="mdl-menu__item" data-val="17">05 PM</li>
+                                            <li class="mdl-menu__item" data-val="18">06 PM</li>
+                                            <li class="mdl-menu__item" data-val="19">07 PM</li>
+                                            <li class="mdl-menu__item" data-val="20">08 PM</li>
+                                            <li class="mdl-menu__item" data-val="21">09 PM</li>
+                                            <li class="mdl-menu__item" data-val="22">10 PM</li>
+                                            <li class="mdl-menu__item" data-val="23">11 PM</li>
+                                            <li class="mdl-menu__item" data-val="0">12 AM</li>
+                                            <li class="mdl-menu__item" data-val="1">01 AM</li>
+                                            <li class="mdl-menu__item" data-val="2">02 AM</li>
+                                            <li class="mdl-menu__item" data-val="3">03 AM</li>
+                                            <li class="mdl-menu__item" data-val="4">04 AM</li>
+                                            <li class="mdl-menu__item" data-val="5">05 AM</li>
+                                            <li class="mdl-menu__item" data-val="6">06 AM</li>
+                                            <li class="mdl-menu__item" data-val="7">07 AM</li>
+                                            <li class="mdl-menu__item" data-val="8">08 AM</li>
+                                            <li class="mdl-menu__item" data-val="9">09 AM</li>
+                                            <li class="mdl-menu__item" data-val="10">10 AM</li>
+                                            <li class="mdl-menu__item" data-val="11">11 AM</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                                        <input type="text" value="" class="mdl-textfield__input" id="time_to" readonly>
+                                        <input type="hidden" value="" name="time_to">
+                                        <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        <label for="time_to" class="mdl-textfield__label">To:</label>
+                                        <ul for="time_to" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li class="mdl-menu__item" data-val="12">12 PM</li>
+                                            <li class="mdl-menu__item" data-val="13">01 PM</li>
+                                            <li class="mdl-menu__item" data-val="14">02 PM</li>
+                                            <li class="mdl-menu__item" data-val="15">03 PM</li>
+                                            <li class="mdl-menu__item" data-val="16">04 PM</li>
+                                            <li class="mdl-menu__item" data-val="17">05 PM</li>
+                                            <li class="mdl-menu__item" data-val="18">06 PM</li>
+                                            <li class="mdl-menu__item" data-val="19">07 PM</li>
+                                            <li class="mdl-menu__item" data-val="20">08 PM</li>
+                                            <li class="mdl-menu__item" data-val="21">09 PM</li>
+                                            <li class="mdl-menu__item" data-val="22">10 PM</li>
+                                            <li class="mdl-menu__item" data-val="23">11 PM</li>
+                                            <li class="mdl-menu__item" data-val="0">12 AM</li>
+                                            <li class="mdl-menu__item" data-val="1">01 AM</li>
+                                            <li class="mdl-menu__item" data-val="2">02 AM</li>
+                                            <li class="mdl-menu__item" data-val="3">03 AM</li>
+                                            <li class="mdl-menu__item" data-val="4">04 AM</li>
+                                            <li class="mdl-menu__item" data-val="5">05 AM</li>
+                                            <li class="mdl-menu__item" data-val="6">06 AM</li>
+                                            <li class="mdl-menu__item" data-val="7">07 AM</li>
+                                            <li class="mdl-menu__item" data-val="8">08 AM</li>
+                                            <li class="mdl-menu__item" data-val="9">09 AM</li>
+                                            <li class="mdl-menu__item" data-val="10">10 AM</li>
+                                            <li class="mdl-menu__item" data-val="11">11 AM</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="expander-title">
+                                <i class="material-icons">email</i>
+                                <p class="setting-toggle" id="settingsCategory">Message</p>
+                            </div>
+                            <div class="settings-block">
+                                <div class="flex-row">
+                                    <p>Response email settings.</p>
+                                    <ul class="mdl-list">
+                                        <li class="mdl-list__item mdl-list__item--three-line" id="no-reply_style_override">
+                                            <span class="mdl-list__item-primary-content">
+                                                <span>Use <i>no-reply</i></span>
+                                                <span class="mdl-list__item-text-body">Send using a `no-reply` address (G-Suite accounts only).</span>
+                                            </span>
+                                            <span class="mdl-list__item-secondary-content">
+                                                <label for="toggle-noreply" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                                    <input type="checkbox" id="toggle-noreply" class="mdl-switch__input">
+                                                </label>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="CcAddr">
+                                        <label class="mdl-textfield__label" for="CcAddr">Cc address (Optional)</label>
+                                    </div>
+                                    <div class="message-body">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield--full-width">
+                                            <textarea class="mdl-textfield__input" id="msgBody" rows="4" cols="350"></textarea>
+                                            <label class="mdl-textfield__label" for="msgBody">Response message body</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="expander-title">
+                                <i class="material-icons">build</i>
+                                <p class="setting-toggle" id="settingsCategory">Advanced</p>
+                            </div>
+                            <div class="settings-block">
+                                <div class="flex-row">
+                                    <p>Coming soon...</p>
+                                </div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">Apply</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-  </main>
-</div>
-
-<script>
-  $(document).ready(function(){
-
-    $(".settings-block").hide();
-    $(".expander-title").click(function(){
-      $(this).next(".settings-block").slideToggle("fast");
-    });
-
-  });
-
-  //switch mode on combat dashboard
-  $("#toggle-dashboard").change(function() {
-    if ($(this).is(':checked')) {
-      $('#non-combat-card').insertBefore('#combat-card');
-      $("#toggle-label").text("Enabled");
-    } else {
-      $('#combat-card').insertBefore('#non-combat-card');
-      $("#toggle-label").text("Disabled");
-    }
-  });
-
-</script>
-<script defer src="https://rawgit.com/CreativeIT/getmdl-select/master/getmdl-select.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".settings-block").hide();
+            $(".expander-title").click(function() {
+                $(this).next(".settings-block").slideToggle("fast");
+            });
+        });
+        $("#toggle-app-status").change(function() {
+            if ($(this).is(':checked')) {
+                /* Query to enable GApps Script webapp goes here */
+                $("#toggle-label").text("Enabled");
+            } else {
+                /* Query to disable GApps Script webapp goes here */
+                $("#toggle-label").text("Disabled");
+            }
+        });
+    </script>
+    <script defer src="https://rawgit.com/CreativeIT/getmdl-select/master/getmdl-select.min.js"></script>
 </body>
+
 </html>

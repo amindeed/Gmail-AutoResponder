@@ -1,0 +1,321 @@
+/************************************************************
+
+purifycss css\style.css index.html --out output2.css --info --rejected
+
+    ________________________________________________
+    |
+    |   PurifyCSS has reduced the file size by ~ 38.1%
+    |
+    ________________________________________________
+    |
+    |   PurifyCSS - Rejected selectors:
+    |   .broadcast
+    |   .broadcast .broadcast-title
+    |   .broadcast .broadcast-title i
+    |   .broadcast p
+    |   .categories .filter-title
+    |   .categories ul.filter-list
+    |   .categories ul.filter-list li
+    |   .categories label
+    |   .categories label.is-checked
+    |   .product-list .mdl-cell
+    |   .product-list .mdl-card
+    |   .product-list .mdl-card .mdl-card__media
+    |   .product-list .mdl-card .mdl-card__media img
+    |   .product-list .mdl-card .mdl-card__title
+    |   .product-list .mdl-card .mdl-card__title-text
+    |   .product-list .mdl-card .mdl-card__supporting-text
+    |   .administration .settings-content .mdl-cell
+    |   .administration .settings-content form .mdl-grid
+    |   .administration .settings-content form .mdl-grid button
+    |   .administration .customer-list .mdl-data-table th
+    |   .administration .customer-list .mdl-data-table td
+    |   .administration .customer-list table
+    |   .administration .customer-list table tbody tr:nth-of-type(even)
+    |   .administration .customer-list table tbody tr:hover
+    |
+    ________________________________________________
+
+******************************************************************/
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  font-family: "Roboto", "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+.page-content {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.mdl-layout__header-row {
+  justify-content: space-between;
+}
+
+.current-user {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.current-user .material-icons {
+  font-size: 34px;
+  margin-right: 8px;
+}
+
+.breadcrumbs {
+  margin-bottom: 16px;
+}
+
+.breadcrumbs > * {
+  vertical-align: middle;
+}
+
+.breadcrumbs i {
+  font-size: 1em;
+}
+
+.administration .page-content {
+  margin: 0;
+  padding: 16px;
+}
+
+.administration .settings-content {
+  width: 100%;
+  min-height: 0;
+  margin-bottom: 16px;
+  overflow: visible;
+  z-index: 10;
+}
+
+.administration .settings-content .mdl-card__title {
+  padding-bottom: 0;
+}
+
+.administration .settings-content .mdl-card__actions {
+  padding: 0;
+}
+
+.administration .settings-content .flex-row {
+  /*display: flex;*/
+  /* Amine */
+  /*flex-flow: row nowrap;*/
+  /* Amine */
+  padding: 0 2rem 1rem 3rem;
+  /* Amine: best display settings; instead of `0 1rem 2rem 50px` */
+}
+
+.administration .settings-content .flex-row > div {
+  margin-right: 30px;
+  /* Amine: best display setting */
+}
+
+.administration .settings-content .flex-row > div:last-child {
+  margin-right: 0;
+}
+
+/** Removed by Amine / custom `mdl-textfield` / Effect confirmed
+.administration .settings-content form .mdl-textfield {
+  padding: 10px 0; /* Original value: `padding: 10px 0;`
+}
+**/
+
+.administration .settings-content form .mdl-textfield .mdl-button {
+  /* top: 6px;  *** Removed by Amine */
+  right: 0;
+}
+
+.administration .settings-content form .mdl-textfield--small {
+  width: 135px;
+}
+
+/** Removed by Amine / custom `mdl-textfield` / Effect confirmed
+.administration .settings-content form .mdl-textfield__label {
+  top: 12px; /* Original value: `top: 12px;`
+}
+**/
+
+/** Removed by Amine / custom `mdl-textfield`
+.administration .settings-content form .mdl-textfield__label:after {
+  bottom: 10px;
+}
+**/
+
+.administration .settings-content .btn-wrap {
+  border-top: 1px #ddd solid;
+}
+
+.administration .settings-content .btn-wrap button[type="submit"] {
+  margin: 16px 8px;
+}
+
+.administration .expander-title {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  padding: 1rem;
+  border-top: 1px #ddd solid;
+}
+
+.administration .expander-title p {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.administration .expander-title i {
+  flex: 0 0 24px;
+  margin-right: 1rem;
+}
+
+.administration .expander-title:hover {
+  cursor: pointer;
+}
+
+.administration .customer-list {
+  width: 100%;
+}
+
+.administration .mdl-layout-title {
+  /* padding: 20px; */
+  padding-top: 5px;
+  /* Modified by Amine */
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  line-height: 2 !important;
+  text-align: center;
+  /* Added by Amine */
+}
+
+.administration .mdl-navigation {
+  padding-top: 0;
+}
+
+.administration .mdl-layout__header .current-user img {
+  max-width: 50px;
+  margin-right: 20px;
+}
+
+.administration .mdl-layout__header .current-user span {
+  font-size: 16px;
+}
+
+/* Added by Amine */
+
+.administration .mdl-navigation__link {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Modified by Amine */
+
+.administration .mdl-navigation__link.active {
+  background: #e2e2e2;
+  /* font-weight: bold; */
+  /* text-transform: uppercase; */
+}
+
+/* Added by Amine */
+
+.mdl-navigation__link .drawer-nav-item {
+  padding-left: 16px;
+}
+
+/* Avatar: added by Amine, from: http://bit.ly/2xbhoZU */
+
+.avatar {
+  /* height: 200px; */
+  /* width: 200px; */
+  margin: auto;
+  /* Instead of `margin: 0 auto;`. Ref.: https://stackoverflow.com/a/10989261/3208373 */
+}
+
+/* Avatar: added by Amine, from: http://bit.ly/2xbhoZU */
+
+.circle-image {
+  max-width: 150px;
+  max-height: 150px;
+  margin: 0.5em;
+  border-radius: 50%;
+  float: center;
+}
+
+/** Removed by Amin
+.quick-search {
+  width: 95%;
+  margin: 16px auto 0;
+  padding: 0;
+  min-height: 0;
+}
+
+.quick-search .mdl-card__title {
+  text-transform: uppercase;
+}
+
+.quick-search .mdl-card__actions {
+  padding: 0 16px 16px;
+}
+
+.quick-search .mdl-card__actions form {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+**/
+
+/* Added by Amine, From "Enable-disable" example */
+
+#toggle-label {
+  display: block;
+  margin-right: 5px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+/* Added by Amine */
+
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+/* Added by Amine: override defaults */
+
+.mdl-layout__header .mdl-layout__header-row {
+  padding-left: 50px;
+  /* Default value: 72px */
+}
+
+/* Added by Amine: override `.mdl-navigation__link`'s padding-left default value (16px) */
+
+/*div#toggle-state {
+    padding-left: 3px;
+}*/
+
+/* Added by Amine: overriding default styling by `material.indigo-blue.min.css` */
+
+label#toggle_style_override {
+  padding-left: 18px;
+  /* Default value: 16px */
+}
+
+/* Added by Amine: overriding default styling by `material.indigo-blue.min.css` */
+
+li#no-reply_style_override {
+  padding-left: 0px;
+  /* Default value: 16px */
+}
+
+#settingsCategory {
+  font-weight: bold;
+}
