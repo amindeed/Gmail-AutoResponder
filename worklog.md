@@ -68,7 +68,7 @@ Optimisation du code du script « Google Apps Script » de réponse email automa
     - Lecture de configurations depuis un document « Google Spreadsheets » (« Autorespond-config »),
     - Enregistrement (journalisation) et vérification des informations identifiant les messages traités dans/depuis un document « Google Spreadsheets » (« Autorespond-log »),
     - Définition de fonctions génériques pour vérifier les données des en-têtes des messages contre les données extraites des fichiers précités,
-    - Récupération du message de réponse automatique (corps HTML) depuis un emplacement sécurisé sur l’espace d’hébergement web fourni par « ADK-Media »,
+    - Récupération du message de réponse automatique (corps HTML) depuis un emplacement sécurisé sur l’espace d’hébergement web,
     - Utilisation d’une combinaison de configurations pour filtrer les messages à traiter,
 - Une dernière version (draft) du code source est en pièce jointe (fichier « code.txt »).
 
