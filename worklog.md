@@ -74,7 +74,11 @@ Optimisation du code du script « Google Apps Script » de réponse email automa
 
 ## 2017-08-18 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/de409cff65ad04844a45fc67e21cc4371d0bb9c7/Code.js)
 Continuation de développement du script « Google Apps Script » de réponse mail automatique :
-- Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents « Google Spreadsheet » (configurations et journaux « Logs »).
+- Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents « Google Spreadsheet » (configurations et journaux « Logs »). Le fichier des configuration `Autorespond-config` contient les feuilles suivantes: `To_whitelist`, `To_regex_whitelist`, `To_blacklist`, `To_regex_blacklist`, `From_whitelist`, `From_regex_whitelist`, `From_blacklist`, `From_regex_blacklist`, `msgHeaders_blacklist`, `msgHeaders_regex_blacklist`.
+- Un modèle du fichier `Autorespond-config` sera ultérieurement ajouté au code source sous le format XLSX.
+
+![2017-08-23 - Gmail-Autoresponder](assets/2017-08-23%20-%20Gmail-Autoresponder.png)
+
 - Test et débogage  du code.
 
 ![2017-08-18 - Gmail-AutoResponder](assets/2017-08-18%20-%20Gmail-AutoResponder.png)
@@ -116,7 +120,7 @@ Bilan de l’exécution du programme de réponse mail automatique sur le compte 
 - 17 réponses automatiques envoyées entre 20:28 et 06:35 (heure locale)
 - Amélioration du programme :
     - Réorganisation des lignes de déclaration des variables pour une meilleure lisibilité et portabilité du code.
-    - Enregistrement des configurations sur une seule feuille du document `Autorespond-config`. Adaptation du code.
+    - Enregistrement des configurations sur une seule feuille du document `Autorespond-config` avec plusieurs colonnes, au lieu de plusieurs feuilles contenant chacune un filtre. L'ancienne version fichier a été archivée sous le nom [`Autorespond-config_OLD-till-2017-08-24`](app/Autorespond-config_OLD-till-2017-08-24.xlsx). Adaptation du code.
 - Rajout d’une valeur de décalage pour faciliter l’ajustement de la plage horaire d’exécution en cas de changement de l’heure locale.
 - Utilisation d’une adresse générique `no-reply` afin de dissuader les destinataires de répondre directement aux messages automatiques. Par ailleurs, cela nous épargnera de configurer et maintenir sur chaque installation du logiciel Outlook un filtre pour en supprimer les copies reçues.
 - Exclusion des adresses email contenant les mots `noreply` et `no-reply`.
@@ -199,13 +203,13 @@ Analyse des résultats de la session d’exécution du 06/09/2017 :
 ## 2017-09-08
 Evaluation des résultats de la session d’exécution du **07/09/2017** : **36** messages traités, dont **27** sautées pour des raisons valides et **9** réponses envoyées.
 
-## 2017-09-09 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/4cbad223f9cc08557e861f9770a31eae552a68fa/app)
+## 2017-09-09
 Analyse des résultats de la session d’exécution du 08/09/2017 :
 - **58** messages traités, dont **44** sautées pour des raisons valides et **14** réponses envoyées.
 - **2** messages non traités :
     - **MESSAGE (1):** L’heure de réception du message était très proche (en amont) de l’instant de l’itération du programme qui a eu lieu exactement à 19:06 (GMT).
-    - **MESSAGE (2):** Le message a été reçu sur la boîte email « operations@OldMailServer.com » et récupéré sur la boîte principale « operations@mycompany.com ».
-        - Rédaction en cours d'un script de tests afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des « threads » auxquels appartiennent les messages envoyés [exclusivement] à l’adresse « operations@OldMailServer.com ». Vérifier les valeurs récupérées contre les journaux des messages traités._
+    - **MESSAGE (2):** Le message a été reçu sur la boîte email « operations@OldMailServer.com » et [récupéré](https://support.google.com/mail/answer/21289?hl=en&authuser=2) sur la boîte principale « operations@mycompany.com ».
+        - Rédaction en cours d'un script de tests [(voir code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/4cbad223f9cc08557e861f9770a31eae552a68fa/app/test_2017-09-09.js) afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des « threads » auxquels appartiennent les messages envoyés [exclusivement] à l’adresse « operations@OldMailServer.com ». Vérifier les valeurs récupérées contre les journaux des messages traités._
 
 ## 2017-09-11
 Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/2017 : **73** messages traités, dont **51** sautées et **22** réponses automatiques envoyées.
@@ -221,7 +225,7 @@ Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** it
 Evaluation des résultats de la session d’exécution du 13/09/2017 : **60** itérations correctes du programme ayant récupérés **33** « threads ». **33** messages traités, dont **19** sautées et **14** réponses automatiques envoyées.
 Déploiement de versions adaptées du programme pour les deux comptes **« OPERATIONS2 »** et **« OPERATIONS3 »**.
 
-## 2017-09-16 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/c95da9a06c657b4c1d620d27da1c83cce9196f1e/app/test_2017-09-16.js)
+## 2017-09-16 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/4cbad223f9cc08557e861f9770a31eae552a68fa/app)
 Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/2017.
 - Améliorations et mises à jour :
     - Ajout d'une nouvelle adresse aux listes d’exclusions respectives « From : » de chaque compte (i.e. OPERATIONS, OPERATIONS2, OPERATIONS3).
@@ -252,17 +256,17 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
             - De toute façon, le message a été traité peu après par l’équipe « OPERATIONS2 » même.
     - **OPERATIONS3** : **60** itérations du programme ayant récupérés **25** « threads ». **25** messages traités, dont **24** sautés et une réponse envoyée.
 - Ajout du fichier `Autorespond-config-OPS3.xlsx` au code source:
-    - Un deuxième modèle du fichier `Autorespond-config` a été ajouté au code source, illustrant -à titre d'exemple- la configuration utilisée pour l'application associée au compte **`OPERATIONS3`**, l'empêchant d'envoyer une réponse à un message réçu si celui-ci est aussi destiné au moins à l'une des adresses `operations@mycompany.com` et `operations3@mycompany.com` et serait donc traité par l'une des applications respectives leur étant associées.
+    - Un deuxième modèle du fichier `Autorespond-config` a été ajouté au code source, illustrant -à titre d'exemple- la configuration utilisée pour l'application associée au compte **`OPERATIONS3`**, l'empêchant d'envoyer une réponse à un message réçu si celui-ci est aussi destiné au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com` et serait donc traité par l'une des applications respectives leur étant associées.
     - A cet égard, les 3 instances en exécution sont en effet configurées comme suit:
-        - _OPERATIONS :_ Traite tous les messages répondant aux critères préconfigurés, soient:
-            - Les accusés de lectures
-            - Les messages d'administration système (`postmaster`, `mailer-daemon`)
-            - Les messages en provenance des adresses mail de la société (`*@mycompany.*`)
-            - Les messages en provenance des adresses avec l'alias `noreply/no-reply`.
-            - Adresses ajoutées au fur et à mesure à la liste d'exclusion `FROM_REGEX_BLACKLIST`
-            - Messages à destinations anonymes `undisclosed-recipients`.
-        - _OPERATIONS2 :_ ne traite pas les messages destinés aussi à `operations@mycompany.com`.
-        - _OPERATIONS3 :_ ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
+        - _OPERATIONS :_ Traite tous les messages répondant aux critères de filtrage préconfigurés, excluant ainsi:
+            - les accusés de lectures
+            - les messages d'administration système (`postmaster`, `mailer-daemon`)
+            - les messages en provenance des adresses mail de la société (`*@mycompany.*`)
+            - les messages en provenance des adresses avec l'alias `noreply/no-reply`.
+            - les messages en provenance des adresses ajoutées au fur et à mesure à la liste d'exclusion `FROM_REGEX_BLACKLIST`
+            - les messages à destinations anonymes `undisclosed-recipients`.
+        - _OPERATIONS2 :_ en plus des critères de filtrage précités, elle ne traite pas les messages destinés aussi à `operations@mycompany.com`.
+        - _OPERATIONS3 :_ en plus des critères de filtrage précités, elle ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
     - Une même approche sera adoptée pour les autres instances de l'application qui seraient ultérieurement ajoutées et associées à d'autres adresses.
 
 ## 2017-09-20 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/43faa05d138d3c951af9ed6533ff9110e2d855f1/app/Code.js)
@@ -287,7 +291,7 @@ Etudes, rectification et suggestion d’amélioration suite aux remarques formul
 - Rectification du fichier de configuration du programme de OPERATIONS2 auquel une opération d’archivage a été appliquée par erreur ; ce qui causait le traitement de l’intégralité des messages reçu sans aucun filtrage.
 - Une amélioration du code est à envisager suite aux erreurs reportées par le service « Google Apps Script » :
 
-    ![2017-10-05 - Gmail-AutoResponder](/assets/2017-10-05%20-%20Gmail-AutoResponder.png)
+    ![2017-10-05 - Gmail-AutoResponder](assets/2017-10-05%20-%20Gmail-AutoResponder.png)
 
     - Les messages d’erreur `Argument too large: subject (line 97, file "Code") et Limit Exceeded: Email Body Size. (line 97, file "Code")` indiquent que le corps du message de réponse composé du texte informatif principal et de l’historique de la conversation peut potentiellement dépasser la limite de [la taille maximale du corps de message de réponse](https://developers.google.com/apps-script/reference/gmail/gmail-thread#reply(String)).
     - Le concept permettant de contourner ce problème peut être résumé comme suit :
@@ -295,7 +299,7 @@ Etudes, rectification et suggestion d’amélioration suite aux remarques formul
         - Si la taille de la chaîne dépasse 20Ko l’excédent sera éliminé et remplacé par des points de suspension.
 
 ## 2017-10-21
-Configurations de programmes de réponses mail automatiques pour les comptes OPERATIONS5 « operations5@mycompany.com »  et OPERATIONS6 « operations6@mycompany.com ».
+Configurations des programmes de réponses mail automatiques pour les comptes OPERATIONS5 « operations5@mycompany.com »  et OPERATIONS6 « operations6@mycompany.com ».
 Les premières sessions seront exécutées le jour même à partir de 20:00 (heure locale).
 
 ## 2017-10-23
@@ -315,7 +319,7 @@ Vérification des programmes (journaux et configurations) de réponses mail auto
 
 ## 2017-11-08
 Début d’optimisation du code source du programme de réponses mail automatiques pour une  meilleure performance d’exécution :
-**_Mise à jour du code envisagés :_** Au lieu d’extraire, à chaque exécution, tous les identifiants des messages traités durant tout le mois depuis le journal des opérations ; afin de vérifier si un message n’a pas été déjà traité, le programme vérifierait juste les identifiants des messages traités dans la dernière occurrence qui seraient déjà mis en cache.
+**_Mise à jour du code envisagés :_** Au lieu d’extraire, à chaque exécution, tous les identifiants des messages traités durant tout le mois depuis le journal des opérations pour vérifier si un message n’a pas été déjà traité, le programme vérifierait juste les identifiants des messages traités dans la dernière occurrence qui seraient déjà mis en cache.
 
 ## 2017-11-09
 Continuation du développement et test des premières améliorations du code source du programme des réponses mail automatiques pour une meilleure performance d’exécution.
@@ -338,7 +342,7 @@ En vérifiant les journaux des messages traités ainsi que les occurrences d’e
 Modification des codes source des programmes de réponses mail automatiques afin de rectifier un problème empêchant la réinitialisation mensuelle de la feuille du journal des sessions d’exécutions.
 
 ## 2018-09-10
-Revue du code source de l’application web Google Apps Script d’envoi de réponses automatiques aux emails reçus 1 hors les heures de travail des opérations, après plus d’un an d’exécution continue en production, avec plus de 6700 réponses automatiques envoyées.
+Revue du code source de l’application web Google Apps Script d’envoi de réponses automatiques aux emails reçus hors les heures de travail des opérations, après plus d’un an d’exécution continue en production, avec plus de **6700** réponses automatiques envoyées.
 
 Liste exhaustive des types d'erreurs reportées par **Google Apps Scripts** (résumés envoyés par mail) durant l'année, illustré chacun par un exemple. Informations à prendre en considération dans les prochaines améliorations du code:
 
