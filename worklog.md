@@ -1,11 +1,11 @@
 # Work Log
 
-## 2017-07-26 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/52cb442af57432b3a2a4068077d0438806896a43/Code.js)
+## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/52cb442af57432b3a2a4068077d0438806896a43/Code.js)
 Etude de faisabilité et début de développement d’un premier prototype d’un script permettant l’envoie de réponses automatiques aux messages reçus dans des plages horaires spécifiques.
 
 ![2017-07-26 - Gmail-AutoResponder](assets/2017-07-26%20-%20Gmail-AutoResponder.png)
 
-## 2017-07-27 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/640a75ff3bfc40c81f542dca60bc39c1ca9753c5/Code.js)
+## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/640a75ff3bfc40c81f542dca60bc39c1ca9753c5/Code.js)
 Continuation de l’étude et développement.
 - **Spécifications et cahier de charges** :
     - Le script sera configuré pour exécution automatique régulière entre 20h et 6h sur chaque compte utilisateur Google.
@@ -15,7 +15,7 @@ Continuation de l’étude et développement.
     - Traitement des messages : Envoie du corp de la réponse automatique sous forme de texte riche (HTML) suivie des informations (date, expéditeur, destinataires, objet) et une citation du contenu du message traité.
     - Attribution du libellé Gmail `_autoRep` pour marquer le message comme traité.
 
-## 2017-07-28 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/b78bde10064fd74e9e1279eb01b5e662f196a04f/Code.js)
+## 2017-07-28 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/b78bde10064fd74e9e1279eb01b5e662f196a04f/Code.js)
 - Fin de développement de la première version du script.
 - Première exécution (automatique) de test pour la boîte email `operations@mycompany.com` prévue entre 28/07/2017, 20:00GMT et 29/07/2017 06:00GMT.
 
@@ -57,7 +57,7 @@ Améliorations du code : Premiers essais et évaluation d’une journalisation d
 ## 2017-08-11
 Test et évaluation de la lecture et écriture de données sur des documents `Google Spreadsheet`, pour la journalisation des opérations et la lecture de configurations.
 
-## 2017-08-17 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/7b38eeb9cf3d04cd02d41b10599a1f3b11bb6a75/Code.js)
+## 2017-08-17 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/7b38eeb9cf3d04cd02d41b10599a1f3b11bb6a75/Code.js)
 Optimisation du code :
 - Améliorations apportées ou en cours de développement :
     - Lecture de configurations depuis un document `Google Spreadsheets` (`Autorespond-config`),
@@ -66,7 +66,7 @@ Optimisation du code :
     - Récupération du message de réponse automatique (corps HTML) depuis un emplacement sécurisé sur l’espace d’hébergement web de la société.
     - Utilisation d’une combinaison de configurations pour filtrer les messages à traiter,
 
-## 2017-08-18 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/de409cff65ad04844a45fc67e21cc4371d0bb9c7/Code.js)
+## 2017-08-18 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/de409cff65ad04844a45fc67e21cc4371d0bb9c7/Code.js)
 - Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents `Google Spreadsheet` (configurations et journaux `Logs`). Le fichier des configuration `Autorespond-config` contient les feuilles suivantes: `To_whitelist`, `To_regex_whitelist`, `To_blacklist`, `To_regex_blacklist`, `From_whitelist`, `From_regex_whitelist`, `From_blacklist`, `From_regex_blacklist`, `msgHeaders_blacklist`, `msgHeaders_regex_blacklist`.
 - Un modèle du fichier `Autorespond-config` sera ultérieurement ajouté au code source sous le format XLSX.
 
@@ -86,7 +86,7 @@ Correction et amélioration du code :
 - Résolu : Interprétation comme expression régulière des chaînes de caractères extraites des fichiers de configuration.
 - Tests, adaptations et corrections.
 
-## 2017-08-23 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/3ca7290fbebeb6a83c92497c2132bf717bc42a4d/Code.js)
+## 2017-08-23 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/3ca7290fbebeb6a83c92497c2132bf717bc42a4d/Code.js)
 Fin du développement de la deuxième version (améliorée).
 - Tests appliqués et réussis :
     - Exclusion des conversations Gmail (avec de nouveau message) au-delà des dernières 10 minutes
@@ -107,7 +107,7 @@ Bilan de l’exécution du programme pour le compte `operations@mycompany.com` :
 - Modification du message de réponse automatique : l’adresse de modération `amine@mycompany.com` en `Cci` au lieu de `Cc`.
 - Groupement des fichiers du programme dans un même dossier sous `Google Drive`. Partage avec le compte Google de `AMINE` (lecture et modification) pour faciliter (centraliser) les consultations et les mises à jour.
 
-## 2017-08-25 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/8db67d4c1b5e18294b05233e5290f9672235f75f/Code.js)
+## 2017-08-25 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/8db67d4c1b5e18294b05233e5290f9672235f75f/Code.js)
 Bilan de l’exécution du programme pour le compte `operations@mycompany.com` pour le 24/08/2017 :
 - 17 réponses automatiques envoyées entre 20:28 et 06:35 (heure locale)
 - Amélioration du programme :
@@ -144,7 +144,7 @@ Confirmation de l’exécution optimale de la session du 28/07/2017 du programme
     - Le code source sera publié le 30/08/2017
 - Configuration provisoire pour test et validation : le script `Archive_log.gs` a été paramétré pour exécution automatique mensuelle le 30 de chaque mois ; en l’occurrence, une première exécution aurait lieu le lendemain 30/08/2017.
 
-## 2017-08-30 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/273cde78e38378e1cdc70fdfd5ee867936f573ac/app)
+## 2017-08-30 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/273cde78e38378e1cdc70fdfd5ee867936f573ac/app)
 Confirmation de l’exécution optimale de la session du 29/07/2017 du programme associé au compte Google `operations@mycompany.com`.
 Le test d’archivage du journal des messages traités s’est exécuté comme planifié et avec succès. Dorénavant, au début de chaque mois, l’historique des opérations du mois précédent sera archivé dans une feuille séparée du même fichier.
 Etude en cours de la possibilité de gérer les réponses automatiques de toutes les boîtes emails de la société avec un seul programme lisant les configurations depuis un même fichier et enregistrant toutes les opérations exécutées dans le même journal. Si cela s’avère faisable, une révision considérable du tout le code source serait nécessaire.
@@ -176,7 +176,7 @@ Analyse des résultats de la session d’exécution du 05/09/2017 :
     - Utilisation du [Cache](https://developers.google.com/apps-script/reference/cache/) : pour le stockage temporaire et la consultation rapide des identifiants des derniers messages traités, au lieu d’extraire et de rechercher dans toutes les valeurs de la colonne D `Message ID` de la première feuille du document `Google Spreadsheet` de journalisation `Autorespond-log`.
     - Etude d’une nouvelle architecture `Master/Slave` du programme pour déclencher simultanément les réponses automatiques de plusieurs comptes depuis un même script asynchrone avec des requêtes `HTTP POST`.
 
-## 2017-09-07 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/c2b1040cf1342dff6689a13129b02c971ae9f55d/app)
+## 2017-09-07 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/c2b1040cf1342dff6689a13129b02c971ae9f55d/app)
 Analyse des résultats de la session d’exécution du 06/09/2017 :
 - Le projet Google Apps Script `AutoRespond` est configuré avec un déclencheur en fonctions du temps qui se lance après chaque 10 minute. Les heures des premières et dernières exécutions effectives du programme sont respectivement 19:06 (GMT) et 04:56 (GMT). _En effet, le programme s’exécute continument après chaque 10 minute durant toutes les 24 heures. Cependant le traitement des messages reçus n’est effectué que si la condition est satisfaite, à savoir : être dans la plage horaire [20h-06h]._
 - Comme les messages Gmail sont organisés sous forme de [threads](https://developers.google.com/apps-script/reference/gmail/gmail-thread#) (conversations), le programme récupère à chaque exécution les nouveaux `threads` ainsi que ceux mis à jour _(c.à.d. réception de nouvelles réponses à une ancienne conversation (échange))_ dans les dernières 10 minutes et traite ensuite leurs derniers messages respectifs.
@@ -200,7 +200,7 @@ Analyse des résultats de la session d’exécution du 08/09/2017 :
 - **2** messages non traités :
     - **MESSAGE (1):** L’heure de réception du message était très proche (en amont) de l’instant de l’itération du programme qui a eu lieu exactement à 19:06 (GMT).
     - **MESSAGE (2):** Le message a été reçu sur la boîte email `operations@OldMailServer.com` et [récupéré](https://support.google.com/mail/answer/21289?hl=en&authuser=2) sur la boîte principale `operations@mycompany.com`.
-        - Rédaction en cours d'un script de test [(voir code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/4cbad223f9cc08557e861f9770a31eae552a68fa/app/test_2017-09-09.js) afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des `threads` auxquels appartiennent les messages envoyés [exclusivement] à l’adresse `operations@OldMailServer.com`. Vérifier les valeurs récupérées contre les journaux des messages traités._
+        - Rédaction en cours d'un script de test [(voir code)](https://github.com/amindeed/Gmail-Autoresponder/blob/4cbad223f9cc08557e861f9770a31eae552a68fa/app/test_2017-09-09.js) afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des `threads` auxquels appartiennent les messages envoyés [exclusivement] à l’adresse `operations@OldMailServer.com`. Vérifier les valeurs récupérées contre les journaux des messages traités._
 
 ## 2017-09-11
 Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/2017 : **73** messages traités, dont **51** sautées et **22** réponses automatiques envoyées.
@@ -208,7 +208,7 @@ Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/201
 ## 2017-09-12
 Evaluation des résultats de la session d’exécution du 11/09/2017 : **60** itérations correctes du programme ayant récupérés **66** `threads`. **66** messages traités, dont **45** sautées et **21** réponses automatiques envoyées.
 Un message récupéré depuis la boîte email `operations@OldMailServer.com` n’a pas été traité. L’hypothèse établie dans le rapport du 09/09/2017 se tient.
-- _**Révision (2019-06-08) :** Le script de test initial aurait été créé pour vérifier si l'application avait déjà traité des messages envoyés au compte non-Google `operations@OldMailServer.com` et récupérés sur la boîte Gmail G-Suite `operations@mycompany.com`, et ce en vérifiant les IDs des threads (auxquels ces messages sont respectivement attribués par Gmail), retournés par la requête de recherche, contre ceux des messages/threads traités journalisés dans le document Google Spreadsheet `Autorespond-log`. Néanmoins, l'analyse du 12/09/2017 porte ici à confusion, et comme les résulats du 11/09/2017 ne sont plus vérifiables, un nouveau script de test **[(voir code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/ab8d85f590a8aa67aa906859d829f7acbec8687c/app/test_2017-09-12.js)** a été développé afin de confirmer que ces threads sont traités d'une façon normale, c.à.d. que l'**ID Gmail** (qui est différent du **`Message-ID`** de la norme **`RFC 822`**) du thread correspond à l'**ID** de son premier message. A noter que ces messages risquent quand même de ne pas être relevés par l'application à cause des éventuels retards mis à [leur récupération](https://support.google.com/mail/answer/21289?hl=en)._
+- _**Révision (2019-06-08) :** Le script de test initial aurait été créé pour vérifier si l'application avait déjà traité des messages envoyés au compte non-Google `operations@OldMailServer.com` et récupérés sur la boîte Gmail G-Suite `operations@mycompany.com`, et ce en vérifiant les IDs des threads (auxquels ces messages sont respectivement attribués par Gmail), retournés par la requête de recherche, contre ceux des messages/threads traités journalisés dans le document Google Spreadsheet `Autorespond-log`. Néanmoins, l'analyse du 12/09/2017 porte ici à confusion, et comme les résulats du 11/09/2017 ne sont plus vérifiables, un nouveau script de test **[(voir code)](https://github.com/amindeed/Gmail-Autoresponder/blob/ab8d85f590a8aa67aa906859d829f7acbec8687c/app/test_2017-09-12.js)** a été développé afin de confirmer que ces threads sont traités d'une façon normale, c.à.d. que l'**ID Gmail** (qui est différent du **`Message-ID`** de la norme **`RFC 822`**) du thread correspond à l'**ID** de son premier message. A noter que ces messages risquent quand même de ne pas être relevés par l'application à cause des éventuels retards mis à [leur récupération](https://support.google.com/mail/answer/21289?hl=en)._
 
 ## 2017-09-13
 Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** itérations correctes du programme ayant récupérés **53** `threads`.  **53** messages traités, dont **42** sautées et **11** réponses automatiques envoyées.
@@ -217,7 +217,7 @@ Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** it
 Evaluation des résultats de la session d’exécution du 13/09/2017 : **60** itérations correctes du programme ayant récupérés **33** `threads`. **33** messages traités, dont **19** sautées et **14** réponses automatiques envoyées.
 Déploiement de versions adaptées du programme pour les deux comptes **`OPERATIONS2`** et **`OPERATIONS3`**.
 
-## 2017-09-16 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/4cbad223f9cc08557e861f9770a31eae552a68fa/app)
+## 2017-09-16 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/4cbad223f9cc08557e861f9770a31eae552a68fa/app)
 Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/2017.
 - Améliorations et mises à jour :
     - Ajout d'une nouvelle adresse aux listes d’exclusions respectives `From :` de chaque compte (i.e. `OPERATIONS`, `OPERATIONS2`, `OPERATIONS3`).
@@ -226,7 +226,7 @@ Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/201
     - _Prévisions :_ Comme [un identifiant unique](https://developers.google.com/apps-script/reference/gmail/gmail-message#getid) est attribué à chaque version d’un même message envoyé à plusieurs destinataires de **`*@mycompany.*`**, il va falloir penser à un autre critère de filtrage de tels messages pour qu’ils ne soient pas traités plusieurs fois. L’identifiant **`Message-ID`**, selon les spécifications du document **[« RFC 822 »](https://www.w3.org/Protocols/rfc822/)** de l’**IETF**, répond le plus aux critères requis. Une expression régulière pour l’extraction de cet identifiant a été développée et préparée pour utilisation dans de prochaines versions du programme : **```^Message-ID:\s*[<A-Za-z0-9!#$%&'*+-/=?^_`{}|~.@]*```**
         - _**Révision (2019-06-09):** Il est possible d'extraire l'en-tête `Message-ID` sans avoir à utiliser une expression régulière sur tout le contenu du message original, et ce en utilisant la méthode [`getHeader(name)`](https://developers.google.com/apps-script/reference/gmail/gmail-message#getHeader(String)) de la classe `GmailMessage`._
 
-## 2017-09-18 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/08dc17b8f5093e67425b3b0bba5a68a785cb597d/app/Code.js)
+## 2017-09-18 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/08dc17b8f5093e67425b3b0bba5a68a785cb597d/app/Code.js)
 Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/2017 : **31** réponses automatiques envoyées :
 - `OPERATIONS` :
     - **120** itérations du programme ayant récupérés **84** `threads`. **84** messages traités, dont **63** sautées et **21** réponses automatiques envoyées.
@@ -237,7 +237,7 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
 - _Améliorations et mises à jour_ :
     - Les codes source ont été mis à jour pour activer le suivi (= ajouter `une étoile` au message sur le client webmail `Gmail`) de chaque message traité.
 
-## 2017-09-19 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/9b825e3b7dafaad3b451870d59593596bdb3afdb/app/Autorespond-config-OPS3.xlsx)
+## 2017-09-19 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/9b825e3b7dafaad3b451870d59593596bdb3afdb/app/Autorespond-config-OPS3.xlsx)
 - Evaluation des résultats des sessions d’exécution du 18/09/2017: **19** réponses automatiques envoyées :
     - **`OPERATIONS`** : **60** itérations du programme ayant récupérés **68** `threads`. **68** messages traités, dont **50** sautés et **18** réponses automatiques envoyées.
     - **OPERATIONS2** :
@@ -262,7 +262,7 @@ Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/201
         - **_OPERATIONS3 :_** en plus des critères de filtrage précités, elle ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
     - Une même approche sera adoptée pour les autres instances de l'application qui seraient ultérieurement ajoutées et associées à d'autres compte Google.
 
-## 2017-09-20 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/43faa05d138d3c951af9ed6533ff9110e2d855f1/app/Code.js)
+## 2017-09-20 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/43faa05d138d3c951af9ed6533ff9110e2d855f1/app/Code.js)
 - Evaluation des résultats des sessions d’exécution du 19/09/2017: **26** réponses envoyées :
 - **Mise à jour du code:** Extension de deux minutes de l’intervalle de recherche des derniers emails reçus sur chacune des trois boîtes emails à chaque itération du programme afin de ne pas rater les emails coïncidant avec l’instant d’exécution.
 
@@ -323,7 +323,7 @@ Continuation du développement du code amélioré du programme des réponses mai
 ## 2017-11-11
 Fin de la nouvelle version du code source. Premier déploiement pour le compte `OPERATIONS`. Le code sera au fur et à mesure amélioré selon les résultats.
 
-## 2017-11-13 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/24fe16e77e851b4ecd04e4995d1001d1de136279/app)
+## 2017-11-13 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/24fe16e77e851b4ecd04e4995d1001d1de136279/app)
 Les sessions d’exécution du **11/11/2017** et le **12/11/2017** du programme de réponses mail automatiques du compte **OPERATIONS** se sont correctement déroulées après la dernière mise à jour du code source.
 Les changements ont été généralisés sur les autres programmes des comptes **OPERATIONS2**, **OPERATIONS3**, **OPERATIONS4**, **OPERATIONS5** et **OPERATIONS6**.
 Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrences de chaque session d’exécution des programmes ont été ajoutées à leurs codes source respectifs.
@@ -331,7 +331,7 @@ Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrence
 ## 2017-11-14
 En vérifiant les journaux des messages traités ainsi que les occurrences d’exécution de la session du 13/11/2017 : la session s’est déroulée correctement après les dernières mises à jours des codes source.
 
-## 2017-12-11 [(code)](https://git.amindeed.com/amindeed/gmail-autoresponder-new/src/commit/323bb1078531ae50034ddcaa058ff43d0dafdd5e/app/Archive_log.js)
+## 2017-12-11 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/323bb1078531ae50034ddcaa058ff43d0dafdd5e/app/Archive_log.js)
 Modification des codes source afin de rectifier un problème empêchant la réinitialisation mensuelle de la feuille du journal des sessions d’exécutions.
 
 ## 2018-09-10
