@@ -93,7 +93,7 @@ Examples of values predefined in the `Filters spreadsheet`:
 * Example of errors (Apps Script backend's) I ever had:
 
 | Start            | Function    | Error Message                                                                                                                                    | Trigger    | End              |
-|------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------|
+| ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ---------------- |
 | 10/07/2018 20:06 | autoReply   | Limit Exceeded: Email Body Size. (line 99, file "Code")                                                                                          | time-based | 10/07/2018 20:06 |
 | 10/04/2018 20:43 | autoReply   | Document 1qjB-QoZ17jLql6g4Zz1l6-xV8xlVlXu3I1m52WZOMrY is missing (perhaps it was deleted, or you don't have read access?) (line 22, file "Code") | time-based | 10/04/2018 20:44 |
 | 9/17/18 12:53 AM | autoReply   | Service error: Spreadsheets (line 63, file "Code")                                                                                               | time-based | 9/17/18 12:53 AM |
@@ -105,6 +105,7 @@ Examples of values predefined in the `Filters spreadsheet`:
 | 10/02/2017 20:58 | autoReply   | Argument too large: subject (line 97, file "Code")                                                                                               | time-based | 10/02/2017 20:58 |
 | 10/01/2017 08:02 | archive_log | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
 | 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
+| 10/29/19 9:46 PM | autoReply   | Error sending email to RECIPIENT NAME . Please try again later. (line 99, file "Code")                                                           | time-based | 10/29/19 9:46 PM | 
 
 ## TODOs / Road map
 
