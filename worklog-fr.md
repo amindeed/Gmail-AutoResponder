@@ -1,4 +1,4 @@
-# Work Log
+# Work Log (Fr)
 
 ## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/52cb442af57432b3a2a4068077d0438806896a43/Code.js)
 Etude de faisabilité et début de développement d’un premier prototype d’un script permettant l’envoie de réponses automatiques aux messages reçus dans des plages horaires spécifiques.
