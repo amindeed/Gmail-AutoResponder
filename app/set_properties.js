@@ -1,8 +1,8 @@
-function set_properties(ConfigSSId, LogSSId) {
+function set_properties(FiltersSSId, LogSSId) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  userProperties.setProperty('CONFIG_SS_ID', ConfigSSId);
+  userProperties.setProperty('FILTERS_SS_ID', FiltersSSId);
   userProperties.setProperty('LOG_SS_ID', LogSSId);
   
   /** Other properties **/
@@ -13,5 +13,9 @@ function set_properties(ConfigSSId, LogSSId) {
   // DST offset
   // Cc email address (optional)
   // noReply (boolean, only when applicable)
+  
+  /** Delete all user properties **/
+  
+  // ...
   
 }

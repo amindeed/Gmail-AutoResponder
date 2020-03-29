@@ -31,7 +31,8 @@
 npm install @google/clasp -g
 clasp login --no-localhost
 # Visit the provided URL, grant `clasp` required permissions, and copy/paste
-# the code from the next web page
+# the code from the next web page. Default (global) credentials will then be
+# saved to: ~\.clasprc.json
 ```
 ```bash
 git clone https://github.com/gdrive-org/gdrive.git gdrive-src
@@ -46,7 +47,9 @@ mv gdrive-src.exe $GOPATH/bin/gdrive.exe
 cd .. && rm -r -f gdrive-src/
 gdrive about
 # Visit the provided URL, grant `gdrive` required permissions, and copy/paste
-# the code from the next web page
+# the code from the next web page. This will create a token file inside the
+# .gdrive folder in your home directory; On windows 10, for instance :
+# `C:\Users\Username\AppData\Roaming\.gdrive\token_v2.json`
 ```
 
 - **Deploy** :
@@ -84,7 +87,22 @@ clasp push --force
         ```
 
         - <u>Google Drive</u> : Export 'Logs' and 'Filters' ('Configs') Google Spreadsheets (publicly shared templates), save them to a temporary local location, import them to your Google Drive and retrieve their IDs.
+            - [Gmail Autoresponder - Logs template - Google Sheets](https://drive.google.com/open?id=1TyU0XlutRS4sBXCvtPa8AyrlEPfEuiSEoIbAKcYiSzU) / [Gmail Autoresponder - Filters template - Google Sheets](https://drive.google.com/open?id=1pdbsI6gaKcv3zLVwnFHosOD-0b1eVUvMN_mJQYNogMc)
+                - There seem to be some [unresolved issues](https://github.com/gdrive-org/gdrive/issues/154) regarding MIME types specification while importing/exporting files to/from Google Drive. So, so far, the only method that worked without issues is using `gdrive import` CLI to upload a local `*.xlsx` file (`Microsoft Excel 2007+` / `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` mime type) and "seamlessly" convert it to Google Spreadsheet format :
+
+                ```
+                gdrive import GMAIL_AUTORESPONDER_FILTERS.xlsx
+                gdrive import GMAIL_AUTORESPONDER_LOGS.xlsx
+                ```
+
+                - The output of `gdrive import` command line is like : `Imported 1D4----------------------qvc with mime type: 'application/vnd.google-apps.spreadsheet'`. So, to both import the two spreadsheets and save their respective IDs to variables we combine multiple commands like this :
+
+                ```
+                export GM_AUTORESP_FILTERS_ID=$(cut -d " " -f2 <<<"$(gdrive import GMAIL_AUTORESPONDER_FILTERS.xlsx)")
+                export GM_AUTORESP_LOGS_ID=$(cut -d " " -f2 <<<"$(gdrive import GMAIL_AUTORESPONDER_LOGS.xlsx)")
+                ```
+
         - Set project properties (namely 'Logs' and 'Filters' ('Configs') Spreadsheet IDs)
-            - [`clasp run`](https://github.com/google/clasp/blob/master/docs/run.md) : `clasp run 'set_properties' -p '["Logs-Spreadsheet-ID", "Configs-Spreadsheet-ID"]'`
-            - <u>Suggestion</u> : Even if `User Properties` would make more sense, I think it's better to use `Script Properties`, since you can check and modify them using the web UI.
+            - [`clasp run`](https://github.com/google/clasp/blob/master/docs/run.md) : `clasp run 'set_properties' -p '[$GM_AUTORESP_LOGS_ID, $GM_AUTORESP_FILTERS_ID]'`
+            - ~~<u>Suggestion</u> : Even if `User Properties` would make more sense, I think it's better to use `Script Properties`, since you can check and modify them using the web UI.~~
         - Create triggers : `clasp run 'manage_triggers'`

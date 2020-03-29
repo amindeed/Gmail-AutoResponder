@@ -14,12 +14,12 @@ function autoReply() {
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
   var hour = date.getHours();    // Returns current hour only. ex. 12:33 --> 12
-  var ConfigSSId = 'CONFIG-SPREADSHEET-ID';
+  var FiltersSSId = 'FILTERS-SPREADSHEET-ID';
   var LogSSId = 'LOG-SPREADSHEET-ID';
   var threads = [];
 
   // Configs #1
-  var config = SpreadsheetApp.openById(ConfigSSId);
+  var config = SpreadsheetApp.openById(FiltersSSId);
   var config_sheet = config.getSheets()[0];
 
   // Logs #1
@@ -70,11 +70,11 @@ function autoReply() {
   ///// var log_msgIDs = ColumnValues(ops_log_sheet,"D",1);
   /** Get cached IDs of messages processed in the previous session **/
   var cache = CacheService.getScriptCache();
-  
+
   // Configs #2
-  var From_regex_blacklist = ColumnValues(config_sheet,"D",1);
-  var To_blacklist = ColumnValues(config_sheet,"G",1);
-  var Headers_blacklist = ColumnValues(config_sheet,"A",1);
+  var From_blacklist = ColumnValues(config_sheet,"B",1);
+  var To_blacklist = ColumnValues(config_sheet,"C",1);
+  var RawMsg_blacklist = ColumnValues(config_sheet,"A",1);
 
   // Message body
   var body = HtmlService.createHtmlOutputFromFile('body.html').getContent();
@@ -90,11 +90,11 @@ function autoReply() {
         var msgId = messages[lastMsg].getId();
         //// var msgIdNdx = log_msgIDs.indexOf(msgId);
         var isProcessed = cache.get(msgId);
-      
+
       if( /* msgIdNdx === -1 */ isProcessed === null
         && !ContainsString(msgTo,To_blacklist)
-        && !MatchesRegex(msgFrom,From_regex_blacklist)
-        && !ContainsString(messages[lastMsg].getRawContent(),Headers_blacklist) ) {
+        && !MatchesRegex(msgFrom,From_blacklist)
+        && !ContainsString(messages[lastMsg].getRawContent(),RawMsg_blacklist) ) {
 
                 var msgDate = messages[lastMsg].getDate(), msgSubject = messages[lastMsg].getSubject();
 				var msgCc = messages[lastMsg].getCc();
@@ -116,15 +116,15 @@ function autoReply() {
 				});
                 // Correction: star messages that have been responded to
                 messages[lastMsg].star();
-              
+
                 // Log message that has been responded to
                 ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
                 var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
                 last_OpsLog_row.setBackgroundRGB(252,229,205);
                 cache.put(msgId, '', 960); // Cache ID of processed message
-          
-        } else if ( /* msgIdNdx === -1 */ isProcessed === null ) { 
-          
+
+        } else if ( /* msgIdNdx === -1 */ isProcessed === null ) {
+
           // Star skipped message
           messages[lastMsg].star();
 
