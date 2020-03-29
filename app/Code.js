@@ -112,7 +112,7 @@ function autoReply() {
                   + '</span>'
                   + '<br/><br/>' + msgBody + '<br/>',
 				  cc: "it-operations@mycompany.com", // alias of 'amine@mycompany.com'
-                  noReply: true
+                  noReply: true // Works only for G-Suite accounts
 				});
                 // Correction: star messages that have been responded to
                 messages[lastMsg].star();
