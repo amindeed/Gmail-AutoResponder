@@ -1,3 +1,4 @@
-**/test*.js
 **/frontend/**
 **/misc/**
+**/creds.json
+**/.clasprc.json

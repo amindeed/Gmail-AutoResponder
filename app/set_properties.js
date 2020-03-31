@@ -12,10 +12,6 @@ function set_properties(FiltersSSId, LogSSId) {
   // Interval
   // DST offset
   // Cc email address (optional)
-  // noReply (boolean, only when applicable)
-  
-  /** Delete all user properties **/
-  
-  // ...
+  // noReply (boolean, only when applicable)  
   
 }

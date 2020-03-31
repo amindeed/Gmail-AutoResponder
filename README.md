@@ -1,10 +1,41 @@
 # Gmail Autoresponder
 
-**Gmail Autoreponder** is a configurable **[Google Apps Script](https://developers.google.com/apps-script/reference/)** web application to automatically send a canned reply to messages received on a Gmail inbox within a specified time interval of each day. The application will be tied to two data stores ~~~ which are currently Google Spreadsheets // only Google Spreadsheets are currently supported ~~~:
+**Gmail AutoResponder** is a configurable **[Google Apps Script](https://developers.google.com/apps-script/reference/)** web application to automatically process incoming Gmail messages.
+It can be configured to selectively send canned responses to messages received within a specified time interval of each day.
+Typical use cases :
+- ...
+- ...
+- ...
+
+## Installation / Deployment
+
+### Manual Installation and Configuration
+
+* While logged in to your Google account, go to [Apps Script Dashboard](https://script.google.com/) and create an new Google Apps Script Project by clicking on **`+ New script`**.
+* Create two new Google Spreadsheets using the following templates:
+    - Filters: [Gmail Autoresponder - Filters template](https://docs.google.com/spreadsheets/d/1pdbsI6gaKcv3zLVwnFHosOD-0b1eVUvMN_mJQYNogMc)
+    - Logs: [Gmail Autoresponder - Logs template](https://docs.google.com/spreadsheets/d/1TyU0XlutRS4sBXCvtPa8AyrlEPfEuiSEoIbAKcYiSzU)
+* ...
+* Script properties / appsscript.json (manifest)
+    * scopes
+    * timezone
+* Set triggers
+* For a first time, run the application manually in order to set authorizations
+* Filters file: all messages whose contents match any of the regular expressions will be skipped.
+
+### Automated Deployment
+#### 1. First time deployment
+...
+
+#### 2. Continuous Deployment
+...
+
+## How it works?
+
+The application will be tied to two data stores ~~~ which are currently Google Spreadsheets // only Google Spreadsheets are currently supported ~~~:
 * `Filters spreadsheet`: containing patterns (regular expressions) to filter received messages by their headers content
 * `Logs spreadsheet`: to log executions and processed messages meta-data
 
-## How it works?
 * ...
 * Filter can be regex or any plain text expression without any [special characters](https://stackoverflow.com/a/400316/3208373) that need to be escaped.
 *
@@ -65,23 +96,6 @@ Examples of values predefined in the `Filters spreadsheet`:
     * stateless
     * "...use 2-legged or 3-legged OAuth on the REST back end?"
 
-## Installation and use
-
-### Manual Installation
-* While logged in to your Google account, go to [Apps Script Dashboard](https://script.google.com/) and create an new Google Apps Script Project by clicking on **`+ New script`**.
-* Create two new Google Spreadsheets using the following templates:
-    - Filters: [Gmail Autoresponder - Filters template](https://docs.google.com/spreadsheets/d/1pdbsI6gaKcv3zLVwnFHosOD-0b1eVUvMN_mJQYNogMc)
-    - Logs: [Gmail Autoresponder - Logs template](https://docs.google.com/spreadsheets/d/1TyU0XlutRS4sBXCvtPa8AyrlEPfEuiSEoIbAKcYiSzU)
-* ...
-* Script properties / appsscript.json (manifest)
-    * scopes
-    * timezone
-* Set triggers
-* For a first time, run the application manually in order to set authorizations
-* Filters file: all messages whose contents match any of the regular expressions will be skipped.
-
-### Automatic ...
-...
 
 ## Advanced
 * Google Apps Script apps hosted by free Google accounts are subject to Apps Script services [quotas and limitations.](https://developers.google.com/apps-script/guides/services/quotas). You can check your total runtime with `Stackdriver Logging` under `View` menu.
@@ -106,7 +120,7 @@ Examples of values predefined in the `Filters spreadsheet`:
 | 10/01/2017 08:02 | archive_log | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
 | 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
 | 10/29/19 9:46 PM | autoReply   | Error sending email to RECIPIENT NAME . Please try again later. (line 99, file "Code")                                                           | time-based | 10/29/19 9:46 PM |
-| 11/16/19 4:42 PM | autoReply   | Service error: Spreadsheets                                                                                                                      | time-based | 11/16/19 4:46 PM | 
+| 11/16/19 4:42 PM | autoReply   | Service error: Spreadsheets                                                                                                                      | time-based | 11/16/19 4:46 PM |
 
 ## TODOs / Road map
 

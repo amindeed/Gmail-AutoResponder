@@ -102,7 +102,12 @@ clasp push --force
                 export GM_AUTORESP_LOGS_ID=$(cut -d " " -f2 <<<"$(gdrive import GMAIL_AUTORESPONDER_LOGS.xlsx)")
                 ```
 
-        - Set project properties (namely 'Logs' and 'Filters' ('Configs') Spreadsheet IDs)
-            - [`clasp run`](https://github.com/google/clasp/blob/master/docs/run.md) : `clasp run 'set_properties' -p '[$GM_AUTORESP_LOGS_ID, $GM_AUTORESP_FILTERS_ID]'`
-            - ~~<u>Suggestion</u> : Even if `User Properties` would make more sense, I think it's better to use `Script Properties`, since you can check and modify them using the web UI.~~
-        - Create triggers : `clasp run 'manage_triggers'`
+        - Running functions with `claps run` in order to configure the app :
+            1. Prerequisites
+                - We can use the same GCP project previously created for `gdrive`. We had to choose a more descriptive project name on both console and OAuth consent screen, such as `Clasp-GDrive-CLI`.
+                - Create new credentials (OAuth client ID and secret) for `clasp`; save them as `creds.json` (secret file not to be synced/shared) in the apps directory.
+                -
+            2. Set project properties (namely 'Logs' and 'Filters' ('Configs') Spreadsheet IDs)
+                - [`clasp run`](https://github.com/google/clasp/blob/master/docs/run.md) : `clasp run 'set_properties' -p '[$GM_AUTORESP_LOGS_ID, $GM_AUTORESP_FILTERS_ID]'`
+                - ~~<u>Suggestion</u> : Even if `User Properties` would make more sense, I think it's better to use `Script Properties`, since you can check and modify them using the web UI.~~
+            3. Create triggers : `clasp run 'manage_triggers'`
