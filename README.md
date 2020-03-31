@@ -2,10 +2,9 @@
 
 **Gmail AutoResponder** is a configurable **[Google Apps Script](https://developers.google.com/apps-script/reference/)** web application to automatically process incoming Gmail messages.
 It can be configured to selectively send canned responses to messages received within a specified time interval of each day.
-Typical use cases :
-- ...
-- ...
-- ...
+
+## Demo
+...
 
 ## Installation / Deployment
 
@@ -13,8 +12,8 @@ Typical use cases :
 
 * While logged in to your Google account, go to [Apps Script Dashboard](https://script.google.com/) and create an new Google Apps Script Project by clicking on **`+ New script`**.
 * Create two new Google Spreadsheets using the following templates:
-    - Filters: [Gmail Autoresponder - Filters template](https://docs.google.com/spreadsheets/d/1pdbsI6gaKcv3zLVwnFHosOD-0b1eVUvMN_mJQYNogMc)
-    - Logs: [Gmail Autoresponder - Logs template](https://docs.google.com/spreadsheets/d/1TyU0XlutRS4sBXCvtPa8AyrlEPfEuiSEoIbAKcYiSzU)
+    - Filters: [Gmail Autoresponder - 'Filters' Google Spreadsheets template](https://docs.google.com/spreadsheets/d/1pdbsI6gaKcv3zLVwnFHosOD-0b1eVUvMN_mJQYNogMc)
+    - Logs: [Gmail Autoresponder - 'Logs' Google Spreadsheet template](https://docs.google.com/spreadsheets/d/1TyU0XlutRS4sBXCvtPa8AyrlEPfEuiSEoIbAKcYiSzU)
 * ...
 * Script properties / appsscript.json (manifest)
     * scopes
