@@ -60,13 +60,13 @@ clasp push --force
 
 ### Setup Instructions
 
-- [Create a GCP project](https://console.cloud.google.com/projectcreate). Set **“ Project Name ”** to `Clasp - GDrive`.
+- [Create a GCP project](https://console.cloud.google.com/projectcreate). Set **Project Name** to `Clasp - GDrive`.
 - Enable **Google Drive API**.
 - Note down values of `Project ID` and `Project number`. (Example: `my-sample-project-191923.` and `314053285323`). To later retrieve these information, select the project `Clasp - GDrive` from the top-left drop down list, and go to **GCP Console** > **IAM & Admin** > **Settings**.
 * Go to URL : `https://console.developers.google.com/apis/credentials/consent?project=[GCP_PROJECT_ID]`
-    - Set **“ User Type ”** to `Internal`.
-    - Set **“ Application Name ”** to `Clasp & GDrive CLI`.
-    - Click **“ Save ”**.
+    - Set **User Type** to `Internal`.
+    - Set **Application Name** to `Clasp & GDrive CLI`.
+    - Click **Save**.
 * Create credentials for both `gdrive` and `clasp`.
     - Go to **Credentials** > **Create credentials** > **OAuth client ID**.
     * For `gdrive` :
@@ -124,18 +124,13 @@ clasp push --force
 
 * Create [and intialize / push local files] Google Apps Script project under a Google account with `clasp` :
     - Set your [time zone](https://mkyong.com/java8/java-display-all-zoneid-and-its-utc-offset/) in the manifest file `appsscript.json`.
-    - Create a standalone (or maybe rather API Executable `--type api`?) Google Apps Script project:
-
-        ```
-        clasp create --type standalone --title "Gmail AutoResponder Dev"
-        ```
-        Or, maybe in our case :
+    - Create a API Executable Google Apps Script project:
 
         ```
         clasp create --type api --title "Gmail AutoResponder Dev"
         ```
 
-        <mark>Note down project's URL and ID : `https://script.google.com/d/[APPS_SCRIPT_PROJECT_ID]/edit`.</mark>
+        You can note down project's URL and ID for future reference : `https://script.google.com/d/[APPS_SCRIPT_PROJECT_ID]/edit`.
 
     - Push local code files to the created Google Apps Script project :
 
@@ -154,4 +149,4 @@ clasp push --force
     ```
     clasp run 'set_properties' -p '[$GM_AUTORESP_LOGS_ID, $GM_AUTORESP_FILTERS_ID]'
     ```
-- ⚠️ Create triggers ⚠️ : `clasp run 'manage_triggers'`. Application would start running automatically right after. You can check that filters were created correctly by going to : `https://script.google.com/home/projects/[APPS_SCRIPT_PROJECT_ID]/triggers`
+- ⚠️ Create triggers : `clasp run 'manage_triggers'`. Application would start running automatically right after. You can check that filters were created correctly by going to : `https://script.google.com/home/projects/[APPS_SCRIPT_PROJECT_ID]/triggers`
