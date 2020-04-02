@@ -2,7 +2,7 @@ function archive_log() {
 
   /*** Archiving logs monthly ***/
 
-  var LogSSId = 'LOG-SPREADSHEET-ID';
+  var LogSSId = userProperties.getProperty('LOG_SS_ID');
   var log = SpreadsheetApp.openById(LogSSId);
   var ops_log_sheet = log.setActiveSheet(log.getSheets()[0]);
 
@@ -20,11 +20,11 @@ function archive_log() {
   log.moveActiveSheet(log.getNumSheets());
   var range = ops_log_sheet.getRange(2,1,ops_log_sheet.getLastRow()-1,ops_log_sheet.getLastColumn());
   range.clear();
-  
+
   /** Logged execution sessions **/
   var exec_log_sheet = log.getSheets()[1];
   /* exec_log_sheet.deleteRows(2, exec_log_sheet.getLastRow() - 1); */
   var range = exec_log_sheet.getRange(2,1,exec_log_sheet.getLastRow()-1,exec_log_sheet.getLastColumn());
   range.clear();
-  
+
 }

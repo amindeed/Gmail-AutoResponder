@@ -6,27 +6,8 @@ It can be configured to selectively send canned responses to messages received w
 ## Demo
 ...
 
-## Installation / Deployment
+## Setup
 
-### Manual Installation and Configuration
-
-* While logged in to your Google account, go to [Apps Script Dashboard](https://script.google.com/) and create an new Google Apps Script Project by clicking on **`+ New script`**.
-* Create two new Google Spreadsheets using the following templates:
-    - Filters: [Gmail Autoresponder - 'Filters' Google Spreadsheets template](https://docs.google.com/spreadsheets/d/1pdbsI6gaKcv3zLVwnFHosOD-0b1eVUvMN_mJQYNogMc)
-    - Logs: [Gmail Autoresponder - 'Logs' Google Spreadsheet template](https://docs.google.com/spreadsheets/d/1TyU0XlutRS4sBXCvtPa8AyrlEPfEuiSEoIbAKcYiSzU)
-* ...
-* Script properties / appsscript.json (manifest)
-    * scopes
-    * timezone
-* Set triggers
-* For a first time, run the application manually in order to set authorizations
-* Filters file: all messages whose contents match any of the regular expressions will be skipped.
-
-### Automated Deployment
-#### 1. First time deployment
-...
-
-#### 2. Continuous Deployment
 ...
 
 ## How it works?

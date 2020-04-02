@@ -14,8 +14,9 @@ function autoReply() {
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
   var hour = date.getHours();    // Returns current hour only. ex. 12:33 --> 12
-  var FiltersSSId = 'FILTERS-SPREADSHEET-ID';
-  var LogSSId = 'LOG-SPREADSHEET-ID';
+  var userProperties = PropertiesService.getUserProperties();
+  var FiltersSSId = userProperties.getProperty('FILTERS_SS_ID');
+  var LogSSId = userProperties.getProperty('LOG_SS_ID');
   var threads = [];
 
   // Configs #1
@@ -67,7 +68,6 @@ function autoReply() {
   exec_log_sheet.appendRow([GM_SEARCH_QUERY, new Date().toLocaleString(), threads.length]);
 
   // Logs #2
-  ///// var log_msgIDs = ColumnValues(ops_log_sheet,"D",1);
   /** Get cached IDs of messages processed in the previous session **/
   var cache = CacheService.getScriptCache();
 
@@ -88,10 +88,9 @@ function autoReply() {
         var msgFrom = messages[lastMsg].getFrom();
         var msgTo = messages[lastMsg].getTo();
         var msgId = messages[lastMsg].getId();
-        //// var msgIdNdx = log_msgIDs.indexOf(msgId);
         var isProcessed = cache.get(msgId);
 
-      if( /* msgIdNdx === -1 */ isProcessed === null
+      if( isProcessed === null
         && !ContainsString(msgTo,To_blacklist)
         && !MatchesRegex(msgFrom,From_blacklist)
         && !ContainsString(messages[lastMsg].getRawContent(),RawMsg_blacklist) ) {
@@ -110,9 +109,9 @@ function autoReply() {
                   + '<br/><b>To : </b>' + msgTo
                   + '<br/><b>Cc : </b>' + msgCc
                   + '</span>'
-                  + '<br/><br/>' + msgBody + '<br/>',
-				  cc: "it-operations@mycompany.com", // alias of 'amine@mycompany.com'
-                  noReply: true // Works only for G-Suite accounts
+                  + '<br/><br/>' + msgBody + '<br/>'
+                  //, cc: "it-operations@mycompany.com", /* alias of 'amine@mycompany.com' */
+                  //noReply: true /* Works only for G-Suite accounts */
 				});
                 // Correction: star messages that have been responded to
                 messages[lastMsg].star();
@@ -123,7 +122,7 @@ function autoReply() {
                 last_OpsLog_row.setBackgroundRGB(252,229,205);
                 cache.put(msgId, '', 960); // Cache ID of processed message
 
-        } else if ( /* msgIdNdx === -1 */ isProcessed === null ) {
+        } else if ( isProcessed === null ) {
 
           // Star skipped message
           messages[lastMsg].star();
