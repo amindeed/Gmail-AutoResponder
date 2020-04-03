@@ -1,3 +1,6 @@
+
+/** ........................................ **/
+
 function ContainsString(InputStr, checklist) {
   var Contains = false;
   var i = 0;
@@ -10,6 +13,7 @@ function ContainsString(InputStr, checklist) {
 }
 
 
+/** ........................................ **/
 
 function MatchesRegex(InputStr, regexStr) {
   var Matches = false;
@@ -24,6 +28,7 @@ function MatchesRegex(InputStr, regexStr) {
 }
 
 
+/** ........................................ **/
 
 function ColumnValues(sheet, column, remove_header){
   var values = sheet.getRange(column + "1:" + column + sheet.getMaxRows()).getValues();
@@ -32,6 +37,7 @@ function ColumnValues(sheet, column, remove_header){
 }
 
 
+/** ........................................ **/
 
 function set_properties(FiltersSSId, LogSSId) {
   
@@ -39,25 +45,6 @@ function set_properties(FiltersSSId, LogSSId) {
   
   userProperties.setProperty('FILTERS_SS_ID', FiltersSSId);
   userProperties.setProperty('LOG_SS_ID', LogSSId);
-  
-  
-  /*** Inspired from : https://stackoverflow.com/a/27179623/3208373 ***/
-  function getFirstEmptyRow(sheet, column) {
-    var values = sheet.getRange(column + "1:" + column + sheet.getLastRow()).getValues();
-    var ct = 0;
-    while ( values[ct] && values[ct][0] != "" ) {
-      ct++;
-    }
-    return (ct+1);
-  }
-  
-  var FiltersSSId = userProperties.getProperty('FILTERS_SS_ID');
-  var config = SpreadsheetApp.openById(FiltersSSId);
-  var config_sheet = config.getSheets()[0];
-  
-  var emptyCellIndex = getFirstEmptyRow(config_sheet, 'B');
-  var emptyCell = config_sheet.getRange("B" + emptyCellIndex);
-  emptyCell.setValue(Session.getActiveUser().getEmail());
   
   /** Other properties **/
   
@@ -68,16 +55,14 @@ function set_properties(FiltersSSId, LogSSId) {
   // Cc email address (optional)
   // noReply (boolean, only when applicable)
   
-  // Add return value
-  
+  // Add return value 
 }
 
 
+/** Archiving logs monthly to separate sheets **/
 
 function archive_log() {
-  
-  /*** Archiving logs monthly ***/
-  
+   
   var LogSSId = userProperties.getProperty('LOG_SS_ID');
   var log = SpreadsheetApp.openById(LogSSId);
   var ops_log_sheet = log.setActiveSheet(log.getSheets()[0]);
@@ -101,13 +86,13 @@ function archive_log() {
   var exec_log_sheet = log.getSheets()[1];
   /* exec_log_sheet.deleteRows(2, exec_log_sheet.getLastRow() - 1); */
   var range = exec_log_sheet.getRange(2,1,exec_log_sheet.getLastRow()-1,exec_log_sheet.getLastColumn());
-  range.clear();
-  
+  range.clear(); 
 }
 
 
+/** ........................................ **/
 
-function manage_triggers() {
+function create_Triggers() {
 
   ScriptApp.newTrigger('autoReply')
   .timeBased()
@@ -120,20 +105,22 @@ function manage_triggers() {
   .atHour(5)
   .create();
 
-  // Disable App by simply deleting all time-driven triggers.
-  /*
-  var triggers = ScriptApp.getProjectTriggers();
-  for (var i = 0; i < triggers.length; i++) {
-    ScriptApp.deleteTrigger(triggers[i]);
-  }
-  */
-
   // Add return value
 }
 
 
+/** Disable App by deleting all time-driven triggers. **/
 
-/*** Inspired from : https://stackoverflow.com/a/27179623/3208373 ***/
+function delete_Triggers() {
+
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    ScriptApp.deleteTrigger(triggers[i]);
+  }
+}
+
+
+/** Inspired from : https://stackoverflow.com/a/27179623/3208373 **/
 
 function getFirstEmptyRow(sheet, column) {
   var values = sheet.getRange(column + "1:" + column + sheet.getLastRow()).getValues();
