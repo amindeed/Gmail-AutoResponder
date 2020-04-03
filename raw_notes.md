@@ -101,18 +101,14 @@ Application components :
         clasp create --type api --title "Gmail AutoResponder Dev"
         ```
 
-        Note down project's URL and ID for future reference :
-
-        ```
-        https://script.google.com/d/[APPS_SCRIPT_PROJECT_ID]/edit
-        ```
+        Note down project's URL and ID for future reference : `https://script.google.com/d/[APPS_SCRIPT_PROJECT_ID]/edit`.
 
     - Push local code files to the created Google Apps Script project :
 
         ```
         clasp push --force
         ```
-        
+
 6. <u>Finalize project by setting user properties and creating triggers :</u>
     - Run : `clasp setting projectId <GCP_PROJECT_ID>` to add `projectId` to your `.clasp.json`.
     - Associate Google Apps Script project `Gmail AutoResponder Dev` to GCP project `Clasp & GDrive CLI` :
@@ -138,9 +134,4 @@ Application components :
 
 #### 2.2. Continuous Deployment
 
-From here on, any update to **Gmail AutoResponder**'s code can be pushed to `script.google.com` by simply running the command line : `clasp push --force`, along with `clasp run` if there are any functions to be executed through the API (e.g. to create/set new user properties, to modify triggers...etc) :
-
-
-```
-clasp run 'myfunction' -p '[JSON-STRING-ARRAY-OF-PARAMETERS]'
-```
+From here on, any update to **Gmail AutoResponder**'s code can be pushed to `script.google.com` by simply running the command line : `clasp push --force`, along with `clasp run` if there are any functions to be executed through the API (e.g. to create/set new user properties, to modify triggers...etc) : `clasp run 'myfunction' -p '[JSON-STRING-ARRAY-OF-PARAMETERS]'`.

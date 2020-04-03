@@ -9,7 +9,7 @@ function autoReply() {
   var INTERVAL = 10;    // To execute the script after each 10 min.
   var START_HOUR = 20;    // Local time
   var FINISH_HOUR = 6;    // Local time
-  var TIME_OFFSET = 0; // Changed from '-1' to '0' due to DST status change
+  var TIME_OFFSET = 0; // DST offset
   var date = new Date();
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
@@ -28,38 +28,7 @@ function autoReply() {
   var ops_log_sheet = log.getSheets()[0];
   var exec_log_sheet = log.getSheets()[1];
 
-
-  function ContainsString(InputStr, checklist) {
-    var Contains = false;
-    var i = 0;
-    while (!Contains && i < checklist.length) {
-      if (InputStr.indexOf(checklist[i]) !== -1) {
-        Contains = true;
-      } else {i++;}
-    }
-    return Contains;
-  }
-
-  function MatchesRegex(InputStr, regexStr) {
-    var Matches = false;
-    var i = 0;
-    while (!Matches && i < regexStr.length) {
-      var regex = new RegExp(regexStr[i],'i');
-      if (InputStr.match(regex)) {
-        Matches = true;
-      } else {i++;}
-    }
-    return Matches;
-  }
-
-  function ColumnValues(sheet, column, remove_header){
-    // shift: {0, false, undefined, null, NaN, ""} <=> false
-    var values = sheet.getRange(column + "1:" + column + sheet.getMaxRows()).getValues();
-    (values = [].concat.apply([], values.filter(String))).splice(0,remove_header?1:0);
-    return values
-  }
-
-
+  
   //if (((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) && ((threads = GmailApp.search(GM_SEARCH_QUERY)).length !== 0)) {
   if ((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) {
 
