@@ -42,6 +42,11 @@
 
 ---------------------------------------------
 
+**Application Setup** menu items (draft/suggestion) :
+> 1. Basic : _Manual Setup_
+> 2. Advanced : _Customizable_
+> 3. Scripted : _Continuous Deployment_
+
 ### 1. Manual Setup
 
 Application components :
@@ -161,3 +166,340 @@ Application components :
 #### 2.2. Continuous Deployment
 
 From here on, any update to **Gmail AutoResponder**'s code can be pushed to `script.google.com` by simply running the command line : `clasp push --force`, along with `clasp run` if there are any functions to be executed through the API (e.g. to create/set new user properties, to modify triggers...etc) : `clasp run 'myfunction' -p '[JSON-STRING-ARRAY-OF-PARAMETERS]'`.
+
+
+--------------------------------------------------------------------------------
+
+
+## <u>_Draft :_ Using Google Drive API</u>
+
+- [1. Curl](#1-curl)
+	- [1.1. Get OAuth Client ID credentials of a GCP Project to use Drive API :](#u11-get-oauth-client-id-credentials-of-a-gcp-project-to-use-drive-api-u)
+	- [1.2. Request Access Token / Authorization Code :](#u12-request-access-token-authorization-code-u)
+	- [1.3. Get a new access token (authorization code), using the refresh token :](#u13-get-a-new-access-token-authorization-code-using-the-refresh-token-u)
+	- [1.4. Create Drive Directory; Get its ID :](#u14-create-drive-directory-get-its-id-u)
+	- [1.5. Get all metadata of a created folder (by ID) :](#u15-gethttpsdevelopersgooglecomdriveapiv3referencefilesget-all-metadatahttpsdevelopersgooglecomdriveapiv3referencefilesresource-of-a-created-folder-by-id-u)
+	- [1.6. Getting information about the authenticated user (that is calling the API) :](#u16-getting-information-about-the-authenticated-user-that-is-calling-the-api-u)
+	- [1.7. Import XLSX files to that directory. Save their respective IDs :](#u17-import-xlsx-files-to-that-directory-save-their-respective-ids-u)
+	- [1.8. Rename a file in Drive :](#u18-rename-a-file-in-drive-u)
+	- [1.9. Move Google Apps Script project file to the created directory :](#u19-move-google-apps-script-project-file-to-the-created-directory-u)
+
+### 1. Curl
+#### <u>1.1. Get OAuth Client ID credentials of a GCP Project to use Drive API :</u>
+
+- Create Project, Set OAuth Consent Screen, Create "OAuth Client ID" credentials, download JSON file : `C:\Temp_\client_secret_749051560020-6cnf1ttck5qnq76224pnkc8jofevh9gu.apps.googleusercontent.com.json` :
+<br/>
+
+```json
+{
+    "installed": {
+        "client_id": "749051560020-6cnf1ttck5qnq76224pnkc8jofevh9gu.apps.googleusercontent.com",
+        "project_id": "curl-oauth",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "cU9WY9vpe7kqBMR-wbbKODq4",
+        "redirect_uris": ["urn:ietf:wg:oauth:2.0:oob", "http://localhost"]
+    }
+}
+```
+
+- Get needed scopes (for Drive API, for instance) : [https://developers.google.com/identity/protocols/oauth2/scopes#drivev3](https://developers.google.com/identity/protocols/oauth2/scopes#drivev3)
+- Create your Access token request URL :
+
+```
+https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=749051560020-6cnf1ttck5qnq76224pnkc8jofevh9gu.apps.googleusercontent.com&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=https://www.googleapis.com/auth/drive&response_type=code
+```
+
+- Get your Access Token, to be used in the following API calls : `4/yQGSfldFg6V2OZSnDFrzHGfHQUhpimHcRHoE5KhLtl37g9laDBMFI0c`
+
+
+#### <u>1.2. Request Access Token / Authorization Code :</u>
+
+**HTTP Request :**
+
+```bash
+curl \
+--request POST \
+--data "code=4/ygGZjQIjlTPww-zRuKTi6N0H7XAtImpccWk7vg0m8J4trEo6tEQiHAo&client_id=749051560020-6cnf1ttck5qnq76224pnkc8jofevh9gu.apps.googleusercontent.com&client_secret=cU9WY9vpe7kqBMR-wbbKODq4&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code" \
+https://accounts.google.com/o/oauth2/token
+```
+
+**HTTP Response :**
+
+```json
+{
+    "access_token": "ya29.a0Ae4lvC3FOGRu4Wf60aXMwI-4m3D6alnI3Cbzd0Jn0wY0iE8MnsRhYgaQpRZLneO9fK9Qtyrx-94ewKwM2SxjKM3EdIvJ0hmGaaPEZAarcgwgVOpWuOYnEC6eY6BLC5nvuzF6tXWLnNbAhaZ8gFwqAGxTRh21b02JxIM",
+    "expires_in": 3599,
+    "refresh_token": "1//098xiX4JCZFZWCgYIARAAGAkSNwF-L9IrCLVmndwGlyk8x_u9UKJZONuac4m4xZLuwhFJ-omtasX9zVYXsVrXE6OfY4Wx1EgI26U",
+    "scope": "https://www.googleapis.com/auth/drive",
+    "token_type": "Bearer"
+}
+```
+
+#### <u>1.3. Get a new access token (authorization code), using the refresh token :</u>
+
+**HTTP Request :**
+
+```bash
+curl -X POST \
+-d "client_id=749051560020-6cnf1ttck5qnq76224pnkc8jofevh9gu.apps.googleusercontent.com&client_secret=cU9WY9vpe7kqBMR-wbbKODq4&grant_type=refresh_token&refresh_token=1//098xiX4JCZFZWCgYIARAAGAkSNwF-L9IrCLVmndwGlyk8x_u9UKJZONuac4m4xZLuwhFJ-omtasX9zVYXsVrXE6OfY4Wx1EgI26U" \
+https://accounts.google.com/o/oauth2/token
+```
+
+**HTTP Response :**
+
+```json
+{
+  "access_token": "ya29.a0Ae4lvC30G-m2ociASaWmvvZurTjy0wq3B_B6ZC7n261i6Eyt-3MF8gL8XfLFJbkzP4I9KUEGPfuo0MVYUYUhkdUmC8hCz7OaOYCFb3hwZwNI11fZ7Kzbr7L8lSh3LM5ZfU223Jc43aO3C7FbIBaKx31FoTxQ7kdrwJHj",
+  "expires_in": 3599,
+  "scope": "https://www.googleapis.com/auth/drive",
+  "token_type": "Bearer"
+}
+```
+
+#### <u>1.4. Create Drive Directory; Get its ID :</u>
+
+**HTTP Request :**
+
+```bash
+curl \
+-X POST \
+-H "Authorization: Bearer ya29.a0Ae4lvC0nve_UI9umuKrxjz9P_X6V-zh5ZEcIid8Vl0JUk-WMzLHHou2gdAFnqdwfVTpLWC3SSqAmBldFGYsUINAuNJcWUcVC_Dn3sZ1LmDg4FF9maXyp3mB8iBRH-BuJO-pkcXR-Cy5JBR1uZEZtQX2I8i1nXtcFGylz" \
+-H "Content-Type: application/json" \
+-d "{'mimeType':'application/vnd.google-apps.folder','name':'curl-test-dir5'}" \
+https://www.googleapis.com/drive/v3/files?alt=json
+```
+
+**HTTP Response :**
+
+```json
+{
+ "kind": "drive#file",
+ "id": "1WYLIXZBe3PSHisZgjNpeT5nfV2-U6B5G",
+ "name": "curl-test-dir5",
+ "mimeType": "application/vnd.google-apps.folder"
+}
+```
+
+#### <u>1.5. [Get](https://developers.google.com/drive/api/v3/reference/files/get) all [metadata](https://developers.google.com/drive/api/v3/reference/files#resource) of a created folder (by ID) :</u>
+
+**HTTP Request :**
+
+```bash
+curl -X GET \
+-H "Authorization: Bearer ya29.a0Ae4lvC3rQDHuVKipd09v6ht_n8frH4_D8fl2O_nGtDVeji-zEtlRC-1CstvuYnccFO_ZeC58tSA2eXR4ty2LoaTBv2KbpRWcLigV8YXhnRWO7d90cZ30aCUVlwFz_-Ig4BAaFazdU_47-12v2Ca2A_liSvfc3xRUtmX-" \
+https://www.googleapis.com/drive/v3/files/1WYLIXZBe3PSHisZgjNpeT5nfV2-U6B5G?fields=*
+```
+
+**HTTP Response :**
+
+```json
+{
+ "kind": "drive#file",
+ "id": "1WYLIXZBe3PSHisZgjNpeT5nfV2-U6B5G",
+ "name": "curl-test-dir5",
+ "mimeType": "application/vnd.google-apps.folder",
+ "starred": false,
+ "trashed": false,
+ "explicitlyTrashed": false,
+ "parents": [
+  "0ALlnR1X6kbuLUk9PVA"
+ ],
+ "spaces": [
+  "drive"
+ ],
+ "version": "1",
+ "webViewLink": "https://drive.google.com/drive/folders/1WYLIXZBe3PSHisZgjNpeT5nfV2-U6B5G",
+ "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.folder",
+ "hasThumbnail": false,
+ "thumbnailVersion": "0",
+ "viewedByMe": false,
+ "createdTime": "2020-04-11T19:11:03.686Z",
+ "modifiedTime": "2020-04-11T19:11:03.686Z",
+ "modifiedByMeTime": "2020-04-11T19:11:03.686Z",
+ "modifiedByMe": true,
+ "owners": [
+  {
+   "kind": "drive#user",
+   "displayName": "Test3 Test3",
+   "me": true,
+   "permissionId": "15576437119490321135",
+   "emailAddress": "test3@amindeed.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "displayName": "Test3 Test3",
+  "me": true,
+  "permissionId": "15576437119490321135",
+  "emailAddress": "test3@amindeed.com"
+ },
+ "shared": false,
+ "ownedByMe": true,
+ "capabilities": {
+  "canAddChildren": true,
+  "canAddMyDriveParent": false,
+  "canChangeCopyRequiresWriterPermission": false,
+  "canChangeViewersCanCopyContent": false,
+  "canComment": true,
+  "canCopy": false,
+  "canDelete": true,
+  "canDownload": true,
+  "canEdit": true,
+  "canListChildren": true,
+  "canModifyContent": true,
+  "canMoveChildrenWithinDrive": true,
+  "canMoveItemIntoTeamDrive": true,
+  "canMoveItemOutOfDrive": true,
+  "canMoveItemWithinDrive": true,
+  "canReadRevisions": false,
+  "canRemoveChildren": true,
+  "canRemoveMyDriveParent": true,
+  "canRename": true,
+  "canShare": true,
+  "canTrash": true,
+  "canUntrash": true
+ },
+ "viewersCanCopyContent": true,
+ "copyRequiresWriterPermission": false,
+ "writersCanShare": true,
+ "permissions": [
+  {
+   "kind": "drive#permission",
+   "id": "15576437119490321135",
+   "type": "user",
+   "emailAddress": "test3@amindeed.com",
+   "role": "owner",
+   "displayName": "Test3 Test3",
+   "deleted": false
+  }
+ ],
+ "permissionIds": [
+  "15576437119490321135"
+ ],
+ "folderColorRgb": "#8f8f8f",
+ "quotaBytesUsed": "0",
+ "isAppAuthorized": true
+}
+```
+
+#### <u>1.6. Getting information about the authenticated user (that is calling the API) :</u>
+
+**HTTP Request :**
+
+```bash
+curl -X GET \
+-H "Authorization: Bearer ya29.a0Ae4lvC3rQDHuVKipd09v6ht_n8frH4_D8fl2O_nGtDVeji-zEtlRC-1CstvuYnccFO_ZeC58tSA2eXR4ty2LoaTBv2KbpRWcLigV8YXhnRWO7d90cZ30aCUVlwFz_-Ig4BAaFazdU_47-12v2Ca2A_liSvfc3xRUtmX-" \
+https://www.googleapis.com/drive/v3/about?fields=kind,user
+```
+
+**HTTP Response :**
+
+```json
+{
+ "kind": "drive#about",
+ "user": {
+  "kind": "drive#user",
+  "displayName": "Test3 Test3",
+  "me": true,
+  "permissionId": "15576437119490321135",
+  "emailAddress": "test3@amindeed.com"
+ }
+}
+```
+
+
+#### <u>1.7. Import XLSX files to that directory. Save their respective IDs :</u>
+
+**HTTP Request :**
+
+```bash
+curl -X POST \
+-H "Authorization: Bearer ya29.a0Ae4lvC0b7itrj6r6oMXA6ZpU5xK3dSt-dQa3NCSRT6Gdf95u5fhdM-1N2eTskBmJ6GRuF-XMeDv3lmnMOiYAE4GtEwEmw_eLK0YngUWj-n1qJOYFA2DnxtTx7dvmqscI652As00hPX528i6h7d_yAmWACjVKqldIkF0" \
+-F "metadata={name : 'XLSX_UPLOADED_CURL2', mimeType : 'application/vnd.google-apps.spreadsheet', parents: ['12pZEQYme5l5LsDJv054zz1wn7vi5jhgu'] }; type=application/json; charset=UTF-8" \
+-F "file=@C:\Temp_\GMAIL_AUTORESPONDER_FILTERS.xlsx; type=application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" \
+https://www.googleapis.com/upload/drive/v3/files?alt=json&fields=id%%2Cname%%2Csize%%2Cmd5Checksum%%2CwebContentLink&uploadType=multipart
+```
+
+**HTTP Response : ON SUCCESS**
+
+```json
+{
+ "kind": "drive#file",
+ "id": "1mQ0FQTN14Z58Daws-yIdxU6ak7tmhdaUcxyBk0tUy3c",
+ "name": "XLSX_UPLOADED_CURL2",
+ "mimeType": "application/vnd.google-apps.spreadsheet"
+}
+```
+
+**HTTP Response : ON FAILURE : _Parent directory not found_**
+
+```json
+"error": {
+ "errors": [
+  {
+   "domain": "global",
+   "reason": "notFound",
+   "message": "File not found: 12pZEQYme5l5LsDJv084zz1wn7vi5jhgu.",
+   "locationType": "parameter",
+   "location": "fileId"
+  }
+ ],
+ "code": 404,
+ "message": "File not found: 12pZEQYme5l5LsDJv084zz1wn7vi5jhgu."
+}
+}
+```
+
+#### <u>1.8. Rename a file in Drive :</u>
+
+**HTTP Request :**
+
+```bash
+curl -X PATCH \
+-H "Authorization: Bearer ya29.a0Ae4lvC19pVZaOg84GNimSef1cVjz-Q00WyC8SxhziM5ua2JwrZSaMxYga-7I3Rjxd-d3RIu0M66KSKLPb_eP2j-WG_BVMYs-1Ia2q6PNpfoFe-s_uvYaqAGjqzqvd6maU_7XV88EaDmmI6vj-AVCsqjhZ8L-V5pNxbax" \
+-H "Content-Type: application/json" \
+-d "{'name':'patchedByCurl_Test_GDrive'}" \
+https://www.googleapis.com/drive/v3/files/1l53JuqO1nONZXUyMCxkti3-8pK9Z5_-B
+```
+
+**HTTP Response :**
+
+```json
+{
+ "kind": "drive#file",
+ "id": "1l53JuqO1nONZXUyMCxkti3-8pK9Z5_-B",
+ "name": "patchedByCurl_Test_GDrive",
+ "mimeType": "image/png"
+}
+```
+
+#### <u>1.9. Move Google Apps Script project file to the created directory :</u>
+
+**HTTP Request :**
+
+```bash
+echo "Add Parent folder (a root subfolder)"
+curl -X PATCH \
+-H "Authorization: Bearer ya29.a0Ae4lvC0HOBMG-_UpumzXnK7cnMAAMg3eoWX8MvIlNaXw_ofcf2mndRRb3WkjNEFPD0u0vUuxeDdB46f8P0ga8dFJHe5OJBAsTwssHEA_D2c9G-sslYhF5kG2tnH3aFmVx-ZQWgj6Zg_3RbS73COJdOs2fvuhmkDvFv7x" \
+-H "Content-Type: application/json" \
+https://www.googleapis.com/drive/v3/files/1-pdgvPRx8wkRhrDTRppFNFZV4hXNCvUD1lZhTJ0CuqU?addParents=18MunVQ0VFA3s5d7aCLK22j8NbofBA2dj
+
+echo "Remove Parent folder 'root'"
+curl -X PATCH \
+-H "Authorization: Bearer ya29.a0Ae4lvC0HOBMG-_UpumzXnK7cnMAAMg3eoWX8MvIlNaXw_ofcf2mndRRb3WkjNEFPD0u0vUuxeDdB46f8P0ga8dFJHe5OJBAsTwssHEA_D2c9G-sslYhF5kG2tnH3aFmVx-ZQWgj6Zg_3RbS73COJdOs2fvuhmkDvFv7x" \
+-H "Content-Type: application/json" \
+https://www.googleapis.com/drive/v3/files/1-pdgvPRx8wkRhrDTRppFNFZV4hXNCvUD1lZhTJ0CuqU?removeParents=root
+```
+
+**HTTP Response (for both requests):**
+
+```json
+{
+ "kind": "drive#file",
+ "id": "1-pdgvPRx8wkRhrDTRppFNFZV4hXNCvUD1lZhTJ0CuqU",
+ "name": "GMAIL_AUTORESPONDER_FILTERS.xlsx",
+ "mimeType": "application/vnd.google-apps.spreadsheet"
+}
+```

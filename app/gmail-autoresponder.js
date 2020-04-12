@@ -37,9 +37,9 @@ function ColumnValues(sheet, column, remove_header){
 }
 
 
-/** ........................................ **/
+/** Set 'FILTERS', 'LOGS' spreadsheets IDs, ... **/
 
-function set_properties(FiltersSSId, LogSSId) {
+function set_properties(FiltersSSId, LogSSId /*, StartHour, FinishHour, Interval, CcEmailAdrs, GSuiteNoReplyFlag*/) {
   
   var userProperties = PropertiesService.getUserProperties();
   
