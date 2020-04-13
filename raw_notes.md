@@ -167,6 +167,40 @@ Application components :
 
 From here on, any update to **Gmail AutoResponder**'s code can be pushed to `script.google.com` by simply running the command line : `clasp push --force`, along with `clasp run` if there are any functions to be executed through the API (e.g. to create/set new user properties, to modify triggers...etc) : `clasp run 'myfunction' -p '[JSON-STRING-ARRAY-OF-PARAMETERS]'`.
 
+--------------------------------------------------------------------------------
+
+#### Exploring creating a GCP project with OAuth credentials using just the `gcloud` CLI tool :
+
+1. Install `Google Cloud SDK` :
+    - Script installation : [Installing from versioned archives  |  Cloud SDK Documentation](https://cloud.google.com/sdk/docs/downloads-versioned-archives)
+    - Human Installation : [Using the Google Cloud SDK installer  |  Cloud SDK Documentation](https://cloud.google.com/sdk/docs/downloads-interactive)
+    - Detailed instructions to install and init Google Cloud SDK : [Google Cloud SDK documentation](https://cloud.google.com/sdk/docs)
+2. <u>[GCP project](https://console.cloud.google.com/projectcreate) :</u>
+    - Init :
+
+    ```bash
+    gcloud auth login --brief
+    ```
+
+    - Create a GCP project. Set Project **Name** and **ID** :
+
+    ```bash
+    gcloud projects create gcloud-sdk-test2 --name="GCLOUD SDK TEST 2" --account=test@amindeed.com --no-enable-cloud-apis
+    ```
+
+    From then on, following commands executed on the same console session seem to be run as the Google G-Suite user `test@amindeed.com`. So basically, you can create another GCP project for the same user without using the `--account` flag.
+
+    - Enable **Drive** and **Script** APIs :
+
+    ```bash
+    CLOUDSDK_CORE_PROJECT=gcloud-test4-no-apis gcloud services enable drive.googleapis.com script.googleapis.com
+    ```
+
+    - Get and note down **Project Number** :
+
+    ```bash
+    gcloud projects describe gcloud-test4-no-apis
+    ```
 
 --------------------------------------------------------------------------------
 
