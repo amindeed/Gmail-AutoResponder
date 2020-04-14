@@ -12,6 +12,33 @@
 - To decide whether or not to respond with a 'no-reply' email address :
     - [How to Check if the Google User has a G Suite Account - Digital Inspiration](https://www.labnol.org/code/20592-gsuite-account-check)
     - [gsuite - Google app script to check if an email exists in domain - Stack Overflow](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain)
+- I have given up the idea of making a "client-only app" and interact directly with Apps Script backend with a plain HTML5 file that could even be stored locally, as it seems that it's a good practice to implement a minimal sever-side authentication logic [https://stackoverflow.com/q/18280827/3208373] , [https://security.stackexchange.com/a/52886/37487]
+    - "...the JavaScript app is just plain old HTML and JS served from the same server to avoid XSS issues." [source](https://security.stackexchange.com/questions/19620/securing-a-javascript-single-page-app-with-restful-backend#comment32548_19625)
+    - "JAM stack" paradigm trend
+        - PWA: progressive web apps
+        - SSR: server side rendering
+            - Pros and some Cons of SSR (Vue.JS focused, but pretty generic)
+                - [Vue SSR Guide | Vue.js Server-Side Rendering Guide](https://ssr.vuejs.org/#what-is-server-side-rendering-ssr)
+        - SPA: single page application
+    - I have been analyzing local KeeWeb, for oauth authentication
+        - Remembering the lastest used location for key file (not browser's wide)
+    - [oauth - Security drawbacks for using short-lived access token in javascript client side - Information Security Stack Exchange](https://security.stackexchange.com/questions/13618/security-drawbacks-for-using-short-lived-access-token-in-javascript-client-side)
+    - stateless
+    - "...use 2-legged or 3-legged OAuth on the REST back end?"
+- **Follow up / Troubleshooting :** You can search gmail message by its Gmail ID. Note that the ID of a Gmail thread is the ID of its first message.
+- **TODO :**
+    - [ ] Abstracting logging and filters reading operations in order to make it easy to use other and generic data formats like JSON, XML or any API accessible data store.
+        - https://developers.google.com/apps-script/reference/content/
+    - [ ] Custom time interval for each selected week day.
+    - [ ] Script to automatically deploy the application and update it as a Google Apps Script project
+    - [ ] Log why skipped messages (i.e. messages that have not been responded to) were filtered out.
+    - [ ] Optimize writing to Google Sheets for large data:
+        - [ ] [Custom Functions in Google Sheets](https://developers.google.com/apps-script/guides/sheets/functions)
+    - [ ] Web front-end to configure the application.
+    - [ ] On `Filter spreadsheet`, save processed messages IDs as hyperlinks to the corresponding Gmail webmail pages. E.g. `https://mail.google.com/mail/u/0/#inbox/1662ab6df6e32ab0`
+    - [ ] Centrally manage multiple users
+    - [ ] Updater
+    - [ ] Use with any email provider (IMAP/SMTP, RESTful API)
 
 
 ---------------------------------------------
