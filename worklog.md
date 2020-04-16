@@ -1,5 +1,8 @@
 # Work Log
 
+## 2020-04-15, 04-16
+Still refining `README.md`, along with some modifications here and there.
+
 ## 2020-04-14
 - Cleaning up `README.md`
 

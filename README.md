@@ -1,24 +1,37 @@
 # Gmail Autoresponder
 
-**Gmail AutoResponder** is a customizable **[Google Apps Script](https://developers.google.com/apps-script/reference/)** web application to automatically process incoming Gmail messages.
-It can be configured to selectively send canned responses to messages received within a specified time interval of each day.
-The application reads custom filters _(= regular expressions applied to sender and receiver addresses, as well as to raw message / headers content)_ from the `Filters` Spreadsheet, process received emails and logs every operation (i.e. response sent or message skipped) to the `Logs` Spreadsheet.
+_Drafts :_
 
-## Demo
-...
+> **Gmail AutoResponder** is a customizable web application to automatically process incoming Gmail messages.
+> By leveraging three Google services : _**Gmail**, **[Apps Script](https://developers.google.com/apps-script/reference/)** > and **Drive/Sheets**_, the application reads custom filters and selectively send predefined responses within a specified > time interval of each day, while logging every processed message.
+>
+> **Gmail AutoResponder** is a customizable web application that leverages three Google services : _**Gmail**, **[Apps Script](https://developers.google.com/apps-script/reference/)** and **Drive/Sheets**_, for selective sending of canned responses with comprehensive logging, in a specified time interval of each day.
 
-- Google Apps Script apps hosted by free Google accounts are subject to Apps Script services [quotas and limitations.](https://developers.google.com/apps-script/guides/services/quotas). You can check your total runtime with `Stackdriver Logging` under the `View` menu.
-- To later revoke app's access to your data, follow the steps described here: [Revoking access rights | Authorization for Google Services  |  Apps Script](https://developers.google.com/apps-script/guides/services/authorization#revoking_access_rights).
+<br />(Demo : Animated GIF?)<br />
+
+## Project Components and Terms
+- `START_HOUR`
+- `FINISH_HOUR`
+- `TIME_INTERVAL`
+- `Filters` : … = regular expressions applied to sender and receiver addresses, as well as to raw message / headers content
+- `Logs` : … = response sent or message skipped
+- **Execution n** :
+    - `autoReply()` function of the main script `Code.js` is continuously executed on a recurring interval of `TIME_INTERVAL` minutes from `START_HOUR` to `FINISH_HOUR`. On each execution, referred to as **Execution n**, the function issues a Gmail search query to fetch last received messages.
+    - When the main function `autoReply()` is executed (by a trigger), issued Gmail search query `GM_SEARCH_QUERY`, execution time and the number of returned threads are logged to `Logs spreadsheet`. This execution is referred to as `Execution n`, and the previous one as `Execution (n-1)`.
+- A **Session** is a series of [triggered executions](https://developers.google.com/apps-script/guides/triggers/installable#time-driven_triggers) within a 24 hours span (e.g. from __05-Sep-2018 @7:00pm__ to __06-Sep-2018 @7:00am__).
 
 ## Setup
+1. Copy Template Project
+…
 
-...
+2. Deploy Your Own Copy of Code
+…
 
 ## How it works?
 
-`autoReply()` function of the main script `Code.js` is continuously executed on a recurring interval of `TIME_INTERVAL` minutes from `START_HOUR` to `FINISH_HOUR`. On each execution, referred to as **Execution n**, the function issues a Gmail search query to fetch last received messages.
+~~`autoReply()` function of the main script `Code.js` is continuously executed on a recurring interval of `TIME_INTERVAL` minutes from `START_HOUR` to `FINISH_HOUR`. On each execution, referred to as **Execution n**, the function issues a Gmail search query to fetch last received messages.~~
 
-A **Session** is a series of [triggered executions](https://developers.google.com/apps-script/guides/triggers/installable#time-driven_triggers) within a 24 hours span (e.g. from __05-Sep-2018 @7:00pm__ to __06-Sep-2018 @7:00am__).
+~~A **Session** is a series of [triggered executions](https://developers.google.com/apps-script/guides/triggers/installable#time-driven_triggers) within a 24 hours span (e.g. from __05-Sep-2018 @7:00pm__ to __06-Sep-2018 @7:00am__).~~
 
 In fact, the [search query](https://developers.google.com/apps-script/reference/gmail/gmail-app#search%28String%29) returns an array of [Gmail threads](https://developers.google.com/apps-script/reference/gmail/gmail-thread) that were updated in the last `TIME_INTERVAL` minutes. The last [message](https://developers.google.com/apps-script/reference/gmail/gmail-message) of each of these threads is extracted and added to an array to be processed by the application :
 
@@ -70,10 +83,10 @@ Examples of values predefined in the `Filters spreadsheet`:
 | 11/16/19 4:42 PM | autoReply   | Service error: Spreadsheets                                                                                                                      | time-based | 11/16/19 4:46 PM |
 
 ## Dependencies / used components
-...
+…
 
 ## Resources / Credits / Thanks
-...
+…
 
 ## License
 
