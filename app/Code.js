@@ -9,7 +9,7 @@ function autoReply() {
   var INTERVAL = 10;    // To execute the script after each 10 min.
   var START_HOUR = 20;    // Local time
   var FINISH_HOUR = 6;    // Local time
-  var TIME_OFFSET = 0; // DST offset
+  var DST_OFFSET = 0; // DST offset
   var date = new Date();
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
@@ -28,9 +28,9 @@ function autoReply() {
   var ops_log_sheet = log.getSheets()[0];
   var exec_log_sheet = log.getSheets()[1];
 
-  
-  //if (((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) && ((threads = GmailApp.search(GM_SEARCH_QUERY)).length !== 0)) {
-  if ((hour < (FINISH_HOUR + TIME_OFFSET)) || (hour >= (START_HOUR + TIME_OFFSET))) {
+
+  //if (((hour < (FINISH_HOUR + DST_OFFSET)) || (hour >= (START_HOUR + DST_OFFSET))) && ((threads = GmailApp.search(GM_SEARCH_QUERY)).length !== 0)) {
+  if ((hour < (FINISH_HOUR + DST_OFFSET)) || (hour >= (START_HOUR + DST_OFFSET))) {
 
   // log execution time and number of messages retrieved
   threads = GmailApp.search(GM_SEARCH_QUERY);
@@ -105,7 +105,7 @@ function autoReply() {
 
     /****** Save 2D array of processed message to log sheet *********/
 
-  } else if ( (hour === FINISH_HOUR + TIME_OFFSET) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
+  } else if ( (hour === FINISH_HOUR + DST_OFFSET) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
 
     // Mark session end on both sheets
 

@@ -1,5 +1,9 @@
 # Work Log
 
+## 2020-04-17
+Significant update of `README.md`'s structure and content (draft).  
+Started adding old worklog entries translated from French.
+
 ## 2020-04-15, 04-16
 Still refining `README.md`, along with some modifications here and there.
 
@@ -84,5 +88,15 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 ## …
 
-## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/52cb442af57432b3a2a4068077d0438806896a43/Code.js)
+## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/640a75ff3bfc40c81f542dca60bc39c1ca9753c5/Code.js)
 …
+
+## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/52cb442af57432b3a2a4068077d0438806896a43/Code.js)
+Developing a first prototype of a script to send automatic responses to emails received in a specific timeframe of each day.
+
+![2017-07-26 - Gmail-AutoResponder](assets/2017-07-26%20-%20Gmail-AutoResponder.png)
+
+<br />
+
+-------------
+_Archived version, from an old commit, of the original worklog (in French) : [worklog.md](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md)_
