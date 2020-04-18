@@ -2,15 +2,7 @@
 
 ## 2017-07-26  …
 
-## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/640a75ff3bfc40c81f542dca60bc39c1ca9753c5/Code.js)
-Continuation de l’étude et développement.
-- **Spécifications et cahier de charges** :
-    - Le script sera configuré pour exécution automatique régulière entre 20h et 6h sur chaque compte utilisateur Google.
-    - Il vérifiera les derniers messages reçu. Puisque les messages sont interprétés par Gmail comme des groupes de discussion (threads), les discussions avec de nouveaux messages (réponses ou transferts) seront inclues.
-    - Les messages en provenance des contacts de `MyCompany` seront exclus.
-    - Option : Les messages/discussions avec le libellé Gmail `_autoRep` seront considérés comme déjà traités et seront donc systématiquement exclus.
-    - Traitement des messages : Envoie du corp de la réponse automatique sous forme de texte riche (HTML) suivie des informations (date, expéditeur, destinataires, objet) et une citation du contenu du message traité.
-    - Attribution du libellé Gmail `_autoRep` pour marquer le message comme traité.
+## 2017-07-27 …
 
 ## 2017-07-28 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/b78bde10064fd74e9e1279eb01b5e662f196a04f/Code.js)
 - Fin de développement de la première version du script.

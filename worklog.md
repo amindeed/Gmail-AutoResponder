@@ -1,5 +1,22 @@
 # Work Log
 
+## 2020-04-18
+- Working on a basic HTML file that will let us "get" and/or "set" app's parameters.
+    - Information to retrieve/modify :
+        - User's profile picture
+        - User's ~~name~~ email
+        - Time zone
+        - Message body (HTML)
+        - Script user's parameters :
+            - `FILTERS_SS_ID`
+            - `LOG_SS_ID`
+            - `START_HOUR`
+            - `FINISH_HOUR`
+            - `TIME_INTERVAL`
+            - `DST_OFFSET`
+    - I had to add another scope `https://www.googleapis.com/auth/drive.readonly` to retrieve [the URL of script user's photo](https://developers.google.com/apps-script/reference/drive/user#getphotourl)
+
+
 ## 2020-04-17
 Significant update of `README.md`'s structure and content (draft).  
 Started adding old worklog entries translated from French.
@@ -83,15 +100,27 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 ## 2018-09-10
 …
 
-## 2017-12-11 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/323bb1078531ae50034ddcaa058ff43d0dafdd5e/app/Archive_log.js)
+## 2017-12-11
 
 
 ## …
 
-## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/640a75ff3bfc40c81f542dca60bc39c1ca9753c5/Code.js)
-…
+## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/15601924647c0576cf0d1f88ca486a67e25c7a73/Code.js)
 
-## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-Autoresponder/blob/52cb442af57432b3a2a4068077d0438806896a43/Code.js)
+_Original :_  
+
+> Continuation de l’étude et développement.
+> - **Spécifications et cahier de charges** :
+>     - Le script sera configuré pour exécution automatique régulière entre 20h et 6h sur chaque compte utilisateur Google.
+>     - Il vérifiera les derniers messages reçu. Puisque les messages sont interprétés par Gmail comme des groupes de > discussion (threads), les discussions avec de nouveaux messages (réponses ou transferts) seront inclues.
+>     - Les messages en provenance des contacts de `MyCompany` seront exclus.
+>     - Option : Les messages/discussions avec le libellé Gmail `_autoRep` seront considérés comme déjà traités et seront > donc systématiquement exclus.
+>     - Traitement des messages : Envoie du corp de la réponse automatique sous forme de texte riche (HTML) suivie des > informations (date, expéditeur, destinataires, objet) et une citation du contenu du message traité.
+>     - Attribution du libellé Gmail `_autoRep` pour marquer le message comme traité.
+
+
+
+## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/6f6100735ee16a48a7d1ada8c79a07915ab96108/Code.js)
 Developing a first prototype of a script to send automatic responses to emails received in a specific timeframe of each day.
 
 ![2017-07-26 - Gmail-AutoResponder](assets/2017-07-26%20-%20Gmail-AutoResponder.png)

@@ -1,12 +1,12 @@
 # Gmail AutoResponder
 
 **Gmail AutoResponder** is a customizable webapp to selectively send automated email responses in a specified timeframe of each day.  
-All application components are contained in the Google Account running it : **[Apps Script](https://developers.google.com/apps-script/reference/)** serves as the core framework, messages are read and sent from **Gmail**, and **Drive Sheets** are used to read content filters and save logs.
+All application components are contained in the Google Account running it : _**[Apps Script](https://developers.google.com/apps-script/reference/)** serves as the core framework, messages are read and sent from **Gmail**, and **Drive Sheets** are used to read content filters and save logs._
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Setup](#setup)
-	- [Method 1: Copy Project Template](#method-1-copy-project-template)
+	- [Method 1: Copy Project Templates](#method-1-copy-project-templates)
 	- [Method 2: Deploy Source Code](#method-2-deploy-source-code)
 - [Parameters & Components](#parameters-components)
 - [How it works?](#how-it-works)
@@ -15,18 +15,31 @@ All application components are contained in the Google Account running it : **[A
 	- [3. Logging](#3-logging)
 - [Background](#background)
 - [TODO](#todo)
-- [Dependencies / used components](#dependencies-used-components)
-- [Resources / Credits / Thanks](#resources-credits-thanks)
 - [License](#license)
 
 <!-- /TOC -->
 
 ## Setup
-### Method 1: Copy Project Template
-…
+### Method 1: Copy Project Templates
+- Make a copy of the [**Google Apps Script** project template](https://drive.google.com/open?id=1G6d8vtFv8BMwssQ-Elmu40oIb0XOXG0LUt9LIYfo1BdlV7ttSFfKfXVb), where latest updates are pushed.  
+
+<img src="/assets/makecopy_script.png" alt="makecopy_script" width="335"/>
+
+- Make copies of [`Filters`](https://drive.google.com/open?id=1zG25-RyaELsVGaCPU1zGlIxt8HHZJ86kRaiDVkBumGA) and [`Logs`](https://drive.google.com/open?id=1rJzYHqXA5-3SEeRW-RZkW8rRGI8kTdmIZzN95ZcjgOo) spreadsheets templates. 
+
+<img src="/assets/makecopy_sheets.png" alt="makecopy_sheets" width="382"/>
+
+- Note down IDs of spreadsheets copies you just created in your Google Drive.
+
+<img src="/assets/copy_sheet_id.png" alt="copy_sheet_id" width="572"/>
+
+- _(Initialize app)_
 
 ### Method 2: Deploy Source Code
-…
+- _(Create GCP Project)_
+- Push code to Google Apps Script
+- Import `GMAIL_AUTORESPONDER_FILTERS.xlsx` and `GMAIL_AUTORESPONDER_LOGS.xlsx` as Google Spreadsheets to your Google Drive.
+- Initialize the app
 
 ## Parameters & Components
 
@@ -51,11 +64,12 @@ A **Session** is a series of [triggered executions](https://developers.google.co
 
 ### 2. Reliability
 
-Since your contacts might be frustrated if you miss urgent requests and leave them for hours with no waiting messages, or a bit annoyed if you send an automated response more than once, a couple of precautionary measures have been taken :
-- Although **Execution (n-1)** would normally have occurred `TIME_INTERVAL` minutes ago, received messages are fetched from the last `TIME_INTERVAL + 2` minutes, in order not to miss any messages in case of a delay.
-- **[IDs](https://developers.google.com/apps-script/reference/gmail/gmail-message#getId%28%29)** of processed messages from **Execution (n-1)** are [cached with a 16 minutes timeout](https://developers.google.com/apps-script/reference/cache/cache#put%28String%2CString%2CInteger%29). During **Execution n**, IDs of retrieved messages are checked against this cache to determine whether they were already processed or not.
+Two tweaks have been made in an attempt to neither miss a message nor send an automated response more than once :
 
-![Execution timeline](assets/exec-timeline.jpg)
+1. Although **Execution (n-1)** would normally have occurred `TIME_INTERVAL` minutes ago, received messages are fetched from the last `TIME_INTERVAL + 2` minutes, in order not to miss any messages in case of a delay.
+2. **[IDs](https://developers.google.com/apps-script/reference/gmail/gmail-message#getId%28%29)** of processed messages from **Execution (n-1)** are [cached with a 16 minutes timeout](https://developers.google.com/apps-script/reference/cache/cache#put%28String%2CString%2CInteger%29). During **Execution n**, IDs of retrieved messages are checked against this cache to determine whether they were already processed or not.
+
+<img src="/assets/exec-timeline.jpg" alt="Execution timeline" width="900"/>
 
 ### 3. Logging
 
@@ -73,20 +87,14 @@ On each execution, the following information are logged to the `Logs` spreadshee
 
 ## Background
 
-* **Gmail Autoresponder** was inspired by an [answer](https://webapps.stackexchange.com/a/90089) on Stack Exchange Web Applications forum.
-* As there is no event triggered on email reception ... *** then most features and configurations were abstracted for better app modularity and code readability.
-* One backend application with a single access point (REST API), that will interface with all needed Google Services (Gmail and Spreadsheets, in our case) ** which the user will explicitly grant access to, all at once. This should make the web application more flexible, customizable and easier to maintain.
+- **Gmail Autoresponder** was inspired by an [answer](https://webapps.stackexchange.com/a/90089) on Stack Exchange Web Applications forum.
+- As there is no event triggered on email reception ... *** then most features and configurations were abstracted for better app modularity and code readability.
+_Check [`worklog.md`](worklog.md)_
 
 
 ## TODO
 
-Check `TODO.md`
-
-## Dependencies / used components
-…
-
-## Resources / Credits / Thanks
-…
+_Check [`TODO.md`](TODO.md)_
 
 ## License
 

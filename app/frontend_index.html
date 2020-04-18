@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <script>
+    // Prevent forms from submitting.
+    function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+            forms[i].addEventListener('submit', function(event) {
+                event.preventDefault();
+            });
+        }
+    }
+    
+    window.addEventListener('load', preventFormSubmit);
+
+    function handleFormSubmit(formObject) {
+        //google.script.run.withSuccessHandler(runOnSuccess).processForm(formObject);
+    }
+
+    // function to be executed if everything was done successfully.
+    function runOnSuccess() {
+        //var div = document.getElementById('addRemdrForm');
+        //div.innerHTML = '<h4 align=\"center\"><i class=\"fa fa-calendar-check-o\" aria-hidden=\"true\"></i> Reminder created succesfully!</h4>';
+    }
+    </script>
+    
+  </head>
+  <body>
+    
+    <form onsubmit="handleFormSubmit(this)">
+    
+    </form>
+    
+  </body>
+</html>
+
+
