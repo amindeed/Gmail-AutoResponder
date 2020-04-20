@@ -21,19 +21,19 @@ All application components are contained in the Google Account running it : _**[
 
 ## Setup
 ### Method 1: Copy Project Templates
-- Make a copy of the [**Google Apps Script** project template](https://drive.google.com/open?id=1G6d8vtFv8BMwssQ-Elmu40oIb0XOXG0LUt9LIYfo1BdlV7ttSFfKfXVb), where latest updates are pushed.  
+1. Make a copy of the [**Google Apps Script** project template](https://drive.google.com/open?id=1G6d8vtFv8BMwssQ-Elmu40oIb0XOXG0LUt9LIYfo1BdlV7ttSFfKfXVb), where latest updates are pushed.  
 
-<img src="/assets/makecopy_script.png" alt="makecopy_script" width="335"/>
+	<img src="/assets/makecopy_script.png" alt="makecopy_script" width="335"/>
 
-- Make copies of [`Filters`](https://drive.google.com/open?id=1zG25-RyaELsVGaCPU1zGlIxt8HHZJ86kRaiDVkBumGA) and [`Logs`](https://drive.google.com/open?id=1rJzYHqXA5-3SEeRW-RZkW8rRGI8kTdmIZzN95ZcjgOo) spreadsheets templates. 
+2. Make copies of [`Filters`](https://drive.google.com/open?id=1zG25-RyaELsVGaCPU1zGlIxt8HHZJ86kRaiDVkBumGA) and [`Logs`](https://drive.google.com/open?id=1rJzYHqXA5-3SEeRW-RZkW8rRGI8kTdmIZzN95ZcjgOo) spreadsheets templates. 
 
-<img src="/assets/makecopy_sheets.png" alt="makecopy_sheets" width="382"/>
+	<img src="/assets/makecopy_sheets.png" alt="makecopy_sheets" width="382"/>
 
-- Note down IDs of spreadsheets copies you just created in your Google Drive.
+3. Note down IDs of spreadsheets copies you just created in your Google Drive.
 
-<img src="/assets/copy_sheet_id.png" alt="copy_sheet_id" width="572"/>
+	<img src="/assets/copy_sheet_id.png" alt="copy_sheet_id" width="572"/>
 
-- _(Initialize app)_
+4. _(Initialize app)_
 
 ### Method 2: Deploy Source Code
 - _(Create GCP Project)_

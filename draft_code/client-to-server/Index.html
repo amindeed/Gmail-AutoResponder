@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+      /*####### Prevent forms from submitting. #######*/
+      function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+          forms[i].addEventListener('submit', function(event) {
+            event.preventDefault();
+          });
+        }
+      }
+      window.addEventListener('load', preventFormSubmit);
+    
+      /*####### Gmail unread messages #######*/
+      function onSuccess(numUnread) {
+        var div = document.getElementById('output');
+        div.innerHTML = 'You have ' + numUnread
+            + ' unread messages in your Gmail inbox.';
+      }
+      
+      function onFailure(error) {
+        var div = document.getElementById('output');
+        div.innerHTML = "ERROR: " + error.message;
+      }
+      
+      google.script.run
+          .withSuccessHandler(onSuccess)
+          .withFailureHandler(onFailure)
+          .getUnreadEmails();
+      
+      /*####### Button #######*/
+      function updateButton(email, button) {
+        button.value = 'Clicked by ' + email;
+      }
+      
+      /*####### Form #######*/
+      function handleFormSubmit(formObject) {
+        google.script.run
+        .withSuccessHandler(updateUrl)
+        .withFailureHandler(showFormSubmitError)
+        .processForm(formObject);
+      }
+      
+      function updateUrl(url) {
+        var div = document.getElementById('output2');
+        div.innerHTML = '<a href="' + url + '">Got it!</a>';
+      }
+      
+      function showFormSubmitError(error) {
+        var div = document.getElementById('output2');
+        div.innerHTML = "FORM SUBMIT ERROR: " + error.message;
+      }
+
+    </script>
+  </head>
+  <body>
+    <div id="output"></div>
+    
+    <br /> <br />
+    
+    <input type="button" value="Not Clicked"
+      onclick="google.script.run
+          .withSuccessHandler(updateButton)
+          .withUserObject(this)
+          .getEmail()" />
+    <input type="button" value="Not Clicked"
+      onclick="google.script.run
+          .withSuccessHandler(updateButton)
+          .withUserObject(this)
+          .getEmail()" />
+          
+    <br /> <br />
+    
+    <form id="myForm" onsubmit="handleFormSubmit(this)">
+      <fieldset>
+          <legend>Form :</legend>
+          <input name="myFile" type="file" /><br /><br />
+          Text : <input name="myText" type="text" placeholder="Text here.." /><br /><br />
+          Spreadsheet ID : <input name="sheetId" type="text" placeholder="ID here.." /><br /><br />
+          <input type="submit" value="Submit" />
+          </fieldset>
+    </form>
+    <div id="output2"></div>
+  </body>
+</html>
