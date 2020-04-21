@@ -39,14 +39,14 @@
       /*####### Form #######*/
       function handleFormSubmit(formObject) {
         google.script.run
-        .withSuccessHandler(updateUrl)
+        .withSuccessHandler(getMyDriveFile)
         .withFailureHandler(showFormSubmitError)
         .processForm(formObject);
       }
       
-      function updateUrl(url) {
+      function getMyDriveFile(driveFile) {
         var div = document.getElementById('output2');
-        div.innerHTML = '<a href="' + url + '">Got it!</a>';
+        div.innerHTML = 'File size is ' + driveFile[1] + ' Bytes,<br /> File type is :' + driveFile[2] + ',<br /> and it can be accessed through <a href="' + driveFile[0] + '" target="_blank">this link</a>';
       }
       
       function showFormSubmitError(error) {
@@ -78,8 +78,10 @@
       <fieldset>
           <legend>Form :</legend>
           <input name="myFile" type="file" /><br /><br />
+          <!-- 👍 
           Text : <input name="myText" type="text" placeholder="Text here.." /><br /><br />
           Spreadsheet ID : <input name="sheetId" type="text" placeholder="ID here.." /><br /><br />
+          👍 -->
           <input type="submit" value="Submit" />
           </fieldset>
     </form>

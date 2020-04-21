@@ -1,10 +1,72 @@
 # Work Log
 
-## 2020-04-20
+## 2020-04-21
+- For some reason, files created on Drive from Blob data (= input file of a submitted form) lose their MIME type and get corrupted. What I couldn't understand is that up until the file is uploaded to the server, and right before a Drive file is created with its data by calling [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)), the blob type is correct. The backend function `processForm()` of `draft_code\client-to-server\Code.js` was modified to illustrate the issue :
+
+    <br /><img src="/assets/2020-04-21 11_45_15-_corrupted-drive-files.gif" alt="Corrupted Drive Files" width="500"/><br />
+    
+- So basically, some fairy reliable resources and accepted examples on the web suggest to first process the submitted file with [`FileReader()`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), and pass it as a [data URL](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) to a backend function for a second process that extracts content type from it, [decodes the submitted base64 data](https://developers.google.com/apps-script/reference/utilities/utilities#base64Decode(String)), and calls [`Utilities.newBlob()`](https://developers.google.com/apps-script/reference/utilities/utilities#newBlob(Byte,String)) to create a new blob object for [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)).
+- Here is a basic draft code as a wrap-up of what I've understood so far from the examples I studied. For the time being, this focuses only on that content type issue. Further development is needed to process forms with multiple types of input data (not only file upload) :
+    - Frontend (client) :
+  
+        ```javascript
+        /* // Example 1
+        function sendFileToDrive(file) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var content = reader.result;
+                google.script.run.withSuccessHandler(updateProgressbar).uploadFileToDrive(content, file.name);
+            }
+            reader.readAsDataURL(file);
+        }
+        */
+        
+        // Example 2
+        function sendFileToDrive(file) {
+            var reader = new FileReader();
+            reader.onloadend = function (event) {
+                google.script.run.withSuccessHandler(updateProgressbar).uploadFileToDrive(event.target.result, file.name);
+            }
+            reader.readAsDataURL(file);
+        }
+        
+        // On form submit
+        function FileUpload() {
+            var allFiles = document.getElementById('myFile').files;
+            sendFileToDrive(allFiles[0]); // Since there is only 1 file
+        }
+        ```
+  
+    - Backend (Google Apps Script):
+
+        ```javascript
+        /* // Example 1
+        function uploadFileToDrive(base64Data, fileName) {
+        
+            var contentType = base64Data.substring(5, base64Data.indexOf(';'));
+            var bytes = Utilities.base64Decode(base64Data.substr(base64Data.indexOf('base64,') + 7));
+            var blob = Utilities.newBlob(bytes, contentType, fileName);
+            var driveFile = DriveApp.createFile(blob);
+        }
+        */
+        
+        // Example 2
+        function uploadFileToDrive(base64Data, fileName) {
+        
+            var splitBase = base64Data.split(',');
+            var contentType = splitBase[0].split(';')[0].replace('data:', '');
+            var bytes = Utilities.base64Decode(splitBase[1]);
+            var blob = Utilities.newBlob(bytes, contentType);
+            blob.setName(fileName);
+            var driveFile = DriveApp.createFile(blob);
+        }
+        ```
+
+## 2020-04-20 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/6f783eaec59ea7751ca44d7c438fcc8c4ed300cf/draft_code/client-to-server)
 - **Objective :** Provide a same web page / frontend to both get current app's parameters' values _(= prefill form fields on page load using [`google.script.run`](https://developers.google.com/apps-script/guides/html/reference/run) to call server-side "getters")_ and update them on submit.
 - Researching and testing code about [Google Apps Script Client-to-Server Communication](https://developers.google.com/apps-script/guides/html/communication)
 
-    <br /><img src="/assets/2020-04-20 23_47_11-c2s_demo.png" alt="C2S_Demo" width="900"/><br />
+    <br /><img src="/assets/2020-04-20 23_47_11-c2s_demo.png" alt="C2S_Demo" width="700"/><br />
 
 - There are still concepts that I'm trying to deeply understand how they imply or impact each other, namely script scopes, APIs' scopes, whether or not it is required to connect to a GCP project, deploying as "a web app" vs "API Executable"... For instance, I had to publish the app as "API Executable" to be able to run through the Apps Script API some initialization functions _(providing 'Logs' and 'Filters' spreadsheets' IDs...etc)_. But now, as I'm working on a frontend, I have to publish the app as "a web app" to issue client-to-server calls and provide a convenient way to show and update app's configs. So I guess, I will just make my best to both learn and enhance my code as I go.
 
