@@ -17,3 +17,5 @@
 | 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
 | 10/29/19 9:46 PM | autoReply   | Error sending email to RECIPIENT NAME . Please try again later. (line 99, file "Code")                                                           | time-based | 10/29/19 9:46 PM |
 | 11/16/19 4:42 PM | autoReply   | Service error: Spreadsheets                                                                                                                      | time-based | 11/16/19 4:46 PM |
+| 4/21/20 2:18 AM  | autoReply   | Service Spreadsheets failed while accessing document with id 1S8G5Ffa7dHZbxB7d_pGoKkszq9mUhAaC3QII2gLftis. (line 63, file "Code")                | time-based | 4/21/20 2:20 AM  |
+| 3/12/20 3:06 AM  | autoReply   | Service Spreadsheets timed out while accessing document with id 1jklp1CxY_tShF_8uCky7P8IB_qH7vtTPLnZs56pSdX8. (line 63, file "Code")             | time-based | 3/12/20 3:07 AM  | 

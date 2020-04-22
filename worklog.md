@@ -1,6 +1,23 @@
 # Work Log
 
-## 2020-04-21
+<br />
+
+> _**In progress :** translating old entries from the original [french worklog](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md)._
+
+<br />
+
+<!-- ----------------------------------------------------------------------- -->
+
+## 2020-04-22
+- Got a basic file upload example to work properly.
+- First working frontend example that retrieves App settings from backend.
+
+    <br /><img src="/assets/2020-04-22 23_51_20-demo-load-settings.gif" alt="Demo Load From Backend" width="700"/><br />
+
+- Refined a little bit `worklog.md`.
+
+
+## 2020-04-21 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/22a47df9cd312c2dcfb28bf41dbc5617e901f829/draft_code/client-to-server)
 - For some reason, files created on Drive from Blob data (= input file of a submitted form) lose their MIME type and get corrupted. What I couldn't understand is that up until the file is uploaded to the server, and right before a Drive file is created with its data by calling [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)), the blob type is correct. The backend function `processForm()` of `draft_code\client-to-server\Code.js` was modified to illustrate the issue :
 
     <br /><img src="/assets/2020-04-21 11_45_15-_corrupted-drive-files.gif" alt="Corrupted Drive Files" width="500"/><br />
@@ -69,6 +86,13 @@
     <br /><img src="/assets/2020-04-20 23_47_11-c2s_demo.png" alt="C2S_Demo" width="700"/><br />
 
 - There are still concepts that I'm trying to deeply understand how they imply or impact each other, namely script scopes, APIs' scopes, whether or not it is required to connect to a GCP project, deploying as "a web app" vs "API Executable"... For instance, I had to publish the app as "API Executable" to be able to run through the Apps Script API some initialization functions _(providing 'Logs' and 'Filters' spreadsheets' IDs...etc)_. But now, as I'm working on a frontend, I have to publish the app as "a web app" to issue client-to-server calls and provide a convenient way to show and update app's configs. So I guess, I will just make my best to both learn and enhance my code as I go.
+   
+<br />
+
+> ## 2020-04-19 : _Missed_ 😔
+> _But hey, I normally “code” more than 1 hour a day! C'mon, it's not that bad!_
+
+<br />  
 
 ## 2020-04-18
 - Working on a basic HTML file that will let us "get" and/or "set" app's parameters.
@@ -165,7 +189,7 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 ----------------
 
-*Worklog entries, to be translated from `worklog-fr.md`.*
+*Entries to be translated from the [old worklog](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md) :*
 
 ## 2018-09-10
 …
@@ -175,10 +199,78 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 ## …
 
-## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/15601924647c0576cf0d1f88ca486a67e25c7a73/Code.js)
 
+## 2017-08-17 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/95193ad863ea52cd2eb06162e30fc608239bbefa/Code.js)
+_Original :_
+> Optimisation du code :
+> - Améliorations apportées ou en cours de développement :
+>     - Lecture de configurations depuis un document `Google Spreadsheets` (`Autorespond-config`),
+>     - Enregistrement (journalisation) et vérification des informations identifiant les messages traités dans/depuis un document `Google Spreadsheets` (`Autorespond-log`),
+>     - Définition de fonctions génériques pour vérifier les données des en-têtes des messages contre les données extraites des documents précités,
+>     - Récupération du message de réponse automatique (corps HTML) depuis un emplacement sécurisé sur l’espace d’hébergement web de la société.
+>     - Utilisation d’une combinaison de configurations pour filtrer les messages à traiter,
+
+
+## 2017-08-11
+_Original :_
+> Test et évaluation de la lecture et écriture de données sur des documents `Google Spreadsheet`, pour la journalisation des opérations et la lecture de configurations.
+
+
+## 2017-08-09
+_Original :_
+> Améliorations du code : Premiers essais et évaluation d’une journalisation des opérations vers des documents `Google Spreadsheet`, proprité du même compte Google exécutant le script.
+
+
+## 2017-08-08
+_Original :_
+> La solution finalement retenue et implémentée pour le stockage et l’importation du contenu du corps de message de réponse est l’hébergement d’un fichier HTML sur notre espace web, sous un répertoire protégé par nom d’utilisateur et un mot de passe. Tests et validation.
+
+
+## 2017-08-07
+_Original :_
+> **_Problématique_** : Inclusion d’un texte unique dans le corps du message de réponse sans aucune mention d’informations de contact au format texte. La solution envisagée et d’inclure un tableau de contacts sous format Image dans le corps du message.
+> **Améliorations étudiées** :
+> - Inclusion du corps de message au format HTML depuis un fichier externe :
+>     - Cas d’un fichier texte au format HTML stocké sur `Google Drive`. **Difficulté** : Aucune procédure simple et fonctionnelle n’a été trouvée pour lire le contenu brut d’un fichier texte stocké sur `Google Drive`.
+>     - Cas d’un document `Google Docs` exporté au format HTML. **Difficulté** : Il était possible de récupérer le contenu d’un document `Google Docs` sous forme de code HTML et l’insérer dans le corps du message de réponse, mais l’image est par défaut bloquée par la plupart des clients de messagerie modernes puisqu’elle est hébergée dans un emplacement externe.
+>     - Cas d’un fichier texte au format HTML récupéré via un URL : Un fichier contenant le contenu du corps du message au format HTML a été stocké sur notre espace d’hébergement web, et récupéré via l’URL `http://mycompany.com/email_body.html`. L’image présentant le tableau des contacts y a été codée en Base64 . **Difficulté** : Le corps du message généré dépasse ainsi la taille maximale autorisée pour un script/projet `Google Apps Script`.
+
+
+## 2017-08-02
+_Original :_
+> Optimisation du code source du script associé à la boîte email `operations@mycompany.com` :
+> - Exclusion des messages (souvent spam) dont la destination est anonyme (`undisclosed-recipients`)
+> - Exclusion des messages automatiques envoyés depuis des administrateurs de serveurs de messagerie (`mailer-daemon`, `postmaster`)
+> - Exclusion des accusés de lecture et des rapports de remise.
+
+
+## 2017-08-01
+_Original :_
+> Coordination avec l’équipe des opérations et discussions à propos de la meilleure stratégie à adopter pour la programmation des messages de réponse automatique envisagée hors les heures de travail.
+
+
+## 2017-07-29
+_Original :_
+> - Véirication des résultats de la première exécution programmée entre 06:00GMT et 20:00GMT.
+> - **Idées pour amélioration:**
+>     - Exclusion des accusés de lecture. Il va falloir interpréter en-avale les en-têtes dans le code source (en-têtes) de chaque email traité afin de vérifier si le contenu [MIME](https://en.wikipedia.org/wiki/MIME#Report) `multipart/report` est de type : `report-type=disposition-notification`.
+>     - Précautions pour assurer une exécution continue du programme jusqu’à la fin de la plage horaire prédéfinie. Cela dépend de plusieurs facteurs :
+>         - Le temps d’exécution maximal autorisé durant une journée (24h). Les références en ligne à ce sujet ([documentation Google officielle](https://developers.google.com/apps-script/guides/services/quotas#current_limitations) comprise) laissent des ambiguïtés : ce serait entre [1h](https://webapps.stackexchange.com/a/90089) et [6h](https://developers.google.com/apps-script/guides/services/quotas#current_quotas). Par conséquent, l’intervalle de temps entre chaque exécution du script devra être convenablement choisi selon le temps moyen nécessaire pour le traitement des derniers messages reçus sur le compte mail.
+>         - Le fuseau horaire et l’heure d’été. Afin d’éviter toute confusion, [Google utilise à la base l’heure UTC sur ses plateformes et services](https://support.google.com/calendar/answer/37064?hl=en), y compris Google Apps Script. Par conséquent, et suite aux changements de l’heure locale, il serait difficile d’inclure des référence horaires dynamiques dans le code source du script ou bien de les modifier manuellement à chaque changement. A concevoir donc, éventuellement, une solution pour adapter automatiquement la plage horaire. En attendant, une plage horaire plus inclusive ; 19h-6h (GMT), soit 20h-7h (GMT+1), sera utilisée.
+>         - Voir la possibilité de vérifier l’authenticité des expéditeurs (signatures des e-mails…)
+>         - Externaliser les filtres et les contenus personnalisés pour une meilleure portabilité du code.
+
+
+## 2017-07-28 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/328c9e135917e3ea50b523039dace52472977bc7/Code.js)
 _Original :_  
+> - Fin de développement de la première version du script.
+> - Première exécution (automatique) de test pour la boîte email `operations@mycompany.com` prévue entre 28/07/2017, 20:00GMT et 29/07/2017 06:00GMT.
+>    
+> ![2017-07-28 - Gmail-Autoresponder](assets/2017-07-28%20-%20Gmail-Autoresponder.png)
 
+
+## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/15601924647c0576cf0d1f88ca486a67e25c7a73/Code.js)
+_Original :_  
 > Continuation de l’étude et développement.
 > - **Spécifications et cahier de charges** :
 >     - Le script sera configuré pour exécution automatique régulière entre 20h et 6h sur chaque compte utilisateur Google.
@@ -189,7 +281,6 @@ _Original :_
 >     - Attribution du libellé Gmail `_autoRep` pour marquer le message comme traité.
 
 
-
 ## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/6f6100735ee16a48a7d1ada8c79a07915ab96108/Code.js)
 Developing a first prototype of a script to send automatic responses to emails received in a specific timeframe of each day.
 
@@ -198,4 +289,4 @@ Developing a first prototype of a script to send automatic responses to emails r
 <br />
 
 -------------
-_Archived version, from an old commit, of the original worklog (in French) : [worklog.md](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md)_
+_Archived version (from an old commit) of the original french worklog : [worklog.md](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md)_
