@@ -36,7 +36,7 @@
         button.value = 'Clicked by ' + email;
       }
       
-      /*####### Form #######*/
+      /*####### Form 1 #######*/
       function handleFormSubmit(formObject) {
         google.script.run
         .withSuccessHandler(getMyDriveFile)
@@ -53,6 +53,39 @@
         var div = document.getElementById('output2');
         div.innerHTML = "FORM SUBMIT ERROR: " + error.message;
       }
+      
+      /*####### Form 2 #######*/
+      
+      // Upload file as Base64 data to Drive
+      function sendFileToDrive(file) {
+        var reader = new FileReader();
+        reader.onloadend = function (event) {
+        google.script.run
+        .withSuccessHandler(gotDriveFile)
+        .withFailureHandler(showForm2SubmitError)
+        .uploadFileToDrive(event.target.result, file.name);
+        }
+        reader.readAsDataURL(file);
+      }
+      
+      // On Form 2 submit
+      function FileUpload() {
+        var Files = document.getElementById('myFile2').files;
+        sendFileToDrive(Files[0]);
+      }
+      
+      // Form 2 : SUCCESS
+      function gotDriveFile(driveFile) {
+        var div = document.getElementById('output-form2');
+        div.innerHTML = 'File successfully uploaded to Drive. You can access it through <a href="' + driveFile + '" target="_blank">this link</a>';
+      }
+      
+      // Form 2 : FAILURE
+      function showForm2SubmitError(error) {
+        var div = document.getElementById('output-form2');
+        div.innerHTML = "FORM SUBMIT ERROR: " + error.message;
+      }
+      
 
     </script>
   </head>
@@ -76,7 +109,7 @@
     
     <form id="myForm" onsubmit="handleFormSubmit(this)">
       <fieldset>
-          <legend>Form :</legend>
+          <legend>Form 1 (File → Blob → Drive):</legend>
           <input name="myFile" type="file" /><br /><br />
           <!-- 👍 
           Text : <input name="myText" type="text" placeholder="Text here.." /><br /><br />
@@ -86,5 +119,18 @@
           </fieldset>
     </form>
     <div id="output2"></div>
+    
+    <br /><br />
+    
+    <form id="myForm2" onsubmit="">
+      <fieldset>
+          <legend>Form 2 (File → Base64 → [Blob + type] → Drive):</legend>
+          <!-- File name : <input id="myFile2Name" type="text" placeholder="Name with extension.." /><br /><br /> -->
+          <input id="myFile2" type="file" /><br /><br />
+          <input type="submit" value="Submit" onclick="FileUpload()"/>
+      </fieldset>
+    </form>
+    <div id="output-form2"></div>
+    
   </body>
 </html>

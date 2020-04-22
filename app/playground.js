@@ -69,4 +69,7 @@ function myFunction() {
   /*** Daylight Saving Time offset ***/
   //var dstOffset = userProperties.getProperty('DST_OFFSET')?userProperties.getProperty('DST_OFFSET'):0;
   var dstOffset = userProperties.getProperty('DST_OFFSET');
+  
+  //set_properties('11111111', '22222222', '333333333', '4444444444', '555555555', '66666666666');
+  Logger.log(userProperties.getProperties());
 }

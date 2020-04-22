@@ -39,21 +39,21 @@ function ColumnValues(sheet, column, remove_header){
 
 /** Set 'FILTERS', 'LOGS' spreadsheets IDs, ... **/
 
-function set_properties(FiltersSSId, LogSSId /*, StartHour, FinishHour, Interval, CcEmailAdrs, GSuiteNoReplyFlag*/) {
+function set_properties(FiltersSSId, LogSSId, StartHour, FinishHour, TimeInterval, DSTOffset /*, CcEmailAdrs, GSuiteNoReplyFlag*/) {
   
   var userProperties = PropertiesService.getUserProperties();
   
   userProperties.setProperty('FILTERS_SS_ID', FiltersSSId);
   userProperties.setProperty('LOG_SS_ID', LogSSId);
+  userProperties.setProperty('START_HOUR', StartHour);
+  userProperties.setProperty('FINISH_HOUR', FinishHour);
+  userProperties.setProperty('TIME_INTERVAL', TimeInterval);
+  userProperties.setProperty('DST_OFFSET', DSTOffset);
   
   /** Other properties **/
   
-  // Start hour
-  // Finish hour
-  // Interval
-  // DST offset
   // Cc email address (optional)
-  // noReply (boolean, only when applicable)
+  // noReply flag (boolean, only when applicable)
   
   // Add return value 
 }

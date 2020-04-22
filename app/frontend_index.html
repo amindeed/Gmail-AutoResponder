@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
-    
     <script>
     // Prevent forms from submitting.
     function preventFormSubmit() {
@@ -13,28 +15,83 @@
             });
         }
     }
-    
     window.addEventListener('load', preventFormSubmit);
-
-    function handleFormSubmit(formObject) {
-        //google.script.run.withSuccessHandler(runOnSuccess).processForm(formObject);
-    }
-
-    // function to be executed if everything was done successfully.
-    function runOnSuccess() {
-        //var div = document.getElementById('addRemdrForm');
-        //div.innerHTML = '<h4 align=\"center\"><i class=\"fa fa-calendar-check-o\" aria-hidden=\"true\"></i> Reminder created succesfully!</h4>';
-    }
-    </script>
     
+    
+      // Update current page with settings loaded from backend
+      function onSuccess(settings) {
+        document.getElementById("userphoto").innerHTML = '<img src="' + settings[0] + '" alt="User Photo">';
+        //document.getElementById("useremail").insertAdjacentHTML('beforeend', settings[1]);
+        document.getElementById("useremail").innerHTML = '<strong>Logged in as : </strong>' + "test454148@amindeed.com";
+        document.getElementById("filtersssid").value = settings[2];
+        document.getElementById("logsssid").value = settings[3];
+        document.getElementById("starthour").value = settings[4];
+        document.getElementById("finishhour").value = settings[5];
+        document.getElementById("timeinterval").value = settings[6];
+        document.getElementById("dstoffset").value = settings[7];
+        document.getElementById("load-save-outputs").insertAdjacentHTML('beforeend', "SETTINGS ARRAY : " + settings + "<br />");
+      }
+      
+    
+      
+      function onFailure(error) {
+        var div = document.getElementById('load-save-outputs');
+        //div.innerHTML = "SERVER ERROR: " + error.message;
+        div.insertAdjacentHTML('beforeend', "SERVER ERROR: " + error.message + "<br />");
+      }
+      
+      /*** Uncomment if you want to load settings on page load
+      google.script.run
+          .withSuccessHandler(onSuccess)
+          .withFailureHandler(onFailure)
+          .getSettings();
+       ***/
+    
+    
+    /*######## Save settings to backend ########*/
+    
+    function saveSettings(formObject) {
+       google.script.run
+            .withFailureHandler(onFailure)
+            .setSettings(formObject);
+    }
+    
+    </script>
+    <title>Gmail AutoResponder</title>
   </head>
   <body>
+    <h2>Gmail AutoResponder</h2>
     
-    <form onsubmit="handleFormSubmit(this)">
+    <input type="button" value="Reload Settings" 
+           onclick="google.script.run
+                    .withSuccessHandler(onSuccess)
+                    .withFailureHandler(onFailure)
+                    .getSettings()" />
+    <br /><br />
+  
+    <div id="userphoto"></div> <br />
     
+    <div id="useremail"><strong>Logged in as : </strong></div> <br />
+    
+    <form id="gmasettings" onsubmit="saveSettings(this)">
+      <fieldset>
+        <legend>Settings</legend>
+        Filters Spreadsheet ID : <input id="filtersssid" type="text" /><br /><br />
+        Logs Spreadsheet ID : <input id="logsssid" type="text" /><br /><br />
+        Start Hour : <input id="starthour" type="text" /><br /><br />
+        Finish Hour : <input id="finishhour" type="text" /><br /><br />
+        Time Zone : <input id="timezone" type="text" disabled /><br /><br />
+        Time Interval : <input id="timeinterval" type="text" /><br /><br />
+        Daylight Saving Time Offset : <input id="dstoffset" type="text" /><br /><br />
+        Cc Email Address : <input id="ccemailadr" type="text" disabled /><br /><br />
+        Reply with 'noreply' address? 
+           <input type="radio" name="noreply" value="Yes" disabled> Yes 
+           <input type="radio" name="noreply" value="No" disabled checked> No <br /><br />
+        Message Body : <textarea id="msgbody" disabled></textarea><br /><br />
+        <input type="submit" value="Save" onclick="saveSettings()" />
+      </fieldset>
     </form>
+    <div id="load-save-outputs"></div>
     
   </body>
 </html>
-
-
