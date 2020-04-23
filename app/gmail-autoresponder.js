@@ -39,23 +39,23 @@ function ColumnValues(sheet, column, remove_header){
 
 /** Set 'FILTERS', 'LOGS' spreadsheets IDs, ... **/
 
-function set_properties(FiltersSSId, LogSSId, StartHour, FinishHour, TimeInterval, DSTOffset /*, CcEmailAdrs, GSuiteNoReplyFlag*/) {
+function objSetproperties(objParams) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  userProperties.setProperty('FILTERS_SS_ID', FiltersSSId);
-  userProperties.setProperty('LOG_SS_ID', LogSSId);
-  userProperties.setProperty('START_HOUR', StartHour);
-  userProperties.setProperty('FINISH_HOUR', FinishHour);
-  userProperties.setProperty('TIME_INTERVAL', TimeInterval);
-  userProperties.setProperty('DST_OFFSET', DSTOffset);
+  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
+  userProperties.setProperty('LOG_SS_ID', objParams['logsssid']);
+  userProperties.setProperty('START_HOUR', objParams['starthour']);
+  userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
+  userProperties.setProperty('TIME_INTERVAL', objParams['timeinterval']);
+  userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
   
   /** Other properties **/
   
   // Cc email address (optional)
   // noReply flag (boolean, only when applicable)
   
-  // Add return value 
+  // return up-to-date properties
 }
 
 
@@ -129,4 +129,29 @@ function getFirstEmptyRow(sheet, column) {
     ct++;
   }
   return (ct+1);
+}
+
+
+/** Frontend (1) **/
+
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('frontend_index');
+}
+
+
+/** Frontend (2) **/
+function objGetSettings(){
+  var settingsObj = {};
+  var driveRoot = DriveApp.getRootFolder();
+  var driveUser = driveRoot.getOwner();
+  settingsObj['userPhotoUrl'] = driveUser.getPhotoUrl().replace(/=s.*$/,'');
+  settingsObj['userEmail'] = Session.getEffectiveUser().getEmail(); 
+  var userProperties = PropertiesService.getUserProperties();
+  settingsObj['filtersssid'] = userProperties.getProperty('FILTERS_SS_ID');
+  settingsObj['logsssid'] = userProperties.getProperty('LOG_SS_ID');
+  settingsObj['starthour'] = userProperties.getProperty('START_HOUR');
+  settingsObj['finishhour'] = userProperties.getProperty('FINISH_HOUR');
+  settingsObj['timeinterval'] = userProperties.getProperty('TIME_INTERVAL');
+  settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
+  return settingsObj;
 }

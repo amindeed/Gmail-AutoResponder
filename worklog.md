@@ -8,11 +8,24 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-04-23
+- Basic frontend example can now **"set"** Apps' settings.
+- A couple of backend functions now use objects as parameters, instead of arrays. Consequently, there was one less function needed which was removed.
+- Added some basic styling to highlight data retrieved from backend app.
+
+    <br /><img src="/assets/2020-04-23 17_37_40-demo_basic_get_set.gif" alt="Basic Get/Set" width="500"/><br />
+    
+- All frontend functions moved to `gmail-autoresponder.js`.
+
+
 ## 2020-04-22
 - Got a basic file upload example to work properly.
+
+    <br /><img src="/assets/2020-04-23 00_07_14-sucess-upload-drive.gif" alt="Successful Upload to Drive" width="500"/><br />
+
 - First working frontend example that retrieves App settings from backend.
 
-    <br /><img src="/assets/2020-04-22 23_51_20-demo-load-settings.gif" alt="Demo Load From Backend" width="700"/><br />
+    <br /><img src="/assets/2020-04-22 23_51_20-demo-load-settings.gif" alt="Demo Load From Backend" width="500"/><br />
 
 - Refined a little bit `worklog.md`.
 
