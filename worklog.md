@@ -8,7 +8,17 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
-## 2020-04-23
+## 2020-04-24
+- Enhanced code across the repository :
+    - `Code.js` : get all parameters from script user properties, otherwise assign default values.
+    - Replaced `LOG_SS_ID` with `LOGS_SS_ID`.
+    - `frontend_index.html` : 
+        - Added link to revoke script's access to user data (logout). 
+        - Added default values next to.input fields
+- Refined/Updated `README.md` and `worklog.md`.
+
+
+## 2020-04-23 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/5aee4c4b20ac17c5e730c271471f7ed9dbd94c3d/app)
 - Basic frontend example can now **"set"** Apps' settings.
 - A couple of backend functions now use objects as parameters, instead of arrays. Consequently, there was one less function needed which was removed.
 - Added some basic styling to highlight data retrieved from backend app.
@@ -19,11 +29,11 @@
 
 
 ## 2020-04-22
-- Got a basic file upload example to work properly.
+- Got a basic file upload example to work properly. **[(Code)](https://github.com/amindeed/Gmail-AutoResponder/tree/020eca4709463f3262002dac292bb2aca472ae63/draft_code/client-to-server)**
 
     <br /><img src="/assets/2020-04-23 00_07_14-sucess-upload-drive.gif" alt="Successful Upload to Drive" width="500"/><br />
 
-- First working frontend example that retrieves App settings from backend.
+- First working frontend example that retrieves App settings from backend. **Code : [`frontend_index.html`](https://github.com/amindeed/Gmail-AutoResponder/blob/020eca4709463f3262002dac292bb2aca472ae63/app/frontend_index.html), [`frontend.js`](https://github.com/amindeed/Gmail-AutoResponder/blob/020eca4709463f3262002dac292bb2aca472ae63/app/frontend.js)**
 
     <br /><img src="/assets/2020-04-22 23_51_20-demo-load-settings.gif" alt="Demo Load From Backend" width="500"/><br />
 
@@ -116,7 +126,7 @@
         - Message body (HTML)
         - Script user's parameters :
             - `FILTERS_SS_ID`
-            - `LOG_SS_ID`
+            - `LOGS_SS_ID`
             - `START_HOUR`
             - `FINISH_HOUR`
             - `TIME_INTERVAL`
@@ -211,6 +221,56 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 
 ## …
+
+## 2017-08-24
+_Original :_
+> Bilan de l’exécution du programme pour le compte `operations@mycompany.com` :
+> - 24 réponses automatiques envoyées entre 21:06 et 06:26 (heure locale).
+> - La stratégie adoptée par les services et applications Google pour déterminer l’heure exacte des événements (l’heure de réception des messages en l’occurrence) porte plutôt à confusion. Par conséquent, comme Google affirme  qu’elle [utilise l’heure UTC](https://support.google.com/calendar/answer/37064?hl=en) sur ses services en ligne, une plage horaire plus large sera utilisée pour que l’intervalle **20h-06h** (heure locale) soit toujours couvert malgré les éventuels changements (i.e. début, suspension et fin de l’heure d’été). La ligne de code suivante :
+>     - `if (((hour < 6) || (hour >= 20)) && ((threads = GmailApp.search('is:inbox after:' + timeFrom)).length !== 0)) {` sera donc modifié en :
+>     - **`if (((hour < 6) || (hour >= 19)) && ((threads = GmailApp.search('is:inbox after:' + timeFrom)).length !== 0)) {`**.
+> - Confirmation avec l'équipe des Opérations de la liste des contacts à exclure de la réponse automatique.
+> - Désinscription de quelques newsletters via les liens fournis dans les corps de leurs messages respectifs.
+> - Modification du message de réponse automatique : l’adresse de modération `amine@mycompany.com` en `Cci` au lieu de `Cc`.
+> - Groupement des fichiers du programme dans un même dossier sous `Google Drive`. Partage avec le compte Google de `AMINE` (lecture et modification) pour faciliter (centraliser) les consultations et les mises à jour.
+
+
+## 2017-08-23 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/d2bd4d61f82f5c7d3263340f00c7b4bf60527633/Code.js)
+_Original :_
+> Fin du développement de la deuxième version (améliorée).
+> - Tests appliqués et réussis :
+>     - Exclusion des conversations Gmail (avec de nouveau message) au-delà des dernières 10 minutes
+>     - Exclusions des messages envoyés depuis des adresses avec les alias `MAILER-DAEMON@*` et `postmaster@*`
+>     - Exclusion des messages en provenance des adresses emails de `MyCompany` (domaine principal + tous les domaines alias)
+>     - Exclusion des accusés de lecture
+>     - Exclusion des messages avec des destinations anonymes (`undisclosed-recipients`)
+>     - Exclusion des messages déjà traités (i.e. journalisés sur le fichier `Autorespond-log`)
+
+
+## 2017-08-22
+_Original :_
+> Correction et amélioration du code :
+> - Résolu : Interprétation comme expression régulière des chaînes de caractères extraites des fichiers de configuration.
+> - Tests, adaptations et corrections.
+
+
+## 2017-08-19
+_Original :_
+> Problèmes en cours de traitement :
+> - Le contenu extrait des cellules de la feuille `From_regex_blacklist` du document `Google Spreadsheet` `Autorespond-config`, par la fonction `MatchesRegex()` ne semble pas être correctement interprété comme étant une expression régulière contre laquelle l’expéditeur devrait être vérifié afin d’exclure les adresses email de `MyCompany` ainsi que les adresses emails d’administrateur système réservées `postmaster@...` et `mailer-daemon@...`.
+> - La fonction `ContainsString()` appliquée sur les en-têtes de l’email (i.e. message brut/original) ne détecte pas la présence des expressions `report-type=disposition-notification` et `report-type=delivery-status`, ce qui aurait permis l’exclusion des accusés de lecture et des rapports de remise.
+
+
+## 2017-08-18 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/f948d191cc8f2856a21768ef1621029f790d0aa7/Code.js)
+_Original :_
+> - Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents `Google Spreadsheet` (configurations et journaux `Logs`). Le fichier des configuration `Autorespond-config` contient les feuilles suivantes: `To_whitelist`, `To_regex_whitelist`, `To_blacklist`, `To_regex_blacklist`, `From_whitelist`, `From_regex_whitelist`, `From_blacklist`, `From_regex_blacklist`, `msgHeaders_blacklist`, `msgHeaders_regex_blacklist`.
+> - Un modèle du fichier `Autorespond-config` sera ultérieurement ajouté au code source sous le format XLSX.
+> 
+> ![2017-08-23 - Gmail-Autoresponder](assets/2017-08-23%20-%20Gmail-Autoresponder.png)
+> 
+> - Test et débogage du code.
+> 
+> ![2017-08-18 - Gmail-AutoResponder](assets/2017-08-18%20-%20Gmail-AutoResponder.png)
 
 
 ## 2017-08-17 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/95193ad863ea52cd2eb06162e30fc608239bbefa/Code.js)

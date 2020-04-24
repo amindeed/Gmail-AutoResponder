@@ -7,7 +7,7 @@ function init_runOnce(DriveDirName) {
   
   /** Rename and move 'FILTERS' and 'LOGS' spreadsheets to the created directory **/
   var FiltersSSId = userProperties.getProperty('FILTERS_SS_ID');
-  var LogsSSId = userProperties.getProperty('LOG_SS_ID');
+  var LogsSSId = userProperties.getProperty('LOGS_SS_ID');
   var filters = DriveApp.getFileById(FiltersSSId);
   var logs = DriveApp.getFileById(LogsSSId);
   // Rename 'filters'

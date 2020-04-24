@@ -107,6 +107,8 @@
           
     <br /> <br />
     
+    <!-- 'myForm' has a content type issue corrupting the uploaded file -->
+    <!-- Code from : https://developers.google.com/apps-script/guides/html/communication#forms -->
     <form id="myForm" onsubmit="handleFormSubmit(this)">
       <fieldset>
           <legend>Form 1 (File → Blob → Drive):</legend>
@@ -122,6 +124,7 @@
     
     <br /><br />
     
+    <!-- 'myForm2' uploads files without issues to Drive-->
     <form id="myForm2" onsubmit="">
       <fieldset>
           <legend>Form 2 (File → Base64 → [Blob + type] → Drive):</legend>

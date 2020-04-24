@@ -44,7 +44,7 @@ function objSetproperties(objParams) {
   var userProperties = PropertiesService.getUserProperties();
   
   userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
-  userProperties.setProperty('LOG_SS_ID', objParams['logsssid']);
+  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']);
   userProperties.setProperty('START_HOUR', objParams['starthour']);
   userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
   userProperties.setProperty('TIME_INTERVAL', objParams['timeinterval']);
@@ -63,7 +63,7 @@ function objSetproperties(objParams) {
 
 function archive_log() {
    
-  var LogSSId = userProperties.getProperty('LOG_SS_ID');
+  var LogSSId = userProperties.getProperty('LOGS_SS_ID');
   var log = SpreadsheetApp.openById(LogSSId);
   var ops_log_sheet = log.setActiveSheet(log.getSheets()[0]);
   
@@ -148,7 +148,7 @@ function objGetSettings(){
   settingsObj['userEmail'] = Session.getEffectiveUser().getEmail(); 
   var userProperties = PropertiesService.getUserProperties();
   settingsObj['filtersssid'] = userProperties.getProperty('FILTERS_SS_ID');
-  settingsObj['logsssid'] = userProperties.getProperty('LOG_SS_ID');
+  settingsObj['logsssid'] = userProperties.getProperty('LOGS_SS_ID');
   settingsObj['starthour'] = userProperties.getProperty('START_HOUR');
   settingsObj['finishhour'] = userProperties.getProperty('FINISH_HOUR');
   settingsObj['timeinterval'] = userProperties.getProperty('TIME_INTERVAL');

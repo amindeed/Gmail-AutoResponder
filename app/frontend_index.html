@@ -22,8 +22,8 @@
       // Update current page with settings loaded from backend
       function onObjGetSuccess(settings) {
         document.getElementById("userphoto").innerHTML = '<img src="' + settings['userPhotoUrl'] + '" alt="User Photo">';
-        //document.getElementById("useremail").innerHTML = '<strong>Logged in as : </strong>' + settings['userEmail'];
         document.getElementById("myemailaddress").textContent = settings['userEmail'];
+        document.getElementById("useremail").insertAdjacentHTML('beforeend', '<em>(<a href="https://security.google.com/settings/security/permissions" target="_blank">Revoke access?</a>)</em>');
         document.getElementById("filtersssid").value = settings['filtersssid'];
         document.getElementById("logsssid").value = settings['logsssid'];
         document.getElementById("starthour").value = settings['starthour'];
@@ -78,22 +78,25 @@
   
     <div id="userphoto"></div> <br />
     
-    <strong>Logged in as : </strong><span id="myemailaddress"></span> <br /><br />
+    <div id="useremail"><strong>Logged in as : </strong><span id="myemailaddress"></span> </div> <br /><br />
     
     <form id="gmasettings" onsubmit="saveSettings(this)">
       <fieldset>
         <legend>Settings</legend>
         Filters Spreadsheet ID : <input id="filtersssid" name="filtersssid" type="text" /><br /><br />
         Logs Spreadsheet ID : <input id="logsssid" name="logsssid" type="text" /><br /><br />
-        Start Hour : <input id="starthour" name="starthour" type="text" /><br /><br />
-        Finish Hour : <input id="finishhour" name="finishhour" type="text" /><br /><br />
+        Start Hour : <input id="starthour" name="starthour" type="text" /><em> (default: 17)</em><br /><br />
+        Finish Hour : <input id="finishhour" name="finishhour" type="text" /><em> (default: 8)</em><br /><br />
         Time Zone : <input id="timezone" name="timezone" type="text" disabled /><br /><br />
-        Time Interval : <input id="timeinterval" name="timeinterval" type="text" /><br /><br />
-        Daylight Saving Time Offset : <input id="dstoffset" name="dstoffset" type="text" /><br /><br />
+        Time Interval : <input id="timeinterval" name="timeinterval" type="text" /><em> (default : 10)</em><br /><br />
+        Daylight Saving Time Offset : <input id="dstoffset" name="dstoffset" type="text" /><em> (default: 0)</em><br /><br />
         Cc Email Address : <input id="ccemailadr" name="ccemailadr" type="text" disabled /><br /><br />
         Reply with 'noreply' address? 
            <input type="radio" name="noreply" value="Yes" disabled> Yes 
            <input type="radio" name="noreply" value="No" disabled checked> No <br /><br />
+        Star processed messages in Gmail 
+           <input type="radio" name="starmsg" value="Yes" disabled checked> Yes 
+           <input type="radio" name="starmsg" value="No" disabled> No <br /><br />
         Message Body : <textarea id="msgbody" name="msgbody" disabled></textarea><br /><br />
         <input type="submit" value="Save" />
       </fieldset>

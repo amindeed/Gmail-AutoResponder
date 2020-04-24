@@ -6,17 +6,17 @@ There are two types of processed messages:
 
 function autoReply() {
 
-  var INTERVAL = 10;    // To execute the script after each 10 min.
-  var START_HOUR = 20;    // Local time
-  var FINISH_HOUR = 6;    // Local time
-  var DST_OFFSET = 0; // DST offset
+  var userProperties = PropertiesService.getUserProperties();
+  var INTERVAL = userProperties.getProperty('TIME_INTERVAL')?userProperties.getProperty('TIME_INTERVAL'):10;    // To execute the script after each 10 min.
+  var START_HOUR = userProperties.getProperty('START_HOUR')?userProperties.getProperty('START_HOUR'):17;    // Local time
+  var FINISH_HOUR = userProperties.getProperty('FINISH_HOUR')?userProperties.getProperty('FINISH_HOUR'):8;    // Local time
+  var DST_OFFSET = userProperties.getProperty('DST_OFFSET')?userProperties.getProperty('DST_OFFSET'):0; // DST offset
   var date = new Date();
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
   var hour = date.getHours();    // Returns current hour only. ex. 12:33 --> 12
-  var userProperties = PropertiesService.getUserProperties();
   var FiltersSSId = userProperties.getProperty('FILTERS_SS_ID');
-  var LogSSId = userProperties.getProperty('LOG_SS_ID');
+  var LogSSId = userProperties.getProperty('LOGS_SS_ID');
   var threads = [];
 
   // Configs #1
