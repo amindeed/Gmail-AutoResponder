@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
-    <style>#myemailaddress, input[type=text] {color: red;} img {border: 7px solid red;}</style>
+    <style>#myemailaddress, input[type=text] {color: green;} img {border: 5px solid green;}</style>
     <script>
     // Prevent forms from submitting.
     function preventFormSubmit() {
@@ -19,49 +19,46 @@
     window.addEventListener('load', preventFormSubmit);
     
     
-      // Update current page with settings loaded from backend
+      // Load settings from backend
       function onObjGetSuccess(settings) {
         document.getElementById("userphoto").innerHTML = '<img src="' + settings['userPhotoUrl'] + '" alt="User Photo">';
         document.getElementById("myemailaddress").textContent = settings['userEmail'];
-        document.getElementById("useremail").insertAdjacentHTML('beforeend', '<em>(<a href="https://security.google.com/settings/security/permissions" target="_blank">Revoke access?</a>)</em>');
+        document.getElementById("revokeAccessLink").innerHTML = '<em>(<a href="https://security.google.com/settings/security/permissions" target="_blank">Revoke access</a>)</em>';
         document.getElementById("filtersssid").value = settings['filtersssid'];
         document.getElementById("logsssid").value = settings['logsssid'];
         document.getElementById("starthour").value = settings['starthour'];
         document.getElementById("finishhour").value = settings['finishhour'];
         document.getElementById("timeinterval").value = settings['timeinterval'];
         document.getElementById("dstoffset").value = settings['dstoffset'];
-        document.getElementById("load-save-outputs").insertAdjacentHTML('beforeend', "SETTINGS (GET) : " + settings + "<br />");
+        //alert("Settings loaded successfully!");
       }
       
-      
+      // Run on 'Set' (Save) or 'Get' (Load) failure
       function onFailure(error) {
-        var div = document.getElementById('load-save-outputs');
-        //div.innerHTML = "SERVER ERROR: " + error.message;
-        div.insertAdjacentHTML('beforeend', "SERVER ERROR: " + error.message + "<br />");
+        alert("ERROR : " + error.message);
       }
       
-      
-      /*** Uncomment if you want to load settings on page load
+      // Load settings on page load
+      /**
       google.script.run
            .withSuccessHandler(onObjGetSuccess)
            .withFailureHandler(onFailure)
            .objGetSettings();
-      ***/
+      **/
     
-    
-    /*######## Save settings to backend ########*/
-    
+      // Run on 'Set' (Save) success
       function onSetSuccess(settings) {
-        document.getElementById("load-save-outputs").insertAdjacentHTML('beforeend', "SETTINGS (SET) : " + settings + "<br />");
+        alert("Settings updated successfully!");
       }
       
+      // Save settings to backend 
       function saveSettings(formObject) {
          google.script.run
               .withSuccessHandler(onSetSuccess)
               .withFailureHandler(onFailure)
               .objSetproperties(formObject)
       }
-    
+      
     </script>
     <title>Gmail AutoResponder</title>
   </head>
@@ -72,13 +69,11 @@
            onclick="google.script.run
                     .withSuccessHandler(onObjGetSuccess)
                     .withFailureHandler(onFailure)
-                    .objGetSettings()" />
-                    
-    <br /><br />
+                    .objGetSettings()" /><br /><br />
   
     <div id="userphoto"></div> <br />
     
-    <div id="useremail"><strong>Logged in as : </strong><span id="myemailaddress"></span> </div> <br /><br />
+    <strong>Logged in as : </strong><span id="myemailaddress"></span> <span id="revokeAccessLink"></span> <br /><br />
     
     <form id="gmasettings" onsubmit="saveSettings(this)">
       <fieldset>
@@ -101,7 +96,6 @@
         <input type="submit" value="Save" />
       </fieldset>
     </form>
-    <div id="load-save-outputs"></div>
-    
+ 
   </body>
 </html>

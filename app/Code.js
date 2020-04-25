@@ -5,7 +5,7 @@ There are two types of processed messages:
 */
 
 function autoReply() {
-
+  
   var userProperties = PropertiesService.getUserProperties();
   var INTERVAL = userProperties.getProperty('TIME_INTERVAL')?userProperties.getProperty('TIME_INTERVAL'):10;    // To execute the script after each 10 min.
   var START_HOUR = userProperties.getProperty('START_HOUR')?userProperties.getProperty('START_HOUR'):17;    // Local time
@@ -86,6 +86,7 @@ function autoReply() {
                 messages[lastMsg].star();
 
                 // Log message that has been responded to
+                // Note that the ID of a Gmail thread is the ID of its first message
                 ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
                 var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
                 last_OpsLog_row.setBackgroundRGB(252,229,205);

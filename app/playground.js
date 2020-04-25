@@ -26,11 +26,6 @@ function myFunction() {
   //set_properties('11111111', '22222222', '333333333', '4444444444', '555555555', '66666666666');
   //Logger.log(userProperties.getProperties());
   
-  /** Function object property as base64 images **/
-  function images(){
-  images.defaultUserPhotoUrl = "";
-  }
-  
   
   /**** Testing objects
   
@@ -52,6 +47,16 @@ function myFunction() {
   
   ****/
   
-   Logger.log(objGetSettings());
+  //Logger.log(objGetSettings());
+  
+  //var userProperties = PropertiesService.getUserProperties();
+  //userProperties.deleteAllProperties();
+  
+  /*
+  var myObjA = {'keyA1': 'valueA1'};
+  var myObjB = {'keyB1': 'valueB1', 'keyB2': 'valueB2'};
+ 
+  myObjA['keyA2'] = myObjB['keyB3'];
+  */
   
 }

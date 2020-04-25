@@ -8,13 +8,34 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-04-25
+- Since it is [not possible](https://stackoverflow.com/a/44401527/3208373) to change script time zone from within a Script app, I'm trying to figure out a way for providing a "script user-side" time zone parameter that can be modified using the frontend, and leave script's time zone at "GMT+00".
+- A Google user isn't given a default profile picture if he has never set one manually. So, the app should provide an alternate/default picture in case [`getPhotoUrl()`](https://developers.google.com/apps-script/reference/drive/user#getPhotoUrl()) returns `null`.
+
+    <br /><img src="/assets/2020-04-25 11_36_11-test user photo.png" alt="No Profile Picture" width="500"/><br />
+    
+- Added a default user profile picture encoded in base64
+- It would make sense to retrieve app's settings on page load if a "enable/disable app" switch is used. There seem to be two choices for an app status switch :
+    - A boolean script user property to be set accordingly.
+    - Function(s) to create and delete triggers.
+- `raw_notes.md` revision :
+    - Deleted old non-needed entries.
+    - Moved some "TODO" entries to `TODO.md`.
+- Custom errors to be created for / thrown by `objSetproperties()` function :
+    - Provided Spreadsheets IDs are not valid, either because the resources do not exist or are not readable/writable by the script user.
+    - Invalid start/finish hours
+    - Invalid execution time interval 
+    - Invalid Cc email address.
+    - "Reply with 'noreply' address" is set for non G-Suite user.
+    - Message body exceeds maximum number of characters. Format/Content not allowed.
+
 ## 2020-04-24
 - Enhanced code across the repository :
     - `Code.js` : get all parameters from script user properties, otherwise assign default values.
     - Replaced `LOG_SS_ID` with `LOGS_SS_ID`.
     - `frontend_index.html` : 
         - Added link to revoke script's access to user data (logout). 
-        - Added default values next to.input fields
+        - Added default values next to input fields
 - Refined/Updated `README.md` and `worklog.md`.
 
 

@@ -1,10 +1,21 @@
 # TODO
 
-- Summary of app errors reported during more than 2 years of execution, to be addressed in future updates :
+- [ ] Web front-end to configure the application.
+- [ ] Script to automatically deploy and update the application on Google Apps Script platform.
+- [ ] Log why skipped messages (i.e. messages that have not been responded to) were filtered out : Add some sort of `Matched Filter` column to `Logs` spreadsheet
+- [ ] On `Filter spreadsheet`, save processed messages IDs as hyperlinks to the corresponding Gmail webmail pages. E.g. `https://mail.google.com/mail/u/0/#inbox/1662ab5d8414d32ab0`
+- [ ] Custom time interval for each selected week day.
+- [ ] Optimize writing to Google Sheets for large data using [batch operations](https://developers.google.com/apps-script/guides/support/best-practices#use_batch_operations)
+- [ ] Automatic updater
+- Advanced :
+    - [ ] Abstracting logging and filters reading features in order to make it easy to use other (and generic) data formats/sources/targets : _JSON, XML or any API accessible data store._ https://developers.google.com/apps-script/reference/content/
+    - [ ] Centrally manage multiple G-Suite users
+    - [ ] Use with any email provider (IMAP/SMTP, RESTful API)
+- Summary of app errors reported during more than 2 years of execution, with suggested code enhancements :
+    - > `Limit Exceeded: Email Body Size. (line 99, file "Code")`
 
 | Start            | Function    | Error Message                                                                                                                                    | Trigger    | End              |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ---------------- |
-| 10/07/2018 20:06 | autoReply   | Limit Exceeded: Email Body Size. (line 99, file "Code")                                                                                          | time-based | 10/07/2018 20:06 |
 | 10/04/2018 20:43 | autoReply   | Document 1qjB-QoZ17jLql6g4Zz1l6-xV8xlVlXu3I1m52WZOMrY is missing (perhaps it was deleted, or you don't have read access?) (line 22, file "Code") | time-based | 10/04/2018 20:44 |
 | 9/17/18 12:53 AM | autoReply   | Service error: Spreadsheets (line 63, file "Code")                                                                                               | time-based | 9/17/18 12:53 AM |
 | 7/26/18 11:16 PM | autoReply   | Gmail operation not allowed. (line 62, file "Code")                                                                                              | time-based | 7/26/18 11:16 PM |

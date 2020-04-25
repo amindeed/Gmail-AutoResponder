@@ -3,69 +3,19 @@
 *(This is to keep `README.md` clean)*
 
 - Deploy to Google Apps Script using GitHub Actions. (possible?)
-- [Development Environment - Importing and Exporting Projects  |  Apps Script](https://developers.google.com/apps-script/guides/import-export) ---> Check `clasp` instead.
-- All parameters as script user properties : https://developers.google.com/apps-script/guides/properties
-- Triggers :
-    - [Installable Triggers : Managing triggers programmatically](https://developers.google.com/apps-script/guides/triggers/installable#managing_triggers_programmatically)
-    - _Disable App :_ [Class ScriptApp - deleteTrigger(trigger)](https://developers.google.com/apps-script/reference/script/script-app#deleteTrigger(Trigger))
-    - [Class ClockTriggerBuilder](https://developers.google.com/apps-script/reference/script/clock-trigger-builder)
 - To decide whether or not to respond with a 'no-reply' email address :
     - [How to Check if the Google User has a G Suite Account - Digital Inspiration](https://www.labnol.org/code/20592-gsuite-account-check)
     - [gsuite - Google app script to check if an email exists in domain - Stack Overflow](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain)
-- I have given up the idea of making a "client-only app" and interact directly with Apps Script backend with a plain HTML5 file that could even be stored locally, as it seems that it's a good practice to implement a minimal sever-side authentication logic [https://stackoverflow.com/q/18280827/3208373] , [https://security.stackexchange.com/a/52886/37487]
-    - "...the JavaScript app is just plain old HTML and JS served from the same server to avoid XSS issues." [source](https://security.stackexchange.com/questions/19620/securing-a-javascript-single-page-app-with-restful-backend#comment32548_19625)
-    - "JAM stack" paradigm trend
-        - PWA: progressive web apps
-        - SSR: server side rendering
-            - Pros and some Cons of SSR (Vue.JS focused, but pretty generic)
-                - [Vue SSR Guide | Vue.js Server-Side Rendering Guide](https://ssr.vuejs.org/#what-is-server-side-rendering-ssr)
-        - SPA: single page application
-    - I have been analyzing local KeeWeb, for oauth authentication
-        - Remembering the lastest used location for key file (not browser's wide)
-    - [oauth - Security drawbacks for using short-lived access token in javascript client side - Information Security Stack Exchange](https://security.stackexchange.com/questions/13618/security-drawbacks-for-using-short-lived-access-token-in-javascript-client-side)
-    - stateless
-    - "...use 2-legged or 3-legged OAuth on the REST back end?"
-- **Follow up / Troubleshooting :** You can search gmail message by its Gmail ID. Note that the ID of a Gmail thread is the ID of its first message.
-- **TODO :**
-    - [ ] Abstracting logging and filters reading operations in order to make it easy to use other and generic data formats like JSON, XML or any API accessible data store.
-        - https://developers.google.com/apps-script/reference/content/
-    - [ ] Custom time interval for each selected week day.
-    - [ ] Script to automatically deploy the application and update it as a Google Apps Script project
-    - [ ] Log why skipped messages (i.e. messages that have not been responded to) were filtered out.
-    - [ ] Optimize writing to Google Sheets for large data:
-        - [ ] [Custom Functions in Google Sheets](https://developers.google.com/apps-script/guides/sheets/functions)
-    - [ ] Web front-end to configure the application.
-    - [ ] On `Filter spreadsheet`, save processed messages IDs as hyperlinks to the corresponding Gmail webmail pages. E.g. `https://mail.google.com/mail/u/0/#inbox/1662ab6df6e32ab0`
-    - [ ] Centrally manage multiple users
-    - [ ] Updater
-    - [ ] Use with any email provider (IMAP/SMTP, RESTful API)
-
 
 ---------------------------------------------
 
 ## 4/3/2020, 11:57:42 PM
 
-- New scopes needed :
-    - `https://www.googleapis.com/auth/drive` : To use `DriveApp` to move file from one dir to another, while keeping the same ID.
-    - `https://www.googleapis.com/auth/script.external_request` : To upload files to Drive. Advanced Google Service / Drive API to be enabled.
+- [Apps Script Execution API showing error with devMode: true - Stack Overflow](https://stackoverflow.com/questions/47892350/apps-script-execution-api-showing-error-with-devmode-true)
 
-- [apps script APi executable API key curl dopost - Google Search](https://www.google.com/search?pws=0&hl=all&q=apps+script+APi+executable+API+key+curl+dopost&gws_rd=ssl&gl=US)
-	- [Executing Functions using the Apps Script API  |  Google Developers](https://developers.google.com/apps-script/api/how-tos/execute)
-
-- [apps script api executable curl "only me" OR "only me" - Google Search](https://www.google.com/search?pws=0&hl=all&gl=US&q=apps+script+api+executable+curl+%22only+me%22+OR+%22only+me%22&spell=1&sa=X&ved=2ahUKEwjKsfuUpc3oAhVMLewKHWYfBgYQBSgAegQICxAl&biw=1344&bih=704&dpr=1.25)
-	- **(1)** [Apps Script Execution API showing error with devMode: true - Stack Overflow](https://stackoverflow.com/questions/47892350/apps-script-execution-api-showing-error-with-devmode-true)
-		- [google apps script api executable run function token OR secret OR "api key" - Google Search](https://www.google.com/search?pws=0&hl=all&gl=US&biw=1344&bih=704&ei=traHXp_RNpGZsAeoz5dg&q=google+apps+script+api+executable+run+function+token+OR+secret+OR+%22api+key%22&oq=google+apps+script+api+executable+run+function+token+OR+secret+OR+%22api+key%22&gs_lcp=CgZwc3ktYWIQAzoFCCEQoAE6BAghEBU6BwghEAoQoAE6BAghEApKCggXEgYxMi0yMzlKCQgYEgUxMi00NFDZGFi8mQFg0poBaAFwAHgAgAHSBIgB9k-SAQwxLjI5LjEuNi4yLjWYAQCgAQGqAQdnd3Mtd2l6&sclient=psy-ab&ved=0ahUKEwifhIGepc3oAhWRDOwKHajnBQwQ4dUDCAs&uact=5)
-
-- [apps script drive upload spreadsheet - Google Search](https://www.google.com/search?pws=0&hl=all&gl=US&ei=2WuHXsPiC4iVkgXK3rjoBg&q=apps+script+drive+upload+spreadsheet&oq=apps+script+drive+upload+spreadsheet&gs_lcp=CgZwc3ktYWIQAzoECAAQRzoICCEQFhAdEB46BQghEKABULUrWNBGYNFJaAJwA3gAgAGyAYgB2w6SAQQwLjEzmAEAoAEBqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwiDs4vr3czoAhWIiqQKHUovDm0Q4dUDCAo&uact=5)
-	- [Uploading Files from URLs | Advanced Drive Service  |  Apps Script  |  Google Developers](https://developers.google.com/apps-script/advanced/drive#uploading_files)
-	- [apps script dopost upload binary file - Google Search](https://www.google.com/search?pws=0&hl=all&q=apps+script+dopost+upload+binary+file&gws_rd=ssl&gl=US)
-		- [javascript - How to upload a file via POST (doPost) to a Google Script's Web App? - Stack Overflow](https://stackoverflow.com/questions/42217052/how-to-upload-a-file-via-post-dopost-to-a-google-scripts-web-app/42217817)
-		- [File upload using doPost on Google Web Apps · tanaike](https://tanaikech.github.io/2017/02/05/file-upload-using-dopost-on-google-web-apps/)
+- [File upload using doPost on Google Web Apps · tanaike](https://tanaikech.github.io/2017/02/05/file-upload-using-dopost-on-google-web-apps/)
 
 - [How to Convert Microsoft Excel to Google Spreadsheet Format with Apps Script - Digital Inspiration](https://www.labnol.org/code/20500-convert-microsoft-excel-xlsx-to-google-spreadsheet)
-
-- [Moving Files In Google Drive Using Google Script - Stack Overflow](https://stackoverflow.com/questions/38808875/moving-files-in-google-drive-using-google-script)
-
 
 ---------------------------------------------
 
@@ -73,15 +23,6 @@
 > 1. Basic : _Manual Setup_
 > 2. Advanced : _Customizable_
 > 3. Scripted : _Continuous Deployment_
-
-### 1. Manual Setup
-
-Application components :
-    - Latest code update deployed as a template : _link_
-    - ['Filters' Google Spreadsheets template](https://docs.google.com/spreadsheets/d/1pdbsI6gaKcv3zLVwnFHosOD-0b1eVUvMN_mJQYNogMc)
-    - ['Logs' Google Spreadsheet template](https://docs.google.com/spreadsheets/d/1TyU0XlutRS4sBXCvtPa8AyrlEPfEuiSEoIbAKcYiSzU)
-
-(Animated GIF)
 
 ### 2. Scripted Setup
 #### 2.1. Initial Setup
