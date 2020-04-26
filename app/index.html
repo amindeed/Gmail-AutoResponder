@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
-    <style>#myemailaddress, input[type=text] {color: green;} img {border: 5px solid green;}</style>
+    <style>#myemailaddress, input[type=text], textarea {color: green;} img {border: 5px solid green;}</style>
+    <!-- <script src="https://cdn.ckeditor.com/4.14.0/basic/ckeditor.js"></script> -->
     <script>
     // Prevent forms from submitting.
     function preventFormSubmit() {
@@ -30,6 +31,7 @@
         document.getElementById("finishhour").value = settings['finishhour'];
         document.getElementById("timeinterval").value = settings['timeinterval'];
         document.getElementById("dstoffset").value = settings['dstoffset'];
+        document.getElementById("msgbody").innerText = settings['msgbody'];
         //alert("Settings loaded successfully!");
       }
       
@@ -58,7 +60,6 @@
               .withFailureHandler(onFailure)
               .objSetproperties(formObject)
       }
-      
     </script>
     <title>Gmail AutoResponder</title>
   </head>
@@ -92,10 +93,19 @@
         Star processed messages in Gmail 
            <input type="radio" name="starmsg" value="Yes" disabled checked> Yes 
            <input type="radio" name="starmsg" value="No" disabled> No <br /><br />
-        Message Body : <textarea id="msgbody" name="msgbody" disabled></textarea><br /><br />
+        Message Body : <br /><br />
+           <textarea id="msgbody" name="msgbody"></textarea><br /><br />
+           <!-- <textarea cols="80" id="msgbody" name="msgbody" rows="10"></textarea><br /><br /> -->
         <input type="submit" value="Save" />
       </fieldset>
     </form>
- 
+    
+    <script>
+     /*
+       CKEDITOR.replace('msgbody', {
+         height: 150
+         });
+      */
+    </script>
   </body>
 </html>

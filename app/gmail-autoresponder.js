@@ -127,6 +127,7 @@ function objSetproperties(objParams) {
   userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
   userProperties.setProperty('TIME_INTERVAL', objParams['timeinterval']);
   userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
+  userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']);
   
   /** Other properties **/
   
@@ -227,5 +228,6 @@ dEoxq64J3QAAAABJRU5ErkJggg==";
   settingsObj['finishhour'] = userProperties.getProperty('FINISH_HOUR');
   settingsObj['timeinterval'] = userProperties.getProperty('TIME_INTERVAL');
   settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
+  settingsObj['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
   return settingsObj;
 }

@@ -8,7 +8,11 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
-## 2020-04-25
+## 2020-04-26
+- Tried a [basic CKEditor 4 preset](https://ckeditor.com/docs/ckeditor4/latest/examples/basicpreset.html) for message body text area, but the content is not sent to backend on submit. Falled back to plain HTML `textarea` which worked without issues, for both `get` and `set`. I'll try a [basic TinyMCE setup](https://www.tiny.cloud/docs/general-configuration-guide/basic-setup/) and see.
+- Worked on another code repository.
+
+## 2020-04-25 : _First commit of the month of Ramadan_ 🌙
 - Since it is [not possible](https://stackoverflow.com/a/44401527/3208373) to change script time zone from within a Script app, I'm trying to figure out a way for providing a "script user-side" time zone parameter that can be modified using the frontend, and leave script's time zone at "GMT+00".
 - A Google user isn't given a default profile picture if he has never set one manually. So, the app should provide an alternate/default picture in case [`getPhotoUrl()`](https://developers.google.com/apps-script/reference/drive/user#getPhotoUrl()) returns `null`.
 
@@ -218,7 +222,7 @@ Drafting instructions for project setup using both [`clasp`](https://github.com/
 ## 2020-03-29, 03-31 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/4de2d9853bd5d869f795209ae16459321bd1db0f/app)
 Exploring [`clasp`](https://github.com/google/clasp) tool for automated deployment of Google Apps Script project. Successfully deployed a first version of the code.
 
-## 2020-03-28 [(code)](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169#diff-deb3f38e414de594d3421071ed162325)
+## 2020-03-28 : _First commit during COVID-19 national lockdown_ 😷 [(code)](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169#diff-deb3f38e414de594d3421071ed162325)
 Documenting: Collecting notes about app logic, features and auto-deployment
 
 ## 2019-10-31, 11-19

@@ -47,6 +47,7 @@ function autoReply() {
 
   // Message body
   var body = HtmlService.createHtmlOutputFromFile('body.html').getContent();
+  //var body = userProperties.getProperty('MESSAGE_BODY');
 
   /***#####*** declare 2D array of processed messages ***#####***/
 

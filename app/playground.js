@@ -24,7 +24,7 @@ function myFunction() {
   //var dstOffset = userProperties.getProperty('DST_OFFSET');
   
   //set_properties('11111111', '22222222', '333333333', '4444444444', '555555555', '66666666666');
-  //Logger.log(userProperties.getProperties());
+  Logger.log(userProperties.getProperties());
   
   
   /**** Testing objects
