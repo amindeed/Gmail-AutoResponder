@@ -79,11 +79,12 @@ function autoReply() {
                   + '<br/><b>To : </b>' + msgTo
                   + '<br/><b>Cc : </b>' + msgCc
                   + '</span>'
-                  + '<br/><br/>' + msgBody + '<br/>'
-                  //, cc: "it-operations@mycompany.com", /* alias of 'amine@mycompany.com' */
-                  //noReply: true /* Works only for G-Suite accounts */
+                  + '<br/><br/>' + msgBody + '<br/>',
+                  // cc: userProperties.getProperty('CC_ADDRESS'),
+                  // noReply: userProperties.getProperty('NOREPLY')?true:false /* Works only for G-Suite accounts */
 				});
                 // Correction: star messages that have been responded to
+                // userProperties.getProperty('STAR_PROCESSED_MESSAGE')?messages[lastMsg].star():null;
                 messages[lastMsg].star();
 
                 // Log message that has been responded to

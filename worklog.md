@@ -8,8 +8,16 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-04-27
+- I would prefer using **CKEditor**, as a plain JavaScript solution, over **TinyMCE** which is developed in TypeScript (and I have no plans to learn TypeScript at the moment).
+- According to most resources I checked, CKEditor creates its own DOM when [`replace()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-replace) method is called, right at the end of page load, to replace form's `textarea` element. So, I had to force CKeditor to update the text area value using the [`updateElement()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-updateElement) method before form content is submitted to the backend. In addition, I had to use CKEditor's [`setData()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData) method, instead of setting element's `innerText` property value, in order to update the text area with the content retrieved from the backend.
+- Customizing CKEditor toolbar..
+- Remove two directories from this repository :
+    - [`draft_code/client-to-server`](https://github.com/amindeed/Gmail-AutoResponder/tree/020eca4709463f3262002dac292bb2aca472ae63/draft_code/client-to-server) : content moved to another generic repository I'm working on, to be adapted and published as a code snippet.
+    - [`app/frontend`](https://github.com/amindeed/Gmail-AutoResponder/tree/799e840b14fd8547c8def4023662349322140bc1/app/frontend) : as the Material Design Lite library, on which this frontend template is based, [will no longer receive further development/updates](https://github.com/google/material-design-lite/tree/60f441a22ed98ed2c03f6179adf460d888bf459f#limited-support).
+
 ## 2020-04-26
-- Tried a [basic CKEditor 4 preset](https://ckeditor.com/docs/ckeditor4/latest/examples/basicpreset.html) for message body text area, but the content is not sent to backend on submit. Falled back to plain HTML `textarea` which worked without issues, for both `get` and `set`. I'll try a [basic TinyMCE setup](https://www.tiny.cloud/docs/general-configuration-guide/basic-setup/) and see.
+- Tried a [basic CKEditor 4 preset](https://ckeditor.com/docs/ckeditor4/latest/examples/basicpreset.html) for message body text area, but the content is not sent to the backend on form submit. Falled back to plain HTML `textarea` which worked fine, for both retrieving and modifying settings. I'll try a [basic TinyMCE setup](https://www.tiny.cloud/docs/general-configuration-guide/basic-setup/) and see.
 - Worked on another code repository.
 
 ## 2020-04-25 : _First commit of the month of Ramadan_ 🌙

@@ -113,7 +113,9 @@ function getFirstEmptyRow(sheet, column) {
 /** Frontend (1) **/
 
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('index');
+  return HtmlService.createHtmlOutputFromFile('index')
+           .setTitle('Gmail AutoResponder - Settings')
+           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png'); // Sample favicon. Base64 data URLs not supported.
 }
 
 
@@ -128,11 +130,9 @@ function objSetproperties(objParams) {
   userProperties.setProperty('TIME_INTERVAL', objParams['timeinterval']);
   userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
   userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']);
-  
-  /** Other properties **/
-  
-  // Cc email address (optional)
-  // noReply flag (boolean, only when applicable)
+  // userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
+  // userProperties.setProperty('NOREPLY', objParams['noreply']);
+  // userProperties.setProperty('STAR_PROCESSED_MESSAGE', objParams['starmsg']);
   
   // return up-to-date properties ?
 }
@@ -228,6 +228,9 @@ dEoxq64J3QAAAABJRU5ErkJggg==";
   settingsObj['finishhour'] = userProperties.getProperty('FINISH_HOUR');
   settingsObj['timeinterval'] = userProperties.getProperty('TIME_INTERVAL');
   settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
+  // settingsObj['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
+  // settingsObj['noreply'] = userProperties.getProperty('NOREPLY');
+  // settingsObj['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
   settingsObj['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
   return settingsObj;
 }
