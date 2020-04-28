@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
     <style>#myemailaddress, input[type=text], textarea {color: green;} img {border: 5px solid green;}</style>
-    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+    <!--
+       The following JS function call was seemingly not required:
+       <script>
+           CKEDITOR.plugins.addExternal( 'confighelper', '/plugins/confighelper', 'plugin.js' );
+       </script>
+    -->
     <script>
       // Prevent forms from submitting.
       function preventFormSubmit() {
@@ -49,7 +55,7 @@
       google.script.run
            .withSuccessHandler(onObjGetSuccess)
            .withFailureHandler(onFailure)
-           .objGetSettings();
+           .getSettings();
       **/
     
       // Run on 'Set' (Save) success
@@ -64,7 +70,7 @@
          google.script.run
               .withSuccessHandler(onSetSuccess)
               .withFailureHandler(onFailure)
-              .objSetproperties(formObject)
+              .setProperties(formObject)
       }
     </script>
     <title>Gmail AutoResponder</title>
@@ -76,7 +82,7 @@
            onclick="google.script.run
                     .withSuccessHandler(onObjGetSuccess)
                     .withFailureHandler(onFailure)
-                    .objGetSettings()" /><br /><br />
+                    .getSettings()" /><br /><br />
   
     <div id="userphoto"></div> <br />
     
@@ -101,27 +107,32 @@
            <input type="radio" name="starmsg" value="No" disabled> No <br /><br />
         Message Body : <br /><br />
            <!-- <textarea id="msgbody" name="msgbody"></textarea><br /><br /> -->
-           <textarea cols="80" id="msgbody" name="msgbody" rows="10"></textarea><br /><br />
+           <textarea cols="80" id="msgbody" name="msgbody" rows="10" placeholder="𝘈𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 : 
+           𝘛𝘩𝘢𝘯𝘬 𝘺𝘰𝘶 𝘧𝘰𝘳 𝘤𝘰𝘯𝘵𝘢𝘤𝘵𝘪𝘯𝘨 𝘶𝘴. 𝘛𝘩𝘪𝘴 𝘢𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 𝘪𝘴 𝘰𝘯𝘭𝘺 𝘵𝘰 𝘤𝘰𝘯𝘧𝘪𝘳𝘮 𝘵𝘩𝘢𝘵 𝘺𝘰𝘶𝘳 𝘦-𝘮𝘢𝘪𝘭 𝘩𝘢𝘴 𝘣𝘦𝘦𝘯 𝘸𝘦𝘭𝘭 𝘳𝘦𝘤𝘦𝘪𝘷𝘦𝘥. 
+           𝘞𝘦 𝘸𝘪𝘭𝘭 𝘳𝘦𝘱𝘭𝘺 𝘵𝘰 𝘺𝘰𝘶 𝘴𝘩𝘰𝘳𝘵𝘭𝘺. 𝘉𝘦𝘴𝘵 𝘳𝘦𝘨𝘢𝘳𝘥𝘴."></textarea><br /><br />
         <input type="submit" value="Save" />
       </fieldset>
     </form>
     
     <script>
-     
-    CKEDITOR.replace('msgbody', {
-      // Define the toolbar groups as it is a more accessible solution.
-      toolbarGroups: [
-        { "name": "clipboard", "groups": [ "undo" ] },
-        { "name": "basicstyles", "groups": ["basicstyles"] },
-        { "name": "links", "groups": ["links"] },
-        { "name": "paragraph", "groups": ["list", "blocks"] },
-        { "name": "document", "groups": ["mode"] },
-        { "name": "styles", "groups": [ "styles" ] },
-		{ "name": "colors", "groups": [ "colors" ] }
-      ],
-      removeButtons: 'Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord,PasteText,Paste,Copy,Cut'
-    });
-      
+        // Consider using an alternative safe/permanent external URL of the plugin
+        CKEDITOR.plugins.addExternal( 'confighelper', 'https://martinezdelizarrondo.com/ckplugins/confighelper/' );
+
+        var config = {
+          extraPlugins: 'confighelper',
+          toolbarGroups: [
+            { "name": "clipboard", "groups": [ "undo" ] },
+            { "name": "styles", "groups": [ "styles" ] },
+            { "name": "basicstyles", "groups": ["basicstyles"] },
+            { "name": "colors", "groups": [ "colors" ] },
+            { "name": "paragraph", "groups": ["list", "blocks", "indent"] },
+            { "name": "links", "groups": ["links"] },
+            { "name": "documents", "groups": ["mode"] }
+          ],
+          removeButtons: 'Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord,PasteText,Paste,Copy,Cut,CreateDiv,FontSize'
+        };
+
+        CKEDITOR.replace('msgbody', config);
     </script>
   </body>
 </html>

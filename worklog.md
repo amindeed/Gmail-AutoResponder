@@ -8,15 +8,21 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
-## 2020-04-27
+## 2020-04-28
+- Finished customizing CKEditor for form's text area :
+    - Set a default response message body in the backend. Trying to set a placeholder text with CKEditor 4 on the frontend, and the [Configuration Helper (`confighelper`)](https://ckeditor.com/cke4/addon/confighelper) plugin seems needed. The configuration isn't straightforward, as almost all resources I could find online suppose that a custom configuration file `config.js` along with a directory containing needed plugins are used, i.e. available for any customization, which doesn't apply to our case.
+    - Considering the desired customizations, I'm trying to figure out [whether or not](https://support.ckeditor.com/hc/en-us/articles/115005281569-Shall-I-use-CKEditor-5-instead-of-CKEditor-4-is-it-better-) it's worth/easier to use CKEditor 5 instead.
+    - Finally, I managed to create a basic example by checking the source code of [this blog post](https://alfonsoml.blogspot.com/2012/04/placeholder-text-in-ckeditor.html) by `confighelper` plugin author.
+
+## 2020-04-27 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/a0e349ce36d1604550e295d33153ed8052dd3faa/app)
 - I would prefer using **CKEditor**, as a plain JavaScript solution, over **TinyMCE** which is developed in TypeScript (and I have no plans to learn TypeScript at the moment).
-- According to most resources I checked, CKEditor creates its own DOM when [`replace()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-replace) method is called, right at the end of page load, to replace form's `textarea` element. So, I had to force CKeditor to update the text area value using the [`updateElement()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-updateElement) method before form content is submitted to the backend. In addition, I had to use CKEditor's [`setData()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData) method, instead of setting element's `innerText` property value, in order to update the text area with the content retrieved from the backend.
-- Customizing CKEditor toolbar..
-- Remove two directories from this repository :
+- According to most resources I checked, CKEditor creates its own DOM when [`replace()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-replace) method is called, _right at the end of page load,_ to replace form's `textarea` element. So, I had to force CKeditor to update the text area value using the [`updateElement()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-updateElement) method before the form content is submitted to the backend. In addition, I had to use CKEditor's [`setData()`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData) method, instead of setting element's `innerText` property value, in order to update the text area with the content retrieved from the backend.
+- [Customizing](https://ckeditor.com/docs/ckeditor4/latest/examples/toolbar.html) CKEditor toolbar..
+- Removed two directories from this repository :
     - [`draft_code/client-to-server`](https://github.com/amindeed/Gmail-AutoResponder/tree/020eca4709463f3262002dac292bb2aca472ae63/draft_code/client-to-server) : content moved to another generic repository I'm working on, to be adapted and published as a code snippet.
     - [`app/frontend`](https://github.com/amindeed/Gmail-AutoResponder/tree/799e840b14fd8547c8def4023662349322140bc1/app/frontend) : as the Material Design Lite library, on which this frontend template is based, [will no longer receive further development/updates](https://github.com/google/material-design-lite/tree/60f441a22ed98ed2c03f6179adf460d888bf459f#limited-support).
 
-## 2020-04-26
+## 2020-04-26 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/799e840b14fd8547c8def4023662349322140bc1/app)
 - Tried a [basic CKEditor 4 preset](https://ckeditor.com/docs/ckeditor4/latest/examples/basicpreset.html) for message body text area, but the content is not sent to the backend on form submit. Falled back to plain HTML `textarea` which worked fine, for both retrieving and modifying settings. I'll try a [basic TinyMCE setup](https://www.tiny.cloud/docs/general-configuration-guide/basic-setup/) and see.
 - Worked on another code repository.
 
@@ -33,7 +39,7 @@
 - `raw_notes.md` revision :
     - Deleted old non-needed entries.
     - Moved some "TODO" entries to `TODO.md`.
-- Custom errors to be created for / thrown by `objSetproperties()` function :
+- Custom errors to be created for / thrown by `setProperties()` function :
     - Provided Spreadsheets IDs are not valid, either because the resources do not exist or are not readable/writable by the script user.
     - Invalid start/finish hours
     - Invalid execution time interval 
@@ -229,6 +235,7 @@ Drafting instructions for project setup using both [`clasp`](https://github.com/
 
 ## 2020-03-29, 03-31 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/4de2d9853bd5d869f795209ae16459321bd1db0f/app)
 Exploring [`clasp`](https://github.com/google/clasp) tool for automated deployment of Google Apps Script project. Successfully deployed a first version of the code.
+    <br /><img src="/assets/2020-03-30 22_51_53-Gmail AutoResponder Dev.png" alt="Associate_AppsScript_to_GCP" width="500"/><br />
 
 ## 2020-03-28 : _First commit during COVID-19 national lockdown_ 😷 [(code)](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169#diff-deb3f38e414de594d3421071ed162325)
 Documenting: Collecting notes about app logic, features and auto-deployment
@@ -254,6 +261,109 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 
 ## …
+
+
+## 2017-09-07 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/a2ea53c5e9039b5c3ca7412970b650b0a51716b8/app)
+_Original :_
+> Analyse des résultats de la session d’exécution du 06/09/2017 :
+> - Le projet Google Apps Script `AutoRespond` est configuré avec un déclencheur en fonctions du temps qui se lance après chaque 10 minute. Les heures des premières et dernières exécutions effectives du programme sont respectivement 19:06 (GMT) et 04:56 (GMT). _En effet, le programme s’exécute continument après chaque 10 minute durant toutes les 24 heures. Cependant le traitement des messages reçus n’est effectué que si la condition est satisfaite, à savoir : être dans la plage horaire [20h-06h]._
+> - Comme les messages Gmail sont organisés sous forme de [threads](https://developers.google.com/apps-script/reference/gmail/gmail-thread#) (conversations), le programme récupère à chaque exécution les nouveaux `threads` ainsi que ceux mis à jour _(c.à.d. réception de nouvelles réponses à une ancienne conversation (échange))_ dans les dernières 10 minutes et traite ensuite leurs derniers messages respectifs.
+> - Pour chaque `thread`, si le dernier message ne répond à aucun critère d’exclusion, une réponse automatique lui serait envoyée ; sinon, le programme passe au `thread` suivant. Dans chacun des deux cas, les messages traités ainsi que le nombre de `threads` récupérés à chaque exécution sont journalisés. Les informations du journal (log) permettent le suivi, l’analyse et le diagnostic des éventuels problèmes rencontrés.
+> - Deux cas de figures se sont présentés suite à la dernière session d’exécution; qui peuvent nécessiter une analyse de comportement du programme, une évaluation des risques ainsi que des éventuelles améliorations du code source :
+>     - **MESSAGE (1):** Le message a été reçu vers 21:16 mais n’a pas été traité.
+>         - Vu qu’il était le dernier message de son `thread` jusqu’à la fin de la session d’exécution, la seule cause apparente serait le fait que sa réception a coïncidé avec le déclenchement du programme et il n’a pas été récupéré parmi les messages reçus dans les dernières 10 minutes.
+>         - Le message n’a pas été non plus récupéré dans l’itération suivante.
+>         - Il serait donc plus prudent d’ajouter une marge d’erreur à l’intervalle de temps. Ce serait pratique d’attribuer une valeur dynamique à cet intervalle, soit par exemple **1.5x** la durée séparant deux exécutions (automatique) consécutives du programme. Documentation en cours sur [les moyens disponibles](https://developers.google.com/apps-script/reference/script/trigger) pour y parvenir.
+>     - **MESSAGE (2):** Deux minutes après, et dans le même `thread`, le message a été suivi par un autre (i.e. une réponse) envoyé par (`accounting@mycompany.com`) avec l’adresse (`operations@mycompany.com`) en copie.
+>         - Vu que le dernier message du `thread` venait d’une adresse mail exclue, il a été sauté.
+>         - Le présent cas laisse à penser à d’autres cas probables pouvant être critique, comme celui d’un message répondant à tous les critères de réponse automatique suivi juste après, dans le même `thread`, d’un mail exclu mais sans qu’il soit envoyé depuis une autre adresse email de `MyCompany`; cas d’un accusé de lecture d’un ancien message dans le même `thread` reçu du même expéditeur, par exemple.
+>         - Etude en cours d’améliorations et méthodes alternatives pour traiter avec plus de prudence les files des derniers messages reçus.
+
+
+## 2017-09-06
+_Original :_
+> Analyse des résultats de la session d’exécution du 05/09/2017 :
+> - 57 messages traités : 18 réponses envoyées, 39 messages sautés pour des raisons valides.
+> - Les réponses automatiques envoyées ont couverts tous les `threads` Gmail reçus dans la plage horaire [20h-06h].
+> - Mises à jour mineures du code source.
+> - Documentation sur les améliorations envisagées :
+>     - Utilisation du [Cache](https://developers.google.com/apps-script/reference/cache/) : pour le stockage temporaire et la consultation rapide des identifiants des derniers messages traités, au lieu d’extraire et de rechercher dans toutes les valeurs de la colonne D `Message ID` de la première feuille du document `Google Spreadsheet` de journalisation `Autorespond-log`.
+>     - Etude d’une nouvelle architecture `Master/Slave` du programme pour déclencher simultanément les réponses automatiques de plusieurs comptes depuis un même script asynchrone avec des requêtes `HTTP POST`.
+
+
+## 2017-09-05
+_Original :_
+> Évaluation de l’exécution du programme du compte `OPERATIONS` entre le 31/08/2017 (soir) et le 05/09/2017 (matinée):
+> - 162 threads détectés, dont 114 sautés et 48 réponses envoyées.
+> - Ajout d'adresse mails à la liste d’exclusion.
+
+
+## 2017-08-31
+_Original :_
+> Evaluation de l’exécution de la session du 31/07/2017 :
+> - 50 mails traités, dont 37 sautés.
+> - Ajoutée des adresses à la liste d’exclusion
+> - Un message `SPAM` sans une vraie adresse `envelop sender` ni `From :` a déclenché une erreur, puisque la méthode [`GmailMessage.getFrom()`](https://developers.google.com/apps-script/reference/gmail/gmail-message#getfrom) dans le code a retourné la valeur `Judith Pin  <>` qui n’est pas une adresse valide pour envoyer une réponse avec la méthode [`GmailThread.reply(body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-thread#replybody-options). Bien que l’erreur n’était pas bloquante et ait été bien reportée par email, il serait plus judicieux de journaliser de tels cas avec le message d’erreur comme note. Cette suggestion peut faire objet d’une future amélioration du code avec des éventuels [traitements d’exceptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch).
+> -  _Idées et prévisions_ : Exécution du programme sur toutes les boîtes emails depuis un même programme central :
+>     - La méthode la plus sûre serait de communiquer, depuis le script `operations`, avec d’autres scripts `Google Apps Script` associés aux autres comptes, en utilisant des requêtes HTTP POST sur des connexions chiffrées (SSL/TLS).
+>     - Comme prérequis, il va falloir d’abord publier chacun des autres scripts en tant qu’application web (avec d’éventuelles restrictions d’accès pour protéger les données).
+>     - Les autres scripts auraient les droits suivant :
+>         - Modification du document `Google Spreadsheet` : `Autorespond-log`, propriété du compte `operations@mycompany.com`.
+>         - Lecture depuis le document `Google Spreadsheet` : `Autorespond-config`, propriété du compte `operations@mycompany.com`.
+>     - Consultation en cours des documentations ainsi que les forums d’aide et support officiels aux sujets précités.
+
+
+## 2017-08-30 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/f13a3c815bba3059f40e1bab617e449647090313/app)
+_Original :_
+> Confirmation de l’exécution optimale de la session du 29/07/2017 du programme associé au compte Google `operations@mycompany.com`.
+> Le test d’archivage du journal des messages traités s’est exécuté comme planifié et avec succès. Dorénavant, au début de chaque mois, l’historique des opérations du mois précédent sera archivé dans une feuille séparée du même fichier.
+> Etude en cours de la possibilité de gérer les réponses automatiques de toutes les boîtes emails de la société avec un seul programme lisant les configurations depuis un même fichier et enregistrant toutes les opérations exécutées dans le même journal. Si cela s’avère faisable, une révision considérable du tout le code source serait nécessaire.
+
+
+## 2017-08-29
+_Original :_
+> Confirmation de l’exécution optimale de la session du 28/07/2017 du programme associé au compte Google `operations@mycompany.com` avec les dernières mises à jours du code.
+> - Améliorations :
+>     - Inclusion du code HTML constituant le corps du message de réponse dans un fichier HTML du même projet `Google Apps Script`, au lieu de l’importer depuis un fichier externe hébergé sur un espace d’hébergement web tiers.
+>     - Rajout d’un fichier de script supplémentaire au même projet et sa programmation pour exécution automatique mensuelle. Le script archivera les opérations (i.e. réponses envoyées, et messages sautés) de chaque mois dans une nouvelle feuille du document log `Spreadsheet` `Autorespond-log` afin d’alléger la feuille principale du journal.
+>     - Le code source sera publié le 30/08/2017
+> - Configuration provisoire pour test et validation : le script `Archive_log.gs` a été paramétré pour exécution automatique mensuelle le 30 de chaque mois ; en l’occurrence, une première exécution aurait lieu le lendemain 30/08/2017.
+
+
+## 2017-08-28
+_Original :_
+> Evaluation des performances du programme associé au compte `operations@mycompany.com` durant son exécution du 26/08/2017 au 28/08/2017 :
+> - **87** messages traités:
+>     - **16** réponses automatiques envoyées, dont **5** étaient non pertinentes (adresses email à ajouter à la liste d'exclusion)
+>     - **71** messages sautés pour des raisons valides.
+> - Améliorations du code :
+>     - Ajout d’une nouvelle feuille dans le fichier de journalisation `Autorespond-log` pour l’enregistrement de l’heure d’exécution ainsi que le nombre de conversations (threads) Gmail (récupérés et traités) du dernier intervalle de temps (prédéfini, et après lequel le programme se ré-exécute).
+>     - Marquage de la fin de session d’exécution globale (20h-06h) sur chacune des feuilles du journal afin d’en faciliter la lecture et l’analyse.
+>     - Le code source sera publié le 30/08/2017
+
+
+## 2017-08-26
+_Original :_
+> Evaluation des performances du programme associé au compte `operations@mycompany.com` durant son exécution entre 25/08/2017 à 20:00 et 26/08/2017 à 06:00 :
+> - **32/33** des messages reçus dans la plage horaire 20h-06h ont été traités.
+>     - **1** message non détecté. Il s’agit d’un deuxième accusé de lecture du même message par le même destinataire. Vu que les deux emails font partie de la même conversation (thread) Gmail, seul le plus récent a été traité.
+>     - **3** réponses automatiques envoyées
+>     - **29** messages exclus pour des raisons valides
+> - Vu le résultat assez satisfaisant de son exécution, le code source -en sa dernière version- sera retenu.
+
+
+## 2017-08-25 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/5dd721f5dedab3a6b3547f4fea1c4a912aaf0840/Code.js)
+_Original :_
+> Bilan de l’exécution du programme pour le compte `operations@mycompany.com` pour le 24/08/2017 :
+> - 17 réponses automatiques envoyées entre 20:28 et 06:35 (heure locale)
+> - Amélioration du programme :
+>     - Réorganisation des lignes de déclaration des variables pour une meilleure lisibilité et portabilité du code.
+>     - Enregistrement des configurations sur une seule feuille du document `Autorespond-config` avec plusieurs colonnes, au lieu de plusieurs feuilles contenant chacune un filtre. L'ancienne version fichier a été archivée sous le nom [`Autorespond-config_OLD-till-2017-08-24`](app/Autorespond-config_OLD-till-2017-08-24.xlsx). Adaptation du code.
+> - Rajout d’une valeur de décalage pour faciliter l’ajustement de la plage horaire d’exécution en cas de changement de l’heure locale.
+> - Utilisation d’une adresse générique `no-reply` afin de dissuader les destinataires de répondre directement aux messages automatiques. Par ailleurs, cela nous épargnera de configurer et maintenir sur chaque installation du logiciel `Outlook` un filtre pour en supprimer les copies reçues.
+> - Exclusion des adresses email contenant les mots `noreply` et `no-reply`.
+> - Journalisation de tous les emails, traités et sautés.
+
 
 ## 2017-08-24
 _Original :_

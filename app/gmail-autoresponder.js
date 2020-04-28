@@ -121,17 +121,22 @@ function doGet() {
 
 /** Set Script User Parameters **/
 
-function objSetproperties(objParams) {
+function setProperties(objParams) {
   var userProperties = PropertiesService.getUserProperties();
+  var defaultMsg = '<p><strong>Automated response</strong></p><p>Thank you for \
+                    contacting us.<br />This automated response is only to \
+                    confirm that your e-mail has been well received.<br />We \
+                    will reply to you shortly.</p><p>Best regards.</p>';
   userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
   userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']);
   userProperties.setProperty('START_HOUR', objParams['starthour']);
   userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
   userProperties.setProperty('TIME_INTERVAL', objParams['timeinterval']);
   userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
-  userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']);
+  userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsg);
   // userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
   // userProperties.setProperty('NOREPLY', objParams['noreply']);
+  // userProperties.setProperty('ISENABLED_NOREPLY', objParams['isEnabled_noreply']);
   // userProperties.setProperty('STAR_PROCESSED_MESSAGE', objParams['starmsg']);
   
   // return up-to-date properties ?
@@ -140,7 +145,7 @@ function objSetproperties(objParams) {
 
 /** Get Script User Parameters **/
 
-function objGetSettings(){
+function getSettings(){
   var settingsObj = {};
   var driveRoot = DriveApp.getRootFolder();
   var driveUser = driveRoot.getOwner();
@@ -230,6 +235,7 @@ dEoxq64J3QAAAABJRU5ErkJggg==";
   settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
   // settingsObj['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
   // settingsObj['noreply'] = userProperties.getProperty('NOREPLY');
+  // settingsObj['isEnabled_noreply'] = userProperties.setProperty('ISENABLED_NOREPLY');
   // settingsObj['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
   settingsObj['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
   return settingsObj;

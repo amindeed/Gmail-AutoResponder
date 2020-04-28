@@ -83,7 +83,6 @@ function autoReply() {
                   // cc: userProperties.getProperty('CC_ADDRESS'),
                   // noReply: userProperties.getProperty('NOREPLY')?true:false /* Works only for G-Suite accounts */
 				});
-                // Correction: star messages that have been responded to
                 // userProperties.getProperty('STAR_PROCESSED_MESSAGE')?messages[lastMsg].star():null;
                 messages[lastMsg].star();
 

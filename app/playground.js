@@ -17,14 +17,35 @@ function myFunction() {
   // var scriptID = ScriptApp.getScriptId();
   // var file = DriveApp.getFileById(scriptID);
   
+  
   var userProperties = PropertiesService.getUserProperties();
+  //Logger.log(""?"is not null":"is null");
+  
+  var msg = '<p><strong>Automated response</strong></p><p>Thank you for \
+             contacting us.<br />This automated response is only to \
+             confirm that your e-mail has been well received.<br />We \
+             will reply to you shortly.</p><p>Best regards.</p>';
+  
+  userProperties.setProperty('MESSAGE_BODY', msg);
+  
+  /*
+  if (userProperties.getProperty('MESSAGE_BODY') == null){
+    Logger.log("MESSAGE_BODY is null");
+  } else { Logger.log("MESSAGE_BODY is not null"); }
+  */
   
   /*** Daylight Saving Time offset ***/
   //var dstOffset = userProperties.getProperty('DST_OFFSET')?userProperties.getProperty('DST_OFFSET'):0;
   //var dstOffset = userProperties.getProperty('DST_OFFSET');
   
-  //set_properties('11111111', '22222222', '333333333', '4444444444', '555555555', '66666666666');
-  Logger.log(userProperties.getProperties());
+
+  
+   
+  
+  
+  //var mySettings = {};
+  //var mySettings['myCcAddress'] = {};
+  
   
   
   /**** Testing objects
@@ -47,7 +68,7 @@ function myFunction() {
   
   ****/
   
-  //Logger.log(objGetSettings());
+  //Logger.log(getSettings());
   
   //var userProperties = PropertiesService.getUserProperties();
   //userProperties.deleteAllProperties();
