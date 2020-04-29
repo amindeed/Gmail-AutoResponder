@@ -37,11 +37,15 @@
         document.getElementById("finishhour").value = settings['finishhour'];
         document.getElementById("timeinterval").value = settings['timeinterval'];
         document.getElementById("dstoffset").value = settings['dstoffset'];
-        //document.getElementById("msgbody").innerText = settings['msgbody'];
+        // ccemailadr
+        // bccemailadr
+        // isEnabled_noreply
+        // noreply
         CKEDITOR.instances["msgbody"].setData(settings['msgbody'], {
               callback: function() {
               this.checkDirty(); // true
           }});
+          
         //alert("Settings loaded successfully!");
       }
       
@@ -99,6 +103,7 @@
         Time Interval : <input id="timeinterval" name="timeinterval" type="text" /><em> (default : 10)</em><br /><br />
         Daylight Saving Time Offset : <input id="dstoffset" name="dstoffset" type="text" /><em> (default: 0)</em><br /><br />
         Cc Email Address : <input id="ccemailadr" name="ccemailadr" type="text" disabled /><br /><br />
+        Bcc Email Address : <input id="bccemailadr" name="bccemailadr" type="text" disabled /><br /><br />
         Reply with 'noreply' address? 
            <input type="radio" name="noreply" value="Yes" disabled> Yes 
            <input type="radio" name="noreply" value="No" disabled checked> No <br /><br />

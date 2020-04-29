@@ -135,9 +135,9 @@ function setProperties(objParams) {
   userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
   userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsg);
   // userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
-  // userProperties.setProperty('NOREPLY', objParams['noreply']);
-  // userProperties.setProperty('ISENABLED_NOREPLY', objParams['isEnabled_noreply']);
-  // userProperties.setProperty('STAR_PROCESSED_MESSAGE', objParams['starmsg']);
+  // userProperties.setProperty('BCC_ADDRESS', objParams['bccemailadr']);
+  // userProperties.setProperty('NOREPLY', userProperties.getProperty('ISENABLED_NOREPLY')?objParams['noreply']:false);
+  // userProperties.setProperty('STAR_PROCESSED_MESSAGE', objParams['starmsg']?objParams['starmsg']:true);
   
   // return up-to-date properties ?
 }
@@ -234,8 +234,8 @@ dEoxq64J3QAAAABJRU5ErkJggg==";
   settingsObj['timeinterval'] = userProperties.getProperty('TIME_INTERVAL');
   settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
   // settingsObj['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
+  // settingsObj['bccemailadr'] = userProperties.getProperty('BCC_ADDRESS');
   // settingsObj['noreply'] = userProperties.getProperty('NOREPLY');
-  // settingsObj['isEnabled_noreply'] = userProperties.setProperty('ISENABLED_NOREPLY');
   // settingsObj['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
   settingsObj['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
   return settingsObj;

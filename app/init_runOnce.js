@@ -32,6 +32,9 @@ function init_runOnce(DriveDirName) {
   var emptyCell = config_sheet.getRange("B" + emptyCellIndex);
   emptyCell.setValue(Session.getActiveUser().getEmail());
   
+  /** Check whether the user has a G-Suite account **/
+  userProperties.setProperty('ISENABLED_NOREPLY', (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false);
+  
   /** Create script triggers **/
   create_Triggers(); 
 }

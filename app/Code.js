@@ -80,8 +80,9 @@ function autoReply() {
                   + '<br/><b>Cc : </b>' + msgCc
                   + '</span>'
                   + '<br/><br/>' + msgBody + '<br/>',
+                  // bcc: userProperties.getProperty('BCC_ADDRESS'),
                   // cc: userProperties.getProperty('CC_ADDRESS'),
-                  // noReply: userProperties.getProperty('NOREPLY')?true:false /* Works only for G-Suite accounts */
+                  // noReply: userProperties.getProperty('ISENABLED_NOREPLY')?userProperties.getProperty('NOREPLY'):false /* Works only for G-Suite accounts */
 				});
                 // userProperties.getProperty('STAR_PROCESSED_MESSAGE')?messages[lastMsg].star():null;
                 messages[lastMsg].star();

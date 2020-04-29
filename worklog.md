@@ -8,7 +8,15 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
-## 2020-04-28
+## 2020-04-29
+- I checked two online posts that I had added to `raw_notes.md` [on March 28](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169?short_path=deb3f38#diff-deb3f38e414de594d3421071ed162325). [One of them](https://www.labnol.org/code/20592-gsuite-account-check) suggests a method that doesn't seem to work any longer. [The other](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain) suggests a seemingly working solution relying on the [Admin SDK Directory Service](https://developers.google.com/apps-script/advanced/admin-sdk-directory) that needs to be [enabled](https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services) from the Script Editor UI through `Resources->Advanced Google Services...`, which I'm trying to avoid at the moment (unless it's required by other app features and/or makes things easier). 
+- But, at the end, it seems that we can simply check whether script user's email address ends with `gmail.com` or some custom domain name! So I guess I'll settle with this for the moment :
+
+    ```javascript
+    userProperties.setProperty('ISENABLED_NOREPLY', (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false);
+    ```
+
+## 2020-04-28 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/946fbf632411b5ac12e045befd59088a7f5ebcc2/app)
 - Finished customizing CKEditor for form's text area :
     - Set a default response message body in the backend. Trying to set a placeholder text with CKEditor 4 on the frontend, and the [Configuration Helper (`confighelper`)](https://ckeditor.com/cke4/addon/confighelper) plugin seems needed. The configuration isn't straightforward, as almost all resources I could find online suppose that a custom configuration file `config.js` along with a directory containing needed plugins are used, i.e. available for any customization, which doesn't apply to our case.
     - Considering the desired customizations, I'm trying to figure out [whether or not](https://support.ckeditor.com/hc/en-us/articles/115005281569-Shall-I-use-CKEditor-5-instead-of-CKEditor-4-is-it-better-) it's worth/easier to use CKEditor 5 instead.

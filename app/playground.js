@@ -21,12 +21,14 @@ function myFunction() {
   var userProperties = PropertiesService.getUserProperties();
   //Logger.log(""?"is not null":"is null");
   
+  /*
   var msg = '<p><strong>Automated response</strong></p><p>Thank you for \
              contacting us.<br />This automated response is only to \
              confirm that your e-mail has been well received.<br />We \
              will reply to you shortly.</p><p>Best regards.</p>';
   
   userProperties.setProperty('MESSAGE_BODY', msg);
+  */
   
   /*
   if (userProperties.getProperty('MESSAGE_BODY') == null){
@@ -79,5 +81,7 @@ function myFunction() {
  
   myObjA['keyA2'] = myObjB['keyB3'];
   */
-  
+  Logger.log(userProperties.getProperty('ISENABLED_NOREPLY'));
+  userProperties.setProperty('ISENABLED_NOREPLY', (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false);
+  Logger.log(userProperties.getProperty('ISENABLED_NOREPLY'));
 }

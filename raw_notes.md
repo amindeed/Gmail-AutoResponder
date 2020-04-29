@@ -3,9 +3,6 @@
 *(This is to keep `README.md` clean)*
 
 - Deploy to Google Apps Script using GitHub Actions. (possible?)
-- To decide whether or not to respond with a 'no-reply' email address :
-    - [How to Check if the Google User has a G Suite Account - Digital Inspiration](https://www.labnol.org/code/20592-gsuite-account-check)
-    - [gsuite - Google app script to check if an email exists in domain - Stack Overflow](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain)
 
 ---------------------------------------------
 
