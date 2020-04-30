@@ -8,6 +8,21 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-04-30
+- I've been testing the `options` parameter of the method [`sendEmail(recipient, subject, body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-app#sendemailrecipient,-subject,-body,-options), which behaves the same as [`GmailThread.replyAll(body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-thread#replybody,-options), with the following code :
+
+    ```javascript
+    GmailApp.sendEmail('name@domain.com', 'Apps Script : Test message', 'This is a test messages from APps Script', {
+        cc: null,
+        bcc: null,
+        noReply: null
+    });
+    ```
+- Tried a few combinations of values for `cc`, `bcc` and `noReply` properties, using both free and G-Suite Google accounts, and it seemed that it is safe to always default to `null`. 
+- In addition these methods check whether given email addresses (recipient, Cc and Bcc) are valid and throws the exception `Invalid email` if they're not. So there is no need to provide backend code to validate addresses.
+- Updated code accordingly.
+- I couldn't keep the same work pace in last couple of days due to some preoccupations. So I'm just trying here to keep my daily commitment..
+
 ## 2020-04-29
 - I checked two online posts that I had added to `raw_notes.md` [on March 28](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169?short_path=deb3f38#diff-deb3f38e414de594d3421071ed162325). [One of them](https://www.labnol.org/code/20592-gsuite-account-check) suggests a method that doesn't seem to work any longer. [The other](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain) suggests a seemingly working solution relying on the [Admin SDK Directory Service](https://developers.google.com/apps-script/advanced/admin-sdk-directory) that needs to be [enabled](https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services) from the Script Editor UI through `Resources->Advanced Google Services...`, which I'm trying to avoid at the moment (unless it's required by other app features and/or makes things easier). 
 - But, at the end, it seems that we can simply check whether script user's email address ends with `gmail.com` or some custom domain name! So I guess I'll settle with this for the moment :
@@ -269,6 +284,32 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 
 ## …
+
+## 2017-09-12
+_Original :_
+> Evaluation des résultats de la session d’exécution du 11/09/2017 : **60** itérations correctes du programme ayant récupérés **66** `threads`. **66** messages traités, dont **45** sautées et **21** réponses automatiques envoyées.
+> Un message récupéré depuis la boîte email `operations@OldMailServer.com` n’a pas été traité. L’hypothèse établie dans le rapport du 09/09/2017 se tient.
+> - _**Révision (2019-06-08) :** Le script de test initial aurait été créé pour vérifier si l'application avait déjà traité des messages envoyés au compte non-Google `operations@OldMailServer.com` et récupérés sur la boîte Gmail G-Suite `operations@mycompany.com`, et ce en vérifiant les IDs des threads (auxquels ces messages sont respectivement attribués par Gmail), retournés par la requête de recherche, contre ceux des messages/threads traités journalisés dans le document Google Spreadsheet `Autorespond-log`. Néanmoins, l'analyse du 12/09/2017 porte ici à confusion, et comme les résulats du 11/09/2017 ne sont plus vérifiables, un nouveau script de test **[(voir code)](https://github.com/amindeed/Gmail-AutoResponder/blob/fb6665b9ab7bc662f2184463db6a97ba875adaf4/app/test_2017-09-12.js)** a été développé afin de confirmer que ces threads sont traités d'une façon normale, c.à.d. que l'**ID Gmail** (qui est différent du **`Message-ID`** de la norme **`RFC 822`**) du thread correspond à l'**ID** de son premier message. A noter que ces messages risquent quand même de ne pas être relevés par l'application à cause des éventuels retards mis à [leur récupération](https://support.google.com/mail/answer/21289?hl=en)._
+
+
+## 2017-09-11
+_Original :_
+> Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/2017 : **73** messages traités, dont **51** sautées et **22** réponses automatiques envoyées.
+
+
+## 2017-09-09
+_Original :_
+> Analyse des résultats de la session d’exécution du 08/09/2017 :
+> - **58** messages traités, dont **44** sautées pour des raisons valides et **14** réponses envoyées.
+> - **2** messages non traités :
+>     - **MESSAGE (1):** L’heure de réception du message était très proche (en amont) de l’instant de l’itération du programme qui a eu lieu exactement à 19:06 (GMT).
+>     - **MESSAGE (2):** Le message a été reçu sur la boîte email `operations@OldMailServer.com` et [récupéré](https://support.google.com/mail/answer/21289?hl=en&authuser=2) sur la boîte principale `operations@mycompany.com`.
+>         - Rédaction en cours d'un script de test [(voir code)](https://github.com/amindeed/Gmail-AutoResponder/blob/98a14d321fe76297b620b05c4f1655945decd5a4/app/test_2017-09-09.js) afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des `threads` auxquels appartiennent les messages envoyés [exclusivement] à l’adresse `operations@OldMailServer.com`. Vérifier les valeurs récupérées contre les journaux des messages traités._
+
+
+## 2017-09-08
+_Original :_
+> Evaluation des résultats de la session d’exécution du **07/09/2017** : **36** messages traités, dont **27** sautées pour des raisons valides et **9** réponses envoyées.
 
 
 ## 2017-09-07 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/a2ea53c5e9039b5c3ca7412970b650b0a51716b8/app)

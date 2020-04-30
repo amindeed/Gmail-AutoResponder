@@ -81,7 +81,19 @@ function myFunction() {
  
   myObjA['keyA2'] = myObjB['keyB3'];
   */
+  
+  /*
   Logger.log(userProperties.getProperty('ISENABLED_NOREPLY'));
   userProperties.setProperty('ISENABLED_NOREPLY', (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false);
   Logger.log(userProperties.getProperty('ISENABLED_NOREPLY'));
+  */
+  
+  
+  GmailApp.sendEmail('invalid_email_address', 'Apps Script : Test message', 'This is a test messages from APps Script', {
+    cc: null,
+	bcc: null,
+	noReply: true
+  });
+  
+  
 }

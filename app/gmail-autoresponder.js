@@ -127,13 +127,16 @@ function setProperties(objParams) {
                     contacting us.<br />This automated response is only to \
                     confirm that your e-mail has been well received.<br />We \
                     will reply to you shortly.</p><p>Best regards.</p>';
-  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
-  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']);
+  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']); // Consider rewriting actual values with empty/null ones
+  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']); // Consider rewriting actual values with empty/null ones
   userProperties.setProperty('START_HOUR', objParams['starthour']);
   userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
   userProperties.setProperty('TIME_INTERVAL', objParams['timeinterval']);
   userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
+  
+  // Consider defaulting to 'defaultMsg' if submitted message is empty
   userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsg);
+  
   // userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
   // userProperties.setProperty('BCC_ADDRESS', objParams['bccemailadr']);
   // userProperties.setProperty('NOREPLY', userProperties.getProperty('ISENABLED_NOREPLY')?objParams['noreply']:false);
