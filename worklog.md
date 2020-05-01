@@ -8,8 +8,24 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-01
+- **App Init script roles :** _**First time / run once**_ script executed after the user has been authenticated (i.e. has granted access to his Google account) and the frontend URL has been visited (i.e. `doGet()` function is run) for the first time :
+    1. Create `Filters` and `Logs` spreadsheets. Get URLs to show next to each one's input field.
+    2. Place all app's files into the same Drive folder. Get and show URL of the folder.
+    3. Create and set user script properties to their default values.
+    4. [Create triggers _[, set Enable/Disable App flag]_ ].
+    5. Let the user manually enable the application.
+    6. Load app parameters into the frontend and let the user modify and save them.
+- **Time Zone :** 
+    - I couldn't understand what reference time zone Apps Script uses when processing Date/Time data (`Date` objects, for instance). It was neither [Script's](https://developers.google.com/apps-script/reference/base/session#getScriptTimeZone()) nor [Calendar's](https://support.google.com/calendar/answer/37064?co=GENIE.Platform%3DDesktop&hl=en&oco=0) in my tests! It's not the time zone of the OS on which the browser is running, and not even that of the location I'm connecting from! It's just like Google would automagically guess your time zone! So why would I bother setting it in the first place?! And to make it more confusing, there can be different time zones under the same Google account, depending on the programmatical context: _Calendar time zone, Script time zone, [Spreadsheet's time zone](https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#setspreadsheettimezonetimezone)...!_
+    - So I guess I will just settle with this solution, as stated by a StackOverflow user :  
+       
+        > _“If there are multiple users of the script in different time zones, then I set the Time Zone in the script to +GMT 00:00 no daylight savings. And leave it at that.”_ – [🌎](https://stackoverflow.com/a/44401527/3208373)
+           
+    - And as a precautionary measure, I'll keep the DST offset parameter.
+
 ## 2020-04-30
-- I've been testing the `options` parameter of the method [`sendEmail(recipient, subject, body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-app#sendemailrecipient,-subject,-body,-options), which behaves the same as [`GmailThread.replyAll(body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-thread#replybody,-options), with the following code :
+- I've been testing the `options` parameter of the method [`sendEmail(recipient, subject, body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-app#sendemailrecipient,-subject,-body,-options), which behaves the same as [`GmailThread.reply(body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-thread#replybody,-options), with the following code :
 
     ```javascript
     GmailApp.sendEmail('name@domain.com', 'Apps Script : Test message', 'This is a test messages from APps Script', {
@@ -19,9 +35,9 @@
     });
     ```
 - Tried a few combinations of values for `cc`, `bcc` and `noReply` properties, using both free and G-Suite Google accounts, and it seemed that it is safe to always default to `null`. 
-- In addition these methods check whether given email addresses (recipient, Cc and Bcc) are valid and throws the exception `Invalid email` if they're not. So there is no need to provide backend code to validate addresses.
+- In addition, these methods check whether given email addresses (recipient, Cc and Bcc) are valid and throws the exception `Invalid email` if they're not. So there is no need to provide backend code to validate addresses.
 - Updated code accordingly.
-- I couldn't keep the same work pace in last couple of days due to some preoccupations. So I'm just trying here to keep my daily commitment..
+- I couldn't keep the same work pace in the last couple of days due to some preoccupations. So I'm just trying to keep my daily commitment..
 
 ## 2020-04-29
 - I checked two online posts that I had added to `raw_notes.md` [on March 28](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169?short_path=deb3f38#diff-deb3f38e414de594d3421071ed162325). [One of them](https://www.labnol.org/code/20592-gsuite-account-check) suggests a method that doesn't seem to work any longer. [The other](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain) suggests a seemingly working solution relying on the [Admin SDK Directory Service](https://developers.google.com/apps-script/advanced/admin-sdk-directory) that needs to be [enabled](https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services) from the Script Editor UI through `Resources->Advanced Google Services...`, which I'm trying to avoid at the moment (unless it's required by other app features and/or makes things easier). 
