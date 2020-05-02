@@ -8,6 +8,11 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-02
+- **How to tell if the application is run for the first time?** The only way that comes to my mind is checking whether there is a user script property, `'alreadyRun'` for example, of which the value _∉ {0, false, undefined, null, NaN, ""}_.
+- Started `appinit()` function draft.
+
+
 ## 2020-05-01
 - **App Init script roles :** _**First time / run once**_ script executed after the user has been authenticated (i.e. has granted access to his Google account) and the frontend URL has been visited (i.e. `doGet()` function is run) for the first time :
     1. Create `Filters` and `Logs` spreadsheets. Get URLs to show next to each one's input field.

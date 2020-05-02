@@ -85,7 +85,7 @@ On each execution, the following information are logged to the `Logs` spreadshee
 
 ## Background
 
-**Gmail AutoResponder** started back in 2017 as a script to manage automatic email responses to be sent out of a company's working hours.  
+I [started](https://github.com/amindeed/Gmail-AutoResponder/blob/master/worklog.md#2017-07-26-code) **Gmail AutoResponder** back in 2017 as a script to manage automatic email responses to be sent out of a company's working hours.  
 Although it was possible to set Gmail to individually send [canned responses](https://support.google.com/mail/thread/14877273?hl=en&msgid=14879088), I could neither make time-specific filters nor programmatically make Gmail trigger an event upon email reception. So, inspired by an [answer](https://webapps.stackexchange.com/a/90089) on one of StackExchange forums, I had to figure out a way around and ultimately ended up with a [basic Apps Script app](https://github.com/amindeed/Gmail-AutoResponder/tree/796a6d84f1e7287b8a936083ae8f507035a28215/app), 6 instances of which have amazingly run for almost 3 years and processed more than 17k messages!  
   
 To see how the project progressed, check [`worklog.md`](worklog.md).

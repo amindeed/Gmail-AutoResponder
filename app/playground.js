@@ -88,12 +88,16 @@ function myFunction() {
   Logger.log(userProperties.getProperty('ISENABLED_NOREPLY'));
   */
   
-  
+  /*
   GmailApp.sendEmail('invalid_email_address', 'Apps Script : Test message', 'This is a test messages from APps Script', {
     cc: null,
 	bcc: null,
 	noReply: true
   });
+  */
+  
+  //userProperties.setProperty('testKey', "");
+  Logger.log(userProperties.getProperty('testKey')?"is not false/null/undefined":"is either false/null/undefined");
   
   
 }
