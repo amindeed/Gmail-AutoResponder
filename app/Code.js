@@ -101,7 +101,7 @@ function autoReply() {
 
           // Log skipped message
           var msgDate = messages[lastMsg].getDate(), msgSubject = messages[lastMsg].getSubject();
-          ops_log_sheet.appendRow(['SKIPPED', msgDate, '', msgId, threads[i].getId(), msgFrom, msgSubject]);
+          ops_log_sheet.appendRow(['SKIPPED', msgDate, 'N/A', msgId, threads[i].getId(), msgFrom, msgSubject]);
           cache.put(msgId, '', 960); // Cache ID of processed (skipped) message
         }
     }

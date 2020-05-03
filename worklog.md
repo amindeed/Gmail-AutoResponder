@@ -8,6 +8,10 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-03
+- Added to my reading list : _[Google Apps Script: Demystifying Time Zones in Apps Script - Part 2](https://googleappsscript.blogspot.com/2011/03/demystifying-time-zones-in-apps-script_21.html)_
+- Significant progress working on AppInit code.
+
 ## 2020-05-02
 - **How to tell if the application is run for the first time?** The only way that comes to my mind is checking whether there is a user script property, `'alreadyRun'` for example, of which the value _∉ {0, false, undefined, null, NaN, ""}_.
 - Started `appinit()` function draft.

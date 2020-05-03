@@ -30,7 +30,9 @@
       function onObjGetSuccess(settings) {
         document.getElementById("userphoto").innerHTML = '<img src="' + settings['userPhotoUrl'] + '" alt="User Photo">';
         document.getElementById("myemailaddress").textContent = settings['userEmail'];
-        document.getElementById("revokeAccessLink").innerHTML = '<em>(<a href="https://security.google.com/settings/security/permissions" target="_blank">Revoke access</a>)</em>';
+        document.getElementById("revokeAccessLink").innerHTML = '<em>\
+            (<a href="https://security.google.com/settings/security/permissions" target="_blank">Revoke access</a>)\
+            </em>';
         document.getElementById("filtersssid").value = settings['filtersssid'];
         document.getElementById("logsssid").value = settings['logsssid'];
         document.getElementById("starthour").value = settings['starthour'];
@@ -69,8 +71,9 @@
       
       // Save settings to backend 
       function saveSettings(formObject) {
-      
+         //console.log("[DEBUG] Before :" + formObject.elements["msgbody"].value);
          CKEDITOR.instances['msgbody'].updateElement();
+         //console.log("[DEBUG] After (1) :" + formObject.elements["msgbody"].value);
          google.script.run
               .withSuccessHandler(onSetSuccess)
               .withFailureHandler(onFailure)
@@ -111,7 +114,6 @@
            <input type="radio" name="starmsg" value="Yes" disabled checked> Yes 
            <input type="radio" name="starmsg" value="No" disabled> No <br /><br />
         Message Body : <br /><br />
-           <!-- <textarea id="msgbody" name="msgbody"></textarea><br /><br /> -->
            <textarea cols="80" id="msgbody" name="msgbody" rows="10" placeholder="𝘈𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 : 
            𝘛𝘩𝘢𝘯𝘬 𝘺𝘰𝘶 𝘧𝘰𝘳 𝘤𝘰𝘯𝘵𝘢𝘤𝘵𝘪𝘯𝘨 𝘶𝘴. 𝘛𝘩𝘪𝘴 𝘢𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 𝘪𝘴 𝘰𝘯𝘭𝘺 𝘵𝘰 𝘤𝘰𝘯𝘧𝘪𝘳𝘮 𝘵𝘩𝘢𝘵 𝘺𝘰𝘶𝘳 𝘦-𝘮𝘢𝘪𝘭 𝘩𝘢𝘴 𝘣𝘦𝘦𝘯 𝘸𝘦𝘭𝘭 𝘳𝘦𝘤𝘦𝘪𝘷𝘦𝘥. 
            𝘞𝘦 𝘸𝘪𝘭𝘭 𝘳𝘦𝘱𝘭𝘺 𝘵𝘰 𝘺𝘰𝘶 𝘴𝘩𝘰𝘳𝘵𝘭𝘺. 𝘉𝘦𝘴𝘵 𝘳𝘦𝘨𝘢𝘳𝘥𝘴."></textarea><br /><br />
@@ -132,7 +134,7 @@
             { "name": "colors", "groups": [ "colors" ] },
             { "name": "paragraph", "groups": ["list", "blocks", "indent"] },
             { "name": "links", "groups": ["links"] },
-            { "name": "documents", "groups": ["mode"] }
+            //{ "name": "documents", "groups": ["mode"] }
           ],
           removeButtons: 'Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord,PasteText,Paste,Copy,Cut,CreateDiv,FontSize'
         };

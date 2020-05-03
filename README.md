@@ -75,7 +75,7 @@ On each execution, the following information are logged to the `Logs` spreadshee
 - **`OPERATIONS` (sheet #1):** Metadata of both messages responded to and those skipped (filtered out) : 
     - _Label_ : `REP_SENT` or `SKIPPED`
     - _Date/time Sent (Original Message)_
-    - _Date/time Sent (Auto-response)_ (when applicable)
+    - _Date/time Sent (Response)_ (when applicable)
     - _Message ID_
     - _Thread ID_
     - _From_

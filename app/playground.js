@@ -97,7 +97,14 @@ function myFunction() {
   */
   
   //userProperties.setProperty('testKey', "");
-  Logger.log(userProperties.getProperty('testKey')?"is not false/null/undefined":"is either false/null/undefined");
+  //Logger.log(userProperties.getProperty('testKey')?"is not false/null/undefined":"is either false/null/undefined");
   
-  
+  userProperties.setProperty(
+      'DEFAULT_MESSAGE_BODY',
+      '<p><strong>Automated response</strong></p><p>Thank you for \
+       contacting us.<br />This automated response is only to \
+       confirm that your e-mail has been well received.<br />We \
+       will reply to you shortly.</p><p>Best regards.</p>'
+    );
+    
 }
