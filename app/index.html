@@ -5,7 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
-    <style>#myemailaddress, input[type=text], textarea {color: green;} img {border: 5px solid green;}</style>
+    <style>
+      #myemailaddress, input[type=text], input[type=email], input[type=number], textarea {
+        color: green;
+      }
+      img {
+        border: 5px solid green;
+      }
+    </style>
     <script src="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
     <!--
        The following JS function call was seemingly not required:
@@ -37,12 +44,35 @@
         document.getElementById("logsssid").value = settings['logsssid'];
         document.getElementById("starthour").value = settings['starthour'];
         document.getElementById("finishhour").value = settings['finishhour'];
-        document.getElementById("timeinterval").value = settings['timeinterval'];
         document.getElementById("dstoffset").value = settings['dstoffset'];
-        // ccemailadr
-        // bccemailadr
-        // isEnabled_noreply
-        // noreply
+        document.getElementById("ccemailadr").value = settings['ccemailadr'];
+        document.getElementById("bccemailadr").value = settings['bccemailadr'];
+        
+        console.log("[DEBUG/GET] settings[\'noreply\'] === " + settings['noreply'] + ", of type : " + typeof(settings['noreply']));
+        switch(settings['noreply']) {
+          case "YES":
+            document.getElementById("yes_noreply").checked = true;
+            break;
+          case "NO":
+            document.getElementById("no_noreply").checked = true;
+            break;
+          case "N_A":
+            document.getElementById("yes_noreply").disabled = true;
+            document.getElementById("no_noreply").disabled = true;
+            break;
+          default:
+            document.getElementById("no_noreply").checked = true;
+        }
+        
+        console.log("[DEBUG/GET] settings[\'starmsg\'] === " + settings['starmsg'] + ", of type : " + typeof(settings['starmsg']));
+        switch(settings['starmsg']) {
+          case "NO":
+            document.getElementById("no_starmsg").checked = true;
+            break;
+          default:
+            document.getElementById("yes_starmsg").checked = true;
+        }
+        
         CKEDITOR.instances["msgbody"].setData(settings['msgbody'], {
               callback: function() {
               this.checkDirty(); // true
@@ -71,9 +101,16 @@
       
       // Save settings to backend 
       function saveSettings(formObject) {
-         //console.log("[DEBUG] Before :" + formObject.elements["msgbody"].value);
+         //➜ Process formObject.elements["noreply"].value
+         console.log("[DEBUG/SET] formObject.elements[\"noreply\"].value === " 
+                      + formObject.elements["noreply"].value 
+                      + ", of type : " + typeof(formObject.elements["noreply"].value ));
+                      
+         //➜ Process formObject.elements["starmsg"].value
+         console.log("[DEBUG/SET] formObject.elements[\"starmsg\"].value === " 
+                      + formObject.elements["starmsg"].value 
+                      + ", of type : " + typeof(formObject.elements["starmsg"].value ));
          CKEDITOR.instances['msgbody'].updateElement();
-         //console.log("[DEBUG] After (1) :" + formObject.elements["msgbody"].value);
          google.script.run
               .withSuccessHandler(onSetSuccess)
               .withFailureHandler(onFailure)
@@ -100,19 +137,17 @@
         <legend>Settings</legend>
         Filters Spreadsheet ID : <input id="filtersssid" name="filtersssid" type="text" /><br /><br />
         Logs Spreadsheet ID : <input id="logsssid" name="logsssid" type="text" /><br /><br />
-        Start Hour : <input id="starthour" name="starthour" type="text" /><em> (default: 17)</em><br /><br />
-        Finish Hour : <input id="finishhour" name="finishhour" type="text" /><em> (default: 8)</em><br /><br />
-        Time Zone : <input id="timezone" name="timezone" type="text" disabled /><br /><br />
-        Time Interval : <input id="timeinterval" name="timeinterval" type="text" /><em> (default : 10)</em><br /><br />
-        Daylight Saving Time Offset : <input id="dstoffset" name="dstoffset" type="text" /><em> (default: 0)</em><br /><br />
-        Cc Email Address : <input id="ccemailadr" name="ccemailadr" type="text" disabled /><br /><br />
-        Bcc Email Address : <input id="bccemailadr" name="bccemailadr" type="text" disabled /><br /><br />
+        Start Hour : <input id="starthour" name="starthour" type="number" /><em> (default: 17)</em><br /><br />
+        Finish Hour : <input id="finishhour" name="finishhour" type="number" /><em> (default: 8)</em><br /><br />
+        Daylight Saving Time Offset : <input id="dstoffset" name="dstoffset" type="number" /><em> (default: 0)</em><br /><br />
+        Cc Email Address : <input id="ccemailadr" name="ccemailadr" type="email" /><br /><br />
+        Bcc Email Address : <input id="bccemailadr" name="bccemailadr" type="email" /><br /><br />
         Reply with 'noreply' address? 
-           <input type="radio" name="noreply" value="Yes" disabled> Yes 
-           <input type="radio" name="noreply" value="No" disabled checked> No <br /><br />
+           <input type="radio" name="noreply" id="yes_noreply" value="YES"> Yes 
+           <input type="radio" name="noreply" id="no_noreply" value="NO"> No <br /><br />
         Star processed messages in Gmail 
-           <input type="radio" name="starmsg" value="Yes" disabled checked> Yes 
-           <input type="radio" name="starmsg" value="No" disabled> No <br /><br />
+           <input type="radio" name="starmsg" id="yes_starmsg" value="YES"> Yes 
+           <input type="radio" name="starmsg" id="no_starmsg" value="NO"> No <br /><br />
         Message Body : <br /><br />
            <textarea cols="80" id="msgbody" name="msgbody" rows="10" placeholder="𝘈𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 : 
            𝘛𝘩𝘢𝘯𝘬 𝘺𝘰𝘶 𝘧𝘰𝘳 𝘤𝘰𝘯𝘵𝘢𝘤𝘵𝘪𝘯𝘨 𝘶𝘴. 𝘛𝘩𝘪𝘴 𝘢𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 𝘪𝘴 𝘰𝘯𝘭𝘺 𝘵𝘰 𝘤𝘰𝘯𝘧𝘪𝘳𝘮 𝘵𝘩𝘢𝘵 𝘺𝘰𝘶𝘳 𝘦-𝘮𝘢𝘪𝘭 𝘩𝘢𝘴 𝘣𝘦𝘦𝘯 𝘸𝘦𝘭𝘭 𝘳𝘦𝘤𝘦𝘪𝘷𝘦𝘥. 

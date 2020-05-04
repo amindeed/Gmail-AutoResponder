@@ -1,4 +1,4 @@
-function appinit(dirName) {
+function appinit(initParams) {
   
   // https://stackoverflow.com/a/19448513/3208373
   function pad2(n) { return n < 10 ? '0' + n : n }
@@ -10,11 +10,25 @@ function appinit(dirName) {
                   + pad2(date.getMinutes()) 
                   + pad2(date.getSeconds());
   
-  var driveDirName = dirName?dirName:'Gmail_AutoResponder_'+timestamp;
+  var driveDirName = initParams['dirName']?initParams['dirName']:'Gmail_AutoResponder_'+timestamp;
   
   var userProperties = PropertiesService.getUserProperties();
   
-  if ( !userProperties.getProperty('alreadyRun') ) {
+  if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== true) || (initParams['resetApp'] === true) ) {
+    
+    // 0. Delete All triggers, Logs/Filters spreadsheets and user script properties
+
+    try {
+      
+       deleteAllTriggers();
+       DriveApp.getFileById(userProperties.getProperty('FILTERS_SS_ID')).setTrashed(true);
+       DriveApp.getFileById(userProperties.getProperty('LOGS_SS_ID')).setTrashed(true);
+       userProperties.deleteAllProperties();
+      
+    } catch(e) {
+       // Do nothing
+    }
+    
     
     // 1. Create `Filters` and `Logs` spreadsheets. Get URLs to show next to each one's input field.
     // 1.1. Place all app files in one Drive folder
@@ -54,7 +68,12 @@ function appinit(dirName) {
     ];
     var range = firstFiltersSheet.getRange("A1:E3");
     range.setValues(values);
-    //➜ style 1st row (bold font, bgd color, width, freeze)
+    
+    var filtersHeader = firstFiltersSheet.getRange("A1:E1");
+    filtersHeader.setFontWeight("bold");
+    filtersHeader.setBackground("#cfe2f3");
+    firstFiltersSheet.setFrozenRows(1);
+
     openSsFilters.setActiveSheet(firstFiltersSheet);
     openSsFilters.renameActiveSheet('FILTERS');
     
@@ -72,7 +91,12 @@ function appinit(dirName) {
         'Subject'
       ]
     );
-    //➜ style added header (bold font, bgd color, width, freeze)
+    
+    var logsHeader1 = firstLogsSheet.getRange("A1:G1");
+    logsHeader1.setFontWeight("bold");
+    logsHeader1.setBackground("#cfe2f3");
+    firstLogsSheet.setFrozenRows(1);
+    
     openSsLogs.setActiveSheet(firstLogsSheet);
     openSsLogs.renameActiveSheet('PROCESSED_MSGS');
     
@@ -84,7 +108,11 @@ function appinit(dirName) {
         'NUMBER OF THREADS'
       ]
     );
-    //➜ style added header (bold font, bgd color, width, freeze)
+
+    var logsHeader2 = secondLogsSheet.getRange("A1:C1");
+    logsHeader2.setFontWeight("bold");
+    logsHeader2.setBackground("#cfe2f3");
+    secondLogsSheet.setFrozenRows(1);
     
     // 3. Create and set user script properties to their default values.
     
@@ -171,7 +199,7 @@ function appinit(dirName) {
     
     //// Check whether the user has a G-Suite account
     userProperties.setProperty(
-      'ISENABLED_NOREPLY', 
+      'IS_GSUITE_USER', 
       (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false
     );
     
@@ -188,23 +216,22 @@ function appinit(dirName) {
       'logsssid': ssLogsId,
       'starthour': 17,
       'finishhour': 8,
-      'timeinterval': 10,
+      //'timeinterval': 10,
       'dstoffset': 0,
       'msgbody': userProperties.getProperty('DEFAULT_MESSAGE_BODY'),
-      //'ccemailadr': '',
-      //'bccemailadr': '',
-      //'noreply': false,
+      //'ccemailadr': '', // setProperties() won't accept an empty/null value
+      //'bccemailadr': '', // setProperties() won't accept an empty/null value
+      'noreply': userProperties.getProperty('IS_GSUITE_USER')?2:3,
       //'starmsg': true
     };
     
     setProperties(defaultProperties);
     
-    // 4. [Create triggers _[, set Enable/Disable App flag]_ ].
-    // 4.1. Create script triggers
+    // 4. Create script triggers
     
     ScriptApp.newTrigger('autoReply')
     .timeBased()
-    .everyMinutes(10) // Better, custom time interval as a sript user property value.
+    .everyMinutes(10)
     .create();
 
     ScriptApp.newTrigger('archive_log')
@@ -213,9 +240,10 @@ function appinit(dirName) {
     .atHour(5)
     .create();
     
-    // 5. Let the user manually enable the application.
-    // 6. Load app parameters into the frontend and let the user modify and save them.
-    // 7. Set script user property 'alreadyRun' to true.
-
-  }
+    // 5. Provide the user with a Enable/Disable switch, and a "Reset Settings" option/command/button.
+    // 6. Load app parameters into the frontend.
+    
+    // 7. Set script user property 'INIT_ALREADY_RUN' to true.
+    userProperties.setProperty('INIT_ALREADY_RUN', true);
+  } 
 }

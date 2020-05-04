@@ -80,7 +80,7 @@ function deleteAllTriggers() {
 
 
 /** Inspired from : https://stackoverflow.com/a/27179623/3208373 **/
-
+/***** No longer needed. Kept for reference.
 function getFirstEmptyRow(sheet, column) {
   var values = sheet.getRange(column + "1:" + column + sheet.getLastRow()).getValues();
   var ct = 0;
@@ -89,7 +89,7 @@ function getFirstEmptyRow(sheet, column) {
   }
   return (ct+1);
 }
-
+*****/
 
 /** Frontend (1) **/
 
@@ -105,20 +105,52 @@ function doGet() {
 function setProperties(objParams) {
   var userProperties = PropertiesService.getUserProperties();
   var defaultMsgBody = userProperties.getProperty('DEFAULT_MESSAGE_BODY');
-  Logger.log(objParams['msgbody']);
-  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']); // Consider rewriting actual values with empty/null ones
-  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']); // Consider rewriting actual values with empty/null ones
-  userProperties.setProperty('START_HOUR', objParams['starthour']);
-  userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
-  userProperties.setProperty('TIME_INTERVAL', objParams['timeinterval']);
-  userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
-  userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsgBody);
-  // userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
-  // userProperties.setProperty('BCC_ADDRESS', objParams['bccemailadr']);
-  // userProperties.setProperty('NOREPLY', userProperties.getProperty('ISENABLED_NOREPLY')?objParams['noreply']:false);
-  // userProperties.setProperty('STAR_PROCESSED_MESSAGE', objParams['starmsg']?objParams['starmsg']:true);
   
-  // return up-to-date properties ?
+  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']); // Consider preventing rewriting of correct values with empty string
+  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']); // Consider preventing rewriting of correct values with empty string
+  
+  if ( objParams['starthour'] ) {
+    userProperties.setProperty('START_HOUR', objParams['starthour']);
+  } else {
+    userProperties.setProperty('START_HOUR', 17);
+  }
+
+  if ( objParams['finishhour'] ) {
+    userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
+  } else {
+    userProperties.setProperty('FINISH_HOUR', 8);
+  }
+  
+  if ( objParams['dstoffset'] ) {
+    userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
+  } else {
+    userProperties.setProperty('DST_OFFSET', 0);
+  }
+  
+  userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsgBody);
+    
+  if ( objParams['ccemailadr'] ) {
+    userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
+  } else {
+    userProperties.setProperty('CC_ADDRESS', '');
+  }
+  
+  if ( objParams['bccemailadr'] ) {
+    userProperties.setProperty('BCC_ADDRESS', objParams['bccemailadr']);
+  } else {
+    userProperties.setProperty('BCC_ADDRESS', '');
+  }
+  
+  Logger.log("[DEBUG/SET] objParams[\'noreply\'] === " + objParams['noreply'] + ", of type : " + typeof(objParams['noreply']));
+  if ( (objParams['noreply'] === "YES") || (objParams['noreply'] === "NO") ) {
+    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') !== false)?objParams['noreply']:"N_A");
+  } else {
+    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') === false)?"N_A":"NO");
+  }
+  
+  Logger.log("[DEBUG/SET] objParams[\'starmsg\'] === " + objParams['starmsg'] + ", of type : " + typeof(objParams['starmsg']));
+  userProperties.setProperty('STAR_PROCESSED_MESSAGE', (objParams['starmsg'] === 'NO')?'NO':'YES');
+  
 }
 
 
@@ -137,12 +169,11 @@ function getSettings(){
   settingsObj['logsssid'] = userProperties.getProperty('LOGS_SS_ID');
   settingsObj['starthour'] = userProperties.getProperty('START_HOUR');
   settingsObj['finishhour'] = userProperties.getProperty('FINISH_HOUR');
-  settingsObj['timeinterval'] = userProperties.getProperty('TIME_INTERVAL');
   settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
-  // settingsObj['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
-  // settingsObj['bccemailadr'] = userProperties.getProperty('BCC_ADDRESS');
-  // settingsObj['noreply'] = userProperties.getProperty('NOREPLY');
-  // settingsObj['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
+  settingsObj['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
+  settingsObj['bccemailadr'] = userProperties.getProperty('BCC_ADDRESS');
+  settingsObj['noreply'] = userProperties.getProperty('NOREPLY');
+  settingsObj['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
   settingsObj['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
   
   return settingsObj;

@@ -7,7 +7,7 @@ There are two types of processed messages:
 function autoReply() {
   
   var userProperties = PropertiesService.getUserProperties();
-  var INTERVAL = userProperties.getProperty('TIME_INTERVAL')?userProperties.getProperty('TIME_INTERVAL'):10;    // To execute the script after each 10 min.
+  var INTERVAL = 10;    // To execute the script after each 10 min.
   var START_HOUR = userProperties.getProperty('START_HOUR')?userProperties.getProperty('START_HOUR'):17;    // Local time
   var FINISH_HOUR = userProperties.getProperty('FINISH_HOUR')?userProperties.getProperty('FINISH_HOUR'):8;    // Local time
   var DST_OFFSET = userProperties.getProperty('DST_OFFSET')?userProperties.getProperty('DST_OFFSET'):0; // DST offset
@@ -18,6 +18,7 @@ function autoReply() {
   var FiltersSSId = userProperties.getProperty('FILTERS_SS_ID');
   var LogSSId = userProperties.getProperty('LOGS_SS_ID');
   var threads = [];
+  var repNoReply = userProperties.getProperty('NOREPLY');
 
   // Configs #1
   var config = SpreadsheetApp.openById(FiltersSSId);
@@ -82,7 +83,8 @@ function autoReply() {
                   + '<br/><br/>' + msgBody + '<br/>',
                   cc: userProperties.getProperty('CC_ADDRESS'),
                   bcc: userProperties.getProperty('BCC_ADDRESS'),
-                  noReply: userProperties.getProperty('ISENABLED_NOREPLY')?userProperties.getProperty('NOREPLY'):null /* Works only for G-Suite accounts */
+                  //noReply: userProperties.getProperty('IS_GSUITE_USER')?userProperties.getProperty('NOREPLY'):null /* Works only for G-Suite accounts */
+                  noReply: (repNoReply === 1)?true:((repNoReply === 2)?false:null)
 				});
                 // userProperties.getProperty('STAR_PROCESSED_MESSAGE')?messages[lastMsg].star():null;
                 messages[lastMsg].star();

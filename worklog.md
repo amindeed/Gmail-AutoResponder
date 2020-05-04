@@ -8,11 +8,21 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
-## 2020-05-03
+## 2020-05-04
+- `TIME_INTERVAL` hardcoded to **`10`**. because : 
+    - this value has proved to be reliable,
+    - `TIME_INTERVAL` should be equal to the parameter initially given to the `everyMinutes()`[https://developers.google.com/apps-script/reference/script/clock-trigger-builder#everyMinutes(Integer)] method when script triggers were created, which there is no way to change afterwards other than deleting and recreating these triggers.
+- No need now for spreadsheets templates. `Filters` and `Logs` are generated and initialized by `appinit()`.
+- Frontend and backend code for "getting" and "setting" `NO_REPLY` and `STAR_PROCESSED_MESSAGE` properties (more tests are needed).
+- Started enhancing the processing of properties values of `setProperties()` parameters object _(set default values...etc)_.
+- User can either initialize or reset app settings using `appinit()`.
+- Deleted non needed files from the repository.
+
+## 2020-05-03 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/618b8854f4ffac1daa1883e2784960cf30da996f/app)
 - Added to my reading list : _[Google Apps Script: Demystifying Time Zones in Apps Script - Part 2](https://googleappsscript.blogspot.com/2011/03/demystifying-time-zones-in-apps-script_21.html)_
 - Significant progress working on AppInit code.
 
-## 2020-05-02
+## 2020-05-02 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/038158f74e7c8e2eccb0ba49922f810d2b1e11c6/app/appinit.js)
 - **How to tell if the application is run for the first time?** The only way that comes to my mind is checking whether there is a user script property, `'alreadyRun'` for example, of which the value _∉ {0, false, undefined, null, NaN, ""}_.
 - Started `appinit()` function draft.
 
