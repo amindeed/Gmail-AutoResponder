@@ -8,11 +8,21 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-05
+- So I forgot that script properties accept only string values, and any other type would be converted, including boolean. Consequently, a `if` statement didn't work as expected since `true` and `false` were evaluated as literal non empty strings that are both equivalent to the boolean value `true`. Adjusted code accordingly.
+   
+    <br /><img src="/assets/2020-05-05 01_05_08-Executions.png" alt="Properties_strings" width="600"/><br />
+   
+- Adjusted project's scopes : `https://www.googleapis.com/auth/drive`, instead of `https://www.googleapis.com/auth/drive.readonly`.
+- Now all app settings are configurable from the web frontend.
+- Deployed, intialized and run the application successfully with both G-Suite and free Google accounts.
+- Updatd `worklog.md` and `README.md`.
+
 ## 2020-05-04
 - `TIME_INTERVAL` hardcoded to **`10`**. because : 
     - this value has proved to be reliable,
-    - `TIME_INTERVAL` should be equal to the parameter initially given to the `everyMinutes()`[https://developers.google.com/apps-script/reference/script/clock-trigger-builder#everyMinutes(Integer)] method when script triggers were created, which there is no way to change afterwards other than deleting and recreating these triggers.
-- No need now for spreadsheets templates. `Filters` and `Logs` are generated and initialized by `appinit()`.
+    - `TIME_INTERVAL` should be equal to the parameter initially given to the [`everyMinutes()`](https://developers.google.com/apps-script/reference/script/clock-trigger-builder#everyMinutes(Integer)) method when script triggers were created, which there is no way to change afterwards other than deleting and recreating these triggers.
+- No need now for spreadsheet templates. `Filters` and `Logs` are generated and initialized by `appinit()`.
 - Frontend and backend code for "getting" and "setting" `NO_REPLY` and `STAR_PROCESSED_MESSAGE` properties (more tests are needed).
 - Started enhancing the processing of properties values of `setProperties()` parameters object _(set default values...etc)_.
 - User can either initialize or reset app settings using `appinit()`.
@@ -319,6 +329,17 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 
 ## …
+
+## 2017-09-14
+_Original :_
+>Evaluation des résultats de la session d’exécution du 13/09/2017 : **60** itérations correctes du programme ayant récupérés **33** `threads`. **33** messages traités, dont **19** sautées et **14** réponses automatiques envoyées.
+>Déploiement de versions adaptées du programme pour les deux comptes **`OPERATIONS2`** et **`OPERATIONS3`**.
+
+
+## 2017-09-13
+_Original :_
+> Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** itérations correctes du programme ayant récupérés **53** `threads`.  **53** messages traités, dont **42** sautées et **11** réponses automatiques envoyées.
+
 
 ## 2017-09-12
 _Original :_

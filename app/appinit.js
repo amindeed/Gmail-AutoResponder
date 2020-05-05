@@ -10,13 +10,13 @@ function appinit(initParams) {
                   + pad2(date.getMinutes()) 
                   + pad2(date.getSeconds());
   
-  var driveDirName = initParams['dirName']?initParams['dirName']:'Gmail_AutoResponder_'+timestamp;
+  var driveDirName = (initParams && initParams['dirName'])?initParams['dirName']:'Gmail_AutoResponder_'+timestamp;
   
   var userProperties = PropertiesService.getUserProperties();
   
   if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== true) || (initParams['resetApp'] === true) ) {
     
-    // 0. Delete All triggers, Logs/Filters spreadsheets and user script properties
+    // 0. Delete (if any): script triggers, Logs/Filters spreadsheets and user script properties
 
     try {
       
@@ -44,7 +44,7 @@ function appinit(initParams) {
     var ssLogsDrvFile = DriveApp.getFileById(ssLogsId);
     var scriptFile = DriveApp.getFileById(scriptId);
     
-    var appDrvFolder = DriveApp.createFolder(driveDirName).getId();
+    var appDrvFolder = DriveApp.createFolder(driveDirName).getId(); 
     
     DriveApp.getFolderById(appDrvFolder).addFile(ssFiltersDrvFile);
     DriveApp.getFolderById(appDrvFolder).addFile(ssLogsDrvFile);
@@ -200,7 +200,7 @@ function appinit(initParams) {
     //// Check whether the user has a G-Suite account
     userProperties.setProperty(
       'IS_GSUITE_USER', 
-      (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false
+      (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?'GSUITE':'GMAIL'
     );
     
     userProperties.setProperty(
@@ -221,7 +221,7 @@ function appinit(initParams) {
       'msgbody': userProperties.getProperty('DEFAULT_MESSAGE_BODY'),
       //'ccemailadr': '', // setProperties() won't accept an empty/null value
       //'bccemailadr': '', // setProperties() won't accept an empty/null value
-      'noreply': userProperties.getProperty('IS_GSUITE_USER')?2:3,
+      'noreply': (userProperties.getProperty('IS_GSUITE_USER') === 'GSUITE')?2:3,
       //'starmsg': true
     };
     
@@ -245,5 +245,7 @@ function appinit(initParams) {
     
     // 7. Set script user property 'INIT_ALREADY_RUN' to true.
     userProperties.setProperty('INIT_ALREADY_RUN', true);
+    
+    // 8. return webapp full URL
   } 
 }

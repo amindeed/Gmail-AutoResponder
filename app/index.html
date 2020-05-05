@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
     <style>
+     /*
       #myemailaddress, input[type=text], input[type=email], input[type=number], textarea {
         color: green;
       }
       img {
         border: 5px solid green;
       }
+     */
     </style>
     <script src="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
     <!--
@@ -42,13 +44,13 @@
             </em>';
         document.getElementById("filtersssid").value = settings['filtersssid'];
         document.getElementById("logsssid").value = settings['logsssid'];
-        document.getElementById("starthour").value = settings['starthour'];
-        document.getElementById("finishhour").value = settings['finishhour'];
-        document.getElementById("dstoffset").value = settings['dstoffset'];
+        document.getElementById("starthour").value = parseInt(settings['starthour'], 10);
+        document.getElementById("finishhour").value = parseInt(settings['finishhour'], 10);
+        document.getElementById("dstoffset").value = parseInt(settings['dstoffset'], 10);
         document.getElementById("ccemailadr").value = settings['ccemailadr'];
         document.getElementById("bccemailadr").value = settings['bccemailadr'];
         
-        console.log("[DEBUG/GET] settings[\'noreply\'] === " + settings['noreply'] + ", of type : " + typeof(settings['noreply']));
+        //console.log("[DEBUG/GET] settings[\'noreply\'] === " + settings['noreply'] + ", of type : " + typeof(settings['noreply']));
         switch(settings['noreply']) {
           case "YES":
             document.getElementById("yes_noreply").checked = true;
@@ -64,7 +66,7 @@
             document.getElementById("no_noreply").checked = true;
         }
         
-        console.log("[DEBUG/GET] settings[\'starmsg\'] === " + settings['starmsg'] + ", of type : " + typeof(settings['starmsg']));
+        //console.log("[DEBUG/GET] settings[\'starmsg\'] === " + settings['starmsg'] + ", of type : " + typeof(settings['starmsg']));
         switch(settings['starmsg']) {
           case "NO":
             document.getElementById("no_starmsg").checked = true;
@@ -102,14 +104,14 @@
       // Save settings to backend 
       function saveSettings(formObject) {
          //➜ Process formObject.elements["noreply"].value
-         console.log("[DEBUG/SET] formObject.elements[\"noreply\"].value === " 
+         /*console.log("[DEBUG/SET] formObject.elements[\"noreply\"].value === " 
                       + formObject.elements["noreply"].value 
-                      + ", of type : " + typeof(formObject.elements["noreply"].value ));
+                      + ", of type : " + typeof(formObject.elements["noreply"].value ));*/
                       
          //➜ Process formObject.elements["starmsg"].value
-         console.log("[DEBUG/SET] formObject.elements[\"starmsg\"].value === " 
+         /*console.log("[DEBUG/SET] formObject.elements[\"starmsg\"].value === " 
                       + formObject.elements["starmsg"].value 
-                      + ", of type : " + typeof(formObject.elements["starmsg"].value ));
+                      + ", of type : " + typeof(formObject.elements["starmsg"].value ));*/
          CKEDITOR.instances['msgbody'].updateElement();
          google.script.run
               .withSuccessHandler(onSetSuccess)

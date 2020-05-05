@@ -33,9 +33,15 @@
 4. 🛠 _(Initialize app)_
 
 ### Method 2: Deploy Source Code
-- 🖱/🖥 _(Create GCP Project)_
-- 🖥 Push code to Google Apps Script
-- 🖥 Import `GMAIL_AUTORESPONDER_FILTERS.xlsx` and `GMAIL_AUTORESPONDER_LOGS.xlsx` as Google Spreadsheets to your Google Drive.
+- Using [`clasp`](https://github.com/google/clasp) command line tool :
+
+	```bash
+	cd /app
+	clasp login
+	clasp create --type webapp --title "Gmail AutoResponder Dev"
+	clasp push --force
+	```
+
 - 🖱/🖥 Initialize the app
 
 ## Parameters & Components

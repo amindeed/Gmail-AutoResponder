@@ -8,9 +8,9 @@ function autoReply() {
   
   var userProperties = PropertiesService.getUserProperties();
   var INTERVAL = 10;    // To execute the script after each 10 min.
-  var START_HOUR = userProperties.getProperty('START_HOUR')?userProperties.getProperty('START_HOUR'):17;    // Local time
-  var FINISH_HOUR = userProperties.getProperty('FINISH_HOUR')?userProperties.getProperty('FINISH_HOUR'):8;    // Local time
-  var DST_OFFSET = userProperties.getProperty('DST_OFFSET')?userProperties.getProperty('DST_OFFSET'):0; // DST offset
+  var START_HOUR = userProperties.getProperty('START_HOUR')?parseInt(userProperties.getProperty('START_HOUR'), 10):17;
+  var FINISH_HOUR = userProperties.getProperty('FINISH_HOUR')?parseInt(userProperties.getProperty('FINISH_HOUR'), 10):8;
+  var DST_OFFSET = userProperties.getProperty('DST_OFFSET')?parseInt(userProperties.getProperty('DST_OFFSET'), 10):0; // DST offset. Optional, to adjust time in case of.
   var date = new Date();
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var GM_SEARCH_QUERY = 'is:inbox after:' + timeFrom;
@@ -47,8 +47,8 @@ function autoReply() {
   var RawMsg_blacklist = ColumnValues(config_sheet,"A",1);
 
   // Message body
-  var body = HtmlService.createHtmlOutputFromFile('body.html').getContent();
-  //var body = userProperties.getProperty('MESSAGE_BODY');
+  //var body = HtmlService.createHtmlOutputFromFile('body.html').getContent();
+  var body = userProperties.getProperty('MESSAGE_BODY');
 
   /***#####*** declare 2D array of processed messages ***#####***/
 
@@ -83,23 +83,29 @@ function autoReply() {
                   + '<br/><br/>' + msgBody + '<br/>',
                   cc: userProperties.getProperty('CC_ADDRESS'),
                   bcc: userProperties.getProperty('BCC_ADDRESS'),
-                  //noReply: userProperties.getProperty('IS_GSUITE_USER')?userProperties.getProperty('NOREPLY'):null /* Works only for G-Suite accounts */
-                  noReply: (repNoReply === 1)?true:((repNoReply === 2)?false:null)
+                  noReply: (repNoReply === 'YES')?true:((repNoReply === 'NO')?false:null)
 				});
-                // userProperties.getProperty('STAR_PROCESSED_MESSAGE')?messages[lastMsg].star():null;
-                messages[lastMsg].star();
+                
+                if ( userProperties.getProperty('STAR_PROCESSED_MESSAGE') !== 'NO' ) {
+                  messages[lastMsg].star();
+                }
 
                 // Log message that has been responded to
                 // Note that the ID of a Gmail thread is the ID of its first message
                 ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
-                var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
-                last_OpsLog_row.setBackgroundRGB(252,229,205);
+                
+                /* Set custom background color  */
+                //var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
+                //last_OpsLog_row.setBackgroundRGB(252,229,205);
+          
                 cache.put(msgId, '', 960); // Cache ID of processed message
 
         } else if ( isProcessed === null ) {
 
           // Star skipped message
-          messages[lastMsg].star();
+          if ( userProperties.getProperty('STAR_PROCESSED_MESSAGE') !== 'NO' ) {
+                  messages[lastMsg].star();
+          }
 
           // Log skipped message
           var msgDate = messages[lastMsg].getDate(), msgSubject = messages[lastMsg].getSubject();
@@ -112,7 +118,7 @@ function autoReply() {
 
   } else if ( (hour === FINISH_HOUR + DST_OFFSET) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
 
-    // Mark session end on both sheets
+    // Mark session end on both 'Logs' sheets
 
     var last_OpsLog_row = ops_log_sheet.getRange(ops_log_sheet.getLastRow(),1,1,ops_log_sheet.getLastColumn());
     last_OpsLog_row.setBorder(null, null, true, null, null, null, "black", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);

@@ -141,14 +141,22 @@ function setProperties(objParams) {
     userProperties.setProperty('BCC_ADDRESS', '');
   }
   
+  /*
+  Logger.log("[DEBUG/SET] \'IS_GSUITE_USER\' === " 
+             + userProperties.getProperty('IS_GSUITE_USER') 
+             + ", of type : " 
+             + typeof(userProperties.getProperty('IS_GSUITE_USER'))
+             );
   Logger.log("[DEBUG/SET] objParams[\'noreply\'] === " + objParams['noreply'] + ", of type : " + typeof(objParams['noreply']));
+  */
+  
   if ( (objParams['noreply'] === "YES") || (objParams['noreply'] === "NO") ) {
-    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') !== false)?objParams['noreply']:"N_A");
+    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') !== 'GMAIL')?objParams['noreply']:"N_A");
   } else {
-    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') === false)?"N_A":"NO");
+    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') === 'GMAIL')?"N_A":"NO");
   }
   
-  Logger.log("[DEBUG/SET] objParams[\'starmsg\'] === " + objParams['starmsg'] + ", of type : " + typeof(objParams['starmsg']));
+  //Logger.log("[DEBUG/SET] objParams[\'starmsg\'] === " + objParams['starmsg'] + ", of type : " + typeof(objParams['starmsg']));
   userProperties.setProperty('STAR_PROCESSED_MESSAGE', (objParams['starmsg'] === 'NO')?'NO':'YES');
   
 }
