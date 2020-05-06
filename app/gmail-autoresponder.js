@@ -94,9 +94,23 @@ function getFirstEmptyRow(sheet, column) {
 /** Frontend (1) **/
 
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('index')
+  
+  var userProperties = PropertiesService.getUserProperties();
+  
+  if (userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES') {
+    
+    Logger.log(appinit());
+    return HtmlService.createHtmlOutputFromFile('index')
            .setTitle('Gmail AutoResponder - Settings')
            .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png'); // Sample favicon. Base64 data URLs not supported.
+    
+  } else {
+    
+    return HtmlService.createHtmlOutputFromFile('index')
+           .setTitle('Gmail AutoResponder - Settings')
+           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png'); // Sample favicon. Base64 data URLs not supported.
+  }
+  
 }
 
 

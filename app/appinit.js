@@ -14,9 +14,9 @@ function appinit(initParams) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== true) || (initParams['resetApp'] === true) ) {
+  //if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== true) || (initParams['resetApp'] === true) ) {
     
-    // 0. Delete (if any): script triggers, Logs/Filters spreadsheets and user script properties
+    // 0. Delete All triggers, Logs/Filters spreadsheets and user script properties
 
     try {
       
@@ -244,8 +244,8 @@ function appinit(initParams) {
     // 6. Load app parameters into the frontend.
     
     // 7. Set script user property 'INIT_ALREADY_RUN' to true.
-    userProperties.setProperty('INIT_ALREADY_RUN', true);
+    userProperties.setProperty('INIT_ALREADY_RUN', 'YES');
     
     // 8. return webapp full URL
-  } 
+  // /*If*/ } 
 }

@@ -8,6 +8,11 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-06
+- Exploring ways to implement a "first time run" process to initialize the webapp, without having to go/redirect to a custom URL.
+- `ScriptApp.getService().getUrl()` doesn't seem to return the correct URL in case of a G-Suite account : `https://script.google.com/a/mydomain.com/macros/s/AKfy-----------------------k9/dev` : _missing `a/mydomain.com` between `https://script.google.com/` and `/macros/s/AKfy-----------------------k9/dev`._
+- Imported a few old Worklog entries.
+
 ## 2020-05-05
 - So I forgot that script properties accept only string values, and any other type would be converted, including boolean. Consequently, a `if` statement didn't work as expected since `true` and `false` were evaluated as literal non empty strings that are both equivalent to the boolean value `true`. Adjusted code accordingly.
    
@@ -16,7 +21,7 @@
 - Adjusted project's scopes : `https://www.googleapis.com/auth/drive`, instead of `https://www.googleapis.com/auth/drive.readonly`.
 - Now all app settings are configurable from the web frontend.
 - Deployed, intialized and run the application successfully with both G-Suite and free Google accounts.
-- Updatd `worklog.md` and `README.md`.
+- Updated `worklog.md` and `README.md`.
 
 ## 2020-05-04
 - `TIME_INTERVAL` hardcoded to **`10`**. because : 
@@ -329,6 +334,57 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 
 ## …
+
+## 2017-09-19 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/44a42e3a03b2518d9bde6bd348897d47587ce0a2/app/Autorespond-config-OPS3.xlsx)
+_Original :_
+> - Evaluation des résultats des sessions d’exécution du 18/09/2017: **19** réponses automatiques envoyées :
+>     - **`OPERATIONS`** : **60** itérations du programme ayant récupérés **68** `threads`. **68** messages traités, dont **50** sautés et **18** réponses automatiques envoyées.
+>     - **OPERATIONS2** :
+>         - **60** itérations du programme ayant récupérés **38** `threads`.  **38** messages traités et  sautés.
+>         - **1** message non traité:
+>             - L’heure de réception a coïncidé avec le déclenchement de la deuxième itération du programme pendant la session d’exécution du 18/09/2017. La partie du code recherchant et récupérant les derniers mails reçus l’aurait, par conséquent, raté.
+>             - Le script du compte `OPERATIONS3` a détecté et sauté le message, comme il est configuré pour exclure les messages à destination de `OPERATIONS` et `OPERATIONS2` (adresses respectives ajoutées à la colonne `TO_BLACKLIST` du document de configuration `Autorespond-config` de l'instance de l'application associée au compte Google `OPERATIONS3`).
+>             - Le script du compte `OPERATIONS` n’a pas détecté le message vu que l’itération qu’il l’aurait traité (exécutée à 19:26:02 GMT) a détecté un message plus récent dans la même conversation et auquel une réponse a été en effet envoyée.
+>             - De toute façon, le message a été traité peu après par l’équipe `OPERATIONS2` même.
+>     - **OPERATIONS3** : **60** itérations du programme ayant récupérés **25** `threads`. **25** messages traités, dont **24** sautés et une réponse envoyée.
+> - Ajout du fichier `Autorespond-config-OPS3.xlsx` au code source:
+>     - Un deuxième modèle du fichier `Autorespond-config` a été ajouté au code source, illustrant -à titre d'exemple- la configuration utilisée pour l'application associée au compte **`OPERATIONS3`**, l'empêchant d'envoyer une réponse à un message reçu si celui-ci est aussi destiné au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com` et serait donc traité par l'une des applications respectives leur étant associées.
+>     - A cet égard, les 3 instances en exécution sont en effet configurées comme suit:
+>         - **_OPERATIONS :_** Traite tous les messages répondant aux critères de filtrage préconfigurés, excluant ainsi:
+>             - les accusés de lectures
+>             - les messages d'administration système (`postmaster`, `mailer-daemon`)
+>             - les messages en provenance des adresses mail de la société (`*@mycompany.*`)
+>             - les messages en provenance des adresses avec l'alias `noreply/no-reply`.
+>             - les messages en provenance des adresses ajoutées au fur et à mesure à la liste d'exclusion `FROM_REGEX_BLACKLIST`
+>             - les messages à destinations anonymes `undisclosed-recipients`.
+>         - **_OPERATIONS2 :_** en plus des critères de filtrage précités, elle ne traite pas les messages destinés aussi à `operations@mycompany.com`.
+>         - **_OPERATIONS3 :_** en plus des critères de filtrage précités, elle ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
+>     - Une même approche sera adoptée pour les autres instances de l'application qui seraient ultérieurement ajoutées et associées à d'autres compte Google.
+
+
+## 2017-09-18 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/7d67f6a683eedaf3e82a418670e2a7e66eb75c30/app/Code.js)
+_Original :_
+> Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/2017 : **31** réponses automatiques envoyées :
+> - `OPERATIONS` :
+>     - **120** itérations du programme ayant récupérés **84** `threads`. **84** messages traités, dont **63** sautées et **21** réponses automatiques envoyées.
+> - `OPERATIONS2` :
+>     - **120** itérations du programme ayant récupérés **53** `threads`.  **53** messages traités, dont **51** sautées et **2** réponses automatiques envoyées.
+> - `OPERATIONS3` :
+>     - **120** itérations du programme ayant récupérés **95** `threads`.  **95** messages traités, dont **88** sautées et **7** réponses automatiques envoyées.
+> - _Améliorations et mises à jour_ :
+>     - Les codes source ont été mis à jour pour activer le suivi (= ajouter `une étoile` au message sur le client webmail `Gmail`) de chaque message traité.
+
+
+## 2017-09-16 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/98a14d321fe76297b620b05c4f1655945decd5a4/app)
+_Original :_
+> Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/2017.
+> - Améliorations et mises à jour :
+>     - Ajout d'une nouvelle adresse aux listes d’exclusions respectives `From :` de chaque compte (i.e. `OPERATIONS`, `OPERATIONS2`, `OPERATIONS3`).
+>     - Modification du code pour la mise en copie normale `Cc` (au lieu de `Cci`) des adresses d’administration pour un meilleur filtrage et suivi des réponses automatiques envoyées (i.e. pour une meilleure lisibilité sur l’application web `Gmail` avec des libellés personnalisés, par exemple). L'adresse mise en copie est en effet un [alias](https://support.google.com/a/answer/33327?hl=en) de **`amine@mycompany.com`**; Dans le cas des réponses automatiques programmées jusqu’au 16/09/2017, les alias sont respectivement : **it-operations@mycompany.com**, **it-operations2@mycompany.com**, **it-operations3@mycompany.com**.
+>     - `OPERATIONS`2 et `OPERATIONS3` : A partir de la session d’exécution du 16/09/2017, le système de filtrage des messages reçus par destination vérifiera les champs `Cc :` et `Cci :` en plus du champ `To :`.
+>     - _Prévisions :_ Comme [un identifiant unique](https://developers.google.com/apps-script/reference/gmail/gmail-message#getid) est attribué à chaque version d’un même message envoyé à plusieurs destinataires de **`*@mycompany.*`**, il va falloir penser à un autre critère de filtrage de tels messages pour qu’ils ne soient pas traités plusieurs fois. L’identifiant **`Message-ID`**, selon les spécifications du document **[« RFC 822 »](https://www.w3.org/Protocols/rfc822/)** de l’**IETF**, répond le plus aux critères requis. Une expression régulière pour l’extraction de cet identifiant a été développée et préparée pour utilisation dans de prochaines versions du programme : **```^Message-ID:\s*[<A-Za-z0-9!#$%&'*+-/=?^_`{}|~.@]*```**
+>         - _**Révision (2019-06-09):** Il est possible d'extraire l'en-tête `Message-ID` sans avoir à utiliser une expression régulière sur tout le contenu du message original, et ce en utilisant la méthode [`getHeader(name)`](https://developers.google.com/apps-script/reference/gmail/gmail-message#getHeader(String)) de la classe `GmailMessage`._
+
 
 ## 2017-09-14
 _Original :_
