@@ -79,25 +79,13 @@ function deleteAllTriggers() {
 }
 
 
-/** Inspired from : https://stackoverflow.com/a/27179623/3208373 **/
-/***** No longer needed. Kept for reference.
-function getFirstEmptyRow(sheet, column) {
-  var values = sheet.getRange(column + "1:" + column + sheet.getLastRow()).getValues();
-  var ct = 0;
-  while ( values[ct] && values[ct][0] != "" ) {
-    ct++;
-  }
-  return (ct+1);
-}
-*****/
-
 /** Frontend (1) **/
 
 function doGet() {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  if (userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES') {
+  if ( userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES' ) {
     
     Logger.log(appinit());
     return HtmlService.createHtmlOutputFromFile('index')
@@ -110,7 +98,13 @@ function doGet() {
            .setTitle('Gmail AutoResponder - Settings')
            .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png'); // Sample favicon. Base64 data URLs not supported.
   }
-  
+}
+
+
+/** Reset App Settings **/
+
+function resetApp(resetParams) {
+  appinit(resetParams);
 }
 
 

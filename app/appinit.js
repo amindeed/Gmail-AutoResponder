@@ -14,7 +14,7 @@ function appinit(initParams) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  //if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== true) || (initParams['resetApp'] === true) ) {
+  //if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES') || (initParams['resetApp'] === true) ) {
     
     // 0. Delete All triggers, Logs/Filters spreadsheets and user script properties
 
@@ -26,7 +26,7 @@ function appinit(initParams) {
        userProperties.deleteAllProperties();
       
     } catch(e) {
-       // Do nothing
+       Logger.log(e.message);
     }
     
     
@@ -52,7 +52,11 @@ function appinit(initParams) {
     
     DriveApp.getRootFolder().removeFile(ssFiltersDrvFile);
     DriveApp.getRootFolder().removeFile(ssLogsDrvFile);
-    scriptFile.getParents().next().removeFile(scriptFile);
+    var oldParent = scriptFile.getParents().next();
+    oldParent.removeFile(scriptFile);
+    if (oldParent.getParents().hasNext() /* && 'oldParent' is empty */) {
+      oldParent.setTrashed(true);
+    }
     
     var ssFiltersURL = ssFilters.getUrl();
     var ssLogsURL = ssLogs.getUrl();
