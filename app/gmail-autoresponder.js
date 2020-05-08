@@ -194,3 +194,11 @@ function getSettings(){
   
   return settingsObj;
 }
+
+function getHtml() {
+   var html = HtmlService
+      .createTemplateFromFile('test')
+      .evaluate()
+      .getContent();
+   return html;
+}

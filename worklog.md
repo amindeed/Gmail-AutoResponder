@@ -8,6 +8,10 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-08
+- **Exploring :** On page/webapp URL load, a backend flag value would be checked first. Depending on the value of this flag, the app would decide whether to load the form to view/update the settings (i.e. app already initialized), or call `appinit()` backend function (i.e. first time run).
+- **Things to consider :** As previously tested, loading dynamic HTML content into the frontend seems to require backend functions to return HTML code through [`HtmlService.createTemplateFromFile()`](https://developers.google.com/apps-script/reference/html/html-template) (i.e. templated HTML) instead of [`HtmlService.createHtmlOutput()`](https://developers.google.com/apps-script/reference/html/html-output).
+
 ## 2020-05-07
 - Relying on a `GET` parameter value, `WebAppURL?reset=true` for instance, is not safe because the URL is kept with it's parameters, so if the page gets reloaded the application will be reset again!
 
@@ -32,6 +36,9 @@
     - When Chrome V8 runtime is enabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/macros/s/{Deployment-ID}/(exec|dev)`.
     - When Chrome V8 runtime is disabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/a/mydomain.com/macros/s/{deployment-id}/(exec|dev)`.
 - Tried [Templated HTML with scriplets](https://developers.google.com/apps-script/guides/html/templates) to "simulate" a page reload after `resetApp()` function is run : _it is not possible to load a URL, dynamically provided by the scriplet `<?= ScriptApp.getService().getUrl() ?>` and using [`window.open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open), into the active window, unless you override the recommended [default behaviour](https://developers.google.com/apps-script/reference/html/x-frame-options-mode) of Google Apps Script, which protects against clickjacking by setting the `X-Frame-Options` HTTP header._
+   
+    <br /><img src="/assets/2020-05-08 22_54_03-Gmail AutoResponder - Settings.png" alt="X-Frame-Options" width="500"/><br />
+   
 - Using `window.write()`, overwrite index page with its same code returned, as a HTML templated code, by a backend function : _page content seems to load without issues except `CKEditor`._
 
     <br /><img src="/assets/2020-05-07 23_53_00-https___script.google.com.png" alt="window.write()" width="500"/><br />

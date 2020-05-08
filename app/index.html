@@ -107,6 +107,12 @@
               .withFailureHandler(onFailure)
               .setProperties(formObject)
       }
+      
+      // Test load content dynamically
+      function testLoadContent(){
+         document.getElementById("dynamic").innerHTML = google.script.run.getHtml(); //still gets 'undefined'
+      }
+      
     </script>
     <title>Gmail AutoResponder</title>
   </head>
@@ -119,11 +125,10 @@
                     .withFailureHandler(onFailure)
                     .getSettings()" /><br /><br />
                     
-    <input type="button" value="Reset App" 
-           onclick="google.script.run
-                    .withSuccessHandler(window.open('https://amindeed.com','_self'))
-                    .withFailureHandler(onFailure)
-                    .resetApp()" /><br /><br />
+    <input type="button" value="Load Dynamic Content" 
+           onclick="testLoadContent()" /><br /><br />
+           
+    <div id="dynamic"></div>
   
     <div id="userphoto"></div> <br />
     
