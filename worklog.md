@@ -8,6 +8,23 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-09
+- Intended behaviour of the webapp, depending on the [`flag`](#2020-05-08) value :
+    - **`flag === value1`** : _Typically, first time run_ :
+        1. **Frontend :** Apps settings form is disabled.
+        2. **Backend :** 
+            - Any submitted data will be rejected (i.e. `setSettings()` won't modify any properties).
+            - `appinit()` execution is allowed
+    - **`flag === value2`** : _Web app already intialized/configured_ :
+        1. **Frontend :** Apps settings form is enabled
+        2. **Backend :**
+            - Any form data submitted by the user will be applied.
+            - `appinit()` execution is not allowed, unless an "App Reset" is explicitly requested.
+- I'm kind of resisting the idea of using templated HTML outputs, maybe because I don't want the code to be closely tied to Google Apps Script's specific concepts and "ways of doing things", and so keep it clean and "easily convertible" to other backend languages.
+- Exploring possible combinations, _as far as allowed by the V8 runtime of the Google Apps Script framework_[⁽¹⁾](https://stackoverflow.com/a/60174689/3208373)[⁽²⁾](https://developers.google.com/apps-script/guides/v8-runtime#improved_function_detection), of asynchronous execution and exception handling for both backend and frontend functions in order to address the above scenario.
+- Finished importing entries from the old worklog.
+- Some `README.md` refinements.
+
 ## 2020-05-08
 - **Exploring :** On page/webapp URL load, a backend flag value would be checked first. Depending on the value of this flag, the app would decide whether to load the form to view/update the settings (i.e. app already initialized), or call `appinit()` backend function (i.e. first time run).
 - **Things to consider :** As previously tested, loading dynamic HTML content into the frontend seems to require backend functions to return HTML code through [`HtmlService.createTemplateFromFile()`](https://developers.google.com/apps-script/reference/html/html-template) (i.e. templated HTML) instead of [`HtmlService.createHtmlOutput()`](https://developers.google.com/apps-script/reference/html/html-output).
@@ -32,7 +49,7 @@
         }
     }
     ```
-- Odd behaviour of Google Apps Script :
+- Odd behaviour of Google Apps Script for G-Suite accounts (first noticed on [May 06](#2020-05-06)):
     - When Chrome V8 runtime is enabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/macros/s/{Deployment-ID}/(exec|dev)`.
     - When Chrome V8 runtime is disabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/a/mydomain.com/macros/s/{deployment-id}/(exec|dev)`.
 - Tried [Templated HTML with scriplets](https://developers.google.com/apps-script/guides/html/templates) to "simulate" a page reload after `resetApp()` function is run : _it is not possible to load a URL, dynamically provided by the scriplet `<?= ScriptApp.getService().getUrl() ?>` and using [`window.open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open), into the active window, unless you override the recommended [default behaviour](https://developers.google.com/apps-script/reference/html/x-frame-options-mode) of Google Apps Script, which protects against clickjacking by setting the `X-Frame-Options` HTTP header._
@@ -192,7 +209,7 @@
 
     <br /><img src="/assets/2020-04-21 11_45_15-_corrupted-drive-files.gif" alt="Corrupted Drive Files" width="500"/><br />
     
-- So basically, some fairy reliable resources and accepted examples on the web suggest to first process the submitted file with [`FileReader()`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), and pass it as a [data URL](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) to a backend function for a second process that extracts content type from it, [decodes the submitted base64 data](https://developers.google.com/apps-script/reference/utilities/utilities#base64Decode(String)), and calls [`Utilities.newBlob()`](https://developers.google.com/apps-script/reference/utilities/utilities#newBlob(Byte,String)) to create a new blob object for [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)).
+- So basically, some fairy reliable resources and accepted solutions on the web suggest to first process the submitted file with [`FileReader()`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), and pass it as a [data URL](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) to a backend function for a second process that extracts content type from it, [decodes the submitted base64 data](https://developers.google.com/apps-script/reference/utilities/utilities#base64Decode(String)), and calls [`Utilities.newBlob()`](https://developers.google.com/apps-script/reference/utilities/utilities#newBlob(Byte,String)) to create a new blob object for [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)).
 - Here is a basic draft code as a wrap-up of what I've understood so far from the examples I studied. For the time being, this focuses only on that content type issue. Further development is needed to process forms with multiple types of input data (not only file upload) :
     - Frontend (client) :
   
@@ -360,15 +377,133 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 ----------------
 
-*Entries to be translated from the [old worklog](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md) :*
-
+***Entries to be translated from the [old worklog](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md) :***
+    
+    
 ## 2018-09-10
-…
+_Original :_
+> Revue du code source de l’application web, après plus d’un an d’exécution continue en production, avec plus de **6700** réponses automatiques envoyées.
+> 
+> Liste exhaustive des types d'erreurs reportées par **Google Apps Scripts** (résumés en provenance de l'adresse `apps-scripts-notifications@google.com`) durant l'année, illustré chacun par un exemple. Informations à prendre en considération dans les prochaines améliorations du code:
+> 
+> | Start            | Function    | Error Message                                                                                                                                    | Trigger    | End              |
+> |------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------|
+> | 10/07/2018 20:06 | autoReply   | Limit Exceeded: Email Body Size. (line 99, file "Code")                                                                                          | time-based | 10/07/2018 20:06 |
+> | 10/04/2018 20:43 | autoReply   | Document {DOCUMENT-ID-DELETED} is missing (perhaps it was deleted, or you don't have read access?) (line 22, file "Code") | time-based | 10/04/2018 20:44 |
+> | 9/17/18 12:53 AM | autoReply   | Service error: Spreadsheets (line 63, file "Code")                                                                                               | time-based | 9/17/18 12:53 AM |
+> | 7/26/18 11:16 PM | autoReply   | Gmail operation not allowed. (line 62, file "Code")                                                                                              | time-based | 7/26/18 11:16 PM |
+> | 4/24/18 4:52 AM  | autoReply   | Service timed out: Spreadsheets (line 63, file "Code")                                                                                           | time-based | 4/24/18 4:53 AM  |
+> | 3/23/18 10:46 PM | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again.                                                                           | time-based | 3/23/18 10:46 PM |
+> | 1/25/18 8:22 PM  | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again. (line 125, file "Code")                                                   | time-based | 1/25/18 8:24 PM  |
+> | 12/01/2017 08:45 | archive_log | Sorry, it is not possible to delete all non-frozen rows. (line 26, file "Archive_Log")                                                           | time-based | 12/01/2017 08:45 |
+> | 10/02/2017 20:58 | autoReply   | Argument too large: subject (line 97, file "Code")                                                                                               | time-based | 10/02/2017 20:58 |
+> | 10/01/2017 08:02 | archive_log | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
+> | 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
 
-## 2017-12-11
+
+## 2017-12-11 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/796a6d84f1e7287b8a936083ae8f507035a28215/app/Archive_log.js)
+_Original :_
+> Modification des codes source afin de rectifier un problème empêchant la réinitialisation mensuelle de la feuille du journal des sessions d’exécutions.
 
 
-## …
+## 2017-11-14
+_Original :_
+> En vérifiant les journaux des messages traités ainsi que les occurrences d’exécution de la session du 13/11/2017 : la session s’est déroulée correctement après les dernières mises à jours des codes source.
+
+
+## 2017-11-13 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/205b51e16b5800dbdfab2a6402adc20100a6da58/app)
+_Original :_
+> Les sessions d’exécution du **11/11/2017** et le **12/11/2017** du programme de réponses mail automatiques du compte **OPERATIONS** se sont correctement déroulées après la dernière mise à jour du code source.
+> Les changements ont été généralisés sur les autres programmes des comptes **OPERATIONS2**, **OPERATIONS3**, **OPERATIONS4**, **OPERATIONS5** et **OPERATIONS6**.
+> Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrences de chaque session d’exécution des programmes ont été ajoutées à leurs codes source respectifs.
+
+
+## 2017-11-11
+_Original :_
+> Fin de la nouvelle version du code source. Premier déploiement pour le compte `OPERATIONS`. Le code sera au fur et à mesure amélioré selon les résultats.
+
+
+## 2017-11-10
+_Original :_
+> Continuation du développement du code amélioré du programme des réponses mail automatiques.
+
+
+## 2017-11-09
+_Original :_
+> Continuation du développement et test des premières améliorations du code source pour une meilleure performance d’exécution.
+
+
+## 2017-11-08
+_Original :_
+> Début d’optimisation du code source pour une meilleure performance d’exécution :
+> **_Mise à jour du code envisagés :_** Au lieu d’extraire, à chaque exécution, tous les identifiants des messages traités durant tout le mois depuis le journal des opérations pour vérifier si un message n’a pas été déjà traité, le programme vérifierait juste les identifiants des messages traités dans la dernière occurrence qui seraient déjà mis en cache.
+
+
+## 2017-11-01
+_Original :_
+> Vérification des programmes (journaux et configurations) :
+> - L’archivage des journaux du mois d’octobre a été correctement exécuté pour toutes les instances du programme.
+> - Adresses ajoutées à la liste d’exclusion `From` de chacun des documents de configuration.
+
+
+## 2017-10-30
+_Original :_
+> Les codes sources des programmes de réponses mail automatiques ont été mis à jour suite au changement de l’heure locale qui a eu lieu le 29/10/2017.
+
+
+## 2017-10-23
+_Original :_
+> Les deux premières sessions d’exécution des programmes de réponses mail automatiques associés aux comptes **OPERATIONS5** et **OPERATIONS6** ont été respectivement exécuté le **21/10/2017** et le **22/10/2017**.
+> **4** réponses automatiques ont été envoyées, **9** messages reçus sautés.
+> Les adresses expéditrices avec la mention **`do-not-reply`** ont été ajoutées à la liste d’exclusion.
+> Les résultats des sessions **OPERATIONS5** et **OPERATIONS6** seront suivis durant toute la semaine afin de corriger toute éventuelle anomalie.
+> _**N.B. :**_ Depuis l’exécution de la première session de réponse mail automatique le 23/08/2017, **1203** réponses ont été envoyées.
+
+
+## 2017-10-21
+_Original :_
+> Configurations des programmes de réponses mail automatiques pour les comptes `OPERATIONS5 <operations5@mycompany.com>` et `OPERATIONS6 <operations6@mycompany.com>`.
+> Les premières sessions seront exécutées le jour même à partir de 20:00 (heure locale).
+
+
+## 2017-10-05
+_Original :_
+> Etudes, rectification et suggestion d’amélioration suite aux remarques formulées dans le rapport du 03/10/2017:
+> - Rectification du document de configuration du programme de `OPERATIONS2` auquel une opération d’archivage a été appliquée par erreur ; ce qui causait le traitement de l’intégralité des messages reçu sans aucun filtrage.
+> - Une amélioration du code est à envisager suite aux erreurs reportées par le service `Google Apps Script` :
+> 
+>     ![2017-10-05 - Gmail-AutoResponder](assets/2017-10-05%20-%20Gmail-AutoResponder.png)
+> 
+>     - Les messages d’erreur `Argument too large: subject (line 97, file "Code") et Limit Exceeded: Email Body Size. (line 97, file "Code")` indiquent que le corps du message de réponse composé du texte informatif principal et de l’historique de la conversation peut potentiellement dépasser la limite de [la taille maximale du corps de message de réponse](https://developers.google.com/apps-script/reference/gmail/gmail-thread#reply(String)).
+>     - Le concept permettant de contourner ce problème peut être résumé comme suit :
+>         - L’ensemble du message (texte informatif + historique de la conversation) sera initialement stocké dans une chaîne de caractère (String).
+>         - Si la taille de la chaîne dépasse 20Ko l’excédent sera supprimé et remplacé par des points de suspension.
+
+
+## 2017-10-03
+_Original :_
+> Retour sur les résultats des sessions d’exécution des programmes associés aux comptes `OPERATIONS`, `OPERATIONS2`, `OPERATIONS3` et `OPERATIONS4` entre le 22/09/2017 et 02/10/2017.
+> - _Premières remarques_ :
+>     - Aucun filtrage n’a été appliqué aux messages reçus durant la session du 01/10/2017 et le 02/10/2017 du programme de `OPERATIONS2`. Une réponse automatique a été envoyée pour chaque message détecté et traité.
+>     - La nécessité d’ajouter une colonne au journal contenant l’éventuelle raison d’exclusion d’un message se confirme.
+>     - La couleur de remplissage des lignes, distinguant les messages sautés des réponses automatiques envoyée, n’a pas été correctement appliquée entre le 24/09/2017 et le 30/09/2017 aux journaux de `OPERATIONS` et `OPERATIONS2`. Il ne peut s’agir que d’un bug/disfonctionnement du programme.
+
+
+## 2017-09-23
+_Original :_
+> Configuration du programme de réponses mail automatique pour un quatrième compte Google: **`OPERATIONS4 <operations4@mycompany.com>`**.
+
+
+## 2017-09-22
+_Original :_
+> Evaluation des résultats des sessions d’exécution du 20/09/2017 et 21/09/2017: **23** réponses envoyées.
+
+
+## 2017-09-20 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/e46a511320e5f6197b24f73e6f3ab58493e4a002/app/Code.js)
+_Original :_
+> - Evaluation des résultats des sessions d’exécution du 19/09/2017: **26** réponses envoyées :
+> - **Mise à jour du code:** Extension de deux minutes de l’intervalle de recherche des derniers emails reçus sur chacune des trois boîtes emails à chaque itération du programme afin de ne pas rater les emails coïncidant avec l’instant d’exécution.
+
 
 ## 2017-09-19 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/44a42e3a03b2518d9bde6bd348897d47587ce0a2/app/Autorespond-config-OPS3.xlsx)
 _Original :_
@@ -554,7 +689,7 @@ _Original :_
 > - 17 réponses automatiques envoyées entre 20:28 et 06:35 (heure locale)
 > - Amélioration du programme :
 >     - Réorganisation des lignes de déclaration des variables pour une meilleure lisibilité et portabilité du code.
->     - Enregistrement des configurations sur une seule feuille du document `Autorespond-config` avec plusieurs colonnes, au lieu de plusieurs feuilles contenant chacune un filtre. L'ancienne version fichier a été archivée sous le nom [`Autorespond-config_OLD-till-2017-08-24`](app/Autorespond-config_OLD-till-2017-08-24.xlsx). Adaptation du code.
+>     - Enregistrement des configurations sur une seule feuille du document `Autorespond-config` avec plusieurs colonnes, au lieu de plusieurs feuilles contenant chacune un filtre. L'ancienne version fichier a été archivée sous le nom [`Autorespond-config_OLD-till-2017-08-24`](https://github.com/amindeed/Gmail-AutoResponder/blob/dd7a8278fe437169f68f611b59e95e1ee2ce0c93/app/Autorespond-config_OLD-till-2017-08-24.xlsx). Adaptation du code.
 > - Rajout d’une valeur de décalage pour faciliter l’ajustement de la plage horaire d’exécution en cas de changement de l’heure locale.
 > - Utilisation d’une adresse générique `no-reply` afin de dissuader les destinataires de répondre directement aux messages automatiques. Par ailleurs, cela nous épargnera de configurer et maintenir sur chaque installation du logiciel `Outlook` un filtre pour en supprimer les copies reçues.
 > - Exclusion des adresses email contenant les mots `noreply` et `no-reply`.
@@ -697,8 +832,4 @@ _Original :_
 Developing a first prototype of a script to send automatic responses to emails received in a specific timeframe of each day.
 
 ![2017-07-26 - Gmail-AutoResponder](assets/2017-07-26%20-%20Gmail-AutoResponder.png)
-
-<br />
-
--------------
-_Archived version (from an old commit) of the original french worklog : [worklog.md](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md)_
+   

@@ -96,7 +96,11 @@ function doGet() {
     
     return HtmlService.createHtmlOutputFromFile('index')
            .setTitle('Gmail AutoResponder - Settings')
-           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png'); // Sample favicon. Base64 data URLs not supported.
+           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png') // Sample favicon. Base64 data URLs not supported.
+           .append('<script>\
+                       var childNodes = document.getElementById("gmasettings").getElementsByTagName("*");\
+                       for (var node of childNodes) { node.disabled = true;}\
+                    </script>');
   }
 }
 
@@ -201,4 +205,5 @@ function getHtml() {
       .evaluate()
       .getContent();
    return html;
+   //return '<h3>Test Content :</h3><p>This is a test content.</p>';
 }
