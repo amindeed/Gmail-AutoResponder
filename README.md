@@ -20,20 +20,20 @@
 
 Using [`clasp`](https://github.com/google/clasp#install) command line tool :
 
-	```bash
-	cd /app
-	clasp login
-	clasp create --type webapp --title "Gmail AutoResponder Dev"
-    # Copy the URL of the created Apps Script project
-	clasp push --force
-    # 1. Go to the Apps Script project URL
-    # 2. Run the empty function `grantAccess()` ('grantAccess.gs')
-    clasp deployments
-    # 1. Copy the deployment ID of @HEAD (dev version with latest code). 
-    # 2. Go to either :
-    #  - G-Suite Account : https://script.google.com/a/{yourdomain.com}/macros/s/{Deployment-ID}/dev
-    #  - Free Account : https://script.google.com/macros/s/{Deployment-ID}/dev
-	```
+```bash
+cd /app
+clasp login
+clasp create --type webapp --title "Gmail AutoResponder Dev"
+# Copy the URL of the created Apps Script project
+clasp push --force
+# 1. Go to the Apps Script project URL
+# 2. Run the empty function `grantAccess()` ('grantAccess.gs')
+clasp deployments
+# 1. Copy the deployment ID of @HEAD (dev version with latest code). 
+# 2. Go to either :
+#  - G-Suite Account : https://script.google.com/a/{yourdomain.com}/macros/s/{Deployment-ID}/dev
+#  - Free Account : https://script.google.com/macros/s/{Deployment-ID}/dev
+```
 
 ## 2. Settings
 
@@ -69,7 +69,7 @@ In order to neither miss a message nor send an automated response more than once
 
 On each execution, the following information are logged to the `Logs` spreadsheet :
 - **`OPERATIONS` (sheet #1):** Metadata of both messages responded to and those skipped (filtered out) : _Label_ (`REP_SENT` or `SKIPPED`), _Date/time Sent (Original Message)_, _Date/time Sent (Response)_ (when applicable), _Message ID_, _Thread ID_, _From_, _Subject_.
-- **`EXECUTIONS` (sheet #2):** The Gmail search query, along with the execution time and the number of threads returned (search results).
+- **`EXECUTIONS` (sheet #2):** The Gmail search query, along with the execution time and the number of threads returned (search results).   
 **`archive_log()`** functions runs on the first day of each month to archive previous month log [of processed messages] in a separate sheet of `Logs` named `MONTH_YY`.
 
 ## 5. Background

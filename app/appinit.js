@@ -14,21 +14,18 @@ function appinit(initParams) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  //if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES') || (initParams['resetApp'] === true) ) {
+  if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES') || (initParams && (initParams['resetApp'] === true)) ) {
     
     // 0. Delete All triggers, Logs/Filters spreadsheets and user script properties
-
+    
     try {
-      
        deleteAllTriggers();
        DriveApp.getFileById(userProperties.getProperty('FILTERS_SS_ID')).setTrashed(true);
        DriveApp.getFileById(userProperties.getProperty('LOGS_SS_ID')).setTrashed(true);
        userProperties.deleteAllProperties();
-      
     } catch(e) {
        Logger.log(e.message);
     }
-    
     
     // 1. Create `Filters` and `Logs` spreadsheets. Get URLs to show next to each one's input field.
     // 1.1. Place all app files in one Drive folder
@@ -54,7 +51,7 @@ function appinit(initParams) {
     DriveApp.getRootFolder().removeFile(ssLogsDrvFile);
     var oldParent = scriptFile.getParents().next();
     oldParent.removeFile(scriptFile);
-    if (oldParent.getParents().hasNext() /* && 'oldParent' is empty */) {
+    if (oldParent.getParents().hasNext() && !oldParent.getFiles().hasNext()) {
       oldParent.setTrashed(true);
     }
     
@@ -251,5 +248,7 @@ function appinit(initParams) {
     userProperties.setProperty('INIT_ALREADY_RUN', 'YES');
     
     // 8. return webapp full URL
-  // /*If*/ } 
+  } /*If*/
+  
+  return true;
 }

@@ -1,7 +1,11 @@
 function myFunction() {
 
-  //var userProperties = PropertiesService.getUserProperties();
+  var userProperties = PropertiesService.getUserProperties();
+  userProperties.deleteAllProperties();
   
+  //Logger.log(DriveApp.getRootFolder().getOwner().getDomain());
+  
+  /*
   function firstFunction(_callback){
     for (i = 0; i < 3; i++) {
       Logger.log('firstFunction(), iteration #' + i);
@@ -19,5 +23,26 @@ function myFunction() {
   firstFunction(() => Logger.log("[firstFunction] I\'m done!"));
   Logger.log('************************');
   secondFunction();
+  */
+  
+  
+  /*
+  function resolveAfter2Seconds() {
+    return new Promise(resolve => {
+       setTimeout(() => {
+          resolve('resolved');
+       }, 2000);
+    });
+  }
+      
+  async function asyncCall() {
+     Logger.log('calling');
+     const result = await resolveAfter2Seconds();
+     Logger.log(result);
+     // expected output: 'resolved'
+  }
+      
+  asyncCall();
+  */
   
 }

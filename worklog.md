@@ -8,6 +8,61 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-10
+- First complete (backend and frontend) implementation of the cycle : `Initialize WebApp` ➝ `Modify settings` ➝ `Show updated settings` ➝ `Reset WebApp`:
+    - New 3rd party component : [`SweetAlert2`](https://sweetalert2.github.io/), used instead of JavaScript's `alert()`.
+
+    <br /><img src="/assets/2020-05-10 22_56_04-init-reset-demo.gif" alt="Init-Reset-Demo" width="500"/><br />
+    
+- I had some fun checking and comparing return values of the Apps Script method `ScriptApp.getService().getUrl()`, depending on multiple factors : 
+    - _Account type (Free vs G-Suite),_ 
+    - _Runtime (Legacy (Rhino, ES5) vs V8),_ 
+    - _Caller of the function :_
+        - _Manually, on the Apps Script Editor (`Logger.log(ScriptApp.getService().getUrl())`)_
+        - _As a response to a GET request (`doGet()`)_
+        - _Client-side (`google.script.run`)_
+    - _Version of the deployed code (latest/dev vs specific/prod)_
+- **Conclusion:** the returned URL is almost unpredictable!
+    > ### 1) Gmail.com (Free)
+    > - **Script Editor : `Logger.log(ScriptApp.getService().getUrl())`**
+    > 	- **V8 Enabled :** `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 	- **V8 Disabled :** `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > - **Deployed Web App :**
+    > 	- **V8 Enabled :**
+    > 		- **GET response `doGet()` :**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 		- **Called client-side : `google.script.run`**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 	- **V8 Disabled :**
+    > 		- **GET response `doGet()` :**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 		- **Called client-side : `google.script.run`**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 										
+    > ### 2) _mydomain.com_ (G-Suite)
+    > - **Script Editor : `Logger.log(ScriptApp.getService().getUrl())`**
+    > 	- **V8 Enabled :** `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 	- **V8 Disabled :** `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
+    > - **Deployed Web App :**
+    > 	- **V8 Enabled :**
+    > 		- **GET response `doGet()` :**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 		- **Called client-side : `google.script.run`**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 	- **V8 Disabled :**
+    > 		- **GET response `doGet()` :**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Dev-Deployment-ID}/dev`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 		- **Called client-side : `google.script.run`**
+    > 			- Dev version (latest code deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
+    > 			- Prod version (specific version deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
+
 ## 2020-05-09
 - Intended behaviour of the webapp, depending on the [`flag`](#2020-05-08) value :
     - **`flag === value1`** : _Typically, first time run_ :

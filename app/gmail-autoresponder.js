@@ -87,20 +87,22 @@ function doGet() {
   
   if ( userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES' ) {
     
-    Logger.log(appinit());
     return HtmlService.createHtmlOutputFromFile('index')
            .setTitle('Gmail AutoResponder - Settings')
-           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png'); // Sample favicon. Base64 data URLs not supported.
+           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png')
+           .append('<script>\
+                      enableForm(false);\
+                      google.script.run\
+                            .withSuccessHandler(onInitSuccess)\
+                            .withFailureHandler(onFailure)\
+                            .appinit();\
+                   </script>');
     
   } else {
     
     return HtmlService.createHtmlOutputFromFile('index')
            .setTitle('Gmail AutoResponder - Settings')
-           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png') // Sample favicon. Base64 data URLs not supported.
-           .append('<script>\
-                       var childNodes = document.getElementById("gmasettings").getElementsByTagName("*");\
-                       for (var node of childNodes) { node.disabled = true;}\
-                    </script>');
+           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png');
   }
 }
 
@@ -199,6 +201,7 @@ function getSettings(){
   return settingsObj;
 }
 
+
 function getHtml() {
    var html = HtmlService
       .createTemplateFromFile('test')
@@ -206,4 +209,24 @@ function getHtml() {
       .getContent();
    return html;
    //return '<h3>Test Content :</h3><p>This is a test content.</p>';
+}
+
+
+/** [draft] https://l.amindeed.com/Fungq **/
+
+function altGetScriptUrl(){
+  
+  var userDomain = DriveApp.getRootFolder().getOwner().getDomain();
+  var url = ScriptApp.getService().getUrl(); // = null if script not published
+  
+  if (userDomain !== 'gmail.com') {
+    if (url.indexOf('/a/' + userDomain + '/') !== -1) {
+      return url;
+    } else {
+      // var altUrl = ... insert '/a/'+userDomain
+      // return altUrl
+    }
+  } else {
+    return url;
+  }
 }
