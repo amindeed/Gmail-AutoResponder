@@ -5,16 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
-    <style>
-     /*
-      #myemailaddress, input[type=text], input[type=email], input[type=number], textarea {
-        color: green;
-      }
-      img {
-        border: 5px solid green;
-      }
-     */
-    </style>
     <script src="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
@@ -53,7 +43,6 @@
               .withSuccessHandler(onObjGetSuccess)
               .withFailureHandler(onFailure)
               .getSettings();
-          //alert("App (re)initialized successfully!");
           Swal.fire({
             icon: 'success',
             title: 'Success!',
@@ -74,6 +63,15 @@
     
       // Load settings from backend
       function onObjGetSuccess(settings) {
+      
+        switch(settings['enablegmautorep']) {
+          case "YES":
+            document.getElementById("enable_gma").checked = true;
+            break;
+          default:
+            document.getElementById("disable_gma").checked = true;
+        }
+      
         document.getElementById("userphoto").innerHTML = '<img src="' + settings['userPhotoUrl'] + '" alt="User Photo">';
         document.getElementById("myemailaddress").textContent = settings['userEmail'];
         document.getElementById("revokeAccessLink").innerHTML = '<em>\
@@ -115,7 +113,6 @@
               this.checkDirty(); // true
           }});
           
-        //alert("Settings loaded successfully!");
         Swal.fire({
             icon: 'success',
             title: 'Success!',
@@ -127,7 +124,6 @@
       
       // Run on 'Set' (Save) or 'Get' (Load) failure
       function onFailure(error) {
-        //alert("Could not get/set settings. ERROR : " + error.message);
         Swal.fire({
            icon: 'error',
            title: 'Error',
@@ -137,7 +133,6 @@
     
       // Run on 'Set' (Save) success
       function onSetSuccess(settings) {
-        //alert("Settings updated successfully!");
         Swal.fire({
             icon: 'success',
             title: 'Success!',
@@ -164,7 +159,9 @@
            onclick="google.script.run
                     .withSuccessHandler(onObjGetSuccess)
                     .withFailureHandler(onFailure)
-                    .getSettings()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    .getSettings()" />
+                    
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     
     <input type="button" value="Reset App" 
            onclick='Swal.fire({
@@ -172,20 +169,25 @@
              text: "You will not be able to revert this!",
              icon: "warning",
              showCancelButton: true,
-             confirmButtonColor: "#3085d6",
-             cancelButtonColor: "#d33",
+             confirmButtonColor: "#d33",
+             cancelButtonColor: "#3085d6",
              confirmButtonText: "Yes"
              }).then((result) => {
                 if (result.value) {
                   resetApp()
                 }
-              })' /><br /><br />
+              })' />
+              
+    <br /><br />
   
     <div id="userphoto"></div> <br />
     
     <strong>Logged in as : </strong><span id="myemailaddress"></span> <span id="revokeAccessLink"></span> <br /><br />
     
     <form id="gmasettings" onsubmit="saveSettings(this)">
+      Enable Gmail AutoResponder? 
+           <input type="radio" name="enablegmautorep" id="enable_gma" value="YES"> Yes 
+           <input type="radio" name="enablegmautorep" id="disable_gma" value="NO"> No <br /><br />
       <fieldset>
         <legend>Settings</legend>
         Filters Spreadsheet ID : <input id="filtersssid" name="filtersssid" type="text" /><br /><br />
@@ -202,9 +204,9 @@
            <input type="radio" name="starmsg" id="yes_starmsg" value="YES"> Yes 
            <input type="radio" name="starmsg" id="no_starmsg" value="NO"> No <br /><br />
         Message Body : <br /><br />
-           <textarea cols="80" id="msgbody" name="msgbody" rows="3" placeholder="𝘈𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 : 
-           𝘛𝘩𝘢𝘯𝘬 𝘺𝘰𝘶 𝘧𝘰𝘳 𝘤𝘰𝘯𝘵𝘢𝘤𝘵𝘪𝘯𝘨 𝘶𝘴. 𝘛𝘩𝘪𝘴 𝘢𝘶𝘵𝘰𝘮𝘢𝘵𝘦𝘥 𝘳𝘦𝘴𝘱𝘰𝘯𝘴𝘦 𝘪𝘴 𝘰𝘯𝘭𝘺 𝘵𝘰 𝘤𝘰𝘯𝘧𝘪𝘳𝘮 𝘵𝘩𝘢𝘵 𝘺𝘰𝘶𝘳 𝘦-𝘮𝘢𝘪𝘭 𝘩𝘢𝘴 𝘣𝘦𝘦𝘯 𝘸𝘦𝘭𝘭 𝘳𝘦𝘤𝘦𝘪𝘷𝘦𝘥. 
-           𝘞𝘦 𝘸𝘪𝘭𝘭 𝘳𝘦𝘱𝘭𝘺 𝘵𝘰 𝘺𝘰𝘶 𝘴𝘩𝘰𝘳𝘵𝘭𝘺. 𝘉𝘦𝘴𝘵 𝘳𝘦𝘨𝘢𝘳𝘥𝘴."></textarea><br /><br />
+           <textarea cols="80" id="msgbody" name="msgbody" rows="3" placeholder="Automated response: 
+           This automated response is only to confirm that your e-mail has been well received. 
+           Thank you."></textarea><br /><br />
         <input type="submit" value="Save" />
       </fieldset>
     </form>

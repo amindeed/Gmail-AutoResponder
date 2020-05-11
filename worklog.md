@@ -8,7 +8,12 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
-## 2020-05-10
+## 2020-05-11
+- Added parameter (script user property) with binary value ('YES'/'NO') to enable/disable the app. Default value is 'NO'.
+- Refined a little bit `README.md`.
+- `TODO.md` content merged into `raw_notes.md`.
+
+## 2020-05-10 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/526559f64d535b8ef845f13c12b4141958be400b/app)
 - First complete (backend and frontend) implementation of the cycle : `Initialize WebApp` ➝ `Modify settings` ➝ `Show updated settings` ➝ `Reset WebApp`:
     - New 3rd party component : [`SweetAlert2`](https://sweetalert2.github.io/), used instead of JavaScript's `alert()`.
 
@@ -62,7 +67,9 @@
     > 		- **Called client-side : `google.script.run`**
     > 			- Dev version (latest code deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
     > 			- Prod version (specific version deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
-
+    
+    
+    
 ## 2020-05-09
 - Intended behaviour of the webapp, depending on the [`flag`](#2020-05-08) value :
     - **`flag === value1`** : _Typically, first time run_ :

@@ -213,16 +213,14 @@ function appinit(initParams) {
     );
     
     var defaultProperties = {
+      'enablegmautorep': 'NO',
       'filtersssid': ssFiltersId,
       'logsssid': ssLogsId,
       'starthour': 17,
       'finishhour': 8,
-      //'timeinterval': 10,
       'dstoffset': 0,
       'msgbody': userProperties.getProperty('DEFAULT_MESSAGE_BODY'),
-      //'ccemailadr': '', // setProperties() won't accept an empty/null value
-      //'bccemailadr': '', // setProperties() won't accept an empty/null value
-      'noreply': (userProperties.getProperty('IS_GSUITE_USER') === 'GSUITE')?2:3,
+      //'noreply': (userProperties.getProperty('IS_GSUITE_USER') === 'GSUITE')?2:3,
       //'starmsg': true
     };
     
@@ -241,13 +239,12 @@ function appinit(initParams) {
     .atHour(5)
     .create();
     
-    // 5. Provide the user with a Enable/Disable switch, and a "Reset Settings" option/command/button.
-    // 6. Load app parameters into the frontend.
+    // 5. Provide the user with a Enable/Disable switch
     
-    // 7. Set script user property 'INIT_ALREADY_RUN' to true.
+    // 6. Set script user property 'INIT_ALREADY_RUN' to true.
     userProperties.setProperty('INIT_ALREADY_RUN', 'YES');
     
-    // 8. return webapp full URL
+    // 7. return webapp full URL
   } /*If*/
   
   return true;

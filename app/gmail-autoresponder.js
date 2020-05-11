@@ -107,19 +107,13 @@ function doGet() {
 }
 
 
-/** Reset App Settings **/
-
-function resetApp(resetParams) {
-  appinit(resetParams);
-}
-
-
 /** Set Script User Parameters **/
 
 function setProperties(objParams) {
   var userProperties = PropertiesService.getUserProperties();
   var defaultMsgBody = userProperties.getProperty('DEFAULT_MESSAGE_BODY');
   
+  userProperties.setProperty('ENABLE_GMAUTOREP', (objParams['enablegmautorep'] === 'YES')?'YES':'NO');
   userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']); // Consider preventing rewriting of correct values with empty string
   userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']); // Consider preventing rewriting of correct values with empty string
   
@@ -154,23 +148,13 @@ function setProperties(objParams) {
   } else {
     userProperties.setProperty('BCC_ADDRESS', '');
   }
-  
-  /*
-  Logger.log("[DEBUG/SET] \'IS_GSUITE_USER\' === " 
-             + userProperties.getProperty('IS_GSUITE_USER') 
-             + ", of type : " 
-             + typeof(userProperties.getProperty('IS_GSUITE_USER'))
-             );
-  Logger.log("[DEBUG/SET] objParams[\'noreply\'] === " + objParams['noreply'] + ", of type : " + typeof(objParams['noreply']));
-  */
-  
+    
   if ( (objParams['noreply'] === "YES") || (objParams['noreply'] === "NO") ) {
     userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') !== 'GMAIL')?objParams['noreply']:"N_A");
   } else {
     userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') === 'GMAIL')?"N_A":"NO");
   }
   
-  //Logger.log("[DEBUG/SET] objParams[\'starmsg\'] === " + objParams['starmsg'] + ", of type : " + typeof(objParams['starmsg']));
   userProperties.setProperty('STAR_PROCESSED_MESSAGE', (objParams['starmsg'] === 'NO')?'NO':'YES');
   
 }
@@ -187,6 +171,7 @@ function getSettings(){
     
   settingsObj['userPhotoUrl'] = driveUserPhoto?driveUserPhoto.replace(/=s.*$/,''):defaultUserPhoto;
   settingsObj['userEmail'] = Session.getEffectiveUser().getEmail(); 
+  settingsObj['enablegmautorep'] = userProperties.getProperty('ENABLE_GMAUTOREP');
   settingsObj['filtersssid'] = userProperties.getProperty('FILTERS_SS_ID');
   settingsObj['logsssid'] = userProperties.getProperty('LOGS_SS_ID');
   settingsObj['starthour'] = userProperties.getProperty('START_HOUR');

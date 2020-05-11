@@ -1,9 +1,3 @@
-/* Conventions :
-There are two types of processed messages:
-1) Messages that have been responded to.
-2) Skipped messages (matching an exclusion criteria).
-*/
-
 function autoReply() {
   
   var userProperties = PropertiesService.getUserProperties();
@@ -19,6 +13,7 @@ function autoReply() {
   var LogSSId = userProperties.getProperty('LOGS_SS_ID');
   var threads = [];
   var repNoReply = userProperties.getProperty('NOREPLY');
+  var isAppEnabled = userProperties.getProperty('ENABLE_GMAUTOREP');
 
   // Configs #1
   var config = SpreadsheetApp.openById(FiltersSSId);
@@ -31,7 +26,7 @@ function autoReply() {
 
 
   //if (((hour < (FINISH_HOUR + DST_OFFSET)) || (hour >= (START_HOUR + DST_OFFSET))) && ((threads = GmailApp.search(GM_SEARCH_QUERY)).length !== 0)) {
-  if ((hour < (FINISH_HOUR + DST_OFFSET)) || (hour >= (START_HOUR + DST_OFFSET))) {
+  if ((isAppEnabled === 'YES') && ((hour < (FINISH_HOUR + DST_OFFSET)) || (hour >= (START_HOUR + DST_OFFSET)))) {
 
   // log execution time and number of messages retrieved
   threads = GmailApp.search(GM_SEARCH_QUERY);
@@ -47,10 +42,9 @@ function autoReply() {
   var RawMsg_blacklist = ColumnValues(config_sheet,"A",1);
 
   // Message body
-  //var body = HtmlService.createHtmlOutputFromFile('body.html').getContent();
   var body = userProperties.getProperty('MESSAGE_BODY');
 
-  /***#####*** declare 2D array of processed messages ***#####***/
+  //➜ declare 2D array of processed messages
 
     for (i = 0; i < threads.length; i++) {
 
@@ -114,7 +108,7 @@ function autoReply() {
         }
     }
 
-    /****** Save 2D array of processed message to log sheet *********/
+    //➜ Save 2D array of processed message to log sheet
 
   } else if ( (hour === FINISH_HOUR + DST_OFFSET) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
 
@@ -125,7 +119,5 @@ function autoReply() {
 
     var last_ExecLog_row = exec_log_sheet.getRange(exec_log_sheet.getLastRow(),1,1,exec_log_sheet.getLastColumn());
     last_ExecLog_row.setBorder(null, null, true, null, null, null, "black", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-
-
   }
 }

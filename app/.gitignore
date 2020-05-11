@@ -1,3 +1,5 @@
 /.clasp.json
 /creds.json
 /.clasprc.json
+/playground.js
+/test.html

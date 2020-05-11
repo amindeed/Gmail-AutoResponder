@@ -1,7 +1,9 @@
 function myFunction() {
 
   var userProperties = PropertiesService.getUserProperties();
-  userProperties.deleteAllProperties();
+  //userProperties.deleteAllProperties();
+  //userProperties.setProperty('ENABLE_GMAUTOREP','YES');
+  Logger.log(userProperties.getProperty('ENABLE_GMAUTOREP'));
   
   //Logger.log(DriveApp.getRootFolder().getOwner().getDomain());
   
