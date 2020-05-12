@@ -8,6 +8,11 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-12
+- Exploring the possibility of building a fresh frontend with [Materialize](https://materializecss.com/) CSS framework, especially as there seem to be some good combinations with [CKEditor Inline mode](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/inline-editor.html).
+- Been testing app's behaviour when the added switch is turned on or off: _the app stops/starts sending responses accordingly, just as expected/desired._
+- I should consider adding emails from Google (like Apps Script 'Summary of failures' sent from `apps-scripts-notifications@google.com`) to `From` filters. I had some test instances respond to these emails.
+
 ## 2020-05-11
 - Added parameter (script user property) with binary value ('YES'/'NO') to enable/disable the app. Default value is 'NO'.
 - Refined a little bit `README.md`.

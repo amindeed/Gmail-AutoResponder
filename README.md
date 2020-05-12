@@ -25,6 +25,7 @@ clasp deployments
 
 ## Settings
 
+- **`ENABLE_GMAUTOREP` :** _Flag,_ switch to enable/disable the app.
 - **`FILTERS_SS_ID` :** Drive ID of the `Filters` Google spreadsheet where the user can define regular expressions to be applied as filters to sender and receiver addresses, as well as to raw message / headers contents. Default filters :
     - _**Raw Message :** `report-type=disposition-notification`; to filter out read receipts,_
     - _**Sender header :**_ 
