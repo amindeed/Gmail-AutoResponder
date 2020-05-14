@@ -81,9 +81,17 @@ function deleteAllTriggers() {
 
 /** Frontend (1) **/
 
-function doGet() {
+function doGet(e) {
   
   var userProperties = PropertiesService.getUserProperties();
+  
+  /*if-beta*/ if ( e.parameter['index'] === 'beta' ) { /*if-beta*/
+    
+    return HtmlService.createHtmlOutputFromFile('index_beta')
+           .setTitle('Gmail AutoResponder - Settings')
+           .setFaviconUrl('https://findicons.com/files/icons/980/yuuminco/16/mail.png');
+    
+  /*if-beta*/ } else { /*if-beta*/
   
   if ( userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES' ) {
     
@@ -104,6 +112,7 @@ function doGet() {
            .setTitle('Gmail AutoResponder - Settings')
            .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png');
   }
+  /*if-beta*/ } /*if-beta*/
 }
 
 

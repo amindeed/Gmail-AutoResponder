@@ -8,6 +8,19 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-14
+- Bringing together all the needed [Materialize](https://materializecss.com/) components to rebuild the frontend page.
+
+    <br /><img src="/assets/2020-05-14 23_37_54-Materialize.png" alt="Materialize" width="500"/><br />
+
+- Exploring Materialize website, checking and testing examples and sample codes.
+
+<br />
+
+> ## 2020-04-13 : _Missed_ 💢
+
+<br />  
+
 ## 2020-05-12
 - Exploring the possibility of building a fresh frontend with [Materialize](https://materializecss.com/) CSS framework, especially as there seem to be some good combinations with [CKEditor Inline mode](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/inline-editor.html).
 - Been testing app's behaviour when the added switch is turned on or off: _the app stops/starts sending responses accordingly, just as expected/desired._
@@ -116,7 +129,7 @@
         }
     }
     ```
-- Odd behaviour of Google Apps Script for G-Suite accounts (first noticed on [May 06](#2020-05-06)):
+- Odd behaviour of Google Apps Script for G-Suite accounts (first noticed on [May 06](#2020-05-06), and thouroughly investigated on [May 10](https://github.com/amindeed/Gmail-AutoResponder/blob/master/worklog.md#2020-05-10-code)):
     - When Chrome V8 runtime is enabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/macros/s/{Deployment-ID}/(exec|dev)`.
     - When Chrome V8 runtime is disabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/a/mydomain.com/macros/s/{deployment-id}/(exec|dev)`.
 - Tried [Templated HTML with scriplets](https://developers.google.com/apps-script/guides/html/templates) to "simulate" a page reload after `resetApp()` function is run : _it is not possible to load a URL, dynamically provided by the scriplet `<?= ScriptApp.getService().getUrl() ?>` and using [`window.open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open), into the active window, unless you override the recommended [default behaviour](https://developers.google.com/apps-script/reference/html/x-frame-options-mode) of Google Apps Script, which protects against clickjacking by setting the `X-Frame-Options` HTTP header._
@@ -193,7 +206,7 @@
 - I couldn't keep the same work pace in the last couple of days due to some preoccupations. So I'm just trying to keep my daily commitment..
 
 ## 2020-04-29
-- I checked two online posts that I had added to `raw_notes.md` [on March 28](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169?short_path=deb3f38#diff-deb3f38e414de594d3421071ed162325). [One of them](https://www.labnol.org/code/20592-gsuite-account-check) suggests a method that doesn't seem to work any longer. [The other](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain) suggests a seemingly working solution relying on the [Admin SDK Directory Service](https://developers.google.com/apps-script/advanced/admin-sdk-directory) that needs to be [enabled](https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services) from the Script Editor UI through `Resources->Advanced Google Services...`, which I'm trying to avoid at the moment (unless it's required by other app features and/or makes things easier). 
+- **Telling whether it is a G-Suite or a Free account :** I checked two online posts that I had added to `raw_notes.md` [on March 28](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169?short_path=deb3f38#diff-deb3f38e414de594d3421071ed162325). [One of them](https://www.labnol.org/code/20592-gsuite-account-check) suggests a method that doesn't seem to work any longer. [The other](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain) suggests a seemingly working solution relying on the [Admin SDK Directory Service](https://developers.google.com/apps-script/advanced/admin-sdk-directory) that needs to be [enabled](https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services) from the Script Editor UI through `Resources->Advanced Google Services...`, which I'm trying to avoid at the moment (unless it's required by other app features and/or makes things easier). 
 - But, at the end, it seems that we can simply check whether script user's email address ends with `gmail.com` or some custom domain name! So I guess I'll settle with this for the moment :
 
     ```javascript
