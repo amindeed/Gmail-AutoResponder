@@ -21,7 +21,7 @@
 
 <br />
 
-> ## 2020-04-13 : _Missed_ 💢
+> ## 2020-05-13 : _Missed_ 💢
 > ...
 
 <br />  
@@ -42,6 +42,7 @@
 
     <br /><img src="/assets/2020-05-10 22_56_04-init-reset-demo.gif" alt="Init-Reset-Demo" width="500"/><br />
     
+#### _[`ScriptApp.getService().getUrl()`](https://developers.google.com/apps-script/reference/script/service#getUrl()) return values, WTF?_
 - I had some fun checking and comparing return values of the Apps Script method `ScriptApp.getService().getUrl()`, depending on multiple factors : 
     - _Account type (Free vs G-Suite),_ 
     - _Runtime (Legacy (Rhino, ES5) vs V8),_ 
@@ -51,6 +52,7 @@
         - _Client-side (`google.script.run`)_
     - _Version of the deployed code (latest/dev vs specific/prod)_
 - **Conclusion:** the returned URL is almost unpredictable!
+   
     > ### 1) Gmail.com (Free)
     > - **Script Editor : `Logger.log(ScriptApp.getService().getUrl())`**
     > 	- **V8 Enabled :** `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
