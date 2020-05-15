@@ -1,4 +1,11 @@
-
+/**
+ * @name Gmail AutoResponder
+ * @version 0.1
+ * @desc Automatic processing of incoming GMail messages
+ * @author Amine Al Kaderi alkaderi@amindeed.com
+ * @license GNU GPLv3 license
+ */
+ 
 /** ........................................ **/
 
 function ContainsString(InputStr, checklist) {

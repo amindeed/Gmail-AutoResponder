@@ -8,16 +8,21 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-15
+- Made the repository **public**.
+- 
+
 ## 2020-05-14
 - Bringing together all the needed [Materialize](https://materializecss.com/) components to rebuild the frontend page.
 
-    <br /><img src="/assets/2020-05-14 23_37_54-Materialize.png" alt="Materialize" width="500"/><br />
+    <br /><img src="/assets/2020-05-14 23_37_54-Materialize.png" alt="Materialize" width="400"/><br />
 
 - Exploring Materialize website, checking and testing examples and sample codes.
 
 <br />
 
 > ## 2020-04-13 : _Missed_ 💢
+> ...
 
 <br />  
 
