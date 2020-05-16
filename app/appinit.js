@@ -241,7 +241,7 @@ function appinit(initParams) {
     .everyMinutes(10)
     .create();
 
-    ScriptApp.newTrigger('archive_log')
+    ScriptApp.newTrigger('archiveLog')
     .timeBased()
     .onMonthDay(1)
     .atHour(5)

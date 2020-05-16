@@ -59,7 +59,7 @@ In order to neither miss a message nor send an automated response more than once
 On each execution, the following information are logged to the `Logs` spreadsheet :
 - **`OPERATIONS` (sheet #1):** Metadata of both messages responded to and those skipped (filtered out) : _Label_ (`REP_SENT` or `SKIPPED`), _Date/time Sent (Original Message)_, _Date/time Sent (Response)_ (when applicable), _Message ID_, _Thread ID_, _From_, _Subject_.
 - **`EXECUTIONS` (sheet #2):** The Gmail search query, along with the execution time and the number of threads returned (search results).   
-**`archive_log()`** functions runs on the first day of each month to archive previous month log [of processed messages] in a separate sheet of `Logs` named `MONTH_YY`.
+**`archiveLog()`** functions runs on the first day of each month to archive previous month log [of processed messages] in a separate sheet of `Logs` named `MONTH_YY`.
 
 ## Project Background
 

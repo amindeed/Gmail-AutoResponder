@@ -45,9 +45,9 @@ function autoReply() {
   var cache = CacheService.getScriptCache();
 
   // Configs #2
-  var From_blacklist = ColumnValues(config_sheet,"B",1);
-  var To_blacklist = ColumnValues(config_sheet,"C",1);
-  var RawMsg_blacklist = ColumnValues(config_sheet,"A",1);
+  var From_blacklist = columnValues(config_sheet,"B",1);
+  var To_blacklist = columnValues(config_sheet,"C",1);
+  var RawMsg_blacklist = columnValues(config_sheet,"A",1);
 
   // Message body
   var body = userProperties.getProperty('MESSAGE_BODY');
@@ -64,9 +64,9 @@ function autoReply() {
         var isProcessed = cache.get(msgId);
 
       if( isProcessed === null
-        && !ContainsString(msgTo,To_blacklist)
-        && !MatchesRegex(msgFrom,From_blacklist)
-        && !ContainsString(messages[lastMsg].getRawContent(),RawMsg_blacklist) ) {
+        && !containsString(msgTo,To_blacklist)
+        && !matchesRegex(msgFrom,From_blacklist)
+        && !containsString(messages[lastMsg].getRawContent(),RawMsg_blacklist) ) {
 
                 var msgDate = messages[lastMsg].getDate(), msgSubject = messages[lastMsg].getSubject();
 				var msgCc = messages[lastMsg].getCc();

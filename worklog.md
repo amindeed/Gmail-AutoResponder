@@ -8,9 +8,13 @@
 
 <!-- ----------------------------------------------------------------------- -->
 
+## 2020-05-16
+- As [I already pointed it out](#2020-05-09), I'm thinking about making the code base "convertible" to other backend language, and this is how I'm planning to proceed :
+    - **Client vs server JavaScript libraries :** Separate functions that run on the backend from those mainly executed client-side.
+    - **Run Apps Script code as backend-only, and ultimately as a "API Proxy" :** Deploy code as "API Executable"; All client-side tasks will be run through HTTP POST requests, i.e. [`doPost()`](https://developers.google.com/apps-script/guides/web#request_parameters) will be the main entry-point, instead of calling functions through the [`google.script.run` API](https://developers.google.com/apps-script/guides/html/reference/run).
+
 ## 2020-05-15
 - Made the repository **public**.
-- 
 
 ## 2020-05-14
 - Bringing together all the needed [Materialize](https://materializecss.com/) components to rebuild the frontend page.
@@ -482,9 +486,9 @@ _Original :_
 > | 4/24/18 4:52 AM  | autoReply   | Service timed out: Spreadsheets (line 63, file "Code")                                                                                           | time-based | 4/24/18 4:53 AM  |
 > | 3/23/18 10:46 PM | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again.                                                                           | time-based | 3/23/18 10:46 PM |
 > | 1/25/18 8:22 PM  | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again. (line 125, file "Code")                                                   | time-based | 1/25/18 8:24 PM  |
-> | 12/01/2017 08:45 | archive_log | Sorry, it is not possible to delete all non-frozen rows. (line 26, file "Archive_Log")                                                           | time-based | 12/01/2017 08:45 |
+> | 12/01/2017 08:45 | archiveLog | Sorry, it is not possible to delete all non-frozen rows. (line 26, file "Archive_Log")                                                           | time-based | 12/01/2017 08:45 |
 > | 10/02/2017 20:58 | autoReply   | Argument too large: subject (line 97, file "Code")                                                                                               | time-based | 10/02/2017 20:58 |
-> | 10/01/2017 08:02 | archive_log | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
+> | 10/01/2017 08:02 | archiveLog | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
 > | 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
 
 

@@ -8,7 +8,7 @@
  
 /** ........................................ **/
 
-function ContainsString(InputStr, checklist) {
+function containsString(InputStr, checklist) {
   var Contains = false;
   var i = 0;
   while (!Contains && i < checklist.length) {
@@ -22,7 +22,7 @@ function ContainsString(InputStr, checklist) {
 
 /** ........................................ **/
 
-function MatchesRegex(InputStr, regexStr) {
+function matchesRegex(InputStr, regexStr) {
   var Matches = false;
   var i = 0;
   while (!Matches && i < regexStr.length) {
@@ -37,7 +37,7 @@ function MatchesRegex(InputStr, regexStr) {
 
 /** ........................................ **/
 
-function ColumnValues(sheet, column, remove_header){
+function columnValues(sheet, column, remove_header){
   var values = sheet.getRange(column + "1:" + column + sheet.getMaxRows()).getValues();
   (values = [].concat.apply([], values.filter(String))).splice(0,remove_header?1:0);
   return values
@@ -46,7 +46,7 @@ function ColumnValues(sheet, column, remove_header){
 
 /** Archiving logs monthly to separate sheets **/
 
-function archive_log() {
+function archiveLog() {
    
   var LogSSId = userProperties.getProperty('LOGS_SS_ID');
   var log = SpreadsheetApp.openById(LogSSId);
@@ -130,8 +130,8 @@ function setProperties(objParams) {
   var defaultMsgBody = userProperties.getProperty('DEFAULT_MESSAGE_BODY');
   
   userProperties.setProperty('ENABLE_GMAUTOREP', (objParams['enablegmautorep'] === 'YES')?'YES':'NO');
-  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']); // Consider preventing rewriting of correct values with empty string
-  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']); // Consider preventing rewriting of correct values with empty string
+  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
+  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']);
   
   if ( objParams['starthour'] ) {
     userProperties.setProperty('START_HOUR', objParams['starthour']);
