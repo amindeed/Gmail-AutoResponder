@@ -1,9 +1,9 @@
 /**
- * @name Gmail AutoResponder
- * @version 0.1
- * @desc Automatic processing of incoming GMail messages
- * @author Amine Al Kaderi alkaderi@amindeed.com
- * @license GNU GPLv3 license
+ * Name 		:	Gmail AutoResponder
+ * Version 		:	0.1
+ * Descriton 	:	Automatic processing of incoming GMail messages
+ * Author 		:	Amine Al Kaderi <alkaderi@amindeed.com>
+ * License 		:	GNU GPLv3 license
  */
 
 function autoReply() {

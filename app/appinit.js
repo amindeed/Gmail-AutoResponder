@@ -1,9 +1,9 @@
 /**
- * @name Gmail AutoResponder
- * @version 0.1
- * @desc Automatic processing of incoming GMail messages
- * @author Amine Al Kaderi alkaderi@amindeed.com
- * @license GNU GPLv3 license
+ * Name 		:	Gmail AutoResponder
+ * Version 		:	0.1
+ * Descriton 	:	Automatic processing of incoming GMail messages
+ * Author 		:	Amine Al Kaderi <alkaderi@amindeed.com>
+ * License 		:	GNU GPLv3 license
  */
 
 function appinit(initParams) {
@@ -73,9 +73,11 @@ function appinit(initParams) {
     var values = [
       ['RAWMSG_BLACKLIST', 'FROM_BLACKLIST', 'FROM_WHITELIST', 'TO_BLACKLIST', 'TO_WHITELIST'],
       ['report-type=disposition-notification', '(^|<)((mailer-daemon|postmaster)@.*)', '', 'undisclosed-recipients', ''],
+      ['', 'noreply|no-reply|do-not-reply', '', '', ''],
+      ['', '.+@.*\bgoogle\.com', '', '', ''],
       ['', Session.getActiveUser().getEmail(), '', '', '']
     ];
-    var range = firstFiltersSheet.getRange("A1:E3");
+    var range = firstFiltersSheet.getRange("A1:E5");
     range.setValues(values);
     
     var filtersHeader = firstFiltersSheet.getRange("A1:E1");
@@ -214,10 +216,10 @@ function appinit(initParams) {
     
     userProperties.setProperty(
       'DEFAULT_MESSAGE_BODY',
-      '<p><strong>Automated response</strong></p><p>Thank you for \
-       contacting us.<br />This automated response is only to \
-       confirm that your e-mail has been well received.<br />We \
-       will reply to you shortly.</p><p>Best regards.</p>'
+      '<p><strong>Automated response</strong></p>\
+       <p>This automated response is only to \
+       confirm that your e-mail has been well received.</p>\
+       <p>Best regards.</p>'
     );
     
     var defaultProperties = {

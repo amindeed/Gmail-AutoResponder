@@ -1,17 +1,16 @@
 # Work Log
 
-<br />
-
-> _**In progress :** translating old entries from the original [french worklog](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md)._
-
-<br />
-
-<!-- ----------------------------------------------------------------------- -->
+## 2020-05-17
+- For some reason, the format used for JavaScript files documentation header made functions unrecognized :
+    ```
+    TypeError: google.script.run.withSuccessHandler(...).withFailureHandler(...).appinit is not a function
+    ```
+Corrected headers of the files `appinit.js`, `Code.js` and `gmail-autoresponder.js`.
 
 ## 2020-05-16
 - As [I already pointed it out](#2020-05-09), I'm thinking about making the code base "convertible" to other backend language, and this is how I'm planning to proceed :
     - **Client vs server JavaScript libraries :** Separate functions that run on the backend from those mainly executed client-side.
-    - **Run Apps Script code as backend-only, and ultimately as a "API Proxy" :** Deploy code as "API Executable"; All client-side tasks will be run through HTTP POST requests, i.e. [`doPost()`](https://developers.google.com/apps-script/guides/web#request_parameters) will be the main entry-point, instead of calling functions through the [`google.script.run` API](https://developers.google.com/apps-script/guides/html/reference/run).
+    - **Run Apps Script code as backend-only, and ultimately as a "API Proxy" :** Deploy code as "API Executable"; All client-side tasks will be run through HTTP POST requests, i.e. [`doPost()`](https://developers.google.com/apps-script/guides/web#request_parameters) will be the main entry point, instead of calling functions through the [`google.script.run` API](https://developers.google.com/apps-script/guides/html/reference/run).
 
 ## 2020-05-15
 - Made the repository **public**.

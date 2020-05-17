@@ -1,9 +1,9 @@
 function myFunction() {
 
-  var userProperties = PropertiesService.getUserProperties();
+  //var userProperties = PropertiesService.getUserProperties();
   //userProperties.deleteAllProperties();
   //userProperties.setProperty('ENABLE_GMAUTOREP','YES');
-  Logger.log(userProperties.getProperty('ENABLE_GMAUTOREP'));
+  //Logger.log(userProperties.getProperty('ENABLE_GMAUTOREP'));
   
   //Logger.log(DriveApp.getRootFolder().getOwner().getDomain());
   
@@ -46,5 +46,7 @@ function myFunction() {
       
   asyncCall();
   */
+  
+  appinit({"resetApp": true});
   
 }

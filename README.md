@@ -30,6 +30,8 @@ clasp deployments
     - _**Raw Message :** `report-type=disposition-notification`; to filter out read receipts,_
     - _**Sender header :**_ 
         - _`(^|<)((mailer-daemon|postmaster)@.*)`; to filter out delivery reports,_
+        - _Email addresses with the keywords `noreply`, `no-reply` and `do-not-reply`,_
+        - _Email addresses with the domain name `google.com` or any of its subdomains,_
         - _Email address of the user running the application,_
     - _**Receiver header :** `undisclosed-recipients`; to filter out potential spams._
 - **`LOGS_SS_ID` :** Drive ID of the `Logs` Google spreadsheet, where metadata of each response sent or message skipped are logged, along with general information about each execution.
