@@ -1,11 +1,14 @@
 # Work Log
 
+## 2020-05-18
+Since I often start working late at night, it is sometimes challenging to commit anything significant before midnight. So I'll leave this note here and be back a few hours later with more updates..
+
 ## 2020-05-17
 - For some reason, the format used for JavaScript files documentation header made functions unrecognized :
     ```
     TypeError: google.script.run.withSuccessHandler(...).withFailureHandler(...).appinit is not a function
     ```
-Corrected headers of the files `appinit.js`, `Code.js` and `gmail-autoresponder.js`.
+    Corrected headers of the files `appinit.js`, `Code.js` and `gmail-autoresponder.js`.
 
 ## 2020-05-16
 - As [I already pointed it out](#2020-05-09), I'm thinking about making the code base "convertible" to other backend language, and this is how I'm planning to proceed :
