@@ -86,13 +86,11 @@ function deleteAllTriggers() {
 }
 
 
-/** Frontend (1) **/
-
 function doGet(e) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  /*if-beta*/ if ( e.parameter['index'] === 'beta' ) { /*if-beta*/
+  /*if-beta*/ if ( e.parameters['index'][0] === 'beta' ) { /*if-beta*/
     
     return HtmlService.createHtmlOutputFromFile('index_beta')
            .setTitle('Gmail AutoResponder - Settings')
@@ -122,6 +120,24 @@ function doGet(e) {
   /*if-beta*/ } /*if-beta*/
 }
 
+
+/** Testing doPost() **/
+
+function doPost(e) {
+  var params = e.parameters;
+  var response = {'properties': {}, 'errors': []};
+  var suffix = '_' + Math.floor(Math.random() * Math.floor(999999)).toString();
+  
+  if (params['testPty']) {
+    var userProperties = PropertiesService.getUserProperties();
+    userProperties.setProperty('testPty', params['testPty'][0] + suffix);
+    response.properties['testPty'] = userProperties.getProperty('testPty');
+  } else {
+    response['errors'].push('Error occured');
+  }
+  return ContentService.createTextOutput(JSON.stringify(response))
+                     .setMimeType(ContentService.MimeType.JSON);
+}
 
 /** Set Script User Parameters **/
 
@@ -464,7 +480,8 @@ function appinit(initParams) {
       'DEFAULT_MESSAGE_BODY',
       '<p><strong>Automated response</strong></p>\
        <p>This automated response is only to \
-       confirm that your e-mail has been well received.</p>\
+       confirm that your e-mail has been well received.<br />\
+       Thank you.</p>\
        <p>Best regards.</p>'
     );
     

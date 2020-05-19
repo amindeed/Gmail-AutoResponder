@@ -1,5 +1,10 @@
 # Work Log
 
+## 2020-05-19
+- Preparing code to test and progressively convert JavaScript client code to Ajax POST requests to be processed by the `doPost()` backend function.
+- Setting up a custom GCP project for a script gives you access to verbose and more informative logs on each function call, which turns out to be fairy useful when debugging.
+- Migrated `raw_notes.md`'s section about _"scripted deployment of Apps Script projects"_ to [DevOps Lab](https://github.com/amindeed/DevOps-Lab/blob/3bfc28b738adb94006fe5b0674c9c1ec94a5c031/AppsScript_AutoDeploy.md) repository.
+
 ## 2020-05-18
 Since I often start working late at night, it is sometimes challenging to commit anything significant before midnight. So I'll leave this note here and be back a few hours later with more updates..
 

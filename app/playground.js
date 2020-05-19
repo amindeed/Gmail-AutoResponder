@@ -1,6 +1,18 @@
 function myFunction() {
 
   //var userProperties = PropertiesService.getUserProperties();
+  
+  /*
+  userProperties.setProperty(
+      'DEFAULT_MESSAGE_BODY',
+      '<p><strong>Automated response</strong></p>\
+       <p>This automated response is only to \
+       confirm that your e-mail has been well received.\
+       Thank you.</p>\
+       <p>Best regards.</p>'
+    );
+    */
+  
   //userProperties.deleteAllProperties();
   //userProperties.setProperty('ENABLE_GMAUTOREP','YES');
   //Logger.log(userProperties.getProperty('ENABLE_GMAUTOREP'));
@@ -47,6 +59,10 @@ function myFunction() {
   asyncCall();
   */
   
-  appinit({"resetApp": true});
+  //appinit({"resetApp": true});
+  
+  var myObj = {'myArray': []};
+  myObj['myArray'].push('Appended item');
+  Logger.log(Math.floor(Math.random() * Math.floor(999999)).toString());
   
 }
