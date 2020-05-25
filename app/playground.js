@@ -61,8 +61,18 @@ function myFunction() {
   
   //appinit({"resetApp": true});
   
-  var myObj = {'myArray': []};
-  myObj['myArray'].push('Appended item');
-  Logger.log(Math.floor(Math.random() * Math.floor(999999)).toString());
+  /*
+  var inputStr = 'apps-scripts-notifications@sdsd.google.com';
+  var regex1 = new RegExp('.+@.*google.com','i'); // Doesn't work
+  var regex2 = new RegExp('.+@.*google.com','i'); // Works
+  var regex3 = new RegExp('.+@.*\\bgoogle\\.com','i'); // Works
+  */
+  
+  /*
+  Logger.log(inputStr.match(regex1));
+  Logger.log(inputStr.match(regex2));
+  Logger.log(inputStr.match(regex3));
+  */
+  
   
 }

@@ -8,30 +8,30 @@
  
 /** ........................................ **/
 
-function containsString(InputStr, checklist) {
-  var Contains = false;
+function containsString(inputStr, checklist) {
+  var contains = false;
   var i = 0;
-  while (!Contains && i < checklist.length) {
-    if (InputStr.indexOf(checklist[i]) !== -1) {
-      Contains = true;
+  while (!contains && i < checklist.length) {
+    if (inputStr.indexOf(checklist[i]) !== -1) {
+      contains = true;
     } else {i++;}
   }
-  return Contains;
+  return contains;
 }
 
 
 /** ........................................ **/
 
-function matchesRegex(InputStr, regexStr) {
-  var Matches = false;
+function matchesRegex(inputStr, regexStr) {
+  var matches = false;
   var i = 0;
-  while (!Matches && i < regexStr.length) {
+  while (!matches && i < regexStr.length) {
     var regex = new RegExp(regexStr[i],'i');
-    if (InputStr.match(regex)) {
-      Matches = true;
+    if (inputStr.match(regex)) {
+      matches = true;
     } else {i++;}
   }
-  return Matches;
+  return matches;
 }
 
 
@@ -90,13 +90,19 @@ function doGet(e) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  /*if-beta*/ if ( e.parameters['index'][0] === 'beta' ) { /*if-beta*/
+  /*if-beta*/ if ( e.parameters['index'] && (e.parameters['index'][0] === 'beta') ) { /*if-beta*/
     
     return HtmlService.createHtmlOutputFromFile('index_beta')
            .setTitle('Gmail AutoResponder - Settings')
            .setFaviconUrl('https://findicons.com/files/icons/980/yuuminco/16/mail.png');
     
-  /*if-beta*/ } else { /*if-beta*/
+  /*if-beta*/ } else if ( e.parameters['index'] && (e.parameters['index'][0] === 'apiproxy') ) { /*if-beta*/
+    
+    return HtmlService.createHtmlOutputFromFile('index_api_proxy')
+           .setTitle('Gmail AutoResponder - Settings')
+           .setFaviconUrl('https://findicons.com/files/icons/980/yuuminco/16/mail.png');
+    
+  /*if-beta*/ } else {  /*if-beta*/
   
   if ( userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES' ) {
     
@@ -336,7 +342,7 @@ function appinit(initParams) {
       ['RAWMSG_BLACKLIST', 'FROM_BLACKLIST', 'FROM_WHITELIST', 'TO_BLACKLIST', 'TO_WHITELIST'],
       ['report-type=disposition-notification', '(^|<)((mailer-daemon|postmaster)@.*)', '', 'undisclosed-recipients', ''],
       ['', 'noreply|no-reply|do-not-reply', '', '', ''],
-      ['', '.+@.*\bgoogle\.com', '', '', ''],
+      ['', '.+@.*\\bgoogle\\.com', '', '', ''],
       ['', Session.getActiveUser().getEmail(), '', '', '']
     ];
     var range = firstFiltersSheet.getRange("A1:E5");

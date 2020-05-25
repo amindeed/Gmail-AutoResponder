@@ -1,6 +1,18 @@
 # Work Log
 
-## 2020-05-19
+## 2020-05-25
+- Using `doPost()` to handle and process POST requests to the app seems to cause a lot of confusions and issues[⁽¹⁾](https://stackoverflow.com/questions/29525860/google-apps-script-cross-domain-requests-stopped-working)[⁽²⁾](https://stackoverflow.com/questions/56502086/google-app-script-web-app-get-and-post-request-blocked-by-cors-policy)[⁽³⁾](https://stackoverflow.com/questions/53433938/how-do-i-allow-a-cors-requests-in-my-google-script)[⁽⁴⁾](https://stackoverflow.com/questions/43238728/unable-to-send-post-request-to-google-apps-script)[⁽⁵⁾](https://stackoverflow.com/questions/57426821/post-data-from-javascript-to-google-apps-script)[⁽⁶⁾](https://ramblings.mcpher.com/google-apps-script-content-service/) around : 
+    - _CORS (Cross-Origin Resource Sharing)_[⁽⁷⁾](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)[⁽⁸⁾](https://cloud.google.com/storage/docs/cross-origin), 
+    - [web app access/permissions](https://developers.google.com/apps-script/guides/web#deploying_a_script_as_a_web_app), 
+    - [head or versioned deployment](https://developers.google.com/apps-script/concepts/deployments) 
+    - and possibly the used [Apps Script runtime](https://developers.google.com/apps-script/guides/v8-runtime).     
+    
+    I don't want to resort to "hacky ways", so I think (for the time being) I'll just continue developing and refining functions as I have been and consider [using Apps Script API to run them](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run) from any third party application.
+- I'm receiving daily a summary of a significant number of the same error message for a running instance of the application. Unfortunately, regular Stackdriver logs do not provide any useful information, so I think I'll associate the Script app to a GCP project to have access to advanced logging.
+
+    <br /><img src="/assets/2020-05-25 16_01_38-Summary of failures for Google Apps Script_ Copy of Gmail AutoResponder Dev - te.png" alt="GApps Errors" width="400"/><br />
+
+## 2020-05-19 : _Last commit of the month of Ramadan_ 🌙
 - Preparing code to test and progressively convert JavaScript client code to Ajax POST requests to be processed by the `doPost()` backend function.
 - Setting up a custom GCP project for a script gives you access to verbose and more informative logs on each function call, which turns out to be fairy useful when debugging.
 - Migrated `raw_notes.md`'s section about _"scripted deployment of Apps Script projects"_ to [DevOps Lab](https://github.com/amindeed/DevOps-Lab/blob/3bfc28b738adb94006fe5b0674c9c1ec94a5c031/AppsScript_AutoDeploy.md) repository.

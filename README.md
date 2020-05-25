@@ -1,6 +1,9 @@
 # Gmail AutoResponder
 
-**Gmail AutoResponder** is a customizable webapp to selectively send automated email responses in a specified timeframe of each day. All application components are contained in the Google Account running it : _**[Apps Script](https://developers.google.com/apps-script/reference/)** serves as the core framework, messages are read and sent from **Gmail**, and **Drive Sheets** are used to read content filters and save logs._
+**Gmail AutoResponder** is a customizable webapp to send automated email responses. All application components are contained in the Google Account running it : 
+- **[Apps Script](https://developers.google.com/apps-script/reference/)** serves as the core framework, 
+- Messages are read and sent from **Gmail**, 
+- and **Drive Sheets** are used to read content filters and save logs.
    
 ***This project is still under active, albeit slow, development.***
 
