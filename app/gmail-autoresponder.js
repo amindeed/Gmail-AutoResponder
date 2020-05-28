@@ -138,6 +138,8 @@ function doPost(e) {
     var userProperties = PropertiesService.getUserProperties();
     userProperties.setProperty('testPty', params['testPty'][0] + suffix);
     response.properties['testPty'] = userProperties.getProperty('testPty');
+    response.properties['activeUser'] = Session.getActiveUser().getEmail();
+    response.properties['effectiveUser'] = Session.getEffectiveUser().getEmail();
   } else {
     response['errors'].push('Error occured');
   }

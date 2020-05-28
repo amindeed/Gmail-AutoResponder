@@ -8,12 +8,14 @@
 - [ ] On `Filter spreadsheet`, save processed messages IDs as hyperlinks to the corresponding Gmail webmail pages. E.g. `https://mail.google.com/mail/u/0/#inbox/1662ab5d8414d32ab0`
 - [ ] Custom time interval for each selected week day.
 - [ ] Optimize writing to Google Sheets for large data using [batch operations](https://developers.google.com/apps-script/guides/support/best-practices#use_batch_operations)
-- [ ] Automatic updater
+- [ ] ~~Automatic updater~~
 - Advanced :
     - [ ] Abstracting logging and filters reading features in order to make it easy to use other (and generic) data formats/sources/targets : _JSON, XML or any API accessible data store._ https://developers.google.com/apps-script/reference/content/
     - [ ] Centrally manage multiple G-Suite users
     - [ ] Use with any email provider (IMAP/SMTP, RESTful API)
 - Address issues causing common errors, as reported during more than 2 years of execution :
+    - [ ] Log error with the ID/metadata of the message that triggered it
+        - [ ] Consider adding a third label, `ERROR` for example, to the `Logs` spreadsheet.
     - [ ] `Limit Exceeded: Email Body Size. (line 99, file "Code")`
     - Other errors :
    
@@ -33,6 +35,8 @@
     | 11/16/19 4:42 PM | autoReply  | Service error: Spreadsheets                                                                                                                      | time-based | 11/16/19 4:46 PM |
     | 4/21/20 2:18 AM  | autoReply  | Service Spreadsheets failed while accessing document with id 1S8G5Ffa7dHZbxB7d_pGoKkszq9mUhAaC3QII2gLftis. (line 63, file "Code")                | time-based | 4/21/20 2:20 AM  |
     | 3/12/20 3:06 AM  | autoReply  | Service Spreadsheets timed out while accessing document with id 1jklp1CxY_tShF_8uCky7P8IB_qH7vtTPLnZs56pSdX8. (line 63, file "Code")             | time-based | 3/12/20 3:07 AM  |
+- [ ] Same script app run by multiple accounts (typically in the same organization/domain) :
+    - [ ] Use script properties to store global and permanent data to be read by any script user.
 
 ---------------------------------------------
 

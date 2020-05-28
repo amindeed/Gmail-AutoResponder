@@ -1,14 +1,28 @@
 # Work Log
 
+## 2020-05-28
+- I've decided to give the idea of _"making an API proxy"_ another go, after checking [@tanaikech](https://github.com/tanaikech)'s great [write-up about GAS Web Apps](https://github.com/tanaikech/taking-advantage-of-Web-Apps-with-google-apps-script). Here is the summary :
+    - The web app will be executed as the user accessing it, either the owner or any other Google user.
+    - The Apps Script project needs to be shared with any Google user that we would want to access the web app.
+    - The Google user accessing the web app is required to provide a [OAuth access token](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) as an authorization bearer in each GET or POST request sent to web app's URL.
+    - On first time access, the user will be redirected to a web page to grant access to the scopes required by the app.
+- Communicationg through GET and POST requests to a Google Apps Script web app from a third party application, NodeJS for instance : _A good [starter code](https://developers.google.com/drive/api/v3/quickstart/nodejs#step_3_set_up_the_sample) is provided in the Google documentation_.  
+    There are a couple of adjustments and customizations to be applied :
+    - The example is geared towards CLI use, rather than in-browser use. So we'll need to modify the code to make it process [web app OAuth credentials](https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow) (with custom redirect URL...etc)
+    - Manage authentication tokens using sessions/cookies instead of reading/writing server-side files.
+    - Slightly redesign the authentication and the access workflow.
+    - A sample code (both GAS backend and client NodeJS) will be separately developed as a PoC.
+
+
 ## 2020-05-25
 - Using `doPost()` to handle and process POST requests to the app seems to cause a lot of confusions and issues[⁽¹⁾](https://stackoverflow.com/questions/29525860/google-apps-script-cross-domain-requests-stopped-working)[⁽²⁾](https://stackoverflow.com/questions/56502086/google-app-script-web-app-get-and-post-request-blocked-by-cors-policy)[⁽³⁾](https://stackoverflow.com/questions/53433938/how-do-i-allow-a-cors-requests-in-my-google-script)[⁽⁴⁾](https://stackoverflow.com/questions/43238728/unable-to-send-post-request-to-google-apps-script)[⁽⁵⁾](https://stackoverflow.com/questions/57426821/post-data-from-javascript-to-google-apps-script)[⁽⁶⁾](https://ramblings.mcpher.com/google-apps-script-content-service/) around : 
     - _CORS (Cross-Origin Resource Sharing)_[⁽⁷⁾](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)[⁽⁸⁾](https://cloud.google.com/storage/docs/cross-origin), 
     - [web app access/permissions](https://developers.google.com/apps-script/guides/web#deploying_a_script_as_a_web_app), 
-    - [head or versioned deployment](https://developers.google.com/apps-script/concepts/deployments) 
-    - and possibly the used [Apps Script runtime](https://developers.google.com/apps-script/guides/v8-runtime).     
+    - [head vs versioned deployments](https://developers.google.com/apps-script/concepts/deployments), 
+    - possibly the used [Apps Script runtime](https://developers.google.com/apps-script/guides/v8-runtime).     
     
     I don't want to resort to "hacky ways", so I think (for the time being) I'll just continue developing and refining functions as I have been and consider [using Apps Script API to run them](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run) from any third party application.
-- I'm receiving daily a summary of a significant number of the same error message for a running instance of the application. Unfortunately, regular Stackdriver logs do not provide any useful information, so I think I'll associate the Script app to a GCP project to have access to advanced logging.
+- I'm receiving daily a summary of a significant number of the same error message for a running instance of the application. Unfortunately, regular Stackdriver logs do not provide any useful information, so I think I'll associate the Script app to a GCP project to get access to advanced logging.
 
     <br /><img src="/assets/2020-05-25 16_01_38-Summary of failures for Google Apps Script_ Copy of Gmail AutoResponder Dev - te.png" alt="GApps Errors" width="400"/><br />
 
@@ -329,7 +343,8 @@ Since I often start working late at night, it is sometimes challenging to commit
             var reader = new FileReader();
             reader.onload = function (event) {
                 var content = reader.result;
-                google.script.run.withSuccessHandler(updateProgressbar).uploadFileToDrive(content, file.name);
+                google.script.run.withSuccessHandler(updateProgressbar)
+                                 .uploadFileToDrive(content, file.name);
             }
             reader.readAsDataURL(file);
         }
@@ -339,7 +354,8 @@ Since I often start working late at night, it is sometimes challenging to commit
         function sendFileToDrive(file) {
             var reader = new FileReader();
             reader.onloadend = function (event) {
-                google.script.run.withSuccessHandler(updateProgressbar).uploadFileToDrive(event.target.result, file.name);
+                google.script.run.withSuccessHandler(updateProgressbar)
+                                 .uploadFileToDrive(event.target.result, file.name);
             }
             reader.readAsDataURL(file);
         }
