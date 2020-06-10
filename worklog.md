@@ -1,5 +1,23 @@
 # Work Log
 
+## 2020-06-10
+
+- Basically, there are 3 building blocks of the problem to be addressed/implemented :
+    1. Full OAuth2 flow.
+    2. User session.
+    3. (1+2) Turn stateless authenticated requests _[i.e. POST requests each with an authentication bearer obtained after a successful OAuth flow]_ into stateful requests, by providing multi-user sessions _[to let each user run his own instance of the Apps Script webapp against his Google account]_ and seamlessly process signup, login, logout and access token refresh operations.
+- Suggested core packages to be used (along with any required dependencies) :
+    - [google-auth-library](https://github.com/googleapis/google-auth-library-nodejs), or [passport-google-oauth](https://github.com/jaredhanson/passport-google-oauth)
+    - [express-session](https://github.com/expressjs/session)
+    - A basic session store, such as [connect-session-sequelize](https://github.com/mweibel/connect-session-sequelize) or [session-file-store](https://github.com/valery-barysok/session-file-store).
+    - _Possibly :_ [body-parser](https://github.com/expressjs/body-parser), [uuid](https://github.com/uuidjs/uuid)
+- Interesting resources :
+    - [Google - OAuth 2.0 : Refresh token expiration](https://developers.google.com/identity/protocols/oauth2#expiration)
+    - [OAuth flow / sequence diagram (1)](https://iteritory.com/wp-content/uploads/2018/08/oAuth2-implicit-grant-flow-diagram.gif). _[[Source]](https://iteritory.com/easy-tutorial-on-oauth2-0-resource-owner-password-credential-flow/)_
+    - [OAuth flow / sequence diagram (2)](https://images.viblo.asia/full/a2e9badd-553d-4fcc-bd3a-6363fcffe4a8.png). _[[Source]](https://viblo.asia/p/authentication-with-google-oauth-using-nodejs-passportjs-mongodb-gAm5yqAV5db)_
+    - [OAuth flow / sequence diagram (3)](https://www.sohamkamani.com/37076b4d79602c984e15c9a9eb60b7a9/node-oauth.svg). _[[Source]](https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js/)_
+    - [Flowchart of a Twitter OAuth authentication webapp](https://cdn-media-1.freecodecamp.org/images/1*hYMUC_9w-Szc075Uztq2bw.jpeg). _[[Source]](https://www.freecodecamp.org/news/how-to-set-up-twitter-oauth-using-passport-js-and-reactjs-9ffa6f49ef0/)_
+
 ## 2020-05-28
 - I've decided to give the idea of _"making an API proxy"_ another go, after checking [@tanaikech](https://github.com/tanaikech)'s great [write-up about GAS Web Apps](https://github.com/tanaikech/taking-advantage-of-Web-Apps-with-google-apps-script). Here is the summary :
     - The web app will be executed as the user accessing it, either the owner or any other Google user.
@@ -7,12 +25,11 @@
     - The Google user accessing the web app is required to provide a [OAuth access token](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) as an authorization bearer in each GET or POST request sent to web app's URL.
     - On first time access, the user will be redirected to a web page to grant access to the scopes required by the app.
 - Communicationg through GET and POST requests to a Google Apps Script web app from a third party application, NodeJS for instance : _A good [starter code](https://developers.google.com/drive/api/v3/quickstart/nodejs#step_3_set_up_the_sample) is provided in the Google documentation_.  
-    There are a couple of adjustments and customizations to be applied :
+    There are a couple of adjustments and customizations to consider :
     - The example is geared towards CLI use, rather than in-browser use. So we'll need to modify the code to make it process [web app OAuth credentials](https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow) (with custom redirect URL...etc)
     - Manage authentication tokens using sessions/cookies instead of reading/writing server-side files.
     - Slightly redesign the authentication and the access workflow.
     - A sample code (both GAS backend and client NodeJS) will be separately developed as a PoC.
-
 
 ## 2020-05-25
 - Using `doPost()` to handle and process POST requests to the app seems to cause a lot of confusions and issues[⁽¹⁾](https://stackoverflow.com/questions/29525860/google-apps-script-cross-domain-requests-stopped-working)[⁽²⁾](https://stackoverflow.com/questions/56502086/google-app-script-web-app-get-and-post-request-blocked-by-cors-policy)[⁽³⁾](https://stackoverflow.com/questions/53433938/how-do-i-allow-a-cors-requests-in-my-google-script)[⁽⁴⁾](https://stackoverflow.com/questions/43238728/unable-to-send-post-request-to-google-apps-script)[⁽⁵⁾](https://stackoverflow.com/questions/57426821/post-data-from-javascript-to-google-apps-script)[⁽⁶⁾](https://ramblings.mcpher.com/google-apps-script-content-service/) around : 
