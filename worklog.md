@@ -20,6 +20,9 @@
 
 ## 2020-05-28
 - I've decided to give the idea of _"making an API proxy"_ another go, after checking [@tanaikech](https://github.com/tanaikech)'s great [write-up about GAS Web Apps](https://github.com/tanaikech/taking-advantage-of-Web-Apps-with-google-apps-script). Here is the summary :
+
+    <br /><img src="/assets/AppsScript_doPost().png" alt="AppsScript_doPost().png" width="700"/><br />
+
     - The web app will be executed as the user accessing it, either the owner or any other Google user.
     - The Apps Script project needs to be shared with any Google user that we would want to access the web app.
     - The Google user accessing the web app is required to provide a [OAuth access token](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) as an authorization bearer in each GET or POST request sent to web app's URL.
