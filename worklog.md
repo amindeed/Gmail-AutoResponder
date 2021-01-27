@@ -1,5 +1,23 @@
 # Work Log
 
+## 2021-01-27
+
+- Triggers of manually deleted Apps Script projects will keep running unless their files are removed from Drive's trash. Even then, these triggers would still show on `https://script.google.com/home/triggers` as anonymous/blank.
+
+    <br /><img src="/assets/triggers-of-deleted-projects.png" alt="triggers-of-deleted-projects.png" width="700"/><br />
+
+    That is, in fact, what caused the error I noted on [2020-05-25](#2020-05-25): _`Authorization is required to perform that action`_. So, to avoid this, we have to [delete the triggers programmatically](https://developers.google.com/apps-script/reference/script/script-app#deletetriggertrigger), or through ["My Triggers - Apps Script"](https://script.google.com/home/triggers) page.
+- Planning to refactor both project's structure and code, by splitting it into four components:
+    - **Core:** Google Apps Script code (deployed as a webapp) as a managed "API gateway" to all required Google services (AppsScript, Gmail, Drive, Sheets).
+    - **Backend:** as a middleware for authenticated access to a GMail-AutoResponder instance.
+    - **API:** a API wrapper that will interact with the **`Core`** through authenticated HTTP requests.
+    - **Frontend:** likely to be rendered on the backend (by template engine). Bootstrap 4 will be used.
+- ***TODO:*** 
+    - Add API documentation to README.
+    - Logging to text files:
+        - Use a common format for log entries: _e.g. `[W 2021-01-05 11:57:42.715 ModuleName] Log message`_
+        - Log levels : _App vs Infrastructure_
+
 ## 2020-06-10
 
 - Basically, there are 3 building blocks of the problem to be addressed/implemented :
@@ -27,7 +45,7 @@
     - The Apps Script project needs to be shared with any Google user that we would want to access the web app.
     - The Google user accessing the web app is required to provide a [OAuth access token](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) as an authorization bearer in each GET or POST request sent to web app's URL.
     - On first time access, the user will be redirected to a web page to grant access to the scopes required by the app.
-- Communicationg through GET and POST requests to a Google Apps Script web app from a third party application, NodeJS for instance : _A good [starter code](https://developers.google.com/drive/api/v3/quickstart/nodejs#step_3_set_up_the_sample) is provided in the Google documentation_.  
+- Communicationg through GET and POST requests to a Google Apps Script web app from a third party application, NodeJS for instance : _A good [starter code](https://developers.google.com/drive/api/v3/quickstart/nodejs#step_3_set_up_the_sample) is provided in the Google documentation_.
     There are a couple of adjustments and customizations to consider :
     - The example is geared towards CLI use, rather than in-browser use. So we'll need to modify the code to make it process [web app OAuth credentials](https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow) (with custom redirect URL...etc)
     - Manage authentication tokens using sessions/cookies instead of reading/writing server-side files.
@@ -35,12 +53,12 @@
     - A sample code (both GAS backend and client NodeJS) will be separately developed as a PoC.
 
 ## 2020-05-25
-- Using `doPost()` to handle and process POST requests to the app seems to cause a lot of confusions and issues[⁽¹⁾](https://stackoverflow.com/questions/29525860/google-apps-script-cross-domain-requests-stopped-working)[⁽²⁾](https://stackoverflow.com/questions/56502086/google-app-script-web-app-get-and-post-request-blocked-by-cors-policy)[⁽³⁾](https://stackoverflow.com/questions/53433938/how-do-i-allow-a-cors-requests-in-my-google-script)[⁽⁴⁾](https://stackoverflow.com/questions/43238728/unable-to-send-post-request-to-google-apps-script)[⁽⁵⁾](https://stackoverflow.com/questions/57426821/post-data-from-javascript-to-google-apps-script)[⁽⁶⁾](https://ramblings.mcpher.com/google-apps-script-content-service/) around : 
-    - _CORS (Cross-Origin Resource Sharing)_[⁽⁷⁾](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)[⁽⁸⁾](https://cloud.google.com/storage/docs/cross-origin), 
-    - [web app access/permissions](https://developers.google.com/apps-script/guides/web#deploying_a_script_as_a_web_app), 
-    - [head vs versioned deployments](https://developers.google.com/apps-script/concepts/deployments), 
-    - possibly the used [Apps Script runtime](https://developers.google.com/apps-script/guides/v8-runtime).     
-    
+- Using `doPost()` to handle and process POST requests to the app seems to cause a lot of confusions and issues[⁽¹⁾](https://stackoverflow.com/questions/29525860/google-apps-script-cross-domain-requests-stopped-working)[⁽²⁾](https://stackoverflow.com/questions/56502086/google-app-script-web-app-get-and-post-request-blocked-by-cors-policy)[⁽³⁾](https://stackoverflow.com/questions/53433938/how-do-i-allow-a-cors-requests-in-my-google-script)[⁽⁴⁾](https://stackoverflow.com/questions/43238728/unable-to-send-post-request-to-google-apps-script)[⁽⁵⁾](https://stackoverflow.com/questions/57426821/post-data-from-javascript-to-google-apps-script)[⁽⁶⁾](https://ramblings.mcpher.com/google-apps-script-content-service/) around :
+    - _CORS (Cross-Origin Resource Sharing)_[⁽⁷⁾](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)[⁽⁸⁾](https://cloud.google.com/storage/docs/cross-origin),
+    - [web app access/permissions](https://developers.google.com/apps-script/guides/web#deploying_a_script_as_a_web_app),
+    - [head vs versioned deployments](https://developers.google.com/apps-script/concepts/deployments),
+    - possibly the used [Apps Script runtime](https://developers.google.com/apps-script/guides/v8-runtime).
+
     I don't want to resort to "hacky ways", so I think (for the time being) I'll just continue developing and refining functions as I have been and consider [using Apps Script API to run them](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run) from any third party application.
 - I'm receiving daily a summary of a significant number of the same error message for a running instance of the application. Unfortunately, regular Stackdriver logs do not provide any useful information, so I think I'll associate the Script app to a GCP project to get access to advanced logging.
 
@@ -81,7 +99,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 > ## 2020-05-13 : _Missed_ 💢
 > ...
 
-<br />  
+<br />
 
 ## 2020-05-12
 - Exploring the possibility of building a fresh frontend with [Materialize](https://materializecss.com/) CSS framework, especially as there seem to be some good combinations with [CKEditor Inline mode](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/inline-editor.html).
@@ -98,18 +116,18 @@ Since I often start working late at night, it is sometimes challenging to commit
     - New 3rd party component : [`SweetAlert2`](https://sweetalert2.github.io/), used instead of JavaScript's `alert()`.
 
     <br /><img src="/assets/2020-05-10 22_56_04-init-reset-demo.gif" alt="Init-Reset-Demo" width="500"/><br />
-    
+
 #### _[`ScriptApp.getService().getUrl()`](https://developers.google.com/apps-script/reference/script/service#getUrl()) return values, WTF?_
-- I had some fun checking and comparing return values of the Apps Script method `ScriptApp.getService().getUrl()`, depending on multiple factors : 
-    - _Account type (Free vs G-Suite),_ 
-    - _Runtime (Legacy (Rhino, ES5) vs V8),_ 
+- I had some fun checking and comparing return values of the Apps Script method `ScriptApp.getService().getUrl()`, depending on multiple factors :
+    - _Account type (Free vs G-Suite),_
+    - _Runtime (Legacy (Rhino, ES5) vs V8),_
     - _Caller of the function :_
         - _Manually, on the Apps Script Editor (`Logger.log(ScriptApp.getService().getUrl())`)_
         - _As a response to a GET request (`doGet()`)_
         - _Client-side (`google.script.run`)_
     - _Version of the deployed code (latest/dev vs specific/prod)_
 - **Conclusion:** the returned URL is almost unpredictable!
-   
+
     > ### 1) Gmail.com (Free)
     > - **Script Editor : `Logger.log(ScriptApp.getService().getUrl())`**
     > 	- **V8 Enabled :** `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
@@ -129,7 +147,7 @@ Since I often start working late at night, it is sometimes challenging to commit
     > 		- **Called client-side : `google.script.run`**
     > 			- Dev version (latest code deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
     > 			- Prod version (specific version deployed) : `https://script.google.com/macros/s/{Prod-Deployment-ID}/exec`
-    > 										
+    >
     > ### 2) _mydomain.com_ (G-Suite)
     > - **Script Editor : `Logger.log(ScriptApp.getService().getUrl())`**
     > 	- **V8 Enabled :** `https://script.google.com/macros/s/{Dev-Deployment-ID}/dev`
@@ -149,14 +167,14 @@ Since I often start working late at night, it is sometimes challenging to commit
     > 		- **Called client-side : `google.script.run`**
     > 			- Dev version (latest code deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
     > 			- Prod version (specific version deployed) : `https://script.google.com/a/mydomain.com/macros/s/{Prod-Deployment-ID}/exec`
-    
-    
-    
+
+
+
 ## 2020-05-09
 - Intended behaviour of the webapp, depending on the [`flag`](#2020-05-08) value :
     - **`flag === value1`** : _Typically, first time run_ :
         1. **Frontend :** Apps settings form is disabled.
-        2. **Backend :** 
+        2. **Backend :**
             - Any submitted data will be rejected (i.e. `setSettings()` won't modify any properties).
             - `appinit()` execution is allowed
     - **`flag === value2`** : _Web app already intialized/configured_ :
@@ -197,9 +215,9 @@ Since I often start working late at night, it is sometimes challenging to commit
     - When Chrome V8 runtime is enabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/macros/s/{Deployment-ID}/(exec|dev)`.
     - When Chrome V8 runtime is disabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/a/mydomain.com/macros/s/{deployment-id}/(exec|dev)`.
 - Tried [Templated HTML with scriplets](https://developers.google.com/apps-script/guides/html/templates) to "simulate" a page reload after `resetApp()` function is run : _it is not possible to load a URL, dynamically provided by the scriplet `<?= ScriptApp.getService().getUrl() ?>` and using [`window.open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open), into the active window, unless you override the recommended [default behaviour](https://developers.google.com/apps-script/reference/html/x-frame-options-mode) of Google Apps Script, which protects against clickjacking by setting the `X-Frame-Options` HTTP header._
-   
+
     <br /><img src="/assets/2020-05-08 22_54_03-Gmail AutoResponder - Settings.png" alt="X-Frame-Options" width="500"/><br />
-   
+
 - Using `window.write()`, overwrite index page with its same code returned, as a HTML templated code, by a backend function : _page content seems to load without issues except `CKEditor`._
 
     <br /><img src="/assets/2020-05-07 23_53_00-https___script.google.com.png" alt="window.write()" width="500"/><br />
@@ -211,16 +229,16 @@ Since I often start working late at night, it is sometimes challenging to commit
 
 ## 2020-05-05
 - So I forgot that script properties accept only string values, and any other type would be converted, including boolean. Consequently, a `if` statement didn't work as expected since `true` and `false` were evaluated as literal non empty strings that are both equivalent to the boolean value `true`. Adjusted code accordingly.
-   
+
     <br /><img src="/assets/2020-05-05 01_05_08-Executions.png" alt="Properties_strings" width="600"/><br />
-   
+
 - Adjusted project's scopes : `https://www.googleapis.com/auth/drive`, instead of `https://www.googleapis.com/auth/drive.readonly`.
 - Now all app settings are configurable from the web frontend.
 - Deployed, intialized and run the application successfully with both G-Suite and free Google accounts.
 - Updated `worklog.md` and `README.md`.
 
 ## 2020-05-04
-- `TIME_INTERVAL` hardcoded to **`10`**. because : 
+- `TIME_INTERVAL` hardcoded to **`10`**. because :
     - this value has proved to be reliable,
     - `TIME_INTERVAL` should be equal to the parameter initially given to the [`everyMinutes()`](https://developers.google.com/apps-script/reference/script/clock-trigger-builder#everyMinutes(Integer)) method when script triggers were created, which there is no way to change afterwards other than deleting and recreating these triggers.
 - No need now for spreadsheet templates. `Filters` and `Logs` are generated and initialized by `appinit()`.
@@ -246,12 +264,12 @@ Since I often start working late at night, it is sometimes challenging to commit
     4. [Create triggers _[, set Enable/Disable App flag]_ ].
     5. Let the user manually enable the application.
     6. Load app parameters into the frontend and let the user modify and save them.
-- **Time Zone :** 
+- **Time Zone :**
     - I couldn't understand what reference time zone Apps Script uses when processing Date/Time data (`Date` objects, for instance). It was neither [Script's](https://developers.google.com/apps-script/reference/base/session#getScriptTimeZone()) nor [Calendar's](https://support.google.com/calendar/answer/37064?co=GENIE.Platform%3DDesktop&hl=en&oco=0) in my tests! It's not the time zone of the OS on which the browser is running, and not even that of the location I'm connecting from! It's just like Google would automagically guess your time zone! So why would I bother setting it in the first place?! And to make it more confusing, there can be different time zones under the same Google account, depending on the programmatical context: _Calendar time zone, Script time zone, [Spreadsheet's time zone](https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#setspreadsheettimezonetimezone)...!_
-    - So I guess I will just settle with this solution, as stated by a StackOverflow user :  
-       
+    - So I guess I will just settle with this solution, as stated by a StackOverflow user :
+
         > _“If there are multiple users of the script in different time zones, then I set the Time Zone in the script to +GMT 00:00 no daylight savings. And leave it at that.”_ – [🌎](https://stackoverflow.com/a/44401527/3208373)
-           
+
     - And as a precautionary measure, I'll keep the DST offset parameter.
 
 ## 2020-04-30
@@ -264,13 +282,13 @@ Since I often start working late at night, it is sometimes challenging to commit
         noReply: null
     });
     ```
-- Tried a few combinations of values for `cc`, `bcc` and `noReply` properties, using both free and G-Suite Google accounts, and it seemed that it is safe to always default to `null`. 
+- Tried a few combinations of values for `cc`, `bcc` and `noReply` properties, using both free and G-Suite Google accounts, and it seemed that it is safe to always default to `null`.
 - In addition, these methods check whether given email addresses (recipient, Cc and Bcc) are valid and throws the exception `Invalid email` if they're not. So there is no need to provide backend code to validate addresses.
 - Updated code accordingly.
 - I couldn't keep the same work pace in the last couple of days due to some preoccupations. So I'm just trying to keep my daily commitment..
 
 ## 2020-04-29
-- **Telling whether it is a G-Suite or a Free account :** I checked two online posts that I had added to `raw_notes.md` [on March 28](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169?short_path=deb3f38#diff-deb3f38e414de594d3421071ed162325). [One of them](https://www.labnol.org/code/20592-gsuite-account-check) suggests a method that doesn't seem to work any longer. [The other](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain) suggests a seemingly working solution relying on the [Admin SDK Directory Service](https://developers.google.com/apps-script/advanced/admin-sdk-directory) that needs to be [enabled](https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services) from the Script Editor UI through `Resources->Advanced Google Services...`, which I'm trying to avoid at the moment (unless it's required by other app features and/or makes things easier). 
+- **Telling whether it is a G-Suite or a Free account :** I checked two online posts that I had added to `raw_notes.md` [on March 28](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169?short_path=deb3f38#diff-deb3f38e414de594d3421071ed162325). [One of them](https://www.labnol.org/code/20592-gsuite-account-check) suggests a method that doesn't seem to work any longer. [The other](https://stackoverflow.com/questions/57902993/google-app-script-to-check-if-an-email-exists-in-domain) suggests a seemingly working solution relying on the [Admin SDK Directory Service](https://developers.google.com/apps-script/advanced/admin-sdk-directory) that needs to be [enabled](https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services) from the Script Editor UI through `Resources->Advanced Google Services...`, which I'm trying to avoid at the moment (unless it's required by other app features and/or makes things easier).
 - But, at the end, it seems that we can simply check whether script user's email address ends with `gmail.com` or some custom domain name! So I guess I'll settle with this for the moment :
 
     ```javascript
@@ -300,7 +318,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 - A Google user isn't given a default profile picture if he has never set one manually. So, the app should provide an alternate/default picture in case [`getPhotoUrl()`](https://developers.google.com/apps-script/reference/drive/user#getPhotoUrl()) returns `null`.
 
     <br /><img src="/assets/2020-04-25 11_36_11-test user photo.png" alt="No Profile Picture" width="500"/><br />
-    
+
 - Added a default user profile picture encoded in base64
 - It would make sense to retrieve app's settings on page load if a "enable/disable app" switch is used. There seem to be two choices for an app status switch :
     - A boolean script user property to be set accordingly.
@@ -311,7 +329,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 - Custom errors to be created for / thrown by `setProperties()` function :
     - Provided Spreadsheets IDs are not valid, either because the resources do not exist or are not readable/writable by the script user.
     - Invalid start/finish hours
-    - Invalid execution time interval 
+    - Invalid execution time interval
     - Invalid Cc email address.
     - "Reply with 'noreply' address" is set for non G-Suite user.
     - Message body exceeds maximum number of characters. Format/Content not allowed.
@@ -320,8 +338,8 @@ Since I often start working late at night, it is sometimes challenging to commit
 - Enhanced code across the repository :
     - `Code.js` : get all parameters from script user properties, otherwise assign default values.
     - Replaced `LOG_SS_ID` with `LOGS_SS_ID`.
-    - `frontend_index.html` : 
-        - Added link to revoke script's access to user data (logout). 
+    - `frontend_index.html` :
+        - Added link to revoke script's access to user data (logout).
         - Added default values next to input fields
 - Refined/Updated `README.md` and `worklog.md`.
 
@@ -332,7 +350,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 - Added some basic styling to highlight data retrieved from backend app.
 
     <br /><img src="/assets/2020-04-23 17_37_40-demo_basic_get_set.gif" alt="Basic Get/Set" width="500"/><br />
-    
+
 - All frontend functions moved to `gmail-autoresponder.js`.
 
 
@@ -352,11 +370,11 @@ Since I often start working late at night, it is sometimes challenging to commit
 - For some reason, files created on Drive from Blob data (= input file of a submitted form) lose their MIME type and get corrupted. What I couldn't understand is that up until the file is uploaded to the server, and right before a Drive file is created with its data by calling [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)), the blob type is correct. The backend function `processForm()` of `draft_code\client-to-server\Code.js` was modified to illustrate the issue :
 
     <br /><img src="/assets/2020-04-21 11_45_15-_corrupted-drive-files.gif" alt="Corrupted Drive Files" width="500"/><br />
-    
+
 - So basically, some fairy reliable resources and accepted solutions on the web suggest to first process the submitted file with [`FileReader()`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), and pass it as a [data URL](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) to a backend function for a second process that extracts content type from it, [decodes the submitted base64 data](https://developers.google.com/apps-script/reference/utilities/utilities#base64Decode(String)), and calls [`Utilities.newBlob()`](https://developers.google.com/apps-script/reference/utilities/utilities#newBlob(Byte,String)) to create a new blob object for [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)).
 - Here is a basic draft code as a wrap-up of what I've understood so far from the examples I studied. For the time being, this focuses only on that content type issue. Further development is needed to process forms with multiple types of input data (not only file upload) :
     - Frontend (client) :
-  
+
         ```javascript
         /* // Example 1
         function sendFileToDrive(file) {
@@ -369,7 +387,7 @@ Since I often start working late at night, it is sometimes challenging to commit
             reader.readAsDataURL(file);
         }
         */
-        
+
         // Example 2
         function sendFileToDrive(file) {
             var reader = new FileReader();
@@ -379,30 +397,30 @@ Since I often start working late at night, it is sometimes challenging to commit
             }
             reader.readAsDataURL(file);
         }
-        
+
         // On form submit
         function FileUpload() {
             var allFiles = document.getElementById('myFile').files;
             sendFileToDrive(allFiles[0]); // Since there is only 1 file
         }
         ```
-  
+
     - Backend (Google Apps Script):
 
         ```javascript
         /* // Example 1
         function uploadFileToDrive(base64Data, fileName) {
-        
+
             var contentType = base64Data.substring(5, base64Data.indexOf(';'));
             var bytes = Utilities.base64Decode(base64Data.substr(base64Data.indexOf('base64,') + 7));
             var blob = Utilities.newBlob(bytes, contentType, fileName);
             var driveFile = DriveApp.createFile(blob);
         }
         */
-        
+
         // Example 2
         function uploadFileToDrive(base64Data, fileName) {
-        
+
             var splitBase = base64Data.split(',');
             var contentType = splitBase[0].split(';')[0].replace('data:', '');
             var bytes = Utilities.base64Decode(splitBase[1]);
@@ -419,13 +437,13 @@ Since I often start working late at night, it is sometimes challenging to commit
     <br /><img src="/assets/2020-04-20 23_47_11-c2s_demo.png" alt="C2S_Demo" width="700"/><br />
 
 - There are still concepts that I'm trying to deeply understand how they imply or impact each other, namely script scopes, APIs' scopes, whether or not it is required to connect to a GCP project, deploying as "a web app" vs "API Executable"... For instance, I had to publish the app as "API Executable" to be able to run through the Apps Script API some initialization functions _(providing 'Logs' and 'Filters' spreadsheets' IDs...etc)_. But now, as I'm working on a frontend, I have to publish the app as "a web app" to issue client-to-server calls and provide a convenient way to show and update app's configs. So I guess, I will just make my best to both learn and enhance my code as I go.
-   
+
 <br />
 
 > ## 2020-04-19 : _Missed_ 😔
 > _But hey, I normally “code” more than 1 hour a day! C'mon, it's not that bad!_
 
-<br />  
+<br />
 
 ## 2020-04-18
 - Working on a basic HTML file that will let us "get" and/or "set" app's parameters.
@@ -445,7 +463,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 
 
 ## 2020-04-17
-Significant update of `README.md`'s structure and content (draft).  
+Significant update of `README.md`'s structure and content (draft).
 Started adding old worklog entries translated from French.
 
 ## 2020-04-15, 04-16
@@ -523,15 +541,15 @@ Added and updated sample frontend code using [Material Design Lite](https://getm
 
 ----------------
 
-***Entries to be translated from the [old worklog](https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md) :***
-    
-    
+<h3 align="center"><strong><em>Entries to be translated from the <a href="https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md">old worklog</a> :</em></strong></h3>
+
+
 ## 2018-09-10
 _Original :_
 > Revue du code source de l’application web, après plus d’un an d’exécution continue en production, avec plus de **6700** réponses automatiques envoyées.
-> 
+>
 > Liste exhaustive des types d'erreurs reportées par **Google Apps Scripts** (résumés en provenance de l'adresse `apps-scripts-notifications@google.com`) durant l'année, illustré chacun par un exemple. Informations à prendre en considération dans les prochaines améliorations du code:
-> 
+>
 > | Start            | Function    | Error Message                                                                                                                                    | Trigger    | End              |
 > |------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------|
 > | 10/07/2018 20:06 | autoReply   | Limit Exceeded: Email Body Size. (line 99, file "Code")                                                                                          | time-based | 10/07/2018 20:06 |
@@ -617,9 +635,9 @@ _Original :_
 > Etudes, rectification et suggestion d’amélioration suite aux remarques formulées dans le rapport du 03/10/2017:
 > - Rectification du document de configuration du programme de `OPERATIONS2` auquel une opération d’archivage a été appliquée par erreur ; ce qui causait le traitement de l’intégralité des messages reçu sans aucun filtrage.
 > - Une amélioration du code est à envisager suite aux erreurs reportées par le service `Google Apps Script` :
-> 
+>
 >     ![2017-10-05 - Gmail-AutoResponder](assets/2017-10-05%20-%20Gmail-AutoResponder.png)
-> 
+>
 >     - Les messages d’erreur `Argument too large: subject (line 97, file "Code") et Limit Exceeded: Email Body Size. (line 97, file "Code")` indiquent que le corps du message de réponse composé du texte informatif principal et de l’historique de la conversation peut potentiellement dépasser la limite de [la taille maximale du corps de message de réponse](https://developers.google.com/apps-script/reference/gmail/gmail-thread#reply(String)).
 >     - Le concept permettant de contourner ce problème peut être résumé comme suit :
 >         - L’ensemble du message (texte informatif + historique de la conversation) sera initialement stocké dans une chaîne de caractère (String).
@@ -885,11 +903,11 @@ _Original :_
 _Original :_
 > - Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents `Google Spreadsheet` (configurations et journaux `Logs`). Le fichier des configuration `Autorespond-config` contient les feuilles suivantes: `To_whitelist`, `To_regex_whitelist`, `To_blacklist`, `To_regex_blacklist`, `From_whitelist`, `From_regex_whitelist`, `From_blacklist`, `From_regex_blacklist`, `msgHeaders_blacklist`, `msgHeaders_regex_blacklist`.
 > - Un modèle du fichier `Autorespond-config` sera ultérieurement ajouté au code source sous le format XLSX.
-> 
+>
 > ![2017-08-23 - Gmail-Autoresponder](assets/2017-08-23%20-%20Gmail-Autoresponder.png)
-> 
+>
 > - Test et débogage du code.
-> 
+>
 > ![2017-08-18 - Gmail-AutoResponder](assets/2017-08-18%20-%20Gmail-AutoResponder.png)
 
 
@@ -955,15 +973,19 @@ _Original :_
 
 
 ## 2017-07-28 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/328c9e135917e3ea50b523039dace52472977bc7/Code.js)
-_Original :_  
+_Original :_
 > - Fin de développement de la première version du script.
 > - Première exécution (automatique) de test pour la boîte email `operations@mycompany.com` prévue entre 28/07/2017, 20:00GMT et 29/07/2017 06:00GMT.
->    
+>
 > ![2017-07-28 - Gmail-Autoresponder](assets/2017-07-28%20-%20Gmail-Autoresponder.png)
 
 
 ## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/15601924647c0576cf0d1f88ca486a67e25c7a73/Code.js)
-_Original :_  
+XXXXXXXX
+- **Specifications and requirements** :
+    - The script will be configured for steady auto-execution between 8pm and 6am, under every Google user account.
+
+_Original :_
 > Continuation de l’étude et développement.
 > - **Spécifications et cahier de charges** :
 >     - Le script sera configuré pour exécution automatique régulière entre 20h et 6h sur chaque compte utilisateur Google.
@@ -978,4 +1000,3 @@ _Original :_
 Developing a first prototype of a script to send automatic responses to emails received in a specific timeframe of each day.
 
 ![2017-07-26 - Gmail-AutoResponder](assets/2017-07-26%20-%20Gmail-AutoResponder.png)
-   

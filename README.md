@@ -12,7 +12,8 @@
 Using [`clasp`](https://github.com/google/clasp#install) command line tool :
 
 ```bash
-cd /app
+git clone https://github.com/amindeed/Gmail-AutoResponder.git
+cd Gmail-AutoResponder/app/core
 clasp login
 clasp create --type webapp --title "Gmail AutoResponder Dev"
 # Copy the URL of the created Apps Script project
