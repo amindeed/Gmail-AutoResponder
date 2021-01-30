@@ -52,7 +52,7 @@ function autoReply() {
   // Message body
   var body = userProperties.getProperty('MESSAGE_BODY');
 
-  //➜ declare 2D array of processed messages
+  // TODO: better create a 2D array (or a JSON object) of processed messages
 
     for (i = 0; i < threads.length; i++) {
 
@@ -116,7 +116,7 @@ function autoReply() {
         }
     }
 
-    //➜ Save 2D array of processed message to log sheet
+    // TODO: append the 2D array (or the JSON object) of processed messages to the log
 
   } else if ( (hour === FINISH_HOUR + DST_OFFSET) && (date.getMinutes() <= (1.5*INTERVAL)) ) {
 

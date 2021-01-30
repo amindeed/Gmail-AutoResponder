@@ -3,22 +3,15 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta name="description" content="Automatic processing of incoming GMail messages">
+    <meta name="description" content="Automatic processing of GMail messages">
     <meta name="author" content="Amine Al Kaderi">
     <link rel="copyright" href="https://github.com/amindeed/Gmail-AutoResponder#license">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_top">
     <script src="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <!--<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>-->
-    <!--
-       The following JS function call was seemingly not required:
-       <script>
-           CKEDITOR.plugins.addExternal( 'confighelper', '/plugins/confighelper', 'plugin.js' );
-       </script>
-    -->
     <script>
-      // Prevent forms from submitting.
+      // Prevent forms from being submitted
       function preventFormSubmit() {
           var forms = document.querySelectorAll('form');
           for (var i = 0; i < forms.length; i++) {
@@ -29,50 +22,40 @@
       }
       window.addEventListener('load', preventFormSubmit);
     
-    
+      // Enable/Disable configurations form
       function enableForm(enableFlag) {
           var childNodes = document.getElementById("gmasettings").getElementsByTagName("*");
           for (var node of childNodes) {
+              // TODO: 'enablegmautorep' element should never be disabled
               node.disabled = !enableFlag
           }
           if (enableFlag === true) {
-              CKEDITOR.instances["msgbody"].setReadOnly(false);
+            CKEDITOR.instances["msgbody"].setReadOnly(false);
+          } else {
+            CKEDITOR.instances["msgbody"].setReadOnly(true);
           }
       }
     
-      function onInitSuccess(flag) {
-          enableForm(flag);
-          google.script.run
-              .withSuccessHandler(onObjGetSuccess)
-              .withFailureHandler(onFailure)
-              .getSettings();
-          Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'App (re)initialized successfully!',
-            showConfirmButton: false,
-            timer: 1500
-          })
+      // Run on 'Set' (Save) or 'Get' (Load) failure
+      function onFailure(error) {
+        Swal.fire({
+           icon: 'error',
+           title: 'Error',
+           text: 'Could not get/set settings. Error message : ' + error.message
+        })
       }
-      
-      function resetApp() {
-         enableForm(false);
-         var initParam = {'resetApp': true};
-         google.script.run
-               .withSuccessHandler(onInitSuccess)
-               .withFailureHandler(onFailure)
-               .appinit(initParam);
-      }
-    
-      // Load settings from backend
-      function onObjGetSuccess(settings) {
-      
-        switch(settings['enablegmautorep']) {
-          case "YES":
-            document.getElementById("enable_gma").checked = true;
-            break;
-          default:
-            document.getElementById("disable_gma").checked = true;
+
+      // Load settings
+      function loadSettings(settings) {
+
+        var spreadsheetIcon = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAVCAYAAABPPm7SAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QEeCwUlPd3mbgAAAchJREFUOMvFkrFrU2EUxX/3vZfmVVPb1yYKAUtA0jYgUoviVAcrlE5FBFf34lhcXPoniP+Bm4uuFQTBdnCxYkFNbMGlQ5FImiZt0peX990OjSUh9jXBwTN+97vnnnM4cvPN4kuUSUCJQM0c2c+zT9cWpueW11bXubswC4CjyiNUXc5BaEJc4rfz+cLjXG4qtbW9zUQ2i0UfEEBVk/nvhSLCDIDT+7JQblYZchKAJjliY/XL+3mZfr1Y78UCgC0Wg5bbzlpz+rEQquEgrHXI6iuDv6FDgR8G7PnlyIXR+AgDdqybwKjhXvoOz2aWaIQNAC7GLqAotaAOQNweYGXjBR9/bWKJdCtomICH755QrJdQVW5dvo5R5XPxGyJCyvXIedfOtiAiPMjcpxIcgirjQ2lUlcnhDIhwKZbgx/7PswlUlfXdT/xu5XBjbAqjhq+lLQCSrkfK9SIUIGRHMqT8CgCZRBqjhtA0AfDiw5QblWgLZb9Kya8ASjU4xKhS8vdbRZbT8LoIRISdg13mr85i1LTeTmZXBscAsMTi7c4H2jk6qqwoTRNGF8eyEeSP53pXBjGrr3bzz1X+/wSOCK9AJnr4q20HTSuywjHUj6nAkY+jEwAAAABJRU5ErkJggg==" />'
+
+        if (settings['enablegmautorep'] === 'NO') {
+          document.getElementById("disable_gma").checked = true;
+          //enableForm(false); /* further refinements needed */
+        } else {
+          document.getElementById("enable_gma").checked = true;
+          //enableForm(true); /* further refinements needed */
         }
       
         document.getElementById("userphoto").innerHTML = '<img src="' + settings['userPhotoUrl'] + '" alt="User Photo">';
@@ -80,8 +63,16 @@
         document.getElementById("revokeAccessLink").innerHTML = '<em>\
             (<a href="https://security.google.com/settings/security/permissions" target="_blank">Revoke access</a>)\
             </em>';
-        document.getElementById("filtersssid").value = settings['filtersssid'];
-        document.getElementById("logsssid").value = settings['logsssid'];
+        document.getElementById("filtersssid").value = settings['filtersssid']; /* TODO: should always be read-only */
+        /* Put a clickable link to the spreadsheet next to "filtersssid" element. */
+        document.getElementById("filtersssurl").href = settings['filtersssurl'];
+        document.getElementById("filtersssurl").innerHTML = spreadsheetIcon;
+        
+        document.getElementById("logsssid").value = settings['logsssid']; /* TODO: should always be read-only */
+        /* Put a clickable link to the spreadsheet next to "logsssid" element. */
+        document.getElementById("logsssurl").href = settings['logsssurl'];
+        document.getElementById("logsssurl").innerHTML = spreadsheetIcon;
+        
         document.getElementById("starthour").value = parseInt(settings['starthour'], 10);
         document.getElementById("finishhour").value = parseInt(settings['finishhour'], 10);
         document.getElementById("dstoffset").value = parseInt(settings['dstoffset'], 10);
@@ -124,14 +115,31 @@
             timer: 1500
         })
       }
-      
-      // Run on 'Set' (Save) or 'Get' (Load) failure
-      function onFailure(error) {
-        Swal.fire({
-           icon: 'error',
-           title: 'Error',
-           text: 'Could not get/set settings. Error message : ' + error.message
-        })
+    
+      // Run if webapp configurations reset succeeds
+      function onInitSuccess(flag) {
+          enableForm(flag);
+          google.script.run
+              .withSuccessHandler(loadSettings)
+              .withFailureHandler(onFailure)
+              .getSettings();
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'App (re)initialized successfully!',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      }
+
+      // Reset webapp settings
+      function resetApp() {
+         enableForm(false);
+         var initParam = {'resetApp': true};
+         google.script.run
+               .withSuccessHandler(onInitSuccess)
+               .withFailureHandler(onFailure)
+               .appinit(initParam);
       }
     
       // Run on 'Set' (Save) success
@@ -159,7 +167,7 @@
                     
     <input type="button" value="Load Settings" 
            onclick="google.script.run
-                    .withSuccessHandler(onObjGetSuccess)
+                    .withSuccessHandler(loadSettings)
                     .withFailureHandler(onFailure)
                     .getSettings()" />
                     
@@ -192,8 +200,8 @@
            <input type="radio" name="enablegmautorep" id="disable_gma" value="NO"> No <br /><br />
       <fieldset>
         <legend>Settings</legend>
-        Filters Spreadsheet ID : <input id="filtersssid" name="filtersssid" type="text" /><br /><br />
-        Logs Spreadsheet ID : <input id="logsssid" name="logsssid" type="text" /><br /><br />
+        <em>Filters Spreadsheet ID :</em> <input id="filtersssid" name="filtersssid" type="text" readonly />  <a id="filtersssurl" href="" target="_blank"></a><br /><br />
+        <em>Logs Spreadsheet ID :</em> <input id="logsssid" name="logsssid" type="text" readonly />  <a id="logsssurl" href="" target="_blank"></a><br /><br />
         Start Hour : <input id="starthour" name="starthour" type="number" /><em> (default: 17)</em><br /><br />
         Finish Hour : <input id="finishhour" name="finishhour" type="number" /><em> (default: 8)</em><br /><br />
         Daylight Saving Time Offset : <input id="dstoffset" name="dstoffset" type="number" /><em> (default: 0)</em><br /><br />

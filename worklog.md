@@ -1,5 +1,14 @@
 # Work Log
 
+## 2021-01-30
+
+- Code refinements. Front HTML (`index.html`) will provide links to Filters and Logs spreadsheets when loading settings.
+- Three deployment options/scenarios to be considered:
+    - **Self-contained:** Deployed as a web application, with both backend and frontend components served by the Apps Script project. The user should have an active Google account session (already logged in to Gmail, for example) on the browser.
+    - **Webapp as a API gateway:** Deployed as a web application, with all required [sharing settings](#2020-05-28), and acting as a API gateway to all Google services being used. In other words, the deployed webapp will play the role of an app-level API, abstracting away features and technical requirements specific to each Google service _(Gmail, Spreadsheets, Drive)_ and emulating a simple RESTful API using **`doGet()`** and **`doPost()`** methods, which is _"consumable"_ by third-party apps supporting OAuth2 authentication to Google. In this case, no associated standard GCP project will be required.
+    - **API-executable:** Deployed as API-executable, after binding the Apps Script project to a standard GCP project, which would be an extra step that could be [undesirable in some use cases](#2020-04-13). That said, the application will then be manageable with just 3 functions: **`appinit()`**, **`getSettings()`** and **`setProperties()`**; all run _(either directly or using a client library)_ through the well documented [Apps Script API](https://developers.google.com/apps-script/api), using the [`script.run`](https://developers.google.com/apps-script/api/how-tos/execute) method.
+
+
 ## 2021-01-27
 
 - Triggers of manually deleted Apps Script projects will keep running unless their files are removed from Drive's trash. Even then, these triggers would still show on `https://script.google.com/home/triggers` as anonymous/blank.

@@ -44,6 +44,13 @@ function columnValues(sheet, column, remove_header){
 }
 
 
+/** ........................................ **/
+
+// function appendLog(entry){
+//  ...
+// }
+
+
 /** Archiving logs monthly to separate sheets **/
 
 function archiveLog() {
@@ -200,15 +207,7 @@ function setProperties(objParams) {
   
   userProperties.setProperty('STAR_PROCESSED_MESSAGE', (objParams['starmsg'] === 'NO')?'NO':'YES');
   
-  /*
-    Return 'propertiesUpdateStatus' object :
-  
-    {
-      'PROPERTY_ID': {'currentValue': 'XISDIUSIU545sd57s5', 'status': , 'updated/unchanged/setDefault', 'errors': ['error1', 'error2']},
-      //...
-    }
-  
-  */
+  // TODO: return a success message/code, or error messages
 }
 
 
@@ -228,7 +227,9 @@ function getSettings(){
   settingsObj['userEmail'] = Session.getEffectiveUser().getEmail(); 
   settingsObj['enablegmautorep'] = userProperties.getProperty('ENABLE_GMAUTOREP');
   settingsObj['filtersssid'] = userProperties.getProperty('FILTERS_SS_ID');
+  settingsObj['filtersssurl'] = SpreadsheetApp.openById(userProperties.getProperty('FILTERS_SS_ID')).getUrl();
   settingsObj['logsssid'] = userProperties.getProperty('LOGS_SS_ID');
+  settingsObj['logsssurl'] = SpreadsheetApp.openById(userProperties.getProperty('LOGS_SS_ID')).getUrl();
   settingsObj['starthour'] = userProperties.getProperty('START_HOUR');
   settingsObj['finishhour'] = userProperties.getProperty('FINISH_HOUR');
   settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
