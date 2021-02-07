@@ -334,8 +334,8 @@ function appinit(initParams) {
       oldParent.setTrashed(true);
     }
     
-    var ssFiltersURL = ssFilters.getUrl();
-    var ssLogsURL = ssLogs.getUrl();
+    //var ssFiltersURL = ssFilters.getUrl(); /* removed because unused */
+    //var ssLogsURL = ssLogs.getUrl(); /* removed because unused */
     
     // 1.2. Initialize 'Filters' and 'Logs' spreadsheets
     
