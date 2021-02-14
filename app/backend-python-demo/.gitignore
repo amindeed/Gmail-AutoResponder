@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+project/__pycache__/
+db.sqlite3
+credentials.json
+app_configs.py

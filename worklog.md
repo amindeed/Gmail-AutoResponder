@@ -1,5 +1,112 @@
 # Work Log
 
+## 2021-02-15
+
+- Added working demo code (**`app/backend-python-demo`**) of a Django app that runs a function of a Google Apps Script project deployed as _API-Executable_, through the Google Apps Script API, using Google API Python client. Also included target Apps Script project code (**`app/backend-python-demo/target_appsscript_code.js`**)
+- The code is built upon the [AuthLib library demo for Django](https://github.com/authlib/demo-oauth-client/tree/310c6f1da26abc32f8eca8668d1b6d0aa4a9f0a3/django-google-login) and the [Google Apps Script API Python Quickstart](https://github.com/googleworkspace/python-samples/tree/aacc00657392a7119808b989167130b664be5c27/apps_script/quickstart) example: 
+    - I dropped the [AuthLib](https://github.com/lepture/authlib) library after many tries, due to confusing instructions about OAuth2 refresh token support for Django:
+        - _[python - Getting refresh_token with lepture/authlib - Stack Overflow](https://stackoverflow.com/questions/48907773/getting-refresh-token-with-lepture-authlib)_
+            - > _`client_credentials` won't issue refresh token. You need to use authorization_code flow to get the refresh token._
+                - _A OAuth server-side configuration seems to be needed: [stackoverflow.com/questions/51305430/…](https://stackoverflow.com/questions/51305430/obtaining-refresh-token-from-lepture-authlib-through-authorization-code/51305975#51305975)_
+        - _[Refresh and Auto Update Token · Issue #245 · lepture/authlib](https://github.com/lepture/authlib/issues/245)_
+            - > _Also be aware, unless you're on authlib 0.14.3 or later, the django integration is broken for refresh (If you're using the metadata url): [RemoteApp.request fails to use token_endpoint to refresh the access token · Issue #193 · lepture/authlib](https://github.com/lepture/authlib/issues/193)_
+    - Analyzing the original Django demo code (that has been later modified to use `google-api-python-client` and `google-auth-oauthlib` instead of `authlib`):
+        - _**Wrap up:** The Django app will act as a API Gateway, so we don't need persistent storage of user information or account. The app will have access to Google user's resources until he logs out, or his session is expired or invalidated. After that, all existing data (i.e. browser cookies and session data in the database) is removed._
+        - 'Diffing' changes between the default code of newly created Django app _'project'_ and that of the AuthLib Django demo:
+            > - **`project/settings.py` (modified)**: 
+            >     - Removed from default configuration:
+            >         - **`INSTALLED_APPS`**:
+            >             - `'django.contrib.admin'`
+            >             - `'django.contrib.staticfiles'`
+            >         - **`MIDDLEWARE`**: _(only `SessionMiddleware` was kept, which is enough for the intended use case.)_
+            >             - `'django.contrib.auth.middleware.AuthenticationMiddleware'`
+            >             - `'django.contrib.messages.middleware.MessageMiddleware'`    
+            > - **`project/urls.py` (modified)**:
+            >     - Understandably, all things related to the `django.contrib.admin` app were removed. Here is the full content of `project/urls.py` :
+            >         ```python
+            >         # from django.contrib import admin
+            >         from django.urls import path
+            >         from project import views
+            > 
+            >         urlpatterns = [
+            >             # path('admin/', admin.site.urls),
+            >             path('', views.home),
+            >             path('login/', views.login),
+            >             path('auth/', views.auth, name='auth'),
+            >             path('logout/', views.logout), # Added
+            >         ]
+            >         ```
+            > - **`project/views.py` (created)**: This is practically the only file that I needed to modify later, in order to port the demo to use `google-api-python-client` and `google-auth-oauthlib`:
+            >     ```python
+            >     import json
+            >     from django.urls import reverse
+            >     from django.shortcuts import render, redirect
+            >     from authlib.integrations.django_client import OAuth
+            >     
+            >     CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+            >     oauth = OAuth()
+            >     oauth.register(
+            >         name='google',
+            >         server_metadata_url=CONF_URL,
+            >         client_kwargs={
+            >             'scope': 'openid email profile'
+            >         }
+            >     )
+            >     
+            >     def home(request):
+            >         user = request.session.get('user')
+            >         if user:
+            >             user = json.dumps(user)
+            >         return render(request, 'home.html', context={'user': user})
+            >     
+            >     def login(request):
+            >         redirect_uri = request.build_absolute_uri(reverse('auth'))
+            >         return oauth.google.authorize_redirect(request, redirect_uri)
+            >     
+            >     def auth(request):
+            >         token = oauth.google.authorize_access_token(request)
+            >         user = oauth.google.parse_id_token(request, token)
+            >         request.session['user'] = user
+            >         return redirect('/')
+            >     
+            >     def logout(request):
+            >         request.session.pop('user', None)
+            >         return redirect('/')
+            >     ```
+            > - **`project/templates/home.html` (created)**:
+            >     ```html
+            >     {% if user %}
+            >     <pre>
+            >     {{ user }}
+            >     </pre>
+            >     <hr>
+            >     <a href="/logout/">logout</a>
+            >     {% else %}
+            >     <a href="/login/">login</a>
+            >     {% endif %}
+            >     ```
+    - _Google Apps Script API Python Quickstart_ code adaptation:
+        - `credentials.json` contains the Client ID credentials (file downloadable from the GCP console) of the GCP project associated to the target Apps Script app
+        - [`Flow`](https://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.Flow) class was used instead of [`InstalledAppFlow`](https://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow).
+        - Instead of using pickles, OAuth2 token (a [`Credentials`](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html#google.oauth2.credentials.Credentials) instance) is converted to a dictionary and saved to session (as a session key named `token`).
+        - Value of session key `user` (which identifies the logged in user) is retrieved by [parsing](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.id_token.html#google.oauth2.id_token.verify_oauth2_token) the [Open ID Connect ID Token](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html#google.oauth2.credentials.Credentials.id_token) contained in the Credentials object resulting from a complete and successful OAuth2 flow.
+- Installing required libraries, creating the database and launching the dev server:
+    ```
+    cd app/backend-python-demo
+    pip install Django google-api-python-client google-auth-oauthlib
+    python manage.py migrate
+    python manage.py runserver
+    ```
+- **Key online resources used:**
+    - [`Flow` class of the `google_auth_oauthlib.flow` module](https://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html) (google-auth-oauthlib 0.4.1 documentation)
+        - [`Flow.fetch_token(code=code)`](https://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.Flow.fetch_token)
+        - [`Flow.credentials`](https://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.Flow.credentials)
+            - Constructs a [`google.oauth2.credentials.Credentials`](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html#google.oauth2.credentials.Credentials) class.
+                - _..which is a child class of [`google.auth.credentials.Credentials`](https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials)_
+                - [`to_json()`](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html#google.oauth2.credentials.Credentials.to_json): Returns A JSON representation of this instance. When converted into a dictionary, it can be passed to [`from_authorized_user_info()`](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html#google.oauth2.credentials.Credentials.from_authorized_user_info) to create a new Credentials instance.
+                - [`id_token`](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html#google.oauth2.credentials.Credentials.id_token): can be verified and decoded (parsed) using [`google.oauth2.id_token.verify_oauth2_token()`](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.id_token.html#google.oauth2.id_token.verify_oauth2_token)
+
+
 ## 2021-02-07
 
 - _I have been extensively checking and testing some Python backend code (OAuth authentication, Apps Script API client...). I will share my findings in this repository as soon as I come with some significant results. So far I updated **`2021-01-30`** entry with a few details and analysis points._
