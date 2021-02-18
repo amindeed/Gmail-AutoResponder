@@ -1,5 +1,6 @@
 import json
 from django.urls import reverse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from googleapiclient import errors
 from googleapiclient.discovery import build
@@ -17,19 +18,21 @@ flow = Flow.from_client_secrets_file(
 
 def home(request):
     user = request.session.get('user')
+    access_token = request.session.get('token')
     creds = None
-    funcReturnVal = None
-    return_json = None
+    funcReturnVal = {}
+    return_object = {}
 
     if user:
         
-        if request.session.get('token'):
-            creds = Credentials.from_authorized_user_info(request.session.get('token'))
+        if access_token:
+            creds = Credentials.from_authorized_user_info(access_token)
 
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
                 request.session['token'] = json.loads(creds.to_json())
+                access_token = request.session.get('token')
             else:
                 logout(request)
                 return render(request, 'home.html')
@@ -56,10 +59,13 @@ def home(request):
             # The API encountered a problem before the script started executing.
             print(e.content)
 
-        return_json = json.dumps({'user': user, 'funcReturnVal': funcReturnVal, 'token_json': request.session.get('token')})
-
-    return render(request, 'home.html', context={'user': user, 'return_json': return_json})
-
+        return_object.update({'user': user, 'funcReturnVal': funcReturnVal})
+        
+    if 'get-settings' in request.GET and request.GET['get-settings'] == 'true':
+        return HttpResponse(json.dumps(funcReturnVal), content_type="application/json")
+    else:
+        return render(request, 'home.html', context={'user': user, 'return_object': return_object})
+    
 
 def login(request):
     auth_url, _ = flow.authorization_url(prompt='consent')

@@ -1,9 +1,103 @@
 {% if user %}
-<pre>
-{{ return_json }}
+<!-- <pre>
+{{ user }}
 </pre>
-<hr>
-<a href="/logout/">logout</a>
+<hr> -->
+
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/?get-settings=true', true);
+    xhr.onload = function() {
+        if(this.readyState == this.HEADERS_RECEIVED) {
+            var contentType = client.getResponseHeader("Content-Type");
+            if (contentType != my_expected_type) {
+            client.abort();
+            }
+        } else if (xhr.status === 200) {
+            alert(xhr.responseText);
+        }
+        else {
+            alert('Request failed.  Returned status of ' + xhr.status);
+        }
+    };
+    //xhr.send();
+</script>
+
+<div id="userphoto"><img src="{{ user.picture }}" alt="User Photo"></div> <br />
+    
+<strong>Logged in as : </strong>
+    <span id="myemailaddress">{{ user.email }}</span> 
+    <span id="logout"> (<a href="/logout/">logout</a>)</span> 
+    <br /><br />
+
+<input type="button" value="Load Settings" onclick="xhr.send()">
+<br /><br />
+
+<form id="gmasettings" onsubmit="">
+
+  Enable Gmail AutoResponder? 
+       <input type="radio" name="enablegmautorep" id="enable_gma" value="YES"> Yes 
+       <input type="radio" name="enablegmautorep" id="disable_gma" value="NO"> No 
+       <br /><br />
+
+  <fieldset>
+    <legend>Settings</legend>
+
+    <em>Filters Spreadsheet ID :</em> 
+        <input id="filtersssid" name="filtersssid" type="text" value="" readonly />  
+        <a id="filtersssurl" href="" target="_blank"></a>
+        <br /><br />
+
+    <em>Logs Spreadsheet ID :</em> 
+        <input id="logsssid" name="logsssid" type="text" value="" readonly />  
+        <a id="logsssurl" href="" target="_blank"></a>
+        <br /><br />
+
+    Start Hour : 
+        <input id="starthour" name="starthour" type="number" value="" />
+        <em> (default: 17)</em>
+        <br /><br />
+
+    Finish Hour : 
+        <input id="finishhour" name="finishhour" type="number" value="" />
+        <em> (default: 8)</em>
+        <br /><br />
+
+    Daylight Saving Time Offset : 
+        <input id="dstoffset" name="dstoffset" type="number" value="" />
+        <em> (default: 0)</em>
+        <br /><br />
+
+    Cc Email Address : 
+        <input id="ccemailadr" name="ccemailadr" type="email" value="" />
+        <br /><br />
+
+    Bcc Email Address : 
+        <input id="bccemailadr" name="bccemailadr" type="email" value="" />
+        <br /><br />
+
+    Reply with 'noreply' address? 
+       <input type="radio" name="noreply" id="yes_noreply" value="YES"> Yes 
+       <input type="radio" name="noreply" id="no_noreply" value="NO"> No 
+       <br /><br />
+
+    Star processed messages in Gmail 
+       <input type="radio" name="starmsg" id="yes_starmsg" value="YES"> Yes 
+       <input type="radio" name="starmsg" id="no_starmsg" value="NO"> No 
+       <br /><br />
+       
+    Message Body : <br /><br />
+        <textarea cols="80" rows="6" id="msgbody" name="msgbody" rows="3" placeholder="Automated response: 
+This automated response is only to confirm that your e-mail has been well received. 
+Thank you."></textarea>
+        <br /><br />
+
+    <input type="submit" value="Save Settings" />
+  </fieldset>
+</form>
+
+<input type="button" value="Reset App" onclick="">
+
 {% else %}
 <a href="/login/">login</a>
 {% endif %}

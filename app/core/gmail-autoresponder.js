@@ -216,28 +216,39 @@ function setProperties(objParams) {
 function getSettings(){
   
   //➜ Should check first if (userProperties.getProperty('INIT_ALREADY_RUN') !== 'YES')
+
+  var errors = [];
+  var settingsObj = {
+    'data': {},
+    'errors': []
+  };
   
-  var settingsObj = {};
-  var driveRoot = DriveApp.getRootFolder();
-  var driveUserPhoto = driveRoot.getOwner().getPhotoUrl();
-  var userProperties = PropertiesService.getUserProperties();
-  var defaultUserPhoto = userProperties.getProperty('DEFAULT_USER_PHOTO');
-    
-  settingsObj['userPhotoUrl'] = driveUserPhoto?driveUserPhoto.replace(/=s.*$/,''):defaultUserPhoto;
-  settingsObj['userEmail'] = Session.getEffectiveUser().getEmail(); 
-  settingsObj['enablegmautorep'] = userProperties.getProperty('ENABLE_GMAUTOREP');
-  settingsObj['filtersssid'] = userProperties.getProperty('FILTERS_SS_ID');
-  settingsObj['filtersssurl'] = SpreadsheetApp.openById(userProperties.getProperty('FILTERS_SS_ID')).getUrl();
-  settingsObj['logsssid'] = userProperties.getProperty('LOGS_SS_ID');
-  settingsObj['logsssurl'] = SpreadsheetApp.openById(userProperties.getProperty('LOGS_SS_ID')).getUrl();
-  settingsObj['starthour'] = userProperties.getProperty('START_HOUR');
-  settingsObj['finishhour'] = userProperties.getProperty('FINISH_HOUR');
-  settingsObj['dstoffset'] = userProperties.getProperty('DST_OFFSET');
-  settingsObj['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
-  settingsObj['bccemailadr'] = userProperties.getProperty('BCC_ADDRESS');
-  settingsObj['noreply'] = userProperties.getProperty('NOREPLY');
-  settingsObj['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
-  settingsObj['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
+  try {
+      var driveRoot = DriveApp.getRootFolder();
+      var driveUserPhoto = driveRoot.getOwner().getPhotoUrl();
+      var userProperties = PropertiesService.getUserProperties();
+      var defaultUserPhoto = userProperties.getProperty('DEFAULT_USER_PHOTO');
+        
+      settingsObj['data']['userPhotoUrl'] = driveUserPhoto?driveUserPhoto.replace(/=s.*$/,''):defaultUserPhoto;
+      settingsObj['data']['userEmail'] = Session.getEffectiveUser().getEmail(); 
+      settingsObj['data']['enablegmautorep'] = userProperties.getProperty('ENABLE_GMAUTOREP');
+      settingsObj['data']['filtersssid'] = userProperties.getProperty('FILTERS_SS_ID');
+      settingsObj['data']['filtersssurl'] = SpreadsheetApp.openById(userProperties.getProperty('FILTERS_SS_ID')).getUrl();
+      settingsObj['data']['logsssid'] = userProperties.getProperty('LOGS_SS_ID');
+      settingsObj['data']['logsssurl'] = SpreadsheetApp.openById(userProperties.getProperty('LOGS_SS_ID')).getUrl();
+      settingsObj['data']['starthour'] = userProperties.getProperty('START_HOUR');
+      settingsObj['data']['finishhour'] = userProperties.getProperty('FINISH_HOUR');
+      settingsObj['data']['dstoffset'] = userProperties.getProperty('DST_OFFSET');
+      settingsObj['data']['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
+      settingsObj['data']['bccemailadr'] = userProperties.getProperty('BCC_ADDRESS');
+      settingsObj['data']['noreply'] = userProperties.getProperty('NOREPLY');
+      settingsObj['data']['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
+      settingsObj['data']['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
+  } catch(e) {
+      errors.push(e.message)
+  }
+
+  settingsObj['errors'] = errors;
   
   return settingsObj;
 }
@@ -334,8 +345,8 @@ function appinit(initParams) {
       oldParent.setTrashed(true);
     }
     
-    //var ssFiltersURL = ssFilters.getUrl(); /* removed because unused */
-    //var ssLogsURL = ssLogs.getUrl(); /* removed because unused */
+    var ssFiltersURL = ssFilters.getUrl();
+    var ssLogsURL = ssLogs.getUrl();
     
     // 1.2. Initialize 'Filters' and 'Logs' spreadsheets
     

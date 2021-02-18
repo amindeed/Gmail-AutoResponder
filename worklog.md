@@ -1,5 +1,13 @@
 # Work Log
 
+## 2021-02-18
+
+- All of [these scopes](https://developers.google.com/identity/protocols/oauth2/scopes#oauth2) are required if you want to get full information about the logged in Google user:
+    - `https://www.googleapis.com/auth/userinfo.email`
+    - `https://www.googleapis.com/auth/userinfo.profile`
+    - `openid`
+- Customizing 'Views' to add an endpoint URL for Ajax requests (with JSON responses).
+
 ## 2021-02-15
 
 - Added working demo code (**`app/backend-python-demo`**) of a Django app that runs a function of a Google Apps Script project deployed as _API-Executable_, through the Google Apps Script API, using Google API Python client. Also included target Apps Script project code (**`app/backend-python-demo/target_appsscript_code.js`**)
