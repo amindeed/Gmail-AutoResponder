@@ -4,36 +4,142 @@
 </pre>
 <hr> -->
 
+<pre>
+    MESSAGES: {{ messages }}
+</pre>
+
 <script>
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/?get-settings=true', true);
-    xhr.onload = function() {
-        if(this.readyState == this.HEADERS_RECEIVED) {
-            var contentType = client.getResponseHeader("Content-Type");
-            if (contentType != my_expected_type) {
-            client.abort();
+
+    // Prevent forms from being submitted
+    function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+            forms[i].addEventListener('submit', function(event) {
+                event.preventDefault();
+            });
+        }
+    }
+    window.addEventListener('load', preventFormSubmit);
+
+
+    function clearForm(){
+        document.getElementById("gmasettings").reset();
+    }
+
+
+    function updateSettings(){
+        alert('\'updateSettings()\' was called.')
+    }
+
+
+  function loadSettings(){
+    document.getElementById("waiting_msg").innerHTML = '<strong>Loading settings...</strong>';
+     makeRequest('GET', '/getsettings')
+        .then(function (result) {
+            // Load settings into form
+            document.getElementById("waiting_msg").innerHTML = '';
+            result = JSON.parse(result)
+
+            if (result['data']['enablegmautorep'] === 'NO') {
+                document.getElementById("disable_gma").checked = true;
+                //enableForm(false); /* further refinements needed */
+            } else {
+                document.getElementById("enable_gma").checked = true;
+                //enableForm(true); /* further refinements needed */
             }
-        } else if (xhr.status === 200) {
-            alert(xhr.responseText);
+
+            document.getElementById("filtersssid").value =result['data']['filtersssid'];
+            document.getElementById("filtersssurl").href =result['data']['filtersssurl'];
+            document.getElementById("filtersssurl").innerHTML = 'See spreadsheet';
+
+            document.getElementById("logsssid").value =result['data']['logsssid'];
+            document.getElementById("logsssurl").href =result['data']['logsssurl'];
+            document.getElementById("logsssurl").innerHTML = 'See spreadsheet';
+
+            document.getElementById("starthour").value = parseInt(result['data']['starthour'], 10);
+            document.getElementById("finishhour").value = parseInt(result['data']['finishhour'], 10);
+            document.getElementById("dstoffset").value = parseInt(result['data']['dstoffset'], 10);
+            document.getElementById("ccemailadr").value = result['data']['ccemailadr'];
+            document.getElementById("bccemailadr").value = result['data']['bccemailadr'];
+
+            switch(result['data']['noreply']) {
+                case "YES":
+                    document.getElementById("yes_noreply").checked = true;
+                    break;
+                case "NO":
+                    document.getElementById("no_noreply").checked = true;
+                    break;
+                case "N_A":
+                    document.getElementById("yes_noreply").disabled = true;
+                    document.getElementById("no_noreply").disabled = true;
+                    break;
+                default:
+                    document.getElementById("no_noreply").checked = true;
+            }
+
+            switch(result['data']['starmsg']) {
+                case "NO":
+                    document.getElementById("no_starmsg").checked = true;
+                    break;
+                default:
+                    document.getElementById("yes_starmsg").checked = true;
+            }
+
+            document.getElementById("msgbody").value = result['data']['msgbody'];
+
+        })
+        .catch(function (err) {
+            document.getElementById("waiting_msg").innerHTML = '';
+            alert(err.status + ' ' + err.statusText);
+        });
+  }
+
+
+  function makeRequest(method, url) {
+    
+    return new Promise(function (resolve, reject) {
+  
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url);
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          resolve(xhr.response);
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
         }
-        else {
-            alert('Request failed.  Returned status of ' + xhr.status);
-        }
-    };
-    //xhr.send();
+      };
+  
+      xhr.onerror = function () {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+  
+      xhr.send();
+    });
+  }
+
 </script>
 
 <div id="userphoto"><img src="{{ user.picture }}" alt="User Photo"></div> <br />
-    
+
+
+<body onload="clearForm();">
 <strong>Logged in as : </strong>
     <span id="myemailaddress">{{ user.email }}</span> 
     <span id="logout"> (<a href="/logout/">logout</a>)</span> 
     <br /><br />
 
-<input type="button" value="Load Settings" onclick="xhr.send()">
+<input type="button" value="Load Settings" onclick="loadSettings()"> <span id="waiting_msg"></span>
 <br /><br />
 
-<form id="gmasettings" onsubmit="">
+<form id="gmasettings" onsubmit="updateSettings();">
 
   Enable Gmail AutoResponder? 
        <input type="radio" name="enablegmautorep" id="enable_gma" value="YES"> Yes 
@@ -96,7 +202,8 @@ Thank you."></textarea>
   </fieldset>
 </form>
 
-<input type="button" value="Reset App" onclick="">
+<input type="button" value="Reset App" onclick="updateSettings();">
+</body>
 
 {% else %}
 <a href="/login/">login</a>

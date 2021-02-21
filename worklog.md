@@ -1,5 +1,14 @@
 # Work Log
 
+# 2021-02-21
+
+- Now the Django app can load settings from Apps Script backend into the frontend, through AJAX requests.
+
+    <br /><img src="/assets/django-ajax-load-settings.gif" alt="django-ajax-load-settings.gif" width="700"/><br />
+
+- Handling access to some special URLs like `/auth` and `/getsettings`.
+- Refactoring `views.py` to use a function decorator `@check_user_session` to check whether the user is authenticated.
+
 ## 2021-02-18
 
 - All of [these scopes](https://developers.google.com/identity/protocols/oauth2/scopes#oauth2) are required if you want to get full information about the logged in Google user:
