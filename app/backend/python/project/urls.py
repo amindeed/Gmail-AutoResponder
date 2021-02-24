@@ -1,5 +1,8 @@
 from django.urls import path
 from project import views
+from django.conf.urls.static import static
+#from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
 
 urlpatterns = [
     path('', views.home),
@@ -9,3 +12,6 @@ urlpatterns = [
     path('getsettings/', views.get_settings),
     path('core/', views.update_settings),
 ]
+
+#urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.STATIC_URL)

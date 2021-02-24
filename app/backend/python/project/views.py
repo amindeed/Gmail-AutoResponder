@@ -10,6 +10,7 @@ from google.oauth2 import id_token
 from google.oauth2.credentials import Credentials
 from django.contrib.auth import logout
 from app_configs import *
+from .forms import GmailAutoResponderSettings
 
 
 flow = Flow.from_client_secrets_file(
@@ -67,8 +68,17 @@ def update_settings(request):
 
     service = build('script', 'v1', credentials=creds)
 
-    if request.method == "POST" and True:
-        pass
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = GmailAutoResponderSettings(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
     else:
         return redirect('/')
 

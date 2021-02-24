@@ -1,0 +1,97 @@
+{% if user %}
+{% load static %}
+
+<pre>
+    MESSAGES: {{ messages }}
+</pre>
+
+<div style="display: none;">
+    <img id='sheet-icon' src="{% static 'images/sheet-icon.png' %}" alt="See spreadsheet" width="16"/>
+</div>
+
+<script type="text/javascript" src="{% static 'js/javascript.js' %}"></script>
+<script>
+    // Prevent forms from being submitted
+    window.addEventListener('load', preventFormSubmit);
+</script>
+
+<div id="userphoto"><img src="{{ user.picture }}" alt="User Photo"></div> <br />
+
+<body onload="clearForm(); loadSettings();">
+<strong>Logged in as : </strong>
+    <span id="myemailaddress">{{ user.email }}</span> 
+    <span id="logout"> (<a href="/logout/">logout</a>)</span> 
+    <br /><br />
+
+<input type="button" value="Load Settings" onclick="loadSettings()"> <span id="waiting_msg"></span>
+<br /><br />
+
+<form id="gmasettings" onsubmit="updateSettings();">{% csrf_token %}
+
+  Enable Gmail AutoResponder? 
+       <input type="radio" name="enableApp" id="enable_app" value="YES"> Yes 
+       <input type="radio" name="enableApp" id="disable_app" value="NO"> No 
+       <br /><br />
+
+  <fieldset>
+    <legend>Settings</legend>
+
+    Filters :
+        <!-- <input id="filtersssid" name="filtersssid" type="text" value="" readonly />   -->
+        <a id="filtersssurl" href="" target="_blank"></a>
+        <br /><br />
+
+    Logs :
+        <!-- <input id="logsssid" name="logsssid" type="text" value="" readonly />   -->
+        <a id="logsssurl" href="" target="_blank"></a>
+        <br /><br />
+
+    <label for="starthour">Start Hour :</label>
+        <input id="starthour" name="starthour" type="number" value="" />
+        <em> (default: 17)</em>
+        <br /><br />
+
+    <label for="finishhour">Finish Hour :</label>
+        <input id="finishhour" name="finishhour" type="number" value="" />
+        <em> (default: 8)</em>
+        <br /><br />
+
+    <label for="dstoffset">Daylight Saving Time Offset :</label>
+        <input id="dstoffset" name="dstoffset" type="number" value="" />
+        <em> (default: 0)</em>
+        <br /><br />
+
+    <label for="ccemailadr">Cc Email Address(es) :</label>
+        <input id="ccemailadr" name="ccemailadr" type="email" value="" />
+        <br /><br />
+
+    <label for="bccemailadr">Bcc Email Address(es) :</label>
+        <input id="bccemailadr" name="bccemailadr" type="email" value="" />
+        <br /><br />
+
+    <label for="noreply">Reply with 'noreply' address?</label>
+       <input type="radio" name="noreply" id="yes_noreply" value="YES"> Yes 
+       <input type="radio" name="noreply" id="no_noreply" value="NO"> No 
+       <br /><br />
+
+    <label for="starmsg">Star processed messages in Gmail?</label>
+       <input type="radio" name="starmsg" id="yes_starmsg" value="YES"> Yes 
+       <input type="radio" name="starmsg" id="no_starmsg" value="NO"> No 
+       <br /><br />
+       
+    <label for="msgbody">Message Body :</label>
+        <textarea cols="80" rows="6" id="msgbody" name="msgbody" rows="3" placeholder="Automated response: 
+This automated response is only to confirm that your e-mail has been well received. 
+Thank you."></textarea>
+        <br /><br />
+
+    <input type="submit" value="Save Settings" />
+  </fieldset>
+</form>
+
+<input type="button" value="Reset App" onclick="updateSettings();">
+</body>
+
+{% else %}
+<a href="/login/">login</a>
+{% endif %}

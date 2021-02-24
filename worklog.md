@@ -1,13 +1,19 @@
 # Work Log
 
+# 2021-02-24
+
+- Exploring Django Forms and HTML form submit using AJAX POST requests.
+- Some Apps Script code refinement.
+- Revised project repository structure (got rid of unneeded code).
+
 # 2021-02-21
 
 - Now the Django app can load settings from Apps Script backend into the frontend, through AJAX requests.
 
-    <br /><img src="/assets/django-ajax-load-settings.gif" alt="django-ajax-load-settings.gif" width="700"/><br />
+    <br /><img src="/assets/django-ajax-load-settings.gif" alt="django-ajax-load-settings.gif" width="500"/><br />
 
 - Handling access to some special URLs like `/auth` and `/getsettings`.
-- Refactoring `views.py` to use a function decorator `@check_user_session` to check whether the user is authenticated.
+- Refactoring `views.py` to use a function decorator `@check_user_session` to check whether the user is authenticated or not.
 
 ## 2021-02-18
 
