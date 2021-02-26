@@ -31,7 +31,7 @@ clasp deployments
 
 ## Settings
 
-Managed as [User properties](https://developers.google.com/apps-script/reference/properties/properties-service#getUserProperties()):
+Managed as [Apps Script User Properties](https://developers.google.com/apps-script/reference/properties/properties-service#getUserProperties()):
 - **`ENABLE_GMAUTOREP` :** _Flag,_ switch to enable/disable the app.
 - **`FILTERS_SS_ID` :** Drive ID of the `Filters` Google spreadsheet where the user can define regular expressions to be applied as filters to sender and receiver addresses, as well as to raw message / headers contents. Default filters :
     - _**Raw Message :** `report-type=disposition-notification`; to filter out read receipts,_

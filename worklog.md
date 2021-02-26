@@ -1,12 +1,12 @@
 # Work Log
 
-# 2021-02-24
+## 2021-02-24
 
 - Exploring Django Forms and HTML form submit using AJAX POST requests.
 - Some Apps Script code refinement.
 - Revised project repository structure (got rid of unneeded code).
 
-# 2021-02-21
+## 2021-02-21
 
 - Now the Django app can load settings from Apps Script backend into the frontend, through AJAX requests.
 
@@ -23,7 +23,7 @@
     - `openid`
 - Customizing 'Views' to add an endpoint URL for Ajax requests (with JSON responses).
 
-## 2021-02-15
+## 2021-02-15 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/90e8dbec09b1fdcedfa072df59ce8a553054b498)
 
 - Added working demo code (**`app/backend-python-demo`**) of a Django app that runs a function of a Google Apps Script project deployed as _API-Executable_, through the Google Apps Script API, using Google API Python client. Also included target Apps Script project code (**`app/backend-python-demo/target_appsscript_code.js`**)
 - The code is built upon the [AuthLib library demo for Django](https://github.com/authlib/demo-oauth-client/tree/310c6f1da26abc32f8eca8668d1b6d0aa4a9f0a3/django-google-login) and the [Google Apps Script API Python Quickstart](https://github.com/googleworkspace/python-samples/tree/aacc00657392a7119808b989167130b664be5c27/apps_script/quickstart) example: 
