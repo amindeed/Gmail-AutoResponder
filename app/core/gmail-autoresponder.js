@@ -6,7 +6,8 @@
  * License 		:	GNU GPLv3 license
  */
  
-/** ........................................ **/
+
+/** Check if string contains specified substring **/
 
 function containsString(inputStr, checklist) {
   var contains = false;
@@ -20,7 +21,7 @@ function containsString(inputStr, checklist) {
 }
 
 
-/** ........................................ **/
+/** Check if string matches specified regex **/
 
 function matchesRegex(inputStr, regexStr) {
   var matches = false;
@@ -35,20 +36,13 @@ function matchesRegex(inputStr, regexStr) {
 }
 
 
-/** ........................................ **/
+/** Get values in a Sheet's column **/
 
 function columnValues(sheet, column, remove_header){
   var values = sheet.getRange(column + "1:" + column + sheet.getMaxRows()).getValues();
   (values = [].concat.apply([], values.filter(String))).splice(0,remove_header?1:0);
   return values
 }
-
-
-/** ........................................ **/
-
-// function appendLog(entry){
-//  ...
-// }
 
 
 /** Archiving logs monthly to separate sheets **/
@@ -93,121 +87,116 @@ function deleteAllTriggers() {
 }
 
 
-function doGet(e) {
-  
-  var userProperties = PropertiesService.getUserProperties();
-  
-  /*if-beta*/ if ( e.parameters['index'] && (e.parameters['index'][0] === 'beta') ) { /*if-beta*/
-    
-    return HtmlService.createHtmlOutputFromFile('index_beta')
-           .setTitle('Gmail AutoResponder - Settings')
-           .setFaviconUrl('https://findicons.com/files/icons/980/yuuminco/16/mail.png');
-    
-  /*if-beta*/ } else if ( e.parameters['index'] && (e.parameters['index'][0] === 'apiproxy') ) { /*if-beta*/
-    
-    return HtmlService.createHtmlOutputFromFile('index_api_proxy')
-           .setTitle('Gmail AutoResponder - Settings')
-           .setFaviconUrl('https://findicons.com/files/icons/980/yuuminco/16/mail.png');
-    
-  /*if-beta*/ } else {  /*if-beta*/
-  
-  if ( userProperties.getProperty('INIT_ALREADY_RUN') !== 'true' ) {
-    
-    return HtmlService.createHtmlOutputFromFile('index')
-           .setTitle('Gmail AutoResponder - Settings')
-           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png')
-           .append('<script>\
-                      enableForm(false);\
-                      google.script.run\
-                            .withSuccessHandler(onInitSuccess)\
-                            .withFailureHandler(onFailure)\
-                            .appinit();\
-                   </script>');
-    
-  } else {
-    
-    return HtmlService.createHtmlOutputFromFile('index')
-           .setTitle('Gmail AutoResponder - Settings')
-           .setFaviconUrl('https://findicons.com/files/icons/42/basic/16/letter.png');
-  }
-  /*if-beta*/ } /*if-beta*/
-}
-
-
-/** Testing doPost() **/
-
-function doPost(e) {
-  var params = e.parameters;
-  var response = {'properties': {}, 'errors': []};
-  var suffix = '_' + Math.floor(Math.random() * Math.floor(999999)).toString();
-  
-  if (params['testPty']) {
-    var userProperties = PropertiesService.getUserProperties();
-    userProperties.setProperty('testPty', params['testPty'][0] + suffix);
-    response.properties['testPty'] = userProperties.getProperty('testPty');
-    response.properties['activeUser'] = Session.getActiveUser().getEmail();
-    response.properties['effectiveUser'] = Session.getEffectiveUser().getEmail();
-  } else {
-    response['errors'].push('Error occured');
-  }
-  return ContentService.createTextOutput(JSON.stringify(response))
-                     .setMimeType(ContentService.MimeType.JSON);
-}
-
 /** Set Script User Parameters **/
 
 function setProperties(objParams) {
   
   //➜ Should check first if (userProperties.getProperty('INIT_ALREADY_RUN') !== 'true')
   
-  var userProperties = PropertiesService.getUserProperties();
-  var defaultMsgBody = userProperties.getProperty('DEFAULT_MESSAGE_BODY');
-  
-  userProperties.setProperty('ENABLE_GMAUTOREP', (objParams['enablegmautorep'] === true)?'true':'false');
-  userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
-  userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']);
-  
-  if ( objParams['starthour'] ) {
-    userProperties.setProperty('START_HOUR', objParams['starthour']);
-  } else {
-    userProperties.setProperty('START_HOUR', 17);
+  var errors = [];
+  var returnObj = {
+    'data': {},
+    'errors': []
+  };
+
+  try {
+      var userProperties = PropertiesService.getUserProperties();
+      var defaultMsgBody = userProperties.getProperty('DEFAULT_MESSAGE_BODY');
+      
+      userProperties.setProperty('ENABLE_GMAUTOREP', (objParams['enablegmautorep'] === true)?'true':'false');
+      userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
+      userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']);
+      
+      if ( objParams['starthour'] ) {
+        userProperties.setProperty('START_HOUR', objParams['starthour']);
+      } else {
+        userProperties.setProperty('START_HOUR', 17);
+      }
+
+      if ( objParams['finishhour'] ) {
+        userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
+      } else {
+        userProperties.setProperty('FINISH_HOUR', 8);
+      }
+      
+      if ( objParams['dstoffset'] ) {
+        userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
+      } else {
+        userProperties.setProperty('DST_OFFSET', 0);
+      }
+      
+      userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsgBody);
+        
+      if ( objParams['ccemailadr'] ) {
+        userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
+      } else {
+        userProperties.setProperty('CC_ADDRESS', '');
+      }
+      
+      if ( objParams['bccemailadr'] ) {
+        userProperties.setProperty('BCC_ADDRESS', objParams['bccemailadr']);
+      } else {
+        userProperties.setProperty('BCC_ADDRESS', '');
+      }
+        
+      if ( (objParams['noreply'] === 1) || (objParams['noreply'] === 2) ) {
+        userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') !== 'GMAIL')?objParams['noreply']:'2');
+      } else {
+        userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') === 'GMAIL')?'2':'0');
+      }
+      
+      userProperties.setProperty('STAR_PROCESSED_MESSAGE', (objParams['starmsg'] === false)?'false':'true');
+
+  } catch(e) {
+      errors.push(e.message)
   }
 
-  if ( objParams['finishhour'] ) {
-    userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
-  } else {
-    userProperties.setProperty('FINISH_HOUR', 8);
-  }
+  returnObj['errors'] = errors;
+  returnObj['data']['message'] = 'Settings updated successfully!';
   
-  if ( objParams['dstoffset'] ) {
-    userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
-  } else {
-    userProperties.setProperty('DST_OFFSET', 0);
-  }
+  return returnObj; 
+}
+
+var setSettings = setProperties
+
+
+/** Test Set Settings **/
+
+function test_setSettings(objParams) {
   
-  userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsgBody);
-    
-  if ( objParams['ccemailadr'] ) {
-    userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
-  } else {
-    userProperties.setProperty('CC_ADDRESS', '');
+  var errors = [
+      {
+        non_existing_properties: []
+      }
+    ];
+
+  var returnObj = {
+    'data': {},
+    'errors': []
+  };
+
+  try {
+      var userProperties = PropertiesService.getUserProperties();
+
+      for (item in objParams) {
+        if (!userProperties.getProperty(item)) {
+          errors[0]['non_existing_properties'].push(item)
+        }
+      }
+
+      if (errors[0]['non_existing_properties'].length) {
+        throw new Error;
+      } else {
+        userProperties.setProperties(objParams)
+        returnObj['data']['success_message'] = '[Apps Script] Gmail AutoResponder user settings updated successfully.';
+      }
+
+  } catch(e) {
+      e.message?errors.push(e.message):null;
   }
-  
-  if ( objParams['bccemailadr'] ) {
-    userProperties.setProperty('BCC_ADDRESS', objParams['bccemailadr']);
-  } else {
-    userProperties.setProperty('BCC_ADDRESS', '');
-  }
-    
-  if ( (objParams['noreply'] === 1) || (objParams['noreply'] === 2) ) {
-    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') !== 'GMAIL')?objParams['noreply']:'2');
-  } else {
-    userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') === 'GMAIL')?'2':'0');
-  }
-  
-  userProperties.setProperty('STAR_PROCESSED_MESSAGE', (objParams['starmsg'] === false)?'false':'true');
-  
-  // TODO: return a success message/code, or error messages
+
+  returnObj['errors'] = errors;
+  return returnObj; 
 }
 
 
@@ -244,6 +233,7 @@ function getSettings(){
       settingsObj['data']['noreply'] = userProperties.getProperty('NOREPLY');
       settingsObj['data']['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
       settingsObj['data']['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
+
   } catch(e) {
       errors.push(e.message)
   }
@@ -254,35 +244,32 @@ function getSettings(){
 }
 
 
-/** ......................... **/
+/** Test Get Settings **/
 
-function getHtml() {
-   var html = HtmlService
-      .createTemplateFromFile('test')
-      .evaluate()
-      .getContent();
-   return html;
-   //return '<h3>Test Content :</h3><p>This is a test content.</p>';
-}
-
-
-/** [draft] https://l.amindeed.com/1kAWO **/
-
-function altGetScriptUrl(){
+function test_getSettings(){
   
-  var userDomain = DriveApp.getRootFolder().getOwner().getDomain();
-  var url = ScriptApp.getService().getUrl(); // = null if script not published
+  var errors = [];
+  var settingsObj = {
+    'data': {},
+    'errors': []
+  };
   
-  if (userDomain !== 'gmail.com') {
-    if (url.indexOf('/a/' + userDomain + '/') !== -1) {
-      return url;
-    } else {
-      // var altUrl = ... insert '/a/'+userDomain
-      // return altUrl
-    }
-  } else {
-    return url;
+  try {
+      
+      var userProperties = PropertiesService.getUserProperties();
+      var appSettings = userProperties.getProperties()
+
+      for (var key in appSettings) {
+        settingsObj['data'][key] = appSettings[key];
+      }
+
+  } catch(e) {
+      errors.push(e.message)
   }
+
+  settingsObj['errors'] = errors;
+  
+  return settingsObj;
 }
 
 

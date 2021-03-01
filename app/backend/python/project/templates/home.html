@@ -1,9 +1,9 @@
-{% if user %}
 {% load static %}
 
-<pre>
-    MESSAGES: {{ messages }}
-</pre>
+<div style="word-wrap:break-word; padding: 0  0 40px 0; color:blue;">
+    <strong>Messages: </strong><br /><br />
+    {{ messages }}
+</div>
 
 <div style="display: none;">
     <img id='sheet-icon' src="{% static 'images/sheet-icon.png' %}" alt="See spreadsheet" width="16"/>
@@ -26,7 +26,7 @@
 <input type="button" value="Load Settings" onclick="loadSettings()"> <span id="waiting_msg"></span>
 <br /><br />
 
-<form id="gmasettings" onsubmit="updateSettings();">{% csrf_token %}
+<form id="gmasettings" onsubmit="updateSettings(this);">
 
   Enable Gmail AutoResponder? 
        <input type="radio" name="enableApp" id="enable_app" value="YES"> Yes 
@@ -61,14 +61,6 @@
         <em> (default: 0)</em>
         <br /><br />
 
-    <label for="ccemailadr">Cc Email Address(es) :</label>
-        <input id="ccemailadr" name="ccemailadr" type="email" value="" />
-        <br /><br />
-
-    <label for="bccemailadr">Bcc Email Address(es) :</label>
-        <input id="bccemailadr" name="bccemailadr" type="email" value="" />
-        <br /><br />
-
     <label for="noreply">Reply with 'noreply' address?</label>
        <input type="radio" name="noreply" id="yes_noreply" value="YES"> Yes 
        <input type="radio" name="noreply" id="no_noreply" value="NO"> No 
@@ -79,19 +71,43 @@
        <input type="radio" name="starmsg" id="no_starmsg" value="NO"> No 
        <br /><br />
        
-    <label for="msgbody">Message Body :</label>
-        <textarea cols="80" rows="6" id="msgbody" name="msgbody" rows="3" placeholder="Automated response: 
-This automated response is only to confirm that your e-mail has been well received. 
-Thank you."></textarea>
         <br /><br />
 
     <input type="submit" value="Save Settings" />
   </fieldset>
 </form>
 
-<input type="button" value="Reset App" onclick="updateSettings();">
-</body>
 
-{% else %}
-<a href="/login/">login</a>
-{% endif %}
+<form id="testSettingsForm" onsubmit="updateSettings(this);">
+
+    <fieldset>
+        <legend>Test Settings Form</legend>
+         
+      <!-- <label for="testScriptUserPty">Test Script User Property :</label>  
+        <input id="testScriptUserPty" name="testScriptUserPty" type="text" value="" /> -->
+
+      <!-- <label for="testScriptUserPty2">Test Script User Property 2 :</label>  
+        <input id="testScriptUserPty2" name="testScriptUserPty2" type="text" value="" /> -->
+      
+        <label for="msgbody">Message Body :</label>
+            <textarea cols="80" rows="6" id="msgbody" name="msgbody" rows="3" maxlength="5000" placeholder="Automated response: 
+This automated response is only to confirm that your e-mail has been well received. 
+Thank you."></textarea>
+
+        <label for="ccemailadr">Cc Email Address(es) :</label>
+            <input id="ccemailadr" name="ccemailadr" type="email" maxlength="1000" value="" />
+            <br /><br />
+
+        <label for="bccemailadr">Bcc Email Address(es) :</label>
+            <input id="bccemailadr" name="bccemailadr" type="email" maxlength="1000" value="" />
+            <br /><br />
+
+    
+  
+      <input type="submit" value="Save Settings" />
+    </fieldset>
+</form>
+
+
+<input type="button" value="Reset App" onclick="">
+</body>

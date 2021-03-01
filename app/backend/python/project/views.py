@@ -9,110 +9,185 @@ from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 from google.oauth2.credentials import Credentials
 from django.contrib.auth import logout
-from app_configs import *
-from .forms import GmailAutoResponderSettings
+from script_deployment_id import *
+from .forms import SettingsForm, TestSettingsForm
 
+SCOPES = [
+    'openid', 
+    'https://www.googleapis.com/auth/script.scriptapp', 
+    'https://mail.google.com/', 
+    'https://www.googleapis.com/auth/drive', 
+    'https://www.googleapis.com/auth/userinfo.email', 
+    'https://www.googleapis.com/auth/spreadsheets', 
+    'https://www.googleapis.com/auth/userinfo.profile'
+]
+
+REDIRECT_URI = 'http://127.0.0.1:8000/auth/'
 
 flow = Flow.from_client_secrets_file(
     'credentials.json',
     scopes=SCOPES,
     redirect_uri=REDIRECT_URI)
 
-messages = {
-    'errors': [],
-    'warnings': [],
-    'info': []
-    }
 
+# @require_auth decorator
+def require_auth(function):
+    def wrapper(request, *args, **kwargs):
+        user = request.session.get('user')
+        access_token = request.session.get('token')
 
+        if user and access_token:
+            creds = Credentials.from_authorized_user_info(access_token)
+            if not creds or not creds.valid:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                    request.session['token'] = json.loads(creds.to_json())
+                    return function(request, *args, **kwargs)
+                else:
+                    logout(request)
+                    return redirect('/login')
+            else:
+                return function(request, *args, **kwargs)
+        else:
+            logout(request)
+            return redirect('/login')
+
+    return wrapper
+
+@require_auth
 def home(request):
     session_messages = request.session.pop('messages', None)
     user = request.session.get('user')
     return render(request, 'home.html', context={'user': user, 'messages': session_messages})
     
-
 def get_settings(request):
-    access_token = request.session.get('token')
-    creds = Credentials.from_authorized_user_info(access_token)
-
-    service = build('script', 'v1', credentials=creds)
-
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+
+        access_token = request.session.get('token')
+        creds = Credentials.from_authorized_user_info(access_token)
+
+        service = build('script', 'v1', credentials=creds)
+
+        getSettings_api_request = {
+            "function": "getSettings",
+            "parameters": []
+        }
+
         try:
-            response = service.scripts().run(body=api_request,
+            response = service.scripts().run(body=getSettings_api_request,
                     scriptId=SCRIPT_DEPLOYMENT_ID).execute()
 
             if 'error' in response:
-                error = response['error']['details'][0]
-                print("Script error message: {0}".format(error['errorMessage']))
-
-                if 'scriptStackTraceElements' in error:
-                    print("Script error stacktrace:")
-                    for trace in error['scriptStackTraceElements']:
-                        print("\t{0}: {1}".format(trace['function'],
-                            trace['lineNumber']))
+                # The API executed, but the script returned an error.
+                api_call_error = response['error']['details'][0]
+                http_response_err_msg = 'Google API call error: ' + str(api_call_error['errorMessage'])
+                return HttpResponse(http_response_err_msg, status=500, content_type="application/json")
             else:
                 script_function_return = response['response'].get('result', {})
 
         except errors.HttpError as e:
-            print(e.content)
+            # The API encountered a problem before the script started executing.
+            http_response_err_msg = 'Google API call error: ' + e.content
+            return HttpResponse(http_response_err_msg, status=500, content_type="application/json")
             
         return HttpResponse(json.dumps(script_function_return), content_type="application/json")
     else:
         return redirect('/')
 
-
 def update_settings(request):
-    access_token = request.session.get('token')
-    creds = Credentials.from_authorized_user_info(access_token)
-
-    service = build('script', 'v1', credentials=creds)
-
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = GmailAutoResponderSettings(request.POST)
-        # check whether it's valid:
+    script_function_return = {}
+    print('**************** A *****************')
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        form = SettingsForm(request.POST)
+        print('**************** B *****************')
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+            print('**************** C *****************')
+            parameters = [form.cleaned_data]
 
-    # if a GET (or any other method) we'll create a blank form
+            access_token = request.session.get('token')
+            creds = Credentials.from_authorized_user_info(access_token)
+
+            service = build('script', 'v1', credentials=creds)
+
+            setSettings_api_request = {
+                "function": "test_setSettings",
+                "parameters": parameters
+            }
+
+            try:
+                print('**************** D *****************')
+                response = service.scripts().run(body=setSettings_api_request,
+                        scriptId=SCRIPT_DEPLOYMENT_ID).execute()
+
+                response_item = response.get('response', {})
+                script_function_return = response_item.get('result', {})
+                s_errors = script_function_return.get('errors', [])
+                s_data = script_function_return.get('data', {})
+
+                # Check for API-level errors
+                if 'error' in response:
+                    print('**************** E (1) *****************')
+                    ## The API executed, but the script returned an error.
+                    api_call_error = response['error']['details'][0]
+                    http_response_err_msg = 'Google API call error: ' + str(api_call_error['errorMessage'])
+                    return HttpResponse(http_response_err_msg, status=500, content_type="application/json")
+
+                # Check for application-level errors (1)
+                elif len(s_errors[0]['non_existing_properties']):
+                    print('**************** E (2) *****************')
+                    appsscript_err_msg = "[Apps Script] Trying to set non existing Script user property(ies): " + ", ".join(s_errors[0]['non_existing_properties'])
+                    return HttpResponse(appsscript_err_msg, status=422, content_type="application/json")
+
+                # Check for application-level errors (2)
+                elif len(s_errors) > 1:
+                    print('**************** E (3) *****************')
+                    return HttpResponse("[Apps Script] " + s_errors[1], status=422, content_type="application/json")
+
+                elif not s_data:
+                    print('**************** F (1) *****************')
+                    print(script_function_return)
+                    return HttpResponse("API call returned empty data object.", status=400, content_type="application/json")
+
+                else:
+                    print('**************** F (2) *****************')
+                    return HttpResponse(json.dumps(script_function_return), content_type="application/json")
+            
+            # Check (handle) HTTP request-level errors
+            except errors.HttpError as e:
+                print('**************** G *****************')
+                # The API encountered a problem before the script started executing.
+                http_response_err_msg = 'Google API call error: ' + e.content
+                return HttpResponse(http_response_err_msg, status=500, content_type="application/json")
+
+        else:
+            # check form.cleaned_data
+            print('**************** H *****************')
+            print('*********** form.cleaned_data :', form.cleaned_data)
+            # tell what was exactly wrong -->  highlight form fields with wrong inputs
+            return HttpResponse("Invalid form data.", status=422, content_type="application/json")
     else:
+        print('**************** I *****************')
         return redirect('/')
 
 
-def check_user_session(request, **kwargs):
-    user = request.session.get('user')
-    access_token = request.session.get('token')
-    creds = None
-    return_object = {}
-
-    if user:
-        
-        if access_token:
-            creds = Credentials.from_authorized_user_info(access_token)
-
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-                request.session['token'] = json.loads(creds.to_json())
-            else:
-                logout(request)
-                return redirect('/')
-        
-        return_object.update({'crendetials': creds})
-
-    return
-
-
 def login(request):
-    auth_url, _ = flow.authorization_url(prompt='consent')
-    return redirect(auth_url)
+    user = request.session.get('user')
+
+    if user :
+        # If user is already logged in, redirect to home page.
+        messages = request.session.get('messages', {})
+        messages.setdefault('warning', []).append({'usr_msg': 'User already logged in. Redirected to home page.', 'sys_msg': ''})
+        request.session['messages'] = messages
+        return redirect('/')
+    else:
+        # Get the authorization URL and redirect to it.
+        auth_url, _ = flow.authorization_url(prompt='consent')
+        return redirect(auth_url)
 
 
 def auth(request):
+    messages = request.session.get('messages', {})
+
     try:
         code = request.GET.get('code','')
         flow.fetch_token(code=code)
@@ -121,12 +196,15 @@ def auth(request):
         dict_creds = json.loads(json_creds)
 
     except Exception as e:
-        messages['errors'].append(('Error occured. Redirected to home page.', str(e)))
+        messages.setdefault('errors', []).append({'usr_msg': 'Error occured. Redirected to home page.', 'sys_msg': str(e)})
         request.session['messages'] = messages
-        return redirect('/') # should redirect
+        return redirect('/')
 
     request.session['token'] = dict_creds
     request.session['user'] = id_token.verify_oauth2_token(flow.credentials.id_token, Request())
+
+    messages.setdefault('info', []).append({'usr_msg': 'User successfully logged in.', 'sys_msg': ''})
+    request.session['messages'] = messages
 
     return redirect('/')
 

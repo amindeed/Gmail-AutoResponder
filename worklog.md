@@ -1,5 +1,12 @@
 # Work Log
 
+## 2021-03-01
+
+- Significant code refinement, and even refactoring, on both core (Apps Script) and backend (Python/Django) parts:
+    - _Enhanced error handling when loading settings from Apps Script app using AJAX POST requests and Django Forms._
+    - _Removed non used functions from `app\core\gmail-autoresponder.js`._
+- Will come back later with more details about what has been enhanced so far. Code is still partially broken at the moment writing this worklog entry; I just wanted to save the changes
+
 ## 2021-02-24
 
 - Exploring Django Forms and HTML form submit using AJAX POST requests.
