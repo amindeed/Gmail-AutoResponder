@@ -164,6 +164,24 @@ var setSettings = setProperties
 
 function test_setSettings(objParams) {
   
+  /* User Properties / App Settings:
+
+    APP_ALREADY_INIT (instead of 'INIT_ALREADY_RUN')
+    IS_GSUITE_USER
+
+    enableApp
+    filtersssurl  (instead of 'filtersssid')
+    logsssurl  (instead of 'logsssid')
+    starthour
+    finishhour
+    dstoffset
+    ccemailadr
+    bccemailadr
+    noreply
+    starmsg
+    msgbody
+  */
+
   var errors = [
       {
         non_existing_properties: []
@@ -179,7 +197,7 @@ function test_setSettings(objParams) {
       var userProperties = PropertiesService.getUserProperties();
 
       for (item in objParams) {
-        if (!userProperties.getProperty(item)) {
+        if (!userProperties.getProperty(item) && userProperties.getProperty(item) !== '') {
           errors[0]['non_existing_properties'].push(item)
         }
       }
@@ -248,6 +266,24 @@ function getSettings(){
 
 function test_getSettings(){
   
+  /* User Properties / App Settings:
+
+    APP_ALREADY_INIT (instead of 'INIT_ALREADY_RUN')
+    IS_GSUITE_USER
+
+    enableApp
+    filtersssurl  (instead of 'filtersssid')
+    logsssurl  (instead of 'logsssid')
+    starthour
+    finishhour
+    dstoffset
+    ccemailadr
+    bccemailadr
+    noreply
+    starmsg
+    msgbody
+  */
+
   var errors = [];
   var settingsObj = {
     'data': {},
@@ -257,14 +293,14 @@ function test_getSettings(){
   try {
       
       var userProperties = PropertiesService.getUserProperties();
-      var appSettings = userProperties.getProperties()
+      var appSettings = userProperties.getProperties();
 
       for (var key in appSettings) {
         settingsObj['data'][key] = appSettings[key];
       }
 
   } catch(e) {
-      errors.push(e.message)
+      errors.push(e.message);
   }
 
   settingsObj['errors'] = errors;

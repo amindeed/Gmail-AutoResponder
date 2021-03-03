@@ -56,8 +56,8 @@
         <em> (default: 8)</em>
         <br /><br />
 
-    <label for="dstoffset">Daylight Saving Time Offset :</label>
-        <input id="dstoffset" name="dstoffset" type="number" value="" />
+    <label for="utcoffset">UTC Time Offset :</label>
+        <input id="utcoffset" name="utcoffset" type="number" value="" />
         <em> (default: 0)</em>
         <br /><br />
 
@@ -71,41 +71,20 @@
        <input type="radio" name="starmsg" id="no_starmsg" value="NO"> No 
        <br /><br />
        
-        <br /><br />
+    <label for="ccemailadr">Cc Email Address(es) :</label>
+       <input id="ccemailadr" name="ccemailadr" type="email" maxlength="1000" value="" multiple />
+       <br /><br />
+
+    <label for="bccemailadr">Bcc Email Address(es) :</label>
+       <input id="bccemailadr" name="bccemailadr" type="email" maxlength="1000" value="" multiple />
+       <br /><br />
+
+    <label for="msgbody">Message Body :</label>
+       <textarea cols="80" rows="6" id="msgbody" name="msgbody" rows="3" maxlength="5000" placeholder="Automated response: This automated response is only to confirm that your e-mail has been well received. Thank you."></textarea>
+       <br /><br />
 
     <input type="submit" value="Save Settings" />
   </fieldset>
-</form>
-
-
-<form id="testSettingsForm" onsubmit="updateSettings(this);">
-
-    <fieldset>
-        <legend>Test Settings Form</legend>
-         
-      <!-- <label for="testScriptUserPty">Test Script User Property :</label>  
-        <input id="testScriptUserPty" name="testScriptUserPty" type="text" value="" /> -->
-
-      <!-- <label for="testScriptUserPty2">Test Script User Property 2 :</label>  
-        <input id="testScriptUserPty2" name="testScriptUserPty2" type="text" value="" /> -->
-      
-        <label for="msgbody">Message Body :</label>
-            <textarea cols="80" rows="6" id="msgbody" name="msgbody" rows="3" maxlength="5000" placeholder="Automated response: 
-This automated response is only to confirm that your e-mail has been well received. 
-Thank you."></textarea>
-
-        <label for="ccemailadr">Cc Email Address(es) :</label>
-            <input id="ccemailadr" name="ccemailadr" type="email" maxlength="1000" value="" />
-            <br /><br />
-
-        <label for="bccemailadr">Bcc Email Address(es) :</label>
-            <input id="bccemailadr" name="bccemailadr" type="email" maxlength="1000" value="" />
-            <br /><br />
-
-    
-  
-      <input type="submit" value="Save Settings" />
-    </fieldset>
 </form>
 
 

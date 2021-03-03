@@ -15,8 +15,20 @@ function myFunction() {
   //userProperties.deleteProperty('testScriptUserPty2');
 
 
-  Logger.log(test_getSettings())
+  appSettings = userProperties.getProperties()
 
+  for (var key in appSettings) {
+    Logger.log('%s   ===    %s\n', key,appSettings[key]);
+  }
 
+  //userProperties.setProperty('ccemailadr','')
+  //userProperties.setProperty('msgbody','')
+  //userProperties.setProperty('bccemailadr','')
+
+  //Logger.log(userProperties.getProperty('ccemailadr'))
+  //Logger.log(userProperties.getProperty('msgbody'))
+  //Logger.log(userProperties.getProperty('bccemailadr'))
+  userProperties.deleteProperty('NOREPLY')
+  userProperties.setProperty('noreply', '')
 
 }

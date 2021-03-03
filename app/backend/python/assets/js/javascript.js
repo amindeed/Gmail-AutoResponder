@@ -65,21 +65,29 @@ function loadSettings(){
     
            if (result['data']['enableApp'] === 'false') {
                document.getElementById("disable_app").checked = true;
-           } else {
+               
+           } else if ( result['data']['enableApp'] === 'true' ) {
                document.getElementById("enable_app").checked = true;
-           }
+
+           } /* else {
+               document.getElementById("enable_app").checked = true;
+           } */
     
            // document.getElementById("filtersssid").value = result['data']['filtersssid'];
-           document.getElementById("filtersssurl").href = result['data']['filtersssurl'];
-           document.getElementById("filtersssurl").innerHTML = document.getElementById('sheet-icon').outerHTML;
+           if (result['data']['filtersssurl']) {
+                document.getElementById("filtersssurl").href = result['data']['filtersssurl'];
+                document.getElementById("filtersssurl").innerHTML = document.getElementById('sheet-icon').outerHTML;
+           }
     
            // document.getElementById("logsssid").value =result['data']['logsssid'];
-           document.getElementById("logsssurl").href =result['data']['logsssurl'];
-           document.getElementById("logsssurl").innerHTML = document.getElementById('sheet-icon').outerHTML;
+           if (result['data']['logsssurl']) {
+                document.getElementById("logsssurl").href = result['data']['logsssurl'];
+                document.getElementById("logsssurl").innerHTML = document.getElementById('sheet-icon').outerHTML;
+           }
     
            document.getElementById("starthour").value = parseInt(result['data']['starthour'], 10);
            document.getElementById("finishhour").value = parseInt(result['data']['finishhour'], 10);
-           document.getElementById("dstoffset").value = parseInt(result['data']['dstoffset'], 10);
+           document.getElementById("utcoffset").value = parseInt(result['data']['utcoffset'], 10);
            document.getElementById("ccemailadr").value = result['data']['ccemailadr'];
            document.getElementById("bccemailadr").value = result['data']['bccemailadr'];
     
@@ -96,17 +104,20 @@ function loadSettings(){
                document.getElementById("yes_noreply").disabled = true;
                document.getElementById("no_noreply").disabled = true;
     
-           } else {
+           } /* else {
                document.getElementById("no_noreply").checked = true;
-           }
+           } */
     
     
            if ( result['data']['starmsg'] === "false" ) {
                document.getElementById("no_starmsg").checked = true;
     
-           } else {
+           } else if ( result['data']['starmsg'] === "true" ) {
                document.getElementById("yes_starmsg").checked = true;
-           }
+
+           } /* else {
+               document.getElementById("yes_starmsg").checked = true;
+           } */
     
            document.getElementById("msgbody").value = result['data']['msgbody'];
     

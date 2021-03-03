@@ -1,11 +1,21 @@
 # Work Log
 
+## 2021-03-023
+
+- Using [Django Forms](https://docs.djangoproject.com/en/3.1/topics/forms/) as a _"form data validation middleware"_:
+    - Significant revision of core (Apps Script), backend (Django views) and frontend (Django templates) code.
+    - Multi-level error handling for form submit via AJAX POST request:
+        - HTTP request
+        - Django Forms data validation
+        - Apps Script API
+        - Apps Script core app
+
 ## 2021-03-01
 
 - Significant code refinement, and even refactoring, on both core (Apps Script) and backend (Python/Django) parts:
     - _Enhanced error handling when loading settings from Apps Script app using AJAX POST requests and Django Forms._
     - _Removed non used functions from `app\core\gmail-autoresponder.js`._
-- Will come back later with more details about what has been enhanced so far. Code is still partially broken at the moment writing this worklog entry; I just wanted to save the changes
+- Will come back later with more details about what has been enhanced so far. Code is still partially broken at the moment of writing this worklog entry; I just wanted to save the changes.
 
 ## 2021-02-24
 

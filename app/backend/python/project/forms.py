@@ -1,34 +1,21 @@
 from django import forms
 
-class TestSettingsForm(forms.Form):
-    enableApp = forms.BooleanField(label='Enable Gmail AutoResponder')
-    starthour = forms.TimeField(label='Start Hour')
-    finishhour = forms.TimeField(label='Finish Hour')
-    dstoffset = forms.IntegerField(label='Daylight Saving Time Offset')
-    noreply = forms.NullBooleanField(label='Reply with "noreply" address?')
-    starmsg = forms.BooleanField(label='Star processed messages in Gmail?')
-    #msgbody = forms.CharField(label='Message Body', widget=forms.Textarea())
-    
-
-    # User-defined validation method
-    def clean_msgbody(self):
-        data = self.cleaned_data['msgbody']
-        # Validate 'data'...
-        return data
-
-
-# Test class
 class SettingsForm(forms.Form):
-    #testScriptUserPty = forms.CharField(label='Test Script User Property', max_length=10)
-    #testScriptUserPty2 = forms.CharField(label='Test Script User Property 2', max_length=10)
-    ccemailadr = forms.EmailField(label='Cc Email Address(es)', max_length=1000)
-    bccemailadr = forms.EmailField(label='Bcc Email Address(es)', max_length=1000)
+    # enableApp = ...
+    starthour = forms.IntegerField(label='Start Hour', min_value=0, max_value=23)
+    finishhour = forms.IntegerField(label='Finish Hour', min_value=0, max_value=23)
+    utcoffset = forms.IntegerField(label='UTC Time Offset', min_value=-12, max_value=14, required=False)
+    # noreply = ...
+    # starmsg = ...
+    ccemailadr = forms.EmailField(label='Cc Email Address(es)', max_length=1000, required=False)
+    bccemailadr = forms.EmailField(label='Bcc Email Address(es)', max_length=1000, required=False)
     msgbody = forms.CharField(label='Message Body', max_length=5000)
 
+    def clean(self):
+        form_data = self.cleaned_data
 
+        if {'starthour', 'finishhour'} <= set(form_data) and form_data['starthour'] == form_data['finishhour']:
+            self._errors["finishhour"] = ["Finish hour can not be equal to start hour."]
+            del form_data['finishhour']
 
-# ----------------------------
-#data = {'key': 'value'}
-#f = GmailAutoResponderSettings(data)
-#f.is_valid()
-#f.cleaned_data
+        return form_data

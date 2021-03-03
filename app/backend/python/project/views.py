@@ -10,7 +10,7 @@ from google.oauth2 import id_token
 from google.oauth2.credentials import Credentials
 from django.contrib.auth import logout
 from script_deployment_id import *
-from .forms import SettingsForm, TestSettingsForm
+from .forms import SettingsForm
 
 SCOPES = [
     'openid', 
@@ -54,12 +54,14 @@ def require_auth(function):
 
     return wrapper
 
+
 @require_auth
 def home(request):
     session_messages = request.session.pop('messages', None)
     user = request.session.get('user')
     return render(request, 'home.html', context={'user': user, 'messages': session_messages})
     
+
 def get_settings(request):
     if request.method == "GET" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
 
@@ -69,7 +71,7 @@ def get_settings(request):
         service = build('script', 'v1', credentials=creds)
 
         getSettings_api_request = {
-            "function": "getSettings",
+            "function": "test_getSettings",
             "parameters": []
         }
 
@@ -94,6 +96,7 @@ def get_settings(request):
     else:
         return redirect('/')
 
+
 def update_settings(request):
     script_function_return = {}
     print('**************** A *****************')
@@ -103,6 +106,7 @@ def update_settings(request):
         if form.is_valid():
             print('**************** C *****************')
             parameters = [form.cleaned_data]
+            print(form.cleaned_data)
 
             access_token = request.session.get('token')
             creds = Credentials.from_authorized_user_info(access_token)
@@ -124,7 +128,7 @@ def update_settings(request):
                 s_errors = script_function_return.get('errors', [])
                 s_data = script_function_return.get('data', {})
 
-                # Check for API-level errors
+                # Check for Apps Script API-level errors
                 if 'error' in response:
                     print('**************** E (1) *****************')
                     ## The API executed, but the script returned an error.
@@ -132,13 +136,13 @@ def update_settings(request):
                     http_response_err_msg = 'Google API call error: ' + str(api_call_error['errorMessage'])
                     return HttpResponse(http_response_err_msg, status=500, content_type="application/json")
 
-                # Check for application-level errors (1)
+                # Check for Apps Script core app-level errors (1)
                 elif len(s_errors[0]['non_existing_properties']):
                     print('**************** E (2) *****************')
                     appsscript_err_msg = "[Apps Script] Trying to set non existing Script user property(ies): " + ", ".join(s_errors[0]['non_existing_properties'])
                     return HttpResponse(appsscript_err_msg, status=422, content_type="application/json")
 
-                # Check for application-level errors (2)
+                # Check for Apps Script core app-level errors (2)
                 elif len(s_errors) > 1:
                     print('**************** E (3) *****************')
                     return HttpResponse("[Apps Script] " + s_errors[1], status=422, content_type="application/json")
@@ -159,12 +163,13 @@ def update_settings(request):
                 http_response_err_msg = 'Google API call error: ' + e.content
                 return HttpResponse(http_response_err_msg, status=500, content_type="application/json")
 
+        # Process invalid form data errors,
+        # handled by Django Forms before calling the Apps Script API
         else:
-            # check form.cleaned_data
             print('**************** H *****************')
-            print('*********** form.cleaned_data :', form.cleaned_data)
-            # tell what was exactly wrong -->  highlight form fields with wrong inputs
-            return HttpResponse("Invalid form data.", status=422, content_type="application/json")
+            return HttpResponse(json.dumps(dict(form.errors)), status=422, content_type="application/json")
+    
+    # Redirect to home page if the HTTP request is not a valid AJAX form submit
     else:
         print('**************** I *****************')
         return redirect('/')
