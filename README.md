@@ -1,6 +1,6 @@
 # Gmail AutoResponder
 
-> ***(ℹ) This project is still under active, albeit slow, development. Check [`worklog.md`](worklog.md) for updates.***
+> ***ℹ This project is still under active, albeit slow, development. Check [`worklog.md`](worklog.md) for updates.***
 
 **Gmail AutoResponder** is a customizable webapp to send automated email responses. All application components are contained in the Google Account running it : 
 - **[Apps Script](https://developers.google.com/apps-script/reference/)** serves as the core framework, 
