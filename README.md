@@ -5,7 +5,7 @@
 - Messages are read and sent from **Gmail**, 
 - and **Drive Sheets** are used to read content filters and save logs.
    
-***This project is still under active, albeit slow, development.***
+***This project is still under active, albeit slow, development. Check [`worklog.md`](worklog.md) for updates.***
 
 ## Setup
 

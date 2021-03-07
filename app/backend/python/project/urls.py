@@ -10,8 +10,8 @@ urlpatterns = [
     path('auth/', views.auth, name='auth'),
     path('logout/', views.logout_view),
     path('getsettings/', views.get_settings),
-    path('getsettings/', views.get_settings),
     path('updatesettings/', views.update_settings),
+    path('reset/', views.reset),
 ]
 
 #urlpatterns += staticfiles_urlpatterns()

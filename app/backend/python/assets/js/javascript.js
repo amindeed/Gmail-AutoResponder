@@ -31,12 +31,32 @@ function getCookie(name) {
 }
 
 
-function updateSettings(formData){
-    //alert('\'updateSettings()\' was called.')
-    //var formData = new FormData(formObject)
-    //console.log(typeof(formData))
+// https://stackoverflow.com/a/33369954/3208373
+function isJson(item) {
+    item = typeof item !== "string"
+        ? JSON.stringify(item)
+        : item;
 
-    makeRequest('POST', '/updatesettings/', 40000, formData)
+    try {
+        item = JSON.parse(item);
+    } catch (e) {
+        return false;
+    }
+
+    if (typeof item === "object" && item !== null) {
+        return true;
+    }
+
+    return false;
+}
+
+
+function updateSettings(data){
+    //alert('\'updateSettings()\' was called.')
+    //var data = new FormData(formObject)
+    //console.log(typeof(data))
+
+    makeRequest('POST', '/updatesettings/', 40000, data)
        .then(function (result) {
            console.log('*** makeRequest() Success block ***')
            //result = JSON.parse(result)
@@ -49,6 +69,23 @@ function updateSettings(formData){
      
             //document.getElementById("waiting_msg").innerHTML = '<span style="color:red; font-weight:bold">Error: ' + statusCode + statusText + err.errorMessage + '</span>';
 
+            console.log('Error: ' + statusCode + statusText + err.errorMessage)
+        });
+}
+
+
+function jsonPostRequest(url, jsonStringReqBody){
+
+    makeRequest('POST', url, 40000, jsonStringReqBody)
+       .then(function (result) {
+           console.log('*** makeRequest() Success block ***')
+           //result = JSON.parse(result)
+           console.log(result)
+        })
+        .catch(function (err) {
+            console.log('*** makeRequest() Error block ***')
+            statusCode = err.status?err.status + ' ':''
+            statusText = err.statusText?err.statusText + ': ':''
             console.log('Error: ' + statusCode + statusText + err.errorMessage)
         });
 }
@@ -108,17 +145,6 @@ function loadSettings(){
                document.getElementById("no_noreply").checked = true;
            } */
     
-    
-           if ( result['data']['starmsg'] === "false" ) {
-               document.getElementById("no_starmsg").checked = true;
-    
-           } else if ( result['data']['starmsg'] === "true" ) {
-               document.getElementById("yes_starmsg").checked = true;
-
-           } /* else {
-               document.getElementById("yes_starmsg").checked = true;
-           } */
-    
            document.getElementById("msgbody").value = result['data']['msgbody'];
     
            document.getElementById("waiting_msg").innerHTML = '';
@@ -133,7 +159,7 @@ function loadSettings(){
 }
 
 
-function makeRequest(method, url, timeout=0, formData=null) {
+function makeRequest(method, url, timeout=0, data=null) {
 
     return new Promise(function (resolve, reject) {
 
@@ -168,12 +194,36 @@ function makeRequest(method, url, timeout=0, formData=null) {
         });
     };
 
-    if (formData && method === 'POST') {
-        var formObj = new FormData(formData);
-        const csrftoken = getCookie('csrftoken');
-        xhr.setRequestHeader('X-CSRFToken', csrftoken);
-        xhr.send(formObj);
+    if (method === 'POST') {
+        if ( data ) {
+            const csrftoken = getCookie('csrftoken');
+
+            if ( typeof(data) === 'object' ) {
+                var formObj = new FormData(data);
+                xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                xhr.send(formObj);
+
+            } else if ( typeof(data) === 'string' && isJson(data) ) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                xhr.setRequestHeader('Content-Type', 'application/json'); // 'application/json;charset=UTF-8'
+                xhr.send(data);
+
+            } else {
+                // Request body is neither an Object nor a JSON String
+                //throw new Error('wrong POST req parameters.');
+                let err = new Error();
+                err.errorMessage = 'Wrong POST req parameters.';
+                throw err;
+            }
+        } else {
+            // No request body provided
+            //throw new Error('No data to submit/send.');
+            let err = new Error();
+            err.errorMessage = 'No data to submit/send.';
+            throw err;
+        }
     } else {
+        // Typically a GET request
         xhr.send();
     }
 

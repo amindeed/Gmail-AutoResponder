@@ -65,11 +65,6 @@
        <input type="radio" name="noreply" id="yes_noreply" value="YES"> Yes 
        <input type="radio" name="noreply" id="no_noreply" value="NO"> No 
        <br /><br />
-
-    <label for="starmsg">Star processed messages in Gmail?</label>
-       <input type="radio" name="starmsg" id="yes_starmsg" value="YES"> Yes 
-       <input type="radio" name="starmsg" id="no_starmsg" value="NO"> No 
-       <br /><br />
        
     <label for="ccemailadr">Cc Email Address(es) :</label>
        <input id="ccemailadr" name="ccemailadr" type="email" maxlength="1000" value="" multiple />
@@ -87,6 +82,5 @@
   </fieldset>
 </form>
 
-
-<input type="button" value="Reset App" onclick="">
+<input type="button" value="Reset App" onclick="jsonPostRequest('/reset','{&quot;test_key&quot;:&quot;test_value&quot;}');">
 </body>

@@ -60,6 +60,12 @@ def home(request):
     session_messages = request.session.pop('messages', None)
     user = request.session.get('user')
     return render(request, 'home.html', context={'user': user, 'messages': session_messages})
+
+
+@require_auth
+def reset(request):
+    # ...
+    return HttpResponse('Reset request well received!', status=200, content_type="application/json")
     
 
 def get_settings(request):
@@ -71,7 +77,7 @@ def get_settings(request):
         service = build('script', 'v1', credentials=creds)
 
         getSettings_api_request = {
-            "function": "test_getSettings",
+            "function": "getSettings",
             "parameters": []
         }
 
@@ -114,7 +120,7 @@ def update_settings(request):
             service = build('script', 'v1', credentials=creds)
 
             setSettings_api_request = {
-                "function": "test_setSettings",
+                "function": "setSettings",
                 "parameters": parameters
             }
 

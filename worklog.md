@@ -1,6 +1,20 @@
 # Work Log
 
-## 2021-03-023
+## 2021-03-07
+
+Core (Apps Script) code is still broken, as it is being refactored:
+
+- Removed Google Sheets formatting code from [`app/core/Code.js`](/app/core/Code.js).
+- Updated functions: `getSettings()` and `setProperties(objParams)`, of [`app/core/gmail-autoresponder.js`](/app/core/gmail-autoresponder.js).
+- Renamed script user properties, to keep the same names between `core`, `backend` and `frontend` parts of the code.
+- Converting blocks of code to reusable functions.
+- Exploring possible ways to modularize logging features (of executed sessions and processed messages), by abstracting format _(JSON...)_, log entry data structure and target _(Google Sheets, store to a Document DB through a JSON POST request...)_. I'm thinking of the following inheritance mechanism of both `SessionLogger` and `ProcessedMessageLogger` objects, from a parent object `AppLogger`. Intended structure / Pseudo-code :
+    - **`AppLogger` (Parent Object):** `date`, `append(entry|arrayOfEntries)`, `getAllEntries()`, `target = {}`
+        - **`SessionLogger` (Child Object):** `dateExecuted = super.date`, `numberOfThreads`, `append(entry|arrayOfEntries) = super.append()`, `getAllEntries() = super.getAllEntries()`, `target = super.target`
+        - **`ProcessedMessageLogger` (Child Object):** `dateReceived = super.date`, `sentRepDate`, `messageId`, `threadId`, `messageFrom`, `messageSubject`, `appliedFilter`, `append(entry|arrayOfEntries) = super.append()`, `getAllEntries() = super.getAllEntries()`, `target = super.target`.
+
+
+## 2021-03-03
 
 - Using [Django Forms](https://docs.djangoproject.com/en/3.1/topics/forms/) as a _"form data validation middleware"_:
     - Significant revision of core (Apps Script), backend (Django views) and frontend (Django templates) code.

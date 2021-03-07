@@ -89,80 +89,7 @@ function deleteAllTriggers() {
 
 /** Set Script User Parameters **/
 
-function setProperties(objParams) {
-  
-  //➜ Should check first if (userProperties.getProperty('INIT_ALREADY_RUN') !== 'true')
-  
-  var errors = [];
-  var returnObj = {
-    'data': {},
-    'errors': []
-  };
-
-  try {
-      var userProperties = PropertiesService.getUserProperties();
-      var defaultMsgBody = userProperties.getProperty('DEFAULT_MESSAGE_BODY');
-      
-      userProperties.setProperty('ENABLE_GMAUTOREP', (objParams['enablegmautorep'] === true)?'true':'false');
-      userProperties.setProperty('FILTERS_SS_ID', objParams['filtersssid']);
-      userProperties.setProperty('LOGS_SS_ID', objParams['logsssid']);
-      
-      if ( objParams['starthour'] ) {
-        userProperties.setProperty('START_HOUR', objParams['starthour']);
-      } else {
-        userProperties.setProperty('START_HOUR', 17);
-      }
-
-      if ( objParams['finishhour'] ) {
-        userProperties.setProperty('FINISH_HOUR', objParams['finishhour']);
-      } else {
-        userProperties.setProperty('FINISH_HOUR', 8);
-      }
-      
-      if ( objParams['dstoffset'] ) {
-        userProperties.setProperty('DST_OFFSET', objParams['dstoffset']);
-      } else {
-        userProperties.setProperty('DST_OFFSET', 0);
-      }
-      
-      userProperties.setProperty('MESSAGE_BODY', objParams['msgbody']?objParams['msgbody']:defaultMsgBody);
-        
-      if ( objParams['ccemailadr'] ) {
-        userProperties.setProperty('CC_ADDRESS', objParams['ccemailadr']);
-      } else {
-        userProperties.setProperty('CC_ADDRESS', '');
-      }
-      
-      if ( objParams['bccemailadr'] ) {
-        userProperties.setProperty('BCC_ADDRESS', objParams['bccemailadr']);
-      } else {
-        userProperties.setProperty('BCC_ADDRESS', '');
-      }
-        
-      if ( (objParams['noreply'] === 1) || (objParams['noreply'] === 2) ) {
-        userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') !== 'GMAIL')?objParams['noreply']:'2');
-      } else {
-        userProperties.setProperty('NOREPLY', (userProperties.getProperty('IS_GSUITE_USER') === 'GMAIL')?'2':'0');
-      }
-      
-      userProperties.setProperty('STAR_PROCESSED_MESSAGE', (objParams['starmsg'] === false)?'false':'true');
-
-  } catch(e) {
-      errors.push(e.message)
-  }
-
-  returnObj['errors'] = errors;
-  returnObj['data']['message'] = 'Settings updated successfully!';
-  
-  return returnObj; 
-}
-
-var setSettings = setProperties
-
-
-/** Test Set Settings **/
-
-function test_setSettings(objParams) {
+function setSettings(objParams) {
   
   /* User Properties / App Settings:
 
@@ -170,15 +97,16 @@ function test_setSettings(objParams) {
     IS_GSUITE_USER
 
     enableApp
-    filtersssurl  (instead of 'filtersssid')
-    logsssurl  (instead of 'logsssid')
+    filtersssid
+    filtersssurl
+    logsssid
+    logsssurl
     starthour
     finishhour
-    dstoffset
+    utcoffset
     ccemailadr
     bccemailadr
     noreply
-    starmsg
     msgbody
   */
 
@@ -218,53 +146,10 @@ function test_setSettings(objParams) {
 }
 
 
+
 /** Get Script User Parameters **/
 
 function getSettings(){
-  
-  //➜ Should check first if (userProperties.getProperty('INIT_ALREADY_RUN') !== 'true')
-
-  var errors = [];
-  var settingsObj = {
-    'data': {},
-    'errors': []
-  };
-  
-  try {
-      //var driveRoot = DriveApp.getRootFolder();
-      //var driveUserPhoto = driveRoot.getOwner().getPhotoUrl();
-      var userProperties = PropertiesService.getUserProperties();
-      //var defaultUserPhoto = userProperties.getProperty('DEFAULT_USER_PHOTO');
-        
-      //settingsObj['data']['userPhotoUrl'] = driveUserPhoto?driveUserPhoto.replace(/=s.*$/,''):defaultUserPhoto;
-      settingsObj['data']['effectiveUserEmail'] = Session.getEffectiveUser().getEmail(); 
-      settingsObj['data']['enablegmautorep'] = userProperties.getProperty('ENABLE_GMAUTOREP');
-      settingsObj['data']['filtersssid'] = userProperties.getProperty('FILTERS_SS_ID');
-      settingsObj['data']['filtersssurl'] = SpreadsheetApp.openById(userProperties.getProperty('FILTERS_SS_ID')).getUrl();
-      settingsObj['data']['logsssid'] = userProperties.getProperty('LOGS_SS_ID');
-      settingsObj['data']['logsssurl'] = SpreadsheetApp.openById(userProperties.getProperty('LOGS_SS_ID')).getUrl();
-      settingsObj['data']['starthour'] = userProperties.getProperty('START_HOUR');
-      settingsObj['data']['finishhour'] = userProperties.getProperty('FINISH_HOUR');
-      settingsObj['data']['dstoffset'] = userProperties.getProperty('DST_OFFSET');
-      settingsObj['data']['ccemailadr'] = userProperties.getProperty('CC_ADDRESS');
-      settingsObj['data']['bccemailadr'] = userProperties.getProperty('BCC_ADDRESS');
-      settingsObj['data']['noreply'] = userProperties.getProperty('NOREPLY');
-      settingsObj['data']['starmsg'] = userProperties.getProperty('STAR_PROCESSED_MESSAGE');
-      settingsObj['data']['msgbody'] = userProperties.getProperty('MESSAGE_BODY');
-
-  } catch(e) {
-      errors.push(e.message)
-  }
-
-  settingsObj['errors'] = errors;
-  
-  return settingsObj;
-}
-
-
-/** Test Get Settings **/
-
-function test_getSettings(){
   
   /* User Properties / App Settings:
 
@@ -272,15 +157,16 @@ function test_getSettings(){
     IS_GSUITE_USER
 
     enableApp
-    filtersssurl  (instead of 'filtersssid')
-    logsssurl  (instead of 'logsssid')
+    filtersssid
+    filtersssurl
+    logsssid
+    logsssurl
     starthour
     finishhour
-    dstoffset
+    utcoffset
     ccemailadr
     bccemailadr
     noreply
-    starmsg
     msgbody
   */
 
@@ -313,7 +199,7 @@ function test_getSettings(){
 
 function appinit(initParams) {
   
-  // https://stackoverflow.com/a/19448513/3208373
+  // Generate timestamp
   function pad2(n) { return n < 10 ? '0' + n : n }
   var date = new Date();
   var timestamp = date.getFullYear().toString() 
@@ -327,15 +213,17 @@ function appinit(initParams) {
   
   var userProperties = PropertiesService.getUserProperties();
   
-  if ( (userProperties.getProperty('INIT_ALREADY_RUN') !== 'true') || (initParams && (initParams['resetApp'] === true)) ) {
+  if ( (userProperties.getProperty('APP_ALREADY_INIT') !== 'true') || (initParams && (initParams['resetApp'] === true)) ) {
     
     // 0. Delete All triggers, Logs/Filters spreadsheets and user script properties
     
     try {
+
        deleteAllTriggers();
-       DriveApp.getFileById(userProperties.getProperty('FILTERS_SS_ID')).setTrashed(true);
-       DriveApp.getFileById(userProperties.getProperty('LOGS_SS_ID')).setTrashed(true);
+       DriveApp.getFileById(userProperties.getProperty('filtersssid')).setTrashed(true);
+       DriveApp.getFileById(userProperties.getProperty('logsssid')).setTrashed(true);
        userProperties.deleteAllProperties();
+
     } catch(e) {
        Logger.log(e.message);
     }
@@ -345,6 +233,9 @@ function appinit(initParams) {
     
     var ssFilters = SpreadsheetApp.create("GMAIL_AUTORESPONDER_FILTERS");
     var ssLogs = SpreadsheetApp.create("GMAIL_AUTORESPONDER_LOGS");
+
+    var ssFiltersURL = ssFilters.getUrl();
+    var ssLogsURL = ssLogs.getUrl();
     
     var ssFiltersId = ssFilters.getId();
     var ssLogsId = ssLogs.getId();
@@ -362,19 +253,21 @@ function appinit(initParams) {
     
     DriveApp.getRootFolder().removeFile(ssFiltersDrvFile);
     DriveApp.getRootFolder().removeFile(ssLogsDrvFile);
+
     var oldParent = scriptFile.getParents().next();
+
     oldParent.removeFile(scriptFile);
+
     if (oldParent.getParents().hasNext() && !oldParent.getFiles().hasNext()) {
       oldParent.setTrashed(true);
     }
     
-    //var ssFiltersURL = ssFilters.getUrl();
-    //var ssLogsURL = ssLogs.getUrl();
     
     // 1.2. Initialize 'Filters' and 'Logs' spreadsheets
     
     var openSsFilters = SpreadsheetApp.openById(ssFiltersId);
     var firstFiltersSheet = openSsFilters.getSheets()[0];
+
     var values = [
       ['RAWMSG_BLACKLIST', 'FROM_BLACKLIST', 'FROM_WHITELIST', 'TO_BLACKLIST', 'TO_WHITELIST'],
       ['report-type=disposition-notification', '(^|<)((mailer-daemon|postmaster)@.*)', '', 'undisclosed-recipients', ''],
@@ -382,6 +275,7 @@ function appinit(initParams) {
       ['', '.+@.*\\bgoogle\\.com', '', '', ''],
       ['', Session.getActiveUser().getEmail(), '', '', '']
     ];
+
     var range = firstFiltersSheet.getRange("A1:E5");
     range.setValues(values);
     
@@ -432,37 +326,31 @@ function appinit(initParams) {
     
     // 3. Create and set user script properties to their default values.
     
-    //// Default user photo URL
-    //userProperties.setProperty('DEFAULT_USER_PHOTO', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEU...==');
-    
     //// Check whether the user has a G-Suite account
     userProperties.setProperty(
       'IS_GSUITE_USER', 
       (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?'GSUITE':'GMAIL'
     );
     
-    userProperties.setProperty(
-      'DEFAULT_MESSAGE_BODY',
-      '<p><strong>Automated response</strong></p>\
+    var defaultMsgBody = '<p><strong>Automated response</strong></p>\
        <p>This automated response is only to \
        confirm that your e-mail has been well received.<br />\
-       Thank you.</p>\
-       <p>Best regards.</p>'
-    );
+       Thank you.</p>';
     
     var defaultProperties = {
-      'enablegmautorep': false,
+      'enableApp': false,
       'filtersssid': ssFiltersId,
+      'filtersssurl': ssFiltersURL,
       'logsssid': ssLogsId,
+      'logsssurl': ssLogsURL,
       'starthour': 17,
       'finishhour': 8,
-      'dstoffset': 0,
-      'msgbody': userProperties.getProperty('DEFAULT_MESSAGE_BODY'),
-      'noreply': (userProperties.getProperty('IS_GSUITE_USER') === 'GSUITE')?1:2,
-      'starmsg': false
+      'utcoffset': 0,
+      'msgbody': defaultMsgBody,
+      'noreply': (userProperties.getProperty('IS_GSUITE_USER') === 'GSUITE')?1:2
     };
     
-    setProperties(defaultProperties);
+    setSettings(defaultProperties);
     
     // 4. Create script triggers
     
@@ -480,11 +368,119 @@ function appinit(initParams) {
     // 5. Provide the user with a Enable/Disable switch
     // ...
     
-    // 6. Set script user property 'INIT_ALREADY_RUN' to true.
-    userProperties.setProperty('INIT_ALREADY_RUN', 'true');
+    // 6. Set script user property 'APP_ALREADY_INIT' to true.
+    userProperties.setProperty('APP_ALREADY_INIT', true);
     
     // 7. return webapp full URL
   } /*If*/
   
   return true;
+}
+
+
+/** DRAFT: Get message filters **/
+function getMessageFilters() {
+  
+  var filters = {}
+
+  return filters
+}
+
+
+/** DRAFT: Filter Gmail Message **/
+function filterMessage(gmailMessage, filtersObject) {
+
+  var filterOut = false
+  var filtersObject = getMessageFilters()
+
+  /*
+
+  var filtersssid = userProperties.getProperty('filtersssid');
+  var config = SpreadsheetApp.openById(filtersssid);
+  var config_sheet = config.getSheets()[0];
+
+  var From_blacklist = columnValues(config_sheet,"B",1);
+  var To_blacklist = columnValues(config_sheet,"C",1);
+  var RawMsg_blacklist = columnValues(config_sheet,"A",1);
+
+  !containsString(msgTo,To_blacklist)
+  && !matchesRegex(msgFrom,From_blacklist)
+  && !containsString(messages[lastMsg].getRawContent(),RawMsg_blacklist)
+
+  */
+
+
+  return filterOut
+}
+
+
+/** DRAFT: Reply to Gmail thread **/
+function replyToThread(gmailThread) {
+
+  /*
+  
+  threads[i].reply("", {
+            htmlBody: repMsgBody
+                    + '<span style=\"color: #333399;\">'
+                    + '-----------------------------------------------------'
+                    + '<br/><b>From : </b>' + msgFrom
+                    + '<br/><b>Date : </b>' + msgDate
+                    + '<br/><b>Subject : </b>' + msgSubject
+                    + '<br/><b>To : </b>' + msgTo
+                    + '<br/><b>Cc : </b>' + msgCc
+                    + '</span>'
+                    + '<br/><br/>' + msgBody + '<br/>',
+                    cc: ccemailadr,
+                    bcc: bccemailadr,
+                    noReply: (repNoReply === 'true')?true:((repNoReply === 'false')?false:null)
+          });
+  
+  */
+
+}
+
+
+/** DRAFT: Log processed message **/
+function logProcessedMessage(gmailMessage, isFilterOut) {
+
+  /*
+
+  var logsssid = userProperties.getProperty('logsssid');
+  var log = SpreadsheetApp.openById(logsssid);
+  var ops_log_sheet = log.getSheets()[0];
+  
+  if ( !isFilterOut ) {
+
+    // Log as 'REP SENT'
+    // Note that the ID of a Gmail thread is the ID of its first message
+    ops_log_sheet.appendRow(['REP SENT', msgDate, new Date().toLocaleString(), msgId, threads[i].getId(), msgFrom, msgSubject]);
+
+  } else {
+
+    // Log as 'SKIPPED'
+    var msgDate = messages[lastMsg].getDate(), msgSubject = messages[lastMsg].getSubject();
+    ops_log_sheet.appendRow(['SKIPPED', msgDate, 'N/A', msgId, threads[i].getId(), msgFrom, msgSubject]);
+
+  }
+
+  // TODO: append 2D array (or the JSON object) of processed messages to the Google Sheets log
+  
+  */
+
+}
+
+
+/** DRAFT: log execution time and number of messages retrieved **/
+function logExecutionSession(logsTarget){
+
+  /*
+
+  var logsssid = userProperties.getProperty('logsssid');
+  var log = SpreadsheetApp.openById(logsssid);
+  var exec_log_sheet = log.getSheets()[1];
+
+  exec_log_sheet.appendRow([searchQuery, new Date().toLocaleString(), threads.length]);
+  
+  */
+
 }
