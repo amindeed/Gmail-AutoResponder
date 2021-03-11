@@ -1,5 +1,52 @@
 # Work Log
 
+## 2021-03-11
+
+A massive refactoring of the whole core/Apps Script code: the code is now cleaner and more modularized. A significant number of tests have been made along the way, but runtime (system/end-to-end) tests are still needed:
+- Several data parsing, serializing and validation features.
+- [`Code.js`](https://github.com/amindeed/Gmail-AutoResponder/blob/a5100167265c13c9b90b6b7dbd97a5cc6c90a4a0/app/core/Code.js) file and [`autReply()`](https://github.com/amindeed/Gmail-AutoResponder/blob/a5100167265c13c9b90b6b7dbd97a5cc6c90a4a0/app/core/Code.js#L9) function have been respectively renamed `main.js` and `main()`.
+- These functions replaced blocks of code in `main.js` (formerly `Code.js`): `filterMessage(gmailMessage, filters)`, `getLastMessage(gmailThread)`, `replyToThread(gmailThread)`, `appLogger(logEntries, target)`.
+- Core app functions are now split into three files (libraries): **`gmail-autoresponder.js`**, **`loggers.js`** and **`filters.js`**.
+- Message filters are now stored as serialized JSON objects into Script user properties.
+- Added a wrapper function `appLogger()` that can target (given the right parameters) log databases other that Google Spreadsheets (like document DBs accepting HTTP requests as queries...).
+- Final list of App Settings that will be stored as Script user properties:
+    - **`firstTimeRun`**: Boolean (instead of `INIT_ALREADY_RUN`)
+    - **`IS_GSUITE_USER`**: Boolean
+    - **`enableApp`**: Boolean
+    - `filters`: JSON string: *default:*
+        ```
+        {
+            "rawContent": ['report-type=disposition-notification'],
+            "from": [
+                '(^|<)((mailer-daemon|postmaster)@.*)',
+                'noreply|no-reply|do-not-reply',
+                '.+@.*\\bgoogle\\.com',
+                Session.getActiveUser().getEmail()
+                ],
+            "to": ['undisclosed-recipients']
+        }
+        ```
+    - `logs`: JSON string: *example:*
+        ```
+        {
+            "type": "gspreadsheet",
+            "identifiers": 
+                {
+                    "id": "XXXXXXXXXXXX",
+                    "url": "https://docs.google.com/spreadsheets/d/XXXXXXXXXXXX/edit#gid=0"
+                }
+        }
+        ```
+    - `starthour`: Integer
+    - `finishhour`: Integer
+    - `utcoffset`: Integer
+    - `ccemailadr`: String, comma-separated email addresses ([RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1))
+    - `bccemailadr`: String, comma-separated email addresses ([RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1))
+    - `noreply`: Boolean
+    - `msgbody`: String, HTML/Text
+
+
+
 ## 2021-03-07
 
 Core (Apps Script) code is still broken, as it is being refactored:
@@ -8,10 +55,10 @@ Core (Apps Script) code is still broken, as it is being refactored:
 - Updated functions: `getSettings()` and `setProperties(objParams)`, of [`app/core/gmail-autoresponder.js`](/app/core/gmail-autoresponder.js).
 - Renamed script user properties, to keep the same names between `core`, `backend` and `frontend` parts of the code.
 - Converting blocks of code to reusable functions.
-- Exploring possible ways to modularize logging features (of executed sessions and processed messages), by abstracting format _(JSON...)_, log entry data structure and target _(Google Sheets, store to a Document DB through a JSON POST request...)_. I'm thinking of the following inheritance mechanism of both `SessionLogger` and `ProcessedMessageLogger` objects, from a parent object `AppLogger`. Intended structure / Pseudo-code :
-    - **`AppLogger` (Parent Object):** `date`, `append(entry|arrayOfEntries)`, `getAllEntries()`, `target = {}`
-        - **`SessionLogger` (Child Object):** `dateExecuted = super.date`, `numberOfThreads`, `append(entry|arrayOfEntries) = super.append()`, `getAllEntries() = super.getAllEntries()`, `target = super.target`
-        - **`ProcessedMessageLogger` (Child Object):** `dateReceived = super.date`, `sentRepDate`, `messageId`, `threadId`, `messageFrom`, `messageSubject`, `appliedFilter`, `append(entry|arrayOfEntries) = super.append()`, `getAllEntries() = super.getAllEntries()`, `target = super.target`.
+- Exploring possible ways to modularize logging features (of executed sessions and processed messages), by abstracting format _(JSON...)_, log entry data structure and target _(Google Sheets, store to a Document DB through a JSON POST request...)_. I'm thinking of the following inheritance mechanism of both `SessionLogger` and `ProcessedMessageLogger` objects, from a parent object `AppLogger`. Intended structure / Pseudo-code *(check [next worklog entry](#2021-03-11) for update)* :
+    - ~**`AppLogger` (Parent Object):** `date`, `append(entry|arrayOfEntries)`, `getAllEntries()`, `target = {}`~
+        - ~**`SessionLogger` (Child Object):** `dateExecuted = super.date`, `numberOfThreads`, `append(entry|arrayOfEntries) = super.append()`, `getAllEntries() = super.getAllEntries()`, `target = super.target`~
+        - ~**`ProcessedMessageLogger` (Child Object):** `dateReceived = super.date`, `sentRepDate`, `messageId`, `threadId`, `messageFrom`, `messageSubject`, `appliedFilter`, `append(entry|arrayOfEntries) = super.append()`, `getAllEntries() = super.getAllEntries()`, `target = super.target`.~
 
 
 ## 2021-03-03
