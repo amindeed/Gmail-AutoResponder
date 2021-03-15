@@ -3,40 +3,27 @@
  * Version 		:	0.1
  * Descriton 	:	Automatic processing of incoming GMail messages
  * Author 		:	Amine Al Kaderi <alkaderi@amindeed.com>
- * License 		:	GNU GPLv3 license
+ * License 		:	MIT license
  */
  
 
-/** Archiving logs monthly to separate sheets **/
-/* 
-function archiveLog() {
-   
-  var LogSSId = userProperties.getProperty('LOGS_SS_ID');
-  var log = SpreadsheetApp.openById(LogSSId);
-  var ops_log_sheet = log.getSheets()[0];
-  
-  SpreadsheetApp.setActiveSpreadsheet(log);
-  log.setActiveSheet(ops_log_sheet);
-  log.duplicateActiveSheet();
-  
-  var d = new Date();
-  var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-  var mNdx = d.getMonth();
-  var sheet_name = months[(mNdx-1)>=0?(mNdx-1):11] + "_" + d.getFullYear().toString().substr(-2);
-  
-  log.renameActiveSheet(sheet_name);
-  
-  log.moveActiveSheet(log.getNumSheets());
-  var range = ops_log_sheet.getRange(2,1,ops_log_sheet.getLastRow()-1,ops_log_sheet.getLastColumn());
-  range.clear();
-  
-  // Logged execution sessions
-  var exec_log_sheet = log.getSheets()[1];
-  // exec_log_sheet.deleteRows(2, exec_log_sheet.getLastRow() - 1);
-  var range = exec_log_sheet.getRange(2,1,exec_log_sheet.getLastRow()-1,exec_log_sheet.getLastColumn());
-  range.clear(); 
-} 
-*/
+/** Declare Application Logger class **/
+/** createLoggerClass() should always be called before instanciating AppLogger **/
+var AppLogger = null;
+function createLoggerClass() { AppLogger = GSpreadsheetLogger }
+
+/** Generate timestamp **/
+function getTimestamp(){
+  function pad2(n) { return n < 10 ? '0' + n : n }
+  var date = new Date();
+  var timestamp = date.getFullYear().toString() 
+                  + pad2(date.getMonth() + 1) 
+                  + pad2(date.getDate()) 
+                  + pad2(date.getHours()) 
+                  + pad2(date.getMinutes()) 
+                  + pad2(date.getSeconds());
+  return timestamp
+}
 
 
 /** Delete all script triggers. **/
@@ -75,7 +62,6 @@ function setSettings(objParams) {
       if (errors[0]['non_existing_properties'].length) {
         throw new Error;
       } else {
-        // /!\ If objParams item is a JSON object, it should be serialiazed ('stringified') first.
         userProperties.setProperties(objParams)
         returnObj['data']['success_message'] = '[Apps Script] Gmail AutoResponder user settings updated successfully.';
       }
@@ -96,46 +82,6 @@ function getDefaultMessageBody() {
        <p>This automated response is only to \
        confirm that your e-mail has been well received.<br />\
        Thank you.</p>'
-}
-
-
-/** Initialize a Sheet **/
-function initSheet(spreadSheetId, sheetNdx, header, sheetNewName=null) {
-
-  var result = {
-    'spreadsheetId': spreadSheetId,
-  }
-  sheetNewName?result['sheetNewName'] = sheetNewName:null;
-
-  var spreadsheet = SpreadsheetApp.openById(spreadSheetId);
-  var sheet = null
-  
-  if ( sheetNdx > spreadsheet.getNumSheets() -1 ) {
-    sheet = spreadsheet.insertSheet(sheetNdx)
-  } else {
-    sheet = spreadsheet.getSheets()[sheetNdx]
-  }
-
-  // Clear sheet
-  sheet.setFrozenRows(0);
-  sheet.getLastRow()?sheet.deleteRows(1, sheet.getLastRow()):null;
-
-  sheet.appendRow(header);
-
-  // Format and freeze the header row
-  var sheetHeader = sheet.getRange(1, 1, 1, header.length);
-  sheetHeader.setFontWeight("bold");
-  sheetHeader.setBackground("#cfe2f3");
-  sheet.setFrozenRows(1);
-  
-  if (sheetNewName) {
-    spreadsheet.setActiveSheet(sheet);
-    spreadsheet.renameActiveSheet(sheetNewName);
-  }
-
-  result['intializedSheetIndex'] = sheet.getIndex();
-
-  return result
 }
 
 
@@ -170,16 +116,7 @@ function getSettings(){
 /** DRAFT: App Init & Reset Function **/
 function appinit(initParams) {
   
-  // Generate timestamp
-  function pad2(n) { return n < 10 ? '0' + n : n }
-  var date = new Date();
-  var timestamp = date.getFullYear().toString() 
-                  + pad2(date.getMonth() + 1) 
-                  + pad2(date.getDate()) 
-                  + pad2(date.getHours()) 
-                  + pad2(date.getMinutes()) 
-                  + pad2(date.getSeconds());
-  
+  var timestamp = getTimestamp();
   var driveDirName = (initParams && initParams['dirName'])?initParams['dirName']:'Gmail_AutoResponder_'+timestamp;
   
   var userProperties = PropertiesService.getUserProperties();
@@ -310,6 +247,63 @@ function appinit(initParams) {
   } /*If*/
   
   return true;
+}
+
+
+/** Init. app settings **/
+function initSettings() {
+
+  var userProperties = PropertiesService.getUserProperties();
+
+  try {
+    
+    // Check whether or not it is a GSuite user account
+    userProperties.setProperty(
+      'IS_GSUITE_USER', 
+      (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false
+    );
+
+    // Set 'enableApp' flag to 'false'
+    userProperties.setProperty('enableApp', false);
+
+    // Initialize filters
+    var filtersString = JSON.stringify(getDefaultFilters())
+    userProperties.setProperty('filters', filtersString)
+
+    // Initialize logs
+    createLoggerClass();
+    var loggerInstance = new AppLogger();
+    var logger = loggerInstance.initLogger();
+    var loggerString = JSON.stringify(logger);
+    userProperties.setProperty('logger', loggerString)
+
+    // Initialize time settings
+    userProperties.setProperty('starthour', 17)
+    userProperties.setProperty('finishhour', 8)
+    userProperties.setProperty('utcoffset', 0)
+
+    // Initialize email settings
+    userProperties.setProperty('ccemailadr', '');
+    userProperties.setProperty('bccemailadr', '');
+    userProperties.setProperty(
+      'noreply', 
+      (userProperties.getProperty('IS_GSUITE_USER') === 'true')?1:2
+    );
+    userProperties.setProperty('msgbody', getDefaultMessageBody());
+
+    // Set app as 'already initialized'
+    userProperties.setProperty('appInitialized', 'TheAppHasAlreadyBeenInitialized')
+
+    // Create the trigger
+    ScriptApp.newTrigger('main')
+    .timeBased()
+    .everyMinutes(10)
+    .create();
+
+  } catch (e) {
+    Logger.log(e.message);
+    userProperties.deleteAllProperties();
+  }
 }
 
 

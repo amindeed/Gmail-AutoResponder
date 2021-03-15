@@ -3,8 +3,9 @@
  * Version 		:	0.1
  * Descriton 	:	Automatic processing of incoming GMail messages
  * Author 		:	Amine Al Kaderi <alkaderi@amindeed.com>
- * License 		:	GNU GPLv3 license
+ * License 		:	MIT license
  */
+ 
  
 /** Get default message filters **/
 function getDefaultFilters() {
@@ -18,16 +19,6 @@ function getDefaultFilters() {
         ],
       "to": ['undisclosed-recipients']
     }
-}
-
-
-/** Initialize filters **/
-function initFilters() {
-  
-  var userProperties = PropertiesService.getUserProperties();
-  var filtersString = JSON.stringify(getDefaultFilters())
-  userProperties.setProperty('filters', filtersString)
-
 }
 
 

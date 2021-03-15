@@ -3,7 +3,7 @@
  * Version 		:	0.1
  * Descriton 	:	Automatic processing of incoming GMail messages
  * Author 		:	Amine Al Kaderi <alkaderi@amindeed.com>
- * License 		:	GNU GPLv3 license
+ * License 		:	MIT license
  */
 
 function main() {
@@ -16,7 +16,7 @@ function main() {
   var finishhour = appSettings['finishhour'];
   var utcoffset = appSettings['utcoffset'];
   
-  var INTERVAL = 10;
+  var INTERVAL = 10; // Probably better as a script property
   var date = new Date();
   var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
   var searchQuery = 'is:inbox after:' + timeFrom;
@@ -29,20 +29,18 @@ function main() {
     threads = GmailApp.search(searchQuery);
     
     // Log session execution
-    var logs = JSON.parse(appSettings['logs'])
-    var logsSpreadshId = logs['identifiers']['id'];
+    var logger = JSON.parse(appSettings['logger']);
+    createLoggerClass();
+    var loggerInstance = new AppLogger(logger);
 
-    appLogger(
-        [
-          searchQuery,
-          new Date().toLocaleString(),
-          threads.length
-        ], 
-        {
-          "function": logToGSheet,
-          "additionalArgs": [logsSpreadshId, 1]
-        }
-      );
+    loggerInstance.append(
+                    [
+                      searchQuery,
+                      new Date().toLocaleString(),
+                      threads.length
+                    ],
+                    'EXECUTIONS'
+                  );
 
     // Get cached IDs of messages processed in the previous session
     var cache = CacheService.getScriptCache();
@@ -101,13 +99,6 @@ function main() {
       }
     }
 
-    appLogger(
-      processedMsgsLog,
-      {
-        "function": logToGSheet,
-        "additionalArgs": [logsSpreadshId, 0]
-      }
-    );
-
+    loggerInstance.append(processedMsgsLog,'PROCESSED');
   }
 }
