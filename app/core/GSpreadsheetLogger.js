@@ -166,8 +166,12 @@ class GSpreadsheetLogger extends BaseLogger {
 
     if ( forceCreateSs || !this.isIdValid() ) {
       var loggerSs = SpreadsheetApp.create('LOGGER_' + getTimestamp());
+      this.identifiers = {'id': '', 'viewUri': '', 'updateUri': ''};
       this.identifiers.id = loggerSs.getId();
     }
+
+    var ssUrl = SpreadsheetApp.openById(this.identifiers.id).getUrl();
+    this.identifiers.viewUri = this.identifiers.updateUri = ssUrl;
 
     var collections = super.constructor.getDataCollections();
 

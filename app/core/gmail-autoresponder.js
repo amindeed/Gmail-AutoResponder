@@ -8,22 +8,15 @@
  
 
 /** Declare Application Logger class **/
-/** createLoggerClass() should always be called before instanciating AppLogger **/
+/** createLoggerClass() should always be called before instanciating AppLogger 
+ *  Example:
+ *    createLoggerClass();
+ *    var loggerInstance = new AppLogger(loggerIdentifiersObject);
+ *    loggerInstance.append(sessionInfo1DArray, 'EXECUTIONS');
+ *    loggerInstance.append(processedMsgs2DArray, 'PROCESSED');
+ **/
 var AppLogger = null;
 function createLoggerClass() { AppLogger = GSpreadsheetLogger }
-
-/** Generate timestamp **/
-function getTimestamp(){
-  function pad2(n) { return n < 10 ? '0' + n : n }
-  var date = new Date();
-  var timestamp = date.getFullYear().toString() 
-                  + pad2(date.getMonth() + 1) 
-                  + pad2(date.getDate()) 
-                  + pad2(date.getHours()) 
-                  + pad2(date.getMinutes()) 
-                  + pad2(date.getSeconds());
-  return timestamp
-}
 
 
 /** Delete all script triggers. **/
@@ -36,8 +29,43 @@ function deleteAllTriggers() {
 }
 
 
+/** Get Script User Parameters **/
+function getSettings(){
+  
+  var errors = [];
+  var settingsObj = {
+    'data': {},
+    'errors': []
+  };
+  
+  try {
+      
+      var userProperties = PropertiesService.getUserProperties();
+      var appSettings = userProperties.getProperties();
+
+      if (isEmpty(appSettings)) {
+        Logger.log('App initialized'); //DEBUG
+        appSettings = initSettings();
+      }
+
+      for (var key in appSettings) {
+        settingsObj['data'][key] = appSettings[key];
+      }
+
+  } catch(e) {
+      errors.push(e.message);
+  }
+
+  settingsObj['errors'] = errors;
+  
+  return settingsObj;
+}
+
+
 /** Set Script User Parameters **/
 function setSettings(objParams) {
+
+  // TODO: check if app needs to be [re]initialized
 
   var errors = [
       {
@@ -75,195 +103,40 @@ function setSettings(objParams) {
 }
 
 
-/** Get default response message body **/
-function getDefaultMessageBody() {
-
-  return '<p><strong>Automated response</strong></p>\
-       <p>This automated response is only to \
-       confirm that your e-mail has been well received.<br />\
-       Thank you.</p>'
-}
-
-
-/** Get Script User Parameters **/
-function getSettings(){
-
-  var errors = [];
-  var settingsObj = {
-    'data': {},
-    'errors': []
-  };
-  
-  try {
-      
-      var userProperties = PropertiesService.getUserProperties();
-      var appSettings = userProperties.getProperties();
-
-      for (var key in appSettings) {
-        settingsObj['data'][key] = appSettings[key];
-      }
-
-  } catch(e) {
-      errors.push(e.message);
-  }
-
-  settingsObj['errors'] = errors;
-  
-  return settingsObj;
-}
-
-
-/** DRAFT: App Init & Reset Function **/
-function appinit(initParams) {
-  
-  var timestamp = getTimestamp();
-  var driveDirName = (initParams && initParams['dirName'])?initParams['dirName']:'Gmail_AutoResponder_'+timestamp;
-  
-  var userProperties = PropertiesService.getUserProperties();
-  
-  if ( (userProperties.getProperty('APP_ALREADY_INIT') !== 'true') || (initParams && (initParams['resetApp'] === true)) ) {
-    
-    // 0. Delete All triggers, Logs spreadsheet and user script properties
-    
-    try {
-
-       deleteAllTriggers();
-       DriveApp.getFileById(userProperties.getProperty('logsssid')).setTrashed(true);
-       userProperties.deleteAllProperties();
-
-    } catch(e) {
-       Logger.log(e.message);
-    }
-    
-    // 1. Create `Logs` spreadsheet. Get URL.
-    // 1.1. Place all app files in one Drive folder
-    
-    var ssLogs = SpreadsheetApp.create("GMAIL_AUTORESPONDER_LOGS");
-    
-    var ssLogsId = ssLogs.getId();
-    var scriptId = ScriptApp.getScriptId();
-    
-    var ssLogsDrvFile = DriveApp.getFileById(ssLogsId);
-    var scriptFile = DriveApp.getFileById(scriptId);
-    
-    var appDrvFolder = DriveApp.createFolder(driveDirName).getId(); 
-    
-    DriveApp.getFolderById(appDrvFolder).addFile(ssLogsDrvFile);
-    DriveApp.getFolderById(appDrvFolder).addFile(scriptFile);
-    
-    DriveApp.getRootFolder().removeFile(ssLogsDrvFile);
-
-    var oldParent = scriptFile.getParents().next();
-
-    oldParent.removeFile(scriptFile);
-
-    if (oldParent.getParents().hasNext() && !oldParent.getFiles().hasNext()) {
-      oldParent.setTrashed(true);
-    }
-    
-    
-    // 1.2. Initialize 'Logs' spreadsheet
-
-    processedMsgsLogHeader = [
-        'Label', 
-        'Date/time Sent (Original message)', 
-        'Date/time Sent (Response)', 
-        'Message ID', 
-        'Thread ID', 
-        'From', 
-        'Subject',
-        'Applied Filter'
-    ]
-    
-    initSheet(ssLogsId, 0, processedMsgsLogHeader, 'PROCESSED_MSGS');
-
-
-    sessionsLogHeader = ['SEARCH QUERY', 'EXECUTION TIME', 'NUMBER OF THREADS']
-    initSheet(ssLogsId, 0, sessionsLogHeader, 'EXECUTIONS');
-    
-    
-    // 3. Create and set user script properties to their default values.
-    
-    //// Check whether the user has a G-Suite account
-    userProperties.setProperty(
-      'IS_GSUITE_USER', 
-      (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?'GSUITE':'GMAIL'
-    );
-    
-    var defaultMsgBody = getDefaultMessageBody();
-    
-    var defaultProperties = {
-      'enableApp': false,
-      'logsssid': ssLogsId,
-      'logsssurl': ssLogs.getUrl(),
-      'starthour': 17,
-      'finishhour': 8,
-      'utcoffset': 0,
-      'msgbody': defaultMsgBody,
-      'noreply': (userProperties.getProperty('IS_GSUITE_USER') === 'GSUITE')?1:2
-    };
-
-      /* User Properties / App Settings:
-
-        'APP_ALREADY_INIT': '',
-        'IS_GSUITE_USER': (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false,
-        'enableApp': false,
-        'filters': JSON.stringify(getDefaultFilters()),
-        'logsssid': '',
-        'logsssurl': '',
-        'starthour': 17,
-        'finishhour': 8,
-        'utcoffset': 0,
-        'ccemailadr': '',
-        'bccemailadr': '',
-        'noreply': '',
-        'msgbody': getDefaultMessageBody()
-      */
-    
-    setSettings(defaultProperties);
-    
-    // 4. Create script triggers
-    
-    ScriptApp.newTrigger('main')
-    .timeBased()
-    .everyMinutes(10)
-    .create();
-
-    /* 
-    ScriptApp.newTrigger('archiveLog')
-    .timeBased()
-    .onMonthDay(1)
-    .atHour(5)
-    .create(); 
-    */
-    
-    // 5. Provide the user with a Enable/Disable switch
-    // ...
-    
-    // 6. Set script user property 'APP_ALREADY_INIT' to true.
-    userProperties.setProperty('APP_ALREADY_INIT', true);
-    
-    // 7. return webapp full URL
-  } /*If*/
-  
-  return true;
-}
-
-
 /** Init. app settings **/
-function initSettings() {
+function initSettings(reset=false) {
 
   var userProperties = PropertiesService.getUserProperties();
+  var currentLogger = userProperties.getProperty('logger');
+  var currentLoggerObj = null;
+  var result = {};
 
   try {
+    if ( reset 
+        && isJsonObject(currentLogger) 
+        && !isEmpty(JSON.parse(currentLogger))
+        ) {
+            var loggerObj = JSON.parse(userProperties.getProperty('logger'));
+            createLoggerClass();
+            var loggerInstance = new AppLogger(loggerObj);
+            currentLoggerObj = loggerInstance.initLogger();
+    }
+
+    // Delete any existing/remaining properties
+    userProperties.deleteAllProperties();
     
-    // Check whether or not it is a GSuite user account
+    // General settings
     userProperties.setProperty(
       'IS_GSUITE_USER', 
       (Session.getActiveUser().getEmail().split('@')[1]!=='gmail.com')?true:false
     );
-
-    // Set 'enableApp' flag to 'false'
+    var scriptId = ScriptApp.getScriptId();
+    var coreAppEditUrls = { 'urls': [
+                                    'https://script.google.com/d/' + scriptId + '/edit',
+                                    'https://script.google.com/home/projects/' + scriptId + '/edit'
+                                    ]
+                          };
+    userProperties.setProperty('coreAppEditUrl', JSON.stringify(coreAppEditUrls));
     userProperties.setProperty('enableApp', false);
 
     // Initialize filters
@@ -271,13 +144,27 @@ function initSettings() {
     userProperties.setProperty('filters', filtersString)
 
     // Initialize logs
-    createLoggerClass();
-    var loggerInstance = new AppLogger();
-    var logger = loggerInstance.initLogger();
-    var loggerString = JSON.stringify(logger);
-    userProperties.setProperty('logger', loggerString)
+      /**
+        Example 'logger' / 'loggerString' value:
+        {
+          'id': 'XXXXXX',
+          'viewUri': 'https://www.xxxx.yy?view',
+          'updateUri': 'https://www.xxxx.yy?update'
+        }
+      **/
+    if (currentLoggerObj) {
+      var loggerString = JSON.stringify(currentLoggerObj);
+      userProperties.setProperty('logger', loggerString)
+    } else {
+      createLoggerClass();
+      var loggerInstance = new AppLogger();
+      var logger = loggerInstance.initLogger();
+      var loggerString = JSON.stringify(logger);
+      userProperties.setProperty('logger', loggerString)
+    }
 
     // Initialize time settings
+    userProperties.setProperty('timeinterval', 10)
     userProperties.setProperty('starthour', 17)
     userProperties.setProperty('finishhour', 8)
     userProperties.setProperty('utcoffset', 0)
@@ -292,7 +179,7 @@ function initSettings() {
     userProperties.setProperty('msgbody', getDefaultMessageBody());
 
     // Set app as 'already initialized'
-    userProperties.setProperty('appInitialized', 'TheAppHasAlreadyBeenInitialized')
+    //userProperties.setProperty('appInitialized', 'TheAppHasAlreadyBeenInitialized')
 
     // Create the trigger
     ScriptApp.newTrigger('main')
@@ -300,10 +187,25 @@ function initSettings() {
     .everyMinutes(10)
     .create();
 
+    // Return an object of initialized script user properties
+    result = userProperties.getProperties();
+
+
   } catch (e) {
-    Logger.log(e.message);
     userProperties.deleteAllProperties();
+    result['error'] = e.message;
   }
+  return result
+}
+
+
+/** Get default response message body **/
+function getDefaultMessageBody() {
+
+  return '<p><strong>Automated response</strong></p>\
+       <p>This automated response is only to \
+       confirm that your e-mail has been well received.<br />\
+       Thank you.</p>'
 }
 
 

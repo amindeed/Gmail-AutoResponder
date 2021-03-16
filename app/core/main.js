@@ -16,9 +16,9 @@ function main() {
   var finishhour = appSettings['finishhour'];
   var utcoffset = appSettings['utcoffset'];
   
-  var INTERVAL = 10; // Probably better as a script property
+  var timeinterval = appSettings['timeinterval']; // 'timeinterval' should never be lower than 10
   var date = new Date();
-  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (INTERVAL+2);
+  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (timeinterval+2);
   var searchQuery = 'is:inbox after:' + timeFrom;
   var hour = date.getHours();
   var threads = [];
@@ -75,7 +75,7 @@ function main() {
             ]
           );
 
-          cache.put(msgId, '', 960);
+          cache.put(msgId, '', (timeinterval+6)*60);
 
         } else {
 

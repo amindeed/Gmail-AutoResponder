@@ -39,13 +39,13 @@
 > #### App Settings:
 > 
 > Managed as [Apps Script User Properties](https://developers.google.com/apps-script/reference/properties/properties-service#getUserProperties()):
-> - **`appInitialized`**: `Random string`.
 > - **`IS_GSUITE_USER`**: `Boolean`.
 > - **`enableApp`**: `Boolean`. *(**default:** `'false'`)*.
+> - **`coreAppEditUrl`**: `String`. Edit URL of the Apps Script project.
 > - **`filters`**: `JSON string`; Message content filters.
 > 
 >     ***default:***
->     ```
+>     ```json
 >     {
 >         "rawContent": ['report-type=disposition-notification'],
 >         "from": [
@@ -57,49 +57,17 @@
 >         "to": ['undisclosed-recipients']
 >     }
 >     ```
-> - **`logger`**: `JSON string`. *(**default:** auto-generated and initialized Google Spreadsheet)*.
+> - **`logger`**: `JSON string`. `identifiers` property of an `AppLogger` class instance.
 > 
->     Example value (for a Google Spreadsheet):
->     ```jsonc
+>     Example:
+>     ```json
 >     {
->         "type": "gspreadsheet",
->         "function": "logToGSheet", // To be evaluated as a function
->         "identifiers": 
->             {
->                 "id": "XXXX",
->                 "updateUri": "https://docs.google.com/spreadsheets/d/XXXX",
->                 "viewUri": "https://docs.google.com/spreadsheets/d/XXXX"
->                 // +Possibly: "authenticationScheme" / "credentials" ...
->             },
->         "dataCollections": [
->             // dataCollections[0] --> Processed messages
->             {
->                 "name": "PROCESSED",
->                 "index": 0,
->                 "dataFields" : [ // Typically used to initialize the database
->                     "LABEL",
->                     "ORIG_MSG_SENT_DATE",
->                     "RESPONSE_DATE", // should be nullable, or accept empty string
->                     "MESSAGE_ID",
->                     "THREAD_ID",
->                     "FROM",
->                     "SUBJECT",
->                     "APPLIED_FILTER" // should be nullable, or accept empty string
->                 ]
->             },
->             // dataCollections[1] --> Executions
->             {
->                 "name": "EXECUTIONS",
->                 "index": 1,
->                 "dataFields" : [ // Typically used to initialize the database
->                     "SEARCH_QUERY",
->                     "EXECUTION_TIME",
->                     "NUMBER_THREADS"
->                 ]
->             }
->         ]
+>         "id": 'ABCDEF',
+>         "viewUri": "https://www.xxxx.yy/ABCDEF?view",
+>         "updateUri": "https://www.xxxx.yy/ABCDEF?update"
 >     }
 >     ```
+> - **`timeinterval`**: `Integer`. *(**timeintarval:** `10`)*.
 > - **`starthour`**: `Integer`. *(**default:** `17`)*.
 > - **`finishhour`**: `Integer`. *(**default:** `8`)*.
 > - **`utcoffset`**: `Integer`. *(**default:** `0`)*.

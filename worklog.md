@@ -1,92 +1,54 @@
 # Work Log
 
-## 2021-03-..
+## 2021-03-16
 
-- **TODO:** refactor [`appinit()`](https://github.com/amindeed/Gmail-AutoResponder/blob/c542ea3f4aae3d1cba136cf06768ec0e6a57ab07/app/core/gmail-autoresponder.js#L171) function.
-- **TODO:** review `getSettings()` and `setSettings()`.
-- **TODO:** error handling and relevant return values/objects for all Core/Apps Script functions.
-- **TODO:** Test getting/setting app settings and reset through AJAX requests.
-- **TODO:** GCP app to deploy a self-contained version of the application to a third-party Google account (after granting access). ***Some interesting resources:***
+- Further refactoring and modularization of Apps Script code; Core app is now pretty stable (as far as I can tell). **Key updates:**
+    - [Class](https://developers.google.com/apps-script/guides/v8-runtime#classes)-based implementation of application loggers. Thus, we'll avoid hard-coding features and make future implementations of other logs databases easier. For instance, initializing a logs database would generally mean:
+        - Connect with Read/Write permissions to an existing instance, or create a new one.
+        - Create two data collections (e.g.: `GSpreadsheets`: *sheets*, `SQL`: *tables*, `DocumentDB`; *collections*), each with the specified data fields (e.g.: `GSpreadsheets`: *columns/header*, `SQL`: *columns*, `DocumentDB`; *fields*).
+        - Logs would then be stored as single entries or 2D datasets (e.g.: `GSpreadsheets`: *rows*, `SQL`: *records*, `DocumentDB`; *documents*).
+    - Revised list of App settings:
+        - **`IS_GSUITE_USER`**: `Boolean`.
+        - **`enableApp`**: `Boolean`. *(**default:** `'false'`)*.
+        - **`coreAppEditUrl`**: `String`. Edit URL of the Apps Script project.
+        - **`filters`**: `JSON string`; Message content filters.
+
+            ***default:***
+            ```json
+            {
+                "rawContent": ['report-type=disposition-notification'],
+                "from": [
+                    '(^|<)((mailer-daemon|postmaster)@.*)',
+                    'noreply|no-reply|do-not-reply',
+                    '.+@.*\\bgoogle\\.com',
+                    Session.getActiveUser().getEmail()
+                    ],
+                "to": ['undisclosed-recipients']
+            }
+            ```
+        - **`logger`**: `JSON string`. `identifiers` property of an `AppLogger` class instance.
+
+            Example:
+            ```json
+            {
+                "id": 'ABCDEF',
+                "viewUri": "https://www.xxxx.yy/ABCDEF?view",
+                "updateUri": "https://www.xxxx.yy/ABCDEF?update"
+            }
+            ```
+        - **`timeinterval`**: `Integer`. *(**timeintarval:** `10`)*.
+        - **`starthour`**: `Integer`. *(**default:** `17`)*.
+        - **`finishhour`**: `Integer`. *(**default:** `8`)*.
+        - **`utcoffset`**: `Integer`. *(**default:** `0`)*.
+        - **`ccemailadr`**: `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. *(**default:** `''`)*.
+        - **`bccemailadr`**: `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. *(**default:** `''`)*.
+        - **`noreply`**: `Boolean`; whether or not to reply with a `noreply@` email address. *(**default:** `0` if `IS_GSUITE_USER` === `'true'`, `2` otherwise)*.
+        - **`msgbody`**: `String`; Response message body in HTML format. *(**default:** `getDefaultMessageBody()` function return value)*.
+    - Logical and functional organization of JavaScript libraries/files for better code reusability.
+- Added license file ([MIT License](LICENSE)).
+- ***Noting some interesting resources:***
     - [Google API Doc - Apps Script API Instance Methods](https://googleapis.github.io/google-api-python-client/docs/dyn/script_v1.html)
         - [Google Apps Script API Python Quickstart](https://github.com/googleworkspace/python-samples/blob/aacc00657392a7119808b989167130b664be5c27/apps_script/quickstart/quickstart.py#L73)
-
-- Added license file ([MIT License](LICENSE)).
-- Revised `logs` settings structure and functions to avoid hard-coding features and to make future implementations of other logs databases easier. So, initializing a logs database would generally mean:
-    - Connect with Read/Write permissions to an existing instance, or create a new one.
-    - Create two data collections (e.g.: `GSpreadsheets`: *sheets*, `SQL`: *tables*, `DocumentDB`; *collections*), each with the specified data fields (e.g.: `GSpreadsheets`: *columns/header*, `SQL`: *columns*, `DocumentDB`; *fields*).
-    - Logs would then be stored as single entries or 2D datasets (e.g.: `GSpreadsheets`: *rows*, `SQL`: *records*, `DocumentDB`; *documents*).
-    - **TODO:** Add data fields properties (e.g. *maxLength, isNullable, defaultValue...*)
-- [Class](https://developers.google.com/apps-script/guides/v8-runtime#classes)-based implementation of app loggers.
-- Revised list of App settings:
-    - **`appInitialized`**: `Random string`.
-    - **`IS_GSUITE_USER`**: `Boolean`.
-    - **`enableApp`**: `Boolean`. *(**default:** `'false'`)*.
-    - **`filters`**: `JSON string`; Message content filters.
-
-        ***default:***
-        ```json
-        {
-            "rawContent": ['report-type=disposition-notification'],
-            "from": [
-                '(^|<)((mailer-daemon|postmaster)@.*)',
-                'noreply|no-reply|do-not-reply',
-                '.+@.*\\bgoogle\\.com',
-                Session.getActiveUser().getEmail()
-                ],
-            "to": ['undisclosed-recipients']
-        }
-        ```
-    - **`logger`**: `JSON string`. *(**default:** auto-generated and initialized Google Spreadsheet)*.
-
-        Example value (for a Google Spreadsheet):
-        ```jsonc
-        {
-            "type": "gspreadsheet",
-            "function": "logToGSheet", // To be evaluated as a function
-            "identifiers": 
-                {
-                    "typeName": "gspreadsheet",
-                    "id": "XXXX",
-                    "updateUri": "https://docs.google.com/spreadsheets/d/XXXX",
-                    "viewUri": "https://docs.google.com/spreadsheets/d/XXXX"
-                    // +Possibly: "authenticationScheme" / "credentials" ...
-                },
-            "dataCollections": [
-                // dataCollections[0] --> Processed messages
-                {
-                    "name": "PROCESSED",
-                    "index": 0,
-                    "dataFields" : [ // Typically used to initialize the database
-                        "LABEL",
-                        "ORIG_MSG_SENT_DATE",
-                        "RESPONSE_DATE", // should be nullable, or accept empty string
-                        "MESSAGE_ID",
-                        "THREAD_ID",
-                        "FROM",
-                        "SUBJECT",
-                        "APPLIED_FILTER" // should be nullable, or accept empty string
-                    ]
-                },
-                // dataCollections[1] --> Executions
-                {
-                    "name": "EXECUTIONS",
-                    "index": 1,
-                    "dataFields" : [ // Typically used to initialize the database
-                        "SEARCH_QUERY",
-                        "EXECUTION_TIME",
-                        "NUMBER_THREADS"
-                    ]
-                }
-            ]
-        }
-        ```
-    - **`starthour`**: `Integer`. *(**default:** `17`)*.
-    - **`finishhour`**: `Integer`. *(**default:** `8`)*.
-    - **`utcoffset`**: `Integer`. *(**default:** `0`)*.
-    - **`ccemailadr`**: `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. *(**default:** `''`)*.
-    - **`bccemailadr`**: `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. *(**default:** `''`)*.
-    - **`noreply`**: `Boolean`; whether or not to reply with a `noreply@` email address. *(**default:** `0` if `IS_GSUITE_USER` === `'true'`, `2` otherwise)*.
-    - **`msgbody`**: `String`; Response message body in HTML format. *(**default:** `getDefaultMessageBody()` function return value)*.
 
 ## 2021-03-11
 
