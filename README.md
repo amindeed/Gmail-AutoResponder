@@ -20,8 +20,8 @@
 ## 1. App Architecture
 
 <p align="center">
-  <!-- <img src="/Gmail-AutoResponder-AppArch.png" alt="App Architecture"/> -->
-  <img src="https://raw.githubusercontent.com/amindeed/Gmail-AutoResponder/master/Gmail-AutoResponder-AppArch.png" alt="App Architecture"/>
+  <img src="/Gmail-AutoResponder-AppArch.png" alt="App Architecture"/>
+  <!-- <img src="https://raw.githubusercontent.com/amindeed/Gmail-AutoResponder/master/Gmail-AutoResponder-AppArch.png" alt="App Architecture"/> -->
 </p>
 
 ### 1.1. Backend – Core: *Google Apps Script*
@@ -37,7 +37,6 @@ The **Core** App is a [Google Apps Script](https://script.google.com) app deploy
   - `https://www.googleapis.com/auth/spreadsheets`, 
   - `https://www.googleapis.com/auth/userinfo.profile`.
 
-The **[Middleware](#12-backend--middleware-django)** App requires the [Client ID credentials](https://support.google.com/cloud/answer/6158849) file ([`credentials.json`](/app/backend/python/credentials_template.json)) of the GCP project for OAuth2 authentication.
 
 **Core** App is thus manageable with 3 functions: **`initSettings()`**, **`getSettings()`** and **`setSettings()`**, all run through the [Apps Script API](https://developers.google.com/apps-script/api/how-tos/execute) using the [Python client library](https://github.com/googleapis/google-api-python-client).
 
@@ -93,7 +92,9 @@ The default logger is a **[Google Spreadsheet](/app/core/GSpreadsheetLogger.js)*
 
 ### 1.2. Backend – Middleware: *Django*
 
-The **Middleware** backend component is a Django app providing the following features:
+The **Middleware** backend component requires the [deployment ID](https://developers.google.com/apps-script/api/reference/rest/v1/projects.deployments) ([`script_deployment_id.py`](/app/backend/python/script_deployment_id_example.py)) of the **Core** App, and the [Client ID credentials](https://support.google.com/cloud/answer/6158849) file ([`credentials.json`](/app/backend/python/credentials_template.json)) of the associated GCP project.
+
+It is a Django app providing the following features:
 - **Authentication:** User sign-in through a full OAuth2 authentication flow.
 - **Sessions:** Based on [Django Sessions](https://docs.djangoproject.com/en/3.1/topics/http/sessions/#using-sessions-in-views), allow users (identified by their parsed OIDC tokens) to access the webapp independently from any active Google account in the browser. No user data is kept after logout.
 - **Data validation:** Form data (App settings) validation and multi-level error handling: *HTTP request, [Django Forms API](https://docs.djangoproject.com/en/3.1/ref/forms/api/#using-forms-to-validate-data) data validation, Apps Script API and **Core** App errors*.
