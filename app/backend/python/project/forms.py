@@ -4,6 +4,7 @@ class SettingsForm(forms.Form):
     # enableApp = ...
     starthour = forms.IntegerField(label='Start Hour', min_value=0, max_value=23)
     finishhour = forms.IntegerField(label='Finish Hour', min_value=0, max_value=23)
+    timeinterval = forms.IntegerField(label='Time Interval', min_value=10, max_value=30)
     utcoffset = forms.IntegerField(label='UTC Time Offset', min_value=-12, max_value=14, required=False)
     # noreply = ...
     ccemailadr = forms.EmailField(label='Cc Email Address(es)', max_length=1000, required=False)

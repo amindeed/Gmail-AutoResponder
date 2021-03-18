@@ -1,5 +1,9 @@
 # Work Log
 
+## 2021-03-18
+
+An entirely revised README, along with an App architecture diagram and some minor code modifications.
+
 ## 2021-03-16
 
 - Further refactoring and modularization of Apps Script code; Core app is now pretty stable (as far as I can tell). **Key updates:**
@@ -36,7 +40,7 @@
                 "updateUri": "https://www.xxxx.yy/ABCDEF?update"
             }
             ```
-        - **`timeinterval`**: `Integer`. *(**timeintarval:** `10`)*.
+        - **`timeinterval`**: `Integer`. *(**default:** `10`)*.
         - **`starthour`**: `Integer`. *(**default:** `17`)*.
         - **`finishhour`**: `Integer`. *(**default:** `8`)*.
         - **`utcoffset`**: `Integer`. *(**default:** `0`)*.
@@ -340,7 +344,7 @@ Core (Apps Script) code is still broken, as it is being refactored:
 
 ## 2020-05-19 : _Last commit of the month of Ramadan_ 🌙
 - Preparing code to test and progressively convert JavaScript client code to Ajax POST requests to be processed by the `doPost()` backend function.
-- Setting up a custom GCP project for a script gives you access to verbose and more informative logs on each function call, which turns out to be fairy useful when debugging.
+- Setting up a custom GCP project for a script gives you access to verbose and more informative logs on each function call, which turns out to be fairly useful when debugging.
 - Migrated `raw_notes.md`'s section about _"scripted deployment of Apps Script projects"_ to [DevOps Lab](https://github.com/amindeed/DevOps-Lab/blob/3bfc28b738adb94006fe5b0674c9c1ec94a5c031/AppsScript_AutoDeploy.md) repository.
 
 ## 2020-05-18
@@ -645,7 +649,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 
     <br /><img src="/assets/2020-04-21 11_45_15-_corrupted-drive-files.gif" alt="Corrupted Drive Files" width="500"/><br />
 
-- So basically, some fairy reliable resources and accepted solutions on the web suggest to first process the submitted file with [`FileReader()`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), and pass it as a [data URL](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) to a backend function for a second process that extracts content type from it, [decodes the submitted base64 data](https://developers.google.com/apps-script/reference/utilities/utilities#base64Decode(String)), and calls [`Utilities.newBlob()`](https://developers.google.com/apps-script/reference/utilities/utilities#newBlob(Byte,String)) to create a new blob object for [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)).
+- So basically, some fairly reliable resources and accepted solutions on the web suggest to first process the submitted file with [`FileReader()`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), and pass it as a [data URL](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) to a backend function for a second process that extracts content type from it, [decodes the submitted base64 data](https://developers.google.com/apps-script/reference/utilities/utilities#base64Decode(String)), and calls [`Utilities.newBlob()`](https://developers.google.com/apps-script/reference/utilities/utilities#newBlob(Byte,String)) to create a new blob object for [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)).
 - Here is a basic draft code as a wrap-up of what I've understood so far from the examples I studied. For the time being, this focuses only on that content type issue. Further development is needed to process forms with multiple types of input data (not only file upload) :
     - Frontend (client) :
 

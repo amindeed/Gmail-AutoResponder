@@ -94,7 +94,7 @@ function main() {
             ]
           );
 
-          cache.put(msgId, '', 960);
+          cache.put(msgId, '', (timeinterval+6)*60);
         }
       }
     }

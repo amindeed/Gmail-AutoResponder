@@ -122,8 +122,9 @@ function initSettings(reset=false) {
             currentLoggerObj = loggerInstance.initLogger();
     }
 
-    // Delete any existing/remaining properties
+    // Delete any existing/remaining properties and triggers
     userProperties.deleteAllProperties();
+    deleteAllTriggers();
     
     // General settings
     userProperties.setProperty(
@@ -184,7 +185,7 @@ function initSettings(reset=false) {
     // Create the trigger
     ScriptApp.newTrigger('main')
     .timeBased()
-    .everyMinutes(10)
+    .everyMinutes(userProperties.getProperty('timeinterval'))
     .create();
 
     // Return an object of initialized script user properties
@@ -193,6 +194,7 @@ function initSettings(reset=false) {
 
   } catch (e) {
     userProperties.deleteAllProperties();
+    deleteAllTriggers();
     result['error'] = e.message;
   }
   return result
