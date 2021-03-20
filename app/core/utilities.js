@@ -52,3 +52,10 @@ function isJsonObject(str) {
 function isEmpty(obj) {
   return Object.keys(obj).length === 0 && obj.constructor === Object
 }
+
+/** Validate email address **/
+function isValidEmail(emailAdr) {
+  
+  const validEmailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  return emailAdr && validEmailRegex.test(String(emailAdr).toLowerCase());
+}

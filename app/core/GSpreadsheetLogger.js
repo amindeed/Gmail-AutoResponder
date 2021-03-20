@@ -10,13 +10,25 @@ class GSpreadsheetLogger extends BaseLogger {
 
   /** Check whether a Spreadsheet with the gived ID exists **/
   static checkSpreadsheetById(id) {
-    var ss = null
+    var ss = null;
+    var driveFile = null;
+
     try {
-      ss = SpreadsheetApp.openById(id)
+      if (
+        SpreadsheetApp.openById(id)
+        && (driveFile = DriveApp.getFileById(id))
+        && !driveFile.isTrashed()
+      ) {
+        ss = SpreadsheetApp.openById(id);
+        return ss
+      } else {
+        ss = null;
+        return ss
+      }
     } catch (e) {
+      ss = null;
       return ss
     }
-    return ss
   }
   
   /** Initialize a sheet within a Google Spreadsheet **/
@@ -41,73 +53,45 @@ class GSpreadsheetLogger extends BaseLogger {
       sheet.setFrozenRows(1);
     }
 
-    // If the provided ID is invalid, a new speardsheet
-    // will be created, and its ID will be returned
+    var loggerSs = SpreadsheetApp.openById(spreadSheetId);
+    var existingSheet = null;
 
-    /* if ( !this.checkSpreadsheetById(spreadSheetId) ) {
-      if (autoCreateSs) {
-
-        loggerSs = SpreadsheetApp.create('LOGGER_' + getTimestamp());
-        Logger.log('****** loggerSs : ' + loggerSs); //DEBUG
-        result['spreadsheetId'] = loggerSs.getId();
-
-        Logger.log('****** sheetNdx : ' + sheetNdx); //DEBUG
-        sheet = loggerSs.insertSheet(sheetNdx);
-        addHeader(sheet,header);
-
-        if (sheetName) {
-          loggerSs.setActiveSheet(sheet);
-          loggerSs.renameActiveSheet(sheetName);
+    if (sheetNdx <= loggerSs.getNumSheets() -1) {
+      if (sheetName) {
+        if (existingSheet = loggerSs.getSheetByName(sheetName)) {
+          // Archive existing Sheet. Create new at index 'sheetNdx' and name it 'sheetName'
+          existingSheet.setName(sheetName + '_' + getTimestamp());
+          sheet = loggerSs.insertSheet(sheetName, sheetNdx);
+        } else {
+          // Create new sheet at index 'sheetNdx' and name it 'sheetName'
+          sheet = loggerSs.insertSheet(sheetName, sheetNdx);
         }
-
-        result['initSheetNdx'] = sheet.getIndex();
-
       } else {
-        result['spreadsheetId'] = null;
-        return result
+        // Create new sheet at index 'sheetNdx'
+        sheet = loggerSs.insertSheet(sheetNdx);
       }
-    } else { */
+      addHeader(sheet,header);
+      result['initSheetNdx'] = sheet.getIndex();
 
-      var loggerSs = SpreadsheetApp.openById(spreadSheetId);
-      var existingSheet = null;
-
-      if (sheetNdx <= loggerSs.getNumSheets() -1) {
-        if (sheetName) {
-          if (existingSheet = loggerSs.getSheetByName(sheetName)) {
-            // Archive existing Sheet. Create new at index 'sheetNdx' and name it 'sheetName'
-            existingSheet.setName(sheetName + '_' + getTimestamp());
-            sheet = loggerSs.insertSheet(sheetName, sheetNdx);
-          } else {
-            // Create new sheet at index 'sheetNdx' and name it 'sheetName'
-            sheet = loggerSs.insertSheet(sheetName, sheetNdx);
-          }
+    } else if ( sheetNdx > loggerSs.getNumSheets() -1 ) {
+      if (sheetName) {
+        if (existingSheet = loggerSs.getSheetByName(sheetName)) {
+          // Archive existing Sheet. Create new sheet named 'sheetName'
+          // at the same index as the old sheet
+          var newSheetNdx = existingSheet.getIndex() - 1;
+          existingSheet.setName(sheetName + '_' + getTimestamp());
+          sheet = loggerSs.insertSheet(sheetName, newSheetNdx);
         } else {
-          // Create new sheet at index 'sheetNdx'
-          sheet = loggerSs.insertSheet(sheetNdx);
+          // Insert new sheet named 'sheetName'
+          sheet = loggerSs.insertSheet(sheetName, loggerSs.getNumSheets());
         }
-        addHeader(sheet,header);
-        result['initSheetNdx'] = sheet.getIndex();
-
-      } else if ( sheetNdx > loggerSs.getNumSheets() -1 ) {
-        if (sheetName) {
-          if (existingSheet = loggerSs.getSheetByName(sheetName)) {
-            // Archive existing Sheet. Create new sheet named 'sheetName'
-            // at the same index as the old sheet
-            var newSheetNdx = existingSheet.getIndex() - 1;
-            existingSheet.setName(sheetName + '_' + getTimestamp());
-            sheet = loggerSs.insertSheet(sheetName, newSheetNdx);
-          } else {
-            // Insert new sheet named 'sheetName'
-            sheet = loggerSs.insertSheet(sheetName, loggerSs.getNumSheets());
-          }
-        } else {
-          // Insert new sheet
-          sheet = loggerSs.insertSheet(loggerSs.getNumSheets());
-        }
-        addHeader(sheet,header);
-        result['initSheetNdx'] = sheet.getIndex();
+      } else {
+        // Insert new sheet
+        sheet = loggerSs.insertSheet(loggerSs.getNumSheets());
       }
-    /* } */
+      addHeader(sheet,header);
+      result['initSheetNdx'] = sheet.getIndex();
+    }
     return result
   }
 
@@ -119,16 +103,25 @@ class GSpreadsheetLogger extends BaseLogger {
   /** Append an array of log entries to the target sheet **/
   append(logEntries, target) {
 
+    /*DEBUG*/ Logger.log('>>>>>> **** A **** GSpreadsheetLogger.append(logEntries, target)');
+
     var result = false;
     var spreadsheet = null;
     var targets = super.constructor.getDataCollections().filter( function(item){return (item.name==target)} );
 
+    /*DEBUG*/ Logger.log('>>>>>> **** B **** GSpreadsheetLogger.append(logEntries, target)');
+
+    // ISSUE: empty string elements ('') invalidate datasets (2D arrays of data)
     if (targets.length && super.constructor.isDatasetConsistent(logEntries)) {
+
+      /*DEBUG*/ Logger.log('>>>>>> **** C **** GSpreadsheetLogger.append(logEntries, target)');
 
       var logEntriesTarget = targets[0];
       if ( !this.isIdValid() ) { this.initLogger(true) }
       spreadsheet = SpreadsheetApp.openById(this.identifiers.id);
       var sheet = spreadsheet.getSheetByName(target) || spreadsheet.getSheets()[logEntriesTarget.index];
+
+      /*DEBUG*/ Logger.log('>>>>>> **** D **** GSpreadsheetLogger.append(logEntries, target)');
 
       if (!sheet) {
         var initLogSheet = this.constructor.initSheet(
@@ -139,6 +132,7 @@ class GSpreadsheetLogger extends BaseLogger {
                                             );
 
         sheet = spreadsheet.getSheets()[initLogSheet['initSheetNdx'] - 1];
+        /*DEBUG*/ Logger.log('>>>>>> **** E **** GSpreadsheetLogger.append(logEntries, target)');
       }
 
       if ( logEntries[0] instanceof Array ) {
@@ -152,12 +146,15 @@ class GSpreadsheetLogger extends BaseLogger {
         )
         .setValues(logEntries);
         result = true;
-
+        /*DEBUG*/ Logger.log('>>>>>> **** F **** GSpreadsheetLogger.append(logEntries, target)');
       } else if ( logEntries[0] !== Object(logEntries[0]) ) {
         sheet.appendRow(logEntries);
         result = true;
+        /*DEBUG*/ Logger.log('>>>>>> **** G **** GSpreadsheetLogger.append(logEntries, target)');
       } 
+      /*DEBUG*/ Logger.log('>>>>>> **** H **** GSpreadsheetLogger.append(logEntries, target)');
     }
+    /*DEBUG*/ Logger.log('>>>>>> **** I **** GSpreadsheetLogger.append(logEntries, target)');
     return result
   };
 

@@ -15,16 +15,17 @@ function main() {
   var starthour = appSettings['starthour'];
   var finishhour = appSettings['finishhour'];
   var utcoffset = appSettings['utcoffset'];
+  var logLabelsuffix = isValidEmail(appSettings['testEmail'])?' _TEST':'';
   
-  var timeinterval = appSettings['timeinterval']; // 'timeinterval' should never be lower than 10
+  var timeinterval = appSettings['timeinterval']; // Must be 1, 5, 10, 15 or 30. (https://j.mp/3tHq6KC)
   var date = new Date();
-  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * (timeinterval+2);
+  var timeFrom = Math.floor(date.valueOf()/1000 - 60 * (timeinterval+2));
   var searchQuery = 'is:inbox after:' + timeFrom;
   var hour = date.getHours();
   var threads = [];
 
-  // if (true) {   // for testing
-  if ((isAppEnabled === 'true') && ((hour < (finishhour + utcoffset)) || (hour >= (starthour + utcoffset)))) {
+  if (true) {   // for testing
+  //if ((isAppEnabled === 'true') && ((hour < (finishhour + utcoffset)) || (hour >= (starthour + utcoffset)))) {
 
     threads = GmailApp.search(searchQuery);
     
@@ -48,34 +49,33 @@ function main() {
     var filters = appSettings['filters'];
     var processedMsgsLog = [];
 
-    for (i = 0; i < threads.length; i++) {
-
-      var lastMsg = getLastMessage(gmailThread);
+    for (var i = 0; i < threads.length; i++) {
+      var lastMsg = getLastMessage(threads[i]);
       var filterResult = filterMessage(lastMsg, filters);
       var isFilteredOut = filterResult['filterOut'];
       var msgId = lastMsg.getId();
       var isAlreadyProcessed = cache.get(msgId);
 
-      if ( isAlreadyProcessed === null ) {
+      if ( !isAlreadyProcessed ) {
         if ( !isFilteredOut ) {
 
           // Message should be responded to
-          replyToThread(threads[i]);
+          autoReply(threads[i]);
 
           processedMsgsLog.push(
             [
-              'REP SENT',
-              lastMsg.getDate(),
+              'REP SENT' + logLabelsuffix,
+              lastMsg.getDate().toLocaleString(),
               new Date().toLocaleString(),
               msgId,
-              lastMsg.getThread().getId(),
+              threads[i].getId(), //lastMsg.getThread().getId(),
               lastMsg.getFrom(),
               lastMsg.getSubject(),
               ''
             ]
           );
-
-          cache.put(msgId, '', (timeinterval+6)*60);
+          
+          cache.put(msgId, msgId, (timeinterval+6)*60);
 
         } else {
 
@@ -83,22 +83,22 @@ function main() {
 
           processedMsgsLog.push(
             [
-              'SKIPPED',
-              lastMsg.getDate(),
+              'SKIPPED' + logLabelsuffix,
+              lastMsg.getDate().toLocaleString(),
               '',
               msgId,
-              lastMsg.getThread().getId(),
+              threads[i].getId(), //lastMsg.getThread().getId(),
               lastMsg.getFrom(),
               lastMsg.getSubject(),
               filterResult['appliedFilter']
             ]
           );
 
-          cache.put(msgId, '', (timeinterval+6)*60);
+          cache.put(msgId, msgId, (timeinterval+6)*60);
+
         }
       }
     }
-
     loggerInstance.append(processedMsgsLog,'PROCESSED');
   }
 }

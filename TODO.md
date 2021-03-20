@@ -1,16 +1,7 @@
-# Raw Notes
-
 ## TODO
 
-- [x] Web front-end to configure the application.
-- [x] Script to automatically deploy and update the application on Google Apps Script platform.
-- [ ] Log why skipped messages (i.e. messages that have not been responded to) were filtered out : Add some sort of `Matched Filter` column to `Logs` spreadsheet
-- [ ] On `Filter spreadsheet`, save processed messages IDs as hyperlinks to the corresponding Gmail webmail pages. E.g. `https://mail.google.com/mail/u/0/#inbox/1662ab5d8414d32ab0`
 - [ ] Custom time interval for each selected week day.
-- [ ] Optimize writing to Google Sheets for large data using [batch operations](https://developers.google.com/apps-script/guides/support/best-practices#use_batch_operations)
-- [ ] ~~Automatic updater~~
 - Advanced :
-    - [ ] Abstracting logging and filters reading features in order to make it easy to use other (and generic) data formats/sources/targets : _JSON, XML or any API accessible data store._ https://developers.google.com/apps-script/reference/content/
     - [ ] Centrally manage multiple G-Suite users
     - [ ] Use with any email provider (IMAP/SMTP, RESTful API)
 - Address issues causing common errors, as reported during more than 2 years of execution :
@@ -37,13 +28,3 @@
     | 3/12/20 3:06 AM  | autoReply  | Service Spreadsheets timed out while accessing document with id 1jklp1CxY_tShF_8uCky7P8IB_qH7vtTPLnZs56pSdX8. (line 63, file "Code")             | time-based | 3/12/20 3:07 AM  |
 - [ ] Same script app run by multiple accounts (typically in the same organization/domain) :
     - [ ] Use script properties to store global and permanent data to be read by any script user.
-
----------------------------------------------
-
-## 4/3/2020, 11:57:42 PM  (All 25-Apr-2020)
-
-- [Apps Script Execution API showing error with devMode: true - Stack Overflow](https://stackoverflow.com/questions/47892350/apps-script-execution-api-showing-error-with-devmode-true)
-
-- [File upload using doPost on Google Web Apps · tanaike](https://tanaikech.github.io/2017/02/05/file-upload-using-dopost-on-google-web-apps/)
-
-- [How to Convert Microsoft Excel to Google Spreadsheet Format with Apps Script - Digital Inspiration](https://www.labnol.org/code/20500-convert-microsoft-excel-xlsx-to-google-spreadsheet)

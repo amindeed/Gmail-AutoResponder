@@ -35,6 +35,7 @@ function getSettings(){
   var errors = [];
   var settingsObj = {
     'data': {},
+    'extras': {},
     'errors': []
   };
   
@@ -56,9 +57,28 @@ function getSettings(){
       errors.push(e.message);
   }
 
+  settingsObj['extras']['coreAppDateNow'] = new Date().toLocaleString();
   settingsObj['errors'] = errors;
   
   return settingsObj;
+}
+
+
+/** Adjust time trigger interval (in minutes) **/
+function adjustTriggerMinutes(timeinterval) {
+
+  timeinterval = parseInt(timeinterval, 10);
+
+  if (timeinterval && timeinterval < 15) {
+      timeinterval = 10
+    } else if (timeinterval && timeinterval < 30) {
+      timeinterval = 15
+    } else if (timeinterval && timeinterval >= 30) {
+      timeinterval = 30
+    } else {
+      timeinterval = 10
+    }
+  return timeinterval
 }
 
 
@@ -66,6 +86,7 @@ function getSettings(){
 function setSettings(objParams) {
 
   // TODO: check if app needs to be [re]initialized
+  // TODO: var timeinterval = adjustTriggerMinutes(userProperties.getProperty('timeinterval'));
 
   var errors = [
       {
@@ -81,7 +102,7 @@ function setSettings(objParams) {
   try {
       var userProperties = PropertiesService.getUserProperties();
 
-      for (item in objParams) {
+      for (var item in objParams) {
         if (!userProperties.getProperty(item) && userProperties.getProperty(item) !== '') {
           errors[0]['non_existing_properties'].push(item)
         }
@@ -104,10 +125,11 @@ function setSettings(objParams) {
 
 
 /** Init. app settings **/
-function initSettings(reset=false) {
+function initSettings(reset=false, testEmail=null) {
 
   var userProperties = PropertiesService.getUserProperties();
   var currentLogger = userProperties.getProperty('logger');
+  var isTestEmailValid = isValidEmail(testEmail);
   var currentLoggerObj = null;
   var result = {};
 
@@ -125,6 +147,11 @@ function initSettings(reset=false) {
     // Delete any existing/remaining properties and triggers
     userProperties.deleteAllProperties();
     deleteAllTriggers();
+
+    // Check if it's a test deployment
+    if (isTestEmailValid) {
+      userProperties.setProperty('testEmail', testEmail);
+    }
     
     // General settings
     userProperties.setProperty(
@@ -138,7 +165,17 @@ function initSettings(reset=false) {
                                     ]
                           };
     userProperties.setProperty('coreAppEditUrl', JSON.stringify(coreAppEditUrls));
-    userProperties.setProperty('enableApp', false);
+    
+    // 'Enable' flag value; Default time settings (1)
+    if ( isTestEmailValid ) {
+        userProperties.setProperty('enableApp', true)
+        userProperties.setProperty('starthour', 0)
+        userProperties.setProperty('finishhour', 0)
+      } else {
+        userProperties.setProperty('enableApp', false)
+        userProperties.setProperty('starthour', 17)
+        userProperties.setProperty('finishhour', 8)
+      }
 
     // Initialize filters
     var filtersString = JSON.stringify(getDefaultFilters())
@@ -164,10 +201,8 @@ function initSettings(reset=false) {
       userProperties.setProperty('logger', loggerString)
     }
 
-    // Initialize time settings
+    // Default time settings (1)
     userProperties.setProperty('timeinterval', 10)
-    userProperties.setProperty('starthour', 17)
-    userProperties.setProperty('finishhour', 8)
     userProperties.setProperty('utcoffset', 0)
 
     // Initialize email settings
@@ -183,9 +218,10 @@ function initSettings(reset=false) {
     //userProperties.setProperty('appInitialized', 'TheAppHasAlreadyBeenInitialized')
 
     // Create the trigger
+    var timeinterval = parseInt(userProperties.getProperty('timeinterval'));
     ScriptApp.newTrigger('main')
     .timeBased()
-    .everyMinutes(userProperties.getProperty('timeinterval'))
+    .everyMinutes(timeinterval)
     .create();
 
     // Return an object of initialized script user properties
@@ -223,12 +259,10 @@ function getLastMessage(gmailThread) {
 
 /** Reply to Gmail thread, quoting last message **/
 function replyToThread(gmailThread) {
-  
   var userProperties = PropertiesService.getUserProperties();
   var appSettings = userProperties.getProperties();
 
   var lastMsg = getLastMessage(gmailThread);
-
   var receivedMsgFrom = lastMsg.getFrom();
   var receivedMsgTo = lastMsg.getTo();
   var receivedMsgDate = lastMsg.getDate();
@@ -253,4 +287,53 @@ function replyToThread(gmailThread) {
                 noReply: (appSettings['noreply'] === 'true')?true:null
     }
   );
+}
+
+
+/** Reply to test email address **/
+function testReply(gmailThread) {
+
+  var userProperties = PropertiesService.getUserProperties();
+  var testEmail = userProperties.getProperty('testEmail');
+
+  var lastMsg = getLastMessage(gmailThread);
+  var receivedMsgFrom = lastMsg.getFrom();
+  var receivedMsgTo = lastMsg.getTo();
+  var receivedMsgDate = lastMsg.getDate();
+  var receivedMsgSubject = lastMsg.getSubject();
+	var receivedMsgCc = lastMsg.getCc();
+	var receivedMsgBody = lastMsg.getBody();
+
+  var userSetMsgBody = userProperties.getProperty('msgbody');
+  var replyMsgBody = userSetMsgBody?userSetMsgBody:getDefaultMessageBody();
+
+  GmailApp.sendEmail(testEmail, "[TEST] Re: " + receivedMsgSubject, '',
+    {
+      htmlBody: '<strong><mark>****** TEST ******</mark></strong><br/><br/>'
+              + replyMsgBody
+              + '<br/><span style=\"color: #333399;\">'
+              + '-----------------------------------------------------'
+              + '<br/><b>From : </b>' + receivedMsgFrom
+              + '<br/><b>Date : </b>' + receivedMsgDate
+              + '<br/><b>Subject : </b>' + receivedMsgSubject
+              + '<br/><b>To : </b>' + receivedMsgTo
+              + '<br/><b>Cc : </b>' + receivedMsgCc
+              + '</span>'
+              + '<br/><br/>' + receivedMsgBody + '<br/>'
+    }
+  );
+}
+
+
+/** Wrapper auto-reply function **/
+function autoReply(gmailThread) {
+  /* DEBUG */ Logger.log('****** CALLED \'autoReply()\' *********');
+  var userProperties = PropertiesService.getUserProperties();
+  var testEmail = userProperties.getProperty('testEmail')
+
+  if ( isValidEmail(testEmail) ) {
+    return testReply.apply(this, arguments)
+  } else {
+    return replyToThread.apply(this, arguments)
+  }
 }

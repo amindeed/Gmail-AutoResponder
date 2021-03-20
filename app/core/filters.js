@@ -57,7 +57,7 @@ function filterMessage(gmailMessage, filters) {
   var filters = JSON.parse(filters);
 
   for (var key in filters) {
-    for (i = 0; i < filters[key].length; i++) {
+    for (var i = 0; i < filters[key].length; i++) {
       var filter = new RegExp(filters[key][i],'i');
       if ( messageData[key].match(filter) ) {
         filterResult['filterOut'] = true;

@@ -1,5 +1,5 @@
 {
-  "timeZone": "Etc/GMT",
+  "timeZone": "Africa/Casablanca",
   "dependencies": {},
   "webapp": {
     "executeAs": "USER_DEPLOYING",
