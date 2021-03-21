@@ -87,6 +87,7 @@ function setSettings(objParams) {
 
   // TODO: check if app needs to be [re]initialized
   // TODO: var timeinterval = adjustTriggerMinutes(userProperties.getProperty('timeinterval'));
+  // TODO: a trigger update/replacement should follow any modification of the 'timeinterval' property
 
   var errors = [
       {
@@ -165,18 +166,8 @@ function initSettings(reset=false, testEmail=null) {
                                     ]
                           };
     userProperties.setProperty('coreAppEditUrl', JSON.stringify(coreAppEditUrls));
+    userProperties.setProperty('enableApp', false);
     
-    // 'Enable' flag value; Default time settings (1)
-    if ( isTestEmailValid ) {
-        userProperties.setProperty('enableApp', true)
-        userProperties.setProperty('starthour', 0)
-        userProperties.setProperty('finishhour', 0)
-      } else {
-        userProperties.setProperty('enableApp', false)
-        userProperties.setProperty('starthour', 17)
-        userProperties.setProperty('finishhour', 8)
-      }
-
     // Initialize filters
     var filtersString = JSON.stringify(getDefaultFilters())
     userProperties.setProperty('filters', filtersString)
@@ -201,7 +192,9 @@ function initSettings(reset=false, testEmail=null) {
       userProperties.setProperty('logger', loggerString)
     }
 
-    // Default time settings (1)
+    // Default time settings
+    userProperties.setProperty('starthour', 17)
+    userProperties.setProperty('finishhour', 8)
     userProperties.setProperty('timeinterval', 10)
     userProperties.setProperty('utcoffset', 0)
 
@@ -214,9 +207,6 @@ function initSettings(reset=false, testEmail=null) {
     );
     userProperties.setProperty('msgbody', getDefaultMessageBody());
 
-    // Set app as 'already initialized'
-    //userProperties.setProperty('appInitialized', 'TheAppHasAlreadyBeenInitialized')
-
     // Create the trigger
     var timeinterval = parseInt(userProperties.getProperty('timeinterval'));
     ScriptApp.newTrigger('main')
@@ -226,7 +216,6 @@ function initSettings(reset=false, testEmail=null) {
 
     // Return an object of initialized script user properties
     result = userProperties.getProperties();
-
 
   } catch (e) {
     userProperties.deleteAllProperties();

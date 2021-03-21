@@ -13,8 +13,9 @@
   - [1.2. Backend – Middleware: *Django*](#12-backend--middleware-django)
   - [1.3. Frontend: *Django templates + {CSS framework}*](#13-frontend-django-templates--css-framework)
 - [2. Setup](#2-setup)
-- [3. Background](#3-background)
-- [4. License](#4-license)
+- [3. Testing](#3-testing)
+- [4. Background](#3-background)
+- [5. License](#4-license)
 
 
 ## 1. App Architecture
@@ -49,15 +50,17 @@ The **Core** App is a [Google Apps Script](https://script.google.com) app deploy
 | **`IS_GSUITE_USER`** | `Boolean`.                                                                                                                                            |
 | **`enableApp`**      | `Boolean`. *(**default:** `'false'`)*.                                                                                                                |
 | **`coreAppEditUrl`** | `String`. Edit URL of the Apps Script project.                                                                                                        |
-| **`filters`**        | `JSON string`; Message content filters.<br><br>***default:***<br><pre>{<br>    "rawContent": ["report-type=disposition-notification"],<br>    "from": [<br>        "(^&verbar;<)((mailer-daemon&verbar;postmaster)@.*)",<br>        "noreply&verbar;no-reply&verbar;do-not-reply",<br>        ".+@.*\\bgoogle\\.com",<br>        Session.getActiveUser().getEmail()<br>        ],<br>    "to": ["undisclosed-recipients"]<br>}<br></pre>                                                                                                               |
+| **`filters`**        | `JSON string`; Message content filters.<br><br>***default:***<br><pre>{<br>    "rawContent": [<br>        'report-type=disposition-notification', // Read receipts<br>        'Content-Type: multipart/report', // Automatic delivery reports<br>        'report-type=delivery-status', // Automatic delivery reports<br>        'Content-Type: message/delivery-status' // Automatic delivery reports<br>    ],<br>    "from": [<br>        '(^&verbar;<)((mailer-daemon&verbar;postmaster)@.*)',<br>        'noreply&verbar;no-reply&verbar;do-not-reply',<br>        '.+@.*\\bgoogle\\.com',<br>        Session.getActiveUser().getEmail()<br>    ],<br>    "to": [<br>        'undisclosed-recipients' // Potential spams<br>    ]<br>}</pre>                                                                                                               |
 | **`logger`**         | `JSON string`. `identifiers` property of an `AppLogger` class (a child class of [`BaseLogger`](/app/core/BaseLogger.js)) instance.<br><br>Example:<br><pre>{<br>	"id": "ABCDEF",<br>	"viewUri": "https://www.xxxx.yy/ABCDEF?view",<br>	"updateUri": "https://www.xxxx.yy/ABCDEF?update"<br>}</pre>                    |
 | **`timeinterval`**   | `Integer`. *(**default:** `10`)*.                                                                                                                     |
 | **`starthour`**      | `Integer`. *(**default:** `17`)*.                                                                                                                     |
 | **`finishhour`**     | `Integer`. *(**default:** `8`)*.                                                                                                                      |
+| **`utcoffset`**      | `Integer`. *(**default:** `0`)*.                                                                                                                      |
 | **`ccemailadr`**     | `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. <br>***default:** `''`*. |
 | **`bccemailadr`**    | `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. <br>***default:** `''`*. |
 | **`noreply`**        | `Boolean`; whether or not to reply with a `noreply@` email address. <br>***default:** `0` if `IS_GSUITE_USER` === `'true'`, `2` otherwise*.             |
 | **`msgbody`**        | `String`; Response message body in HTML format. <br>***default:** `getDefaultMessageBody()` function return value*.                                     |
+| **`testEmail `**     | `String`. *(**default:** `null` or `''`)*. <br>If set to a valid email address, `enableApp`, `starthour` and `finishhour` will be ignored, and a test message to that address will be sent in response to any received “non-filterable-out” email. <br>Deleting the property or setting it to `''` (or any other non-valid email value) will switch the application from its ***“Test Mode”***.  |
 
 
 #### 1.1.2. Execution
@@ -86,8 +89,8 @@ On each execution, the following information are logged to the `AppLogger` class
      
 The default logger is a **[Google Spreadsheet](/app/core/GSpreadsheetLogger.js)**, but it is fairly easy to extend the **[`BaseLogger`]((/app/core/BaseLogger.js))** class to create other logging targets as long as the following points are considered :
 - The database has a REST API.
-- Possibility to connect with Read/Write permissions to an existing instance, or create a new one.
-- Possibility to create two data collections: PROCESSED and EXECUTIONS (e.g.: `GSpreadsheets`: *sheets*, `SQL`: *tables*, `DocumentDB`: *collections*), each with the specified data fields (e.g.: `GSpreadsheets`: *columns/header*, `SQL`: *columns*, `DocumentDB`: *fields*).
+- Possibility to connect with Read/Write permissions to an existing instance (database), or create a new one if required.
+- Possibility to create two ***data collections***: PROCESSED and EXECUTIONS (e.g.: `GSpreadsheets`: *sheets*, `SQL`: *tables*, `DocumentDB`: *collections*), each with the specified ***data fields*** (e.g.: `GSpreadsheets`: *columns/header*, `SQL`: *columns*, `DocumentDB`: *fields*).
 - Logs would then be stored as single entries or 2D datasets (e.g.: `GSpreadsheets`: *rows*, `SQL`: *records*, `DocumentDB`: *documents*).
 
 ### 1.2. Backend – Middleware: *Django*
@@ -111,14 +114,21 @@ The **Frontend** part is basically a Django template providing access to all nee
 *Being revised. Coming soon.*
 
 
-## 3. Background
+## 3. Testing
 
-I [started](https://github.com/amindeed/Gmail-AutoResponder/blob/master/worklog.md#2017-07-26-code) **Gmail AutoResponder** back in 2017 as a script to manage automatic email responses beyond the active hours of the company I worked for.   
+*More details to come soon.*
+
+It is possible to deploy the app in ***Test Mode*** by calling the `initSettings()` function with a test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`.
+
+
+## 4. Background
+
+I [started](https://github.com/amindeed/Gmail-AutoResponder/blob/master/worklog.md#2017-07-26-code) **Gmail AutoResponder** back in 2017 as a script to manage automatic email responses outside the active hours of a company I worked for.   
 Although it was possible to set Gmail to individually send [canned responses](https://support.google.com/mail/thread/14877273?hl=en&msgid=14879088), I could neither make time-specific filters nor programmatically make Gmail trigger an event upon email reception. So, inspired by an [answer](https://webapps.stackexchange.com/a/90089) on one of StackExchange forums, I had to figure out a way around and ultimately ended up with a [basic Apps Script app](https://github.com/amindeed/Gmail-AutoResponder/tree/796a6d84f1e7287b8a936083ae8f507035a28215/app), 6 instances of which have amazingly run for almost 3 years and processed more than 17k messages!  
   
 To see how the project progressed, check [`worklog.md`](worklog.md).
 
 
-## 4. License
+## 5. License
 
 This software is under the [MIT license](LICENSE).

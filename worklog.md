@@ -1,10 +1,19 @@
 # Work Log
 
+## 2021-03-21
+
+- Been thoroughly testing Core app features.
+- Added and tested/verified more default `rawContent` email filters (for automatic Delivery Reports):
+    - `Content-Type: multipart/report`
+    - `report-type=delivery-status`
+    - `Content-Type: message/delivery-status`
+
+
 ## 2021-03-20
 
 - Added **TestApp** deployment option, by providing a test email address passed as a second argument to the `initSettings()` function, which will enable the app right after the initialization process, but will start sending test automatic responses to the provided email address instead of the original senders.
 - Added a wrapper function **`autoReply()`** which will either call `replyTest()` or `replyToThread()`, depending on the value and validity of the `testEmail` script user property.
-- **`checkSpreadsheetById(id)`** method of the **`GSpreadsheetLogger`** now additionally checks is the Spreadsheet is trashed.
+- **`checkSpreadsheetById(id)`** method of the **`GSpreadsheetLogger`** now additionally checks if the Spreadsheet is trashed.
 - [`raw_notes.md`](https://github.com/amindeed/Gmail-AutoResponder/blob/7bb3232790055560dbd3fa6b02ca5d002c936a60/raw_notes.md) updated and renamed `TODO.md` for convenience, as a number of issues have already been addressed.
 - Some [`main.js`](/app/core/main.js) refinements.
 

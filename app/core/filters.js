@@ -10,14 +10,21 @@
 /** Get default message filters **/
 function getDefaultFilters() {
   return {
-      "rawContent": ['report-type=disposition-notification'],
+      "rawContent": [
+        'report-type=disposition-notification', // Read receipts
+        'Content-Type: multipart/report', // Automatic delivery reports
+        'report-type=delivery-status', // Automatic delivery reports
+        'Content-Type: message/delivery-status' // Automatic delivery reports
+        ],
       "from": [
         '(^|<)((mailer-daemon|postmaster)@.*)',
         'noreply|no-reply|do-not-reply',
         '.+@.*\\bgoogle\\.com',
         Session.getActiveUser().getEmail()
         ],
-      "to": ['undisclosed-recipients']
+      "to": [
+        'undisclosed-recipients' // Potential spams
+        ] 
     }
 }
 

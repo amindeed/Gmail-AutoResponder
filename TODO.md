@@ -1,6 +1,7 @@
 ## TODO
 
 - [ ] Custom time interval for each selected week day.
+- [ ] Form data (App settings) validation on frontend.
 - Advanced :
     - [ ] Centrally manage multiple G-Suite users
     - [ ] Use with any email provider (IMAP/SMTP, RESTful API)

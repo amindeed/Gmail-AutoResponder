@@ -15,7 +15,7 @@ function main() {
   var starthour = appSettings['starthour'];
   var finishhour = appSettings['finishhour'];
   var utcoffset = appSettings['utcoffset'];
-  var logLabelsuffix = isValidEmail(appSettings['testEmail'])?' _TEST':'';
+  var logLabelsuffix = '';
   
   var timeinterval = appSettings['timeinterval']; // Must be 1, 5, 10, 15 or 30. (https://j.mp/3tHq6KC)
   var date = new Date();
@@ -23,9 +23,17 @@ function main() {
   var searchQuery = 'is:inbox after:' + timeFrom;
   var hour = date.getHours();
   var threads = [];
+  var execCondition = false;
 
-  if (true) {   // for testing
-  //if ((isAppEnabled === 'true') && ((hour < (finishhour + utcoffset)) || (hour >= (starthour + utcoffset)))) {
+  /** Check if it's a test instance **/
+  if (isValidEmail(appSettings['testEmail'])) {
+    execCondition = true;
+    logLabelsuffix = '__TEST';
+  } else {
+    execCondition = (isAppEnabled === 'true') && ((hour < (finishhour + utcoffset)) || (hour >= (starthour + utcoffset)));
+  }
+
+  if (execCondition) {
 
     threads = GmailApp.search(searchQuery);
     
@@ -64,11 +72,11 @@ function main() {
 
           processedMsgsLog.push(
             [
-              'REP SENT' + logLabelsuffix,
+              'REP_SENT' + logLabelsuffix,
               lastMsg.getDate().toLocaleString(),
               new Date().toLocaleString(),
               msgId,
-              threads[i].getId(), //lastMsg.getThread().getId(),
+              threads[i].getId(),
               lastMsg.getFrom(),
               lastMsg.getSubject(),
               ''
@@ -87,7 +95,7 @@ function main() {
               lastMsg.getDate().toLocaleString(),
               '',
               msgId,
-              threads[i].getId(), //lastMsg.getThread().getId(),
+              threads[i].getId(),
               lastMsg.getFrom(),
               lastMsg.getSubject(),
               filterResult['appliedFilter']
@@ -95,7 +103,6 @@ function main() {
           );
 
           cache.put(msgId, msgId, (timeinterval+6)*60);
-
         }
       }
     }

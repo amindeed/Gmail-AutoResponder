@@ -53,6 +53,13 @@ function isEmpty(obj) {
   return Object.keys(obj).length === 0 && obj.constructor === Object
 }
 
+
+/** Check if String is empty/null/undefined **/
+function isStringEmpty(str) {
+    return (!str || 0 === str.length)
+}
+
+
 /** Validate email address **/
 function isValidEmail(emailAdr) {
   
