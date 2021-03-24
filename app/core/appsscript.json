@@ -1,10 +1,6 @@
 {
   "timeZone": "Africa/Casablanca",
   "dependencies": {},
-  "webapp": {
-    "executeAs": "USER_DEPLOYING",
-    "access": "MYSELF"
-  },
   "exceptionLogging": "STACKDRIVER",
   "oauthScopes": [
     "https://mail.google.com/",

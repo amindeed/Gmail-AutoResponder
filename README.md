@@ -13,6 +13,9 @@
   - [1.2. Backend – Middleware: *Django*](#12-backend--middleware-django)
   - [1.3. Frontend: *Django templates + {CSS framework}*](#13-frontend-django-templates--css-framework)
 - [2. Setup](#2-setup)
+  - [2.1. Provision (Mostly manual)](#21-provision-mostly-manual)
+  - [2.2. Configure (Automated)](#22-configure-automated)
+  - [2.3. Deploy (Automated)](#23-deploy-automated)
 - [3. Testing](#3-testing)
 - [4. Background](#3-background)
 - [5. License](#4-license)
@@ -87,7 +90,7 @@ On each execution, the following information are logged to the `AppLogger` class
   - _Applied filter_ (if the message was skipped).
 - **`EXECUTIONS`:** The Gmail search query, along with the execution time and the number of threads returned (i.e. number of search results).
      
-The default logger is a **[Google Spreadsheet](/app/core/GSpreadsheetLogger.js)**, but it is fairly easy to extend the **[`BaseLogger`]((/app/core/BaseLogger.js))** class to create other logging targets as long as the following points are considered :
+The default logger is a **[Google Spreadsheet](/app/core/GSpreadsheetLogger.js)**, but it is fairly easy to extend the **[`BaseLogger`](/app/core/BaseLogger.js)** class to create other logging targets as long as the following points are considered :
 - The database has a REST API.
 - Possibility to connect with Read/Write permissions to an existing instance (database), or create a new one if required.
 - Possibility to create two ***data collections***: PROCESSED and EXECUTIONS (e.g.: `GSpreadsheets`: *sheets*, `SQL`: *tables*, `DocumentDB`: *collections*), each with the specified ***data fields*** (e.g.: `GSpreadsheets`: *columns/header*, `SQL`: *columns*, `DocumentDB`: *fields*).
@@ -111,7 +114,57 @@ The **Frontend** part is basically a Django template providing access to all nee
 
 ## 2. Setup
 
-*Being revised. Coming soon.*
+***Being actively revised..***
+
+### 2.1. Provision (Mostly manual)
+- **Tools to be installed on the development/client machine:** `git`, `Python`, `clasp`, SSH/FTP client, (`Ansible`).
+- **Google Cloud Platform (GCP) Project:**
+	- OAuth Consent Screen: 
+	- Authenticate
+	- Create GCP project
+	- Enable APIs
+	- Get project number
+	- Get (and go to) "OAuth Consent Screen" configuration URL
+		- App name, User support email, App logo (optional), Authorized domains (optional, e.g. for assets and static files), Developer contact information (Email addresses)
+		- Configure OAuth Consent Screen: *Scopes, redirect URI,...*
+	- Get (and go to) "Credentials" creation URL
+	- Download `credentials.json` (OAuth Client ID credentials file).
+- **Google AppsScript:** Create and configure a blank Apps Script project, to be deployed as an API executable.
+	- Login
+	- Enable Google Apps Script API, by going to Settings menu on the page : https://script.google.com/home/usersettings
+	- Associate Google Apps Script project to the GCP project
+	- Deploy as an API Executable Google Apps Script project
+- Prepare a Linux (CEntOS) machine (with SSH access).
+
+| |
+|:-|
+| **Output:** <br>`credentials.json`, `script_deployment_id.py` |
+
+### 2.2. Configure (Automated)
+
+| |
+|:-|
+| **Input:** <br>`credentials.json`, `script_deployment_id.py`, `SERVER_IP_ADDRESS`, `SSH_CREDENTIALS`, `SITE_FILES_PATH`; `SITE_URL` or `DOMAIN`+`PATH` |
+
+- **Tools to be considered:** Ansible, Python, Bash
+- Install and configure (Server-side, Centos): OpenSSH/SCP, NGINX, uWSGI, SSL (HTTPS)
+
+### 2.3. Deploy (Automated)
+
+| |
+|:-|
+| **Input:** <br>`TIMEZONE`, `AppLogger` class (for Core) |
+
+- **Tools to be considered:** Ansible, Python, Bash
+- Two types of deployments to be considered: 
+	- **`Dev.`**:
+		- **`Core`**: Apps Script project [Head deployments](https://developers.google.com/apps-script/concepts/deployments#head_deployments).
+		- **`Middleware`**: [Django development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server)
+	- **`Prod.`**:
+		- **`Core`**: Apps Script project [Versioned deployments](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments).
+		- **`Middleware`**:
+			- `Apache` + `mod_wsgi`, or `NGinx` + `uWSGI`.
+			- SSL certificate: *Let's Encrypt, Certbot*
 
 
 ## 3. Testing

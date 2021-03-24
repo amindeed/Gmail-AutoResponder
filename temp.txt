@@ -1,0 +1,8 @@
+
+# Centos 7
+
+sudo yum -y install nodejs
+sudo npm i @google/clasp -g
+sudo yum update
+
+[How To Install Latest Nodejs on CentOS 7 - TecAdmin](https://tecadmin.net/install-latest-nodejs-and-npm-on-centos/)

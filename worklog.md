@@ -7,6 +7,7 @@
     - `Content-Type: multipart/report`
     - `report-type=delivery-status`
     - `Content-Type: message/delivery-status`
+- Temporarily removed `webapp` key from `appsscript.json`.
 
 
 ## 2021-03-20
