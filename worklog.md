@@ -1,5 +1,9 @@
 # Work Log
 
+## 2021-03-25
+
+Drafting the "Setup and Run" part of the README and updating code accordingly.
+
 ## 2021-03-21
 
 - Been thoroughly testing Core app features.

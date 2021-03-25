@@ -9,7 +9,7 @@ from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 from google.oauth2.credentials import Credentials
 from django.contrib.auth import logout
-from script_deployment_id import *
+from script_run_parameters import *
 from .forms import SettingsForm
 
 SCOPES = [
@@ -83,7 +83,7 @@ def get_settings(request):
 
         try:
             response = service.scripts().run(body=getSettings_api_request,
-                    scriptId=SCRIPT_DEPLOYMENT_ID).execute()
+                    scriptId=SCRIPT_ID).execute()
 
             if 'error' in response:
                 # The API executed, but the script returned an error.
@@ -121,7 +121,8 @@ def update_settings(request):
 
             setSettings_api_request = {
                 "function": "setSettings",
-                "parameters": parameters
+                "parameters": parameters,
+                "devMode": devMode
             }
 
             try:

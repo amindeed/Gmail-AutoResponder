@@ -7,18 +7,17 @@
 
 - [1. App Architecture](#1-app-architecture)
   - [1.1. Backend – Core: *Google Apps Script*](#11-backend--core-google-apps-script)
-    - [1.1.1. App Settings](#111-app-settings)
-    - [1.1.2. Execution](#112-execution)
-    - [1.1.3. Logging](#113-logging)
+  	- [1.1.1. App Settings](#111-app-settings)
+  	- [1.1.2. Execution](#112-execution)
+  	- [1.1.3. Logging](#113-logging)
   - [1.2. Backend – Middleware: *Django*](#12-backend--middleware-django)
   - [1.3. Frontend: *Django templates + {CSS framework}*](#13-frontend-django-templates--css-framework)
-- [2. Setup](#2-setup)
-  - [2.1. Provision (Mostly manual)](#21-provision-mostly-manual)
-  - [2.2. Configure (Automated)](#22-configure-automated)
-  - [2.3. Deploy (Automated)](#23-deploy-automated)
-- [3. Testing](#3-testing)
-- [4. Background](#3-background)
-- [5. License](#4-license)
+- [2. Setup and Run](#2-setup-and-run)
+  - [2.1. Provision *(Mostly manual)*](#21-provision-mostly-manual)
+  - [2.2. Configure *(Automated)*](#22-configure-automated)
+  - [2.3. Continuous Deployment (CD)](#23-continuous-deployment-cd)
+- [3. Background](#3-background)
+- [4. License](#4-license)
 
 
 ## 1. App Architecture
@@ -30,19 +29,7 @@
 
 ### 1.1. Backend – Core: *Google Apps Script*
 
-The **Core** App is a [Google Apps Script](https://script.google.com) app deployed as an [API executable](https://developers.google.com/apps-script/api/how-tos/execute#step_2_deploy_the_script_as_an_api_executable), and associated to a standard (user-managed) GCP project with the following [Google Services APIs](https://cloud.google.com/service-usage/docs/enable-disable) and [OAuth2 scopes](https://developers.google.com/identity/protocols/oauth2/scopes) enabled:
-- **APIs:** `Apps Script API`, `Google Drive API`, `Gmail API` and `Google Sheets API`.
-- **Scopes:**
-  - `openid`, 
-  - `https://www.googleapis.com/auth/script.scriptapp`, 
-  - `https://mail.google.com/`, 
-  - `https://www.googleapis.com/auth/drive`, 
-  - `https://www.googleapis.com/auth/userinfo.email`, 
-  - `https://www.googleapis.com/auth/spreadsheets`, 
-  - `https://www.googleapis.com/auth/userinfo.profile`.
-
-
-**Core** App is thus manageable with 3 functions: **`initSettings()`**, **`getSettings()`** and **`setSettings()`**, all run through the [Apps Script API](https://developers.google.com/apps-script/api/how-tos/execute) using the [Python client library](https://github.com/googleapis/google-api-python-client).
+The **Core** App is a [Google Apps Script](https://script.google.com) app deployed as an [API executable](https://developers.google.com/apps-script/api/how-tos/execute#step_2_deploy_the_script_as_an_api_executable), and managed through the [Apps Script API](https://developers.google.com/apps-script/api/how-tos/execute) using the [Python client library](https://github.com/googleapis/google-api-python-client).
 
 #### 1.1.1. App Settings
 
@@ -63,7 +50,7 @@ The **Core** App is a [Google Apps Script](https://script.google.com) app deploy
 | **`bccemailadr`**    | `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. <br>***default:** `''`*. |
 | **`noreply`**        | `Boolean`; whether or not to reply with a `noreply@` email address. <br>***default:** `0` if `IS_GSUITE_USER` === `'true'`, `2` otherwise*.             |
 | **`msgbody`**        | `String`; Response message body in HTML format. <br>***default:** `getDefaultMessageBody()` function return value*.                                     |
-| **`testEmail `**     | `String`. *(**default:** `null` or `''`)*. <br>If set to a valid email address, `enableApp`, `starthour` and `finishhour` will be ignored, and a test message to that address will be sent in response to any received “non-filterable-out” email. <br>Deleting the property or setting it to `''` (or any other non-valid email value) will switch the application from its ***“Test Mode”***.  |
+| **`testEmail `**     | `String`. *(**default:** `null` or `''`)*. <br><br>If set to a valid email address, `enableApp`, `starthour` and `finishhour` will be ignored, and a test message to that address will be sent in response to any received “non-filterable-out” email. <br>Deleting the property or setting it to `''` (or any other non-valid email value) will switch the application from its ***“Test Mode”***.  |
 
 
 #### 1.1.2. Execution
@@ -112,69 +99,96 @@ It is a Django app providing the following features:
 The **Frontend** part is basically a Django template providing access to all needed features: Logged-in user information on top of a form to view and update [App Settings](#111-app-settings), along with ***Logout*** and App ***Enable/Disable/Reset*** commands.
 
 
-## 2. Setup
+## 2. Setup and Run
+### 2.1. Provision *(Mostly manual)*
 
-***Being actively revised..***
+- **Requirements:** 
+	- [`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+	- [`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) and [`paramiko`](http://www.paramiko.org/installing.html)
+	- [`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)
+	- A Google account
+	- A Linux (CEntOS 7) server, manageable through SSH
 
-### 2.1. Provision (Mostly manual)
-- **Tools to be installed on the development/client machine:** `git`, `Python`, `clasp`, SSH/FTP client, (`Ansible`).
-- **Google Cloud Platform (GCP) Project:**
-	- OAuth Consent Screen: 
-	- Authenticate
-	- Create GCP project
-	- Enable APIs
-	- Get project number
-	- Get (and go to) "OAuth Consent Screen" configuration URL
-		- App name, User support email, App logo (optional), Authorized domains (optional, e.g. for assets and static files), Developer contact information (Email addresses)
-		- Configure OAuth Consent Screen: *Scopes, redirect URI,...*
-	- Get (and go to) "Credentials" creation URL
-	- Download `credentials.json` (OAuth Client ID credentials file).
-- **Google AppsScript:** Create and configure a blank Apps Script project, to be deployed as an API executable.
-	- Login
-	- Enable Google Apps Script API, by going to Settings menu on the page : https://script.google.com/home/usersettings
-	- Associate Google Apps Script project to the GCP project
+- **Step 1:** [Create](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) and configure a Google Cloud Platform (GCP) Project:
+	- Enable required [Google APIs](https://cloud.google.com/service-usage/docs/enable-disable): 
+    	- `Apps Script API`
+    	- `Google Drive API`
+    	- `Gmail API`
+    	- `Google Sheets API`
+	- [Configure](https://support.google.com/cloud/answer/6158849?ref_topic=3473162#userconsent) the OAuth Consent Screen: 
+		- Set [OAuth2 scopes](https://developers.google.com/identity/protocols/oauth2/scopes):
+			- `openid`
+			- `https://www.googleapis.com/auth/script.scriptapp`
+			- `https://mail.google.com/`
+			- `https://www.googleapis.com/auth/drive`
+			- `https://www.googleapis.com/auth/userinfo.email`
+			- `https://www.googleapis.com/auth/spreadsheets`
+			- `https://www.googleapis.com/auth/userinfo.profile`
+	- Get the [Project number](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects).
+	- [Create OAuth credentials](https://developers.google.com/apps-script/guides/cloud-platform-projects#creating_oauth_credentials): 
+    	- Create **OAuth client ID** credentials for a **Web Application**.
+		- Set **`Redirect URIs`**: `http://127.0.0.1:8000/auth/` *(local, development)*, `{APP_BASE_URL}/auth/` *(staging, production)*.
+		- Download the JSON file containing the *client ID* and *client secret* and save it as [`credentials.json`](/app/backend/python/credentials_template.json).
+
+- **Step 2:** Create a Google Apps Script Project:
+
+	- Enable Google Apps Script API, from the [Apps Script dashboard](https://script.google.com/home/usersettings).
+	- Create a API Executable Apps Script project and push Core app code to it:
+
+		```bash
+		mkdir ./gmail-autoresponder && cd ./gmail-autoresponder/
+		git clone git@github.com:amindeed/Gmail-AutoResponder.git .
+		cd app/core
+		clasp login
+		# Default (global) credentials will be saved to: ~/.clasprc.json
+		# N.B. If that didn't work, use the '--no-localhost' option, 
+		# visit the provided URL, grant `clasp` required permissions, 
+		# and copy/paste the code from the next web page. 
+		clasp create --type api --title "Gmail AutoResponder"
+		clasp push --force
+		```
+
+	- Switch Apps Script projet's Google Cloud Project association to the standard (user-managed) project created in ***Step 1***, by [providing its number](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project).
 	- Deploy as an API Executable Google Apps Script project
-- Prepare a Linux (CEntOS) machine (with SSH access).
 
-| |
-|:-|
-| **Output:** <br>`credentials.json`, `script_deployment_id.py` |
+> **Output:** <br>`credentials.json`, `script_deployment_id.py`
 
-### 2.2. Configure (Automated)
+### 2.2. Configure *(Automated)*
 
-| |
-|:-|
-| **Input:** <br>`credentials.json`, `script_deployment_id.py`, `SERVER_IP_ADDRESS`, `SSH_CREDENTIALS`, `SITE_FILES_PATH`; `SITE_URL` or `DOMAIN`+`PATH` |
+> **Input:** <br>`credentials.json`, `script_deployment_id.py`, `SERVER_IP_ADDRESS`, `SSH_CREDENTIALS`, `SITE_FILES_PATH`; `SITE_URL` or `DOMAIN`+`PATH`
 
 - **Tools to be considered:** Ansible, Python, Bash
 - Install and configure (Server-side, Centos): OpenSSH/SCP, NGINX, uWSGI, SSL (HTTPS)
 
-### 2.3. Deploy (Automated)
+### 2.3. Continuous Deployment (CD)
 
-| |
-|:-|
-| **Input:** <br>`TIMEZONE`, `AppLogger` class (for Core) |
+> **Input:** <br>`TIMEZONE`, `AppLogger` class (for Core)
+
+There are two types of deployments: 
+
+- **Development**: the user (Google account) would be the owner of the Apps Script project. The HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run), should be set to `true`. The [Django development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server) will be used locally.
+    - > User == Owner + `Script ID` + `"devMode": True`
+
+- **Production**: using Apps Script [versioned deployments](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), with the {`NGinx` + `uWSGI` + `certbot`, on *`CEntOS 7`*} software suite for the Django part of the backend.
+	- > User == any + `Deployment ID` + `"devMode": False`
+
+In both cases, it is possible to set the app to ***Test Mode*** by calling the `initSettings()` function with a test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`.
+
+```bash
+# Stop any running Django App
+cd ./gmail-autoresponder/
+git pull origin master
+cd app/core
+clasp push --force
+# Set `TIMEZONE`, `AppLogger` class name
+# Deploy using clasp
+# Get Deployment ID --> ../backend/python/script_deployment_id.py
+# Launch Django App
+```
 
 - **Tools to be considered:** Ansible, Python, Bash
-- Two types of deployments to be considered: 
-	- **`Dev.`**:
-		- **`Core`**: Apps Script project [Head deployments](https://developers.google.com/apps-script/concepts/deployments#head_deployments).
-		- **`Middleware`**: [Django development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server)
-	- **`Prod.`**:
-		- **`Core`**: Apps Script project [Versioned deployments](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments).
-		- **`Middleware`**:
-			- `Apache` + `mod_wsgi`, or `NGinx` + `uWSGI`.
-			- SSL certificate: *Let's Encrypt, Certbot*
 
-
-## 3. Testing
-
-*More details to come soon.*
-
-It is possible to deploy the app in ***Test Mode*** by calling the `initSettings()` function with a test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`.
-
-
-## 4. Background
+## 3. Background
 
 I [started](https://github.com/amindeed/Gmail-AutoResponder/blob/master/worklog.md#2017-07-26-code) **Gmail AutoResponder** back in 2017 as a script to manage automatic email responses outside the active hours of a company I worked for.   
 Although it was possible to set Gmail to individually send [canned responses](https://support.google.com/mail/thread/14877273?hl=en&msgid=14879088), I could neither make time-specific filters nor programmatically make Gmail trigger an event upon email reception. So, inspired by an [answer](https://webapps.stackexchange.com/a/90089) on one of StackExchange forums, I had to figure out a way around and ultimately ended up with a [basic Apps Script app](https://github.com/amindeed/Gmail-AutoResponder/tree/796a6d84f1e7287b8a936083ae8f507035a28215/app), 6 instances of which have amazingly run for almost 3 years and processed more than 17k messages!  
@@ -182,6 +196,6 @@ Although it was possible to set Gmail to individually send [canned responses](ht
 To see how the project progressed, check [`worklog.md`](worklog.md).
 
 
-## 5. License
+## 4. License
 
 This software is under the [MIT license](LICENSE).
