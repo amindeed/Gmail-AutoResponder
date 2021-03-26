@@ -83,7 +83,7 @@ def get_settings(request):
 
         try:
             response = service.scripts().run(body=getSettings_api_request,
-                    scriptId=SCRIPT_ID).execute()
+                    scriptId=CORE_APP_ID).execute()
 
             if 'error' in response:
                 # The API executed, but the script returned an error.

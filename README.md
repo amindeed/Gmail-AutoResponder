@@ -33,35 +33,36 @@ The **Core** App is a [Google Apps Script](https://script.google.com) app deploy
 
 #### 1.1.1. App Settings
 
-**App settings** are managed as [Apps Script User Properties](https://developers.google.com/apps-script/reference/properties/properties-service#getUserProperties()), and so are all [stored as strings in key-value pairs](https://developers.google.com/apps-script/guides/properties#data_format). Properties types here are only indicative, and often refer to their corresponding Django Forms Field classes in the **Middleware** App:
+**App settings** are managed as [Apps Script User Properties](https://developers.google.com/apps-script/reference/properties/properties-service#getUserProperties()), and so are all [stored as strings in key-value pairs](https://developers.google.com/apps-script/guides/properties#data_format).   
+Properties types here are only indicative, and often refer to their corresponding Django Forms Field classes in the **Middleware** App:
 
 | Property             | Description                                                                                                                                           |
 |----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **`IS_GSUITE_USER`** | `Boolean`.                                                                                                                                            |
-| **`enableApp`**      | `Boolean`. *(**default:** `'false'`)*.                                                                                                                |
+| **`IS_GSUITE_USER`** | `Boolean`                                                                                                                                            |
+| **`enableApp`**      | `Boolean`. *(**default:** `'false'`)*                                                                                                                |
 | **`coreAppEditUrl`** | `String`. Edit URL of the Apps Script project.                                                                                                        |
 | **`filters`**        | `JSON string`; Message content filters.<br><br>***default:***<br><pre>{<br>    "rawContent": [<br>        'report-type=disposition-notification', // Read receipts<br>        'Content-Type: multipart/report', // Automatic delivery reports<br>        'report-type=delivery-status', // Automatic delivery reports<br>        'Content-Type: message/delivery-status' // Automatic delivery reports<br>    ],<br>    "from": [<br>        '(^&verbar;<)((mailer-daemon&verbar;postmaster)@.*)',<br>        'noreply&verbar;no-reply&verbar;do-not-reply',<br>        '.+@.*\\bgoogle\\.com',<br>        Session.getActiveUser().getEmail()<br>    ],<br>    "to": [<br>        'undisclosed-recipients' // Potential spams<br>    ]<br>}</pre>                                                                                                               |
 | **`logger`**         | `JSON string`. `identifiers` property of an `AppLogger` class (a child class of [`BaseLogger`](/app/core/BaseLogger.js)) instance.<br><br>Example:<br><pre>{<br>	"id": "ABCDEF",<br>	"viewUri": "https://www.xxxx.yy/ABCDEF?view",<br>	"updateUri": "https://www.xxxx.yy/ABCDEF?update"<br>}</pre>                    |
-| **`timeinterval`**   | `Integer`. *(**default:** `10`)*.                                                                                                                     |
-| **`starthour`**      | `Integer`. *(**default:** `17`)*.                                                                                                                     |
-| **`finishhour`**     | `Integer`. *(**default:** `8`)*.                                                                                                                      |
-| **`utcoffset`**      | `Integer`. *(**default:** `0`)*.                                                                                                                      |
-| **`ccemailadr`**     | `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. <br>***default:** `''`*. |
-| **`bccemailadr`**    | `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. <br>***default:** `''`*. |
+| **`timeinterval`**   | `Integer`. *(**default:** `10`)*                                                                                                                     |
+| **`starthour`**      | `Integer`. *(**default:** `17`)*                                                                                                                     |
+| **`finishhour`**     | `Integer`. *(**default:** `8`)*                                                                                                                      |
+| **`utcoffset`**      | `Integer`. *(**default:** `0`)*                                                                                                                      |
+| **`ccemailadr`**     | `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. <br>***default:** `''`* |
+| **`bccemailadr`**    | `String`, one or a [RFC-compliant](https://tools.ietf.org/html/rfc2822#section-3.4.1) comma-separated list of email addresses. <br>***default:** `''`* |
 | **`noreply`**        | `Boolean`; whether or not to reply with a `noreply@` email address. <br>***default:** `0` if `IS_GSUITE_USER` === `'true'`, `2` otherwise*.             |
 | **`msgbody`**        | `String`; Response message body in HTML format. <br>***default:** `getDefaultMessageBody()` function return value*.                                     |
-| **`testEmail `**     | `String`. *(**default:** `null` or `''`)*. <br><br>If set to a valid email address, `enableApp`, `starthour` and `finishhour` will be ignored, and a test message to that address will be sent in response to any received “non-filterable-out” email. <br>Deleting the property or setting it to `''` (or any other non-valid email value) will switch the application from its ***“Test Mode”***.  |
+| **`testEmail`**     | `String`. *(**default:** `null` or `''`)* <br><br>If set to a valid email address, `enableApp`, `starthour` and `finishhour` will be ignored, and a test message to that address will be sent in response to any received “non-filterable-out” email. <br>Deleting the property or setting it to `''` (or any other non-valid email value) will switch the application from its ***“Test Mode”***.  |
 
 
 #### 1.1.2. Execution
 
-When the **Core** App is enabled (i.e. `enableApp === 'true'`), `main()` function of the main script `main.js` will be continuously executed (triggered) on a recurring interval of `timeinterval` (+`2`) minutes from (`starthour` + `utcoffset`) to (`finishhour` + `utcoffset`). On each execution, which we'll refer to as **_Execution n_**, the function issues a [Gmail search query](https://developers.google.com/apps-script/reference/gmail/gmail-app#search%28String%29) to fetch last received messages.  
-The search query returns an array of [Gmail threads](https://developers.google.com/apps-script/reference/gmail/gmail-thread) that were updated in the last `timeinterval` (+`2`) minutes. The last [message](https://developers.google.com/apps-script/reference/gmail/gmail-message) of each of these threads is extracted and processed, i.e. it would either be responded to or skipped if it matches one of the exclusion filters in the `filters` property.   
+When the **Core** App is enabled (i.e. `enableApp === 'true'`), `main()` function of the main script `main.js` will be continuously executed (triggered) on a recurring interval of `timeinterval` (+`2`) minutes from (`starthour` + `utcoffset`) to (`finishhour` + `utcoffset`).  
+On each execution, which we'll refer to as **_Execution n_**, the function issues a [Gmail search query](https://developers.google.com/apps-script/reference/gmail/gmail-app#search%28String%29) to fetch last received messages. The search query returns an array of [Gmail threads](https://developers.google.com/apps-script/reference/gmail/gmail-thread) that were updated in the last `timeinterval` (+`2`) minutes. The last [message](https://developers.google.com/apps-script/reference/gmail/gmail-message) of each of these threads is extracted and processed, i.e. it would either be responded to or skipped if it matches one of the exclusion filters in the `filters` property.   
 A **_Session_** is a series of [triggered executions](https://developers.google.com/apps-script/guides/triggers/installable#time-driven_triggers) within a 24 hours span (e.g. from __05-Sep-2018 @7:00pm__ to __06-Sep-2018 @7:00am__).
    
 In order to neither miss a message nor send an automated response more than once :
 1. Although **_Execution (n-1)_** would normally have occurred `timeinterval` minutes ago, received messages are fetched from the last (`timeinterval` + `2`) minutes, in order not to miss any messages in case of a delay.
-2. **[IDs](https://developers.google.com/apps-script/reference/gmail/gmail-message#getId%28%29)** of processed messages from **_Execution (n-1)_** are [cached with a (`timeinterval` + `6`) minutes timeout](https://developers.google.com/apps-script/reference/cache/cache#put%28String%2CString%2CInteger%29). During **_Execution n_**, IDs of retrieved messages are checked against this cache to determine whether they were already processed or not.
+2. **[IDs](https://developers.google.com/apps-script/reference/gmail/gmail-message#getId%28%29)** of processed messages from **_Execution (n-1)_** are [cached](https://developers.google.com/apps-script/reference/cache/cache#put%28String%2CString%2CInteger%29) with a (`timeinterval` + `6`) minutes timeout. During **_Execution n_**, IDs of retrieved messages are checked against this cache to determine whether they were already processed or not.
 
 #### 1.1.3. Logging
 
@@ -102,12 +103,9 @@ The **Frontend** part is basically a Django template providing access to all nee
 ## 2. Setup and Run
 ### 2.1. Provision *(Mostly manual)*
 
-- **Requirements:** 
-	- [`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-	- [`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) and [`paramiko`](http://www.paramiko.org/installing.html)
-	- [`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)
-	- A Google account
-	- A Linux (CEntOS 7) server, manageable through SSH
+| Requirements : |
+| :------------- |
+| <ul><li>[`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)</li><li>[`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) (and [`paramiko`](http://www.paramiko.org/installing.html))</li><li>[`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)</li><li>A Google account</li><li>A Linux (CEntOS 7) server, manageable through SSH</li></ul>|
 
 - **Step 1:** [Create](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) and configure a Google Cloud Platform (GCP) Project:
 	- Enable required [Google APIs](https://cloud.google.com/service-usage/docs/enable-disable): 
@@ -151,28 +149,37 @@ The **Frontend** part is basically a Django template providing access to all nee
 	- Switch Apps Script projet's Google Cloud Project association to the standard (user-managed) project created in ***Step 1***, by [providing its number](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project).
 	- Deploy as an API Executable Google Apps Script project
 
-> **Output:** <br>`credentials.json`, `script_deployment_id.py`
-
 ### 2.2. Configure *(Automated)*
-
-> **Input:** <br>`credentials.json`, `script_deployment_id.py`, `SERVER_IP_ADDRESS`, `SSH_CREDENTIALS`, `SITE_FILES_PATH`; `SITE_URL` or `DOMAIN`+`PATH`
 
 - **Tools to be considered:** Ansible, Python, Bash
 - Install and configure (Server-side, Centos): OpenSSH/SCP, NGINX, uWSGI, SSL (HTTPS)
 
 ### 2.3. Continuous Deployment (CD)
 
-> **Input:** <br>`TIMEZONE`, `AppLogger` class (for Core)
+|                             | 💻 Development               | 🧪 Staging                       | 🏭 Production                    |
+|-----------------------------|---------------------------|-------------------------------|-------------------------------|
+| **User <sup>[[1]](#user)</sup>** | Apps Script project owner                     | Any allowed Google user               | Any allowed Google user               |
+| **devMode <sup>[[2]](#devmode)</sup>**                     | True                      | False                         | False                         |
+| **Versioned deployment <sup>[[3]](#versioneddeploy)</sup>** | No                   | Yes                        | Yes                |
+| **Core app ID <sup>[[4]](#coreappid)</sup>** | Script ID                   | Deployment ID                        | Deployment ID                |
+| **HTTP Server <sup>[[5]](#httpsvr)</sup>**                 | Django Development Server | `NGinx` + `uWSGI` + `certbot` | `NGinx` + `uWSGI` + `certbot` |
+| **Test Mode <sup>[[6]](#testmode)</sup>**               | –                         | Yes                           | No                            |
 
-There are two types of deployments: 
+<br>
 
-- **Development**: the user (Google account) would be the owner of the Apps Script project. The HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run), should be set to `true`. The [Django development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server) will be used locally.
-    - > User == Owner + `Script ID` + `"devMode": True`
+<a name="user">[1]</a> **User:** The Google account the Apps Script (Core) app is run as.
 
-- **Production**: using Apps Script [versioned deployments](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), with the {`NGinx` + `uWSGI` + `certbot`, on *`CEntOS 7`*} software suite for the Django part of the backend.
-	- > User == any + `Deployment ID` + `"devMode": False`
+<a name="devmode">[2]</a> **devMode:** Boolean value of the HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run). `False` implies a [*versioned deployment*](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), while `True` lets the Core app run at the latest version of the Apps Script project code .
 
-In both cases, it is possible to set the app to ***Test Mode*** by calling the `initSettings()` function with a test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`.
+<a name="versioneddeploy">[3]</a> **Versioned deployment:** whether to create a *versioned deployment* of the Apps Script (Core) app, i.e. a version deployed for use with the Apps Script API. In that case, a [*Deployment ID*](https://developers.google.com/apps-script/concepts/deployments#find_a_deployment_id) is used as the Core app ID, instead of the [*Script ID*](https://developers.google.com/apps-script/reference/script/script-app#getScriptId()).
+
+<a name="coreappid">[4]</a> **Core app ID:** *Deployment ID* for a versioned deployment, or *Script ID* when `devMode` is set to `True`.
+
+<a name="httpsvr">[5]</a> **HTTP Server:** HTTP server used to run the Django project (Middleware app): either the [Django built-in development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server), or the {`NGinx` + `uWSGI` + `certbot`} software suite to provide *HTTP server*, *Reverse proxy* and *HTTPS* functionalities.
+
+<a name="testmode">[6]</a> **Test Mode:** The app is set to *“Test Mode”* by calling the `initSettings()` function with a valid test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`, which would set the Apps Script user property `testEmail` to `testadress@mydomain.com`.
+
+<br>
 
 ```bash
 # Stop any running Django App
@@ -186,7 +193,6 @@ clasp push --force
 # Launch Django App
 ```
 
-- **Tools to be considered:** Ansible, Python, Bash
 
 ## 3. Background
 
