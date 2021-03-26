@@ -1,5 +1,10 @@
 # Work Log
 
+## 2021-03-26
+
+- Some useful resources:
+    - [What is a API Gateway (vs “Aggregator Microservices”)?](https://github.com/iluwatar/java-design-patterns-web/blob/cbfe9dcb09abc66a6fb95119c94f40e3c5ed3b97/faq.md#q9-whats-the-difference-between-api-gateway-and-aggregator-microservices-isnt-it-the-same-q9)
+
 ## 2021-03-25
 
 Drafting the "Setup and Run" part of the README and updating code accordingly.

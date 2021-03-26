@@ -29,6 +29,8 @@
 
 ### 1.1. Backend – Core: *Google Apps Script*
 
+<br /><img src="/assets/apps-script--logo.png" alt="apps-script--logo.png" height="80"/><br />
+
 The **Core** App is a [Google Apps Script](https://script.google.com) app deployed as an [API executable](https://developers.google.com/apps-script/api/how-tos/execute#step_2_deploy_the_script_as_an_api_executable), and managed through the [Apps Script API](https://developers.google.com/apps-script/api/how-tos/execute) using the [Python client library](https://github.com/googleapis/google-api-python-client).
 
 #### 1.1.1. App Settings
@@ -86,16 +88,21 @@ The default logger is a **[Google Spreadsheet](/app/core/GSpreadsheetLogger.js)*
 
 ### 1.2. Backend – Middleware: *Django*
 
-The **Middleware** backend component requires the [deployment ID](https://developers.google.com/apps-script/api/reference/rest/v1/projects.deployments) ([`script_deployment_id.py`](/app/backend/python/script_deployment_id_example.py)) of the **Core** App, and the [Client ID credentials](https://support.google.com/cloud/answer/6158849) file ([`credentials.json`](/app/backend/python/credentials_template.json)) of the associated GCP project.
+<br /><img src="/assets/django-logo.png" alt="django--logo.png" height="90"/><br />
+
+The **Middleware** backend component requires the [Core app ID](#coreappid), and the [Client ID credentials](https://support.google.com/cloud/answer/6158849) file ([`credentials.json`](/app/backend/python/credentials_template.json)) of the associated GCP project.
 
 It is a Django app providing the following features:
 - **Authentication:** User sign-in through a full OAuth2 authentication flow.
 - **Sessions:** Based on [Django Sessions](https://docs.djangoproject.com/en/3.1/topics/http/sessions/#using-sessions-in-views), allow users (identified by their parsed OIDC tokens) to access the webapp independently from any active Google account in the browser. No user data is kept after logout.
+- **API Gateway:** ...
 - **Data validation:** Form data (App settings) validation and multi-level error handling: *HTTP request, [Django Forms API](https://docs.djangoproject.com/en/3.1/ref/forms/api/#using-forms-to-validate-data) data validation, Apps Script API and **Core** App errors*.
 - **App URLs handling:** mapping between *features*, *URLs* and *views*: *Home page*, *Login*, *Authentication* *(OAuth2 [authorized redirect URI](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred))*, *Getting App settings*, *Updating App settings*, *App reset* and *Logout*.
 
 
 ### 1.3. Frontend: *Django templates + {CSS framework}*
+
+<br /><img src="/assets/frontend--logos.png" alt="frontend--logos.png" height="100"/><br />
 
 The **Frontend** part is basically a Django template providing access to all needed features: Logged-in user information on top of a form to view and update [App Settings](#111-app-settings), along with ***Logout*** and App ***Enable/Disable/Reset*** commands.
 
@@ -146,8 +153,8 @@ The **Frontend** part is basically a Django template providing access to all nee
 		clasp push --force
 		```
 
-	- Switch Apps Script projet's Google Cloud Project association to the standard (user-managed) project created in ***Step 1***, by [providing its number](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project).
-	- Deploy as an API Executable Google Apps Script project
+	- Switch Apps Script project's Google Cloud Project association to the standard (user-managed) project created in ***Step 1***, by [providing its number](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project).
+	- ~~Deploy as an API Executable Google Apps Script project~~
 
 ### 2.2. Configure *(Automated)*
 
@@ -155,6 +162,8 @@ The **Frontend** part is basically a Django template providing access to all nee
 - Install and configure (Server-side, Centos): OpenSSH/SCP, NGINX, uWSGI, SSL (HTTPS)
 
 ### 2.3. Continuous Deployment (CD)
+
+Three deployment modes are supported:
 
 |                             | 💻 Development               | 🧪 Staging                       | 🏭 Production                    |
 |-----------------------------|---------------------------|-------------------------------|-------------------------------|
@@ -169,11 +178,11 @@ The **Frontend** part is basically a Django template providing access to all nee
 
 <a name="user">[1]</a> **User:** The Google account the Apps Script (Core) app is run as.
 
-<a name="devmode">[2]</a> **devMode:** Boolean value of the HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run). `False` implies a [*versioned deployment*](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), while `True` lets the Core app run at the latest version of the Apps Script project code .
+<a name="devmode">[2]</a> **devMode:** *(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))* Boolean value of the HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run). `False` implies a [*versioned deployment*](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), while `True` lets the Core app [run at the latest version](https://developers.google.com/apps-script/api/how-tos/execute#the_scriptsrun_method) of the Apps Script project code.
 
 <a name="versioneddeploy">[3]</a> **Versioned deployment:** whether to create a *versioned deployment* of the Apps Script (Core) app, i.e. a version deployed for use with the Apps Script API. In that case, a [*Deployment ID*](https://developers.google.com/apps-script/concepts/deployments#find_a_deployment_id) is used as the Core app ID, instead of the [*Script ID*](https://developers.google.com/apps-script/reference/script/script-app#getScriptId()).
 
-<a name="coreappid">[4]</a> **Core app ID:** *Deployment ID* for a versioned deployment, or *Script ID* when `devMode` is set to `True`.
+<a name="coreappid">[4]</a> **Core app ID:** *(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))* *Deployment ID* for versioned deployments, or *Script ID* when `devMode` is set to `True`.
 
 <a name="httpsvr">[5]</a> **HTTP Server:** HTTP server used to run the Django project (Middleware app): either the [Django built-in development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server), or the {`NGinx` + `uWSGI` + `certbot`} software suite to provide *HTTP server*, *Reverse proxy* and *HTTPS* functionalities.
 
