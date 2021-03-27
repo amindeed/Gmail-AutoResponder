@@ -777,7 +777,7 @@ Still refining `README.md`, along with some modifications here and there.
 ## 2020-04-14
 - Cleaning up `README.md`
 
-## 2020-04-13 *(Update: 2021-03-27)*
+## 2020-04-13 *(Update: [2021-03-27](https://github.com/amindeed/Gmail-AutoResponder/commit/1ec905e00887d51a0d0446748ed14d572342319e#diff-cd1a514362e350155053de1daf34ce172ee737dbdf904fdc0b54ad7b5e087b60))*
 - Exploring `gcloud` capabilities. Trying to automate/script the "GCP Project" part of the Apps Script application setup process.
 - I've been trying to find a way to automate, or bypass altogether, the process described in [`clasp run` CLI doc](https://github.com/google/clasp/blob/master/docs/run.md). But, for the time being, and according to the official documentation, there is no automated way to associate a Google Apps Script project to a Standard GCP Project to allow Script functions calls through [Apps Script API](https://developers.google.com/apps-script/api/) :
 
