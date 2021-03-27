@@ -14,6 +14,9 @@
   - [1.3. Frontend: *Django templates + {CSS framework}*](#13-frontend-django-templates--css-framework)
 - [2. Setup and Run](#2-setup-and-run)
   - [2.1. Provision *(Mostly manual)*](#21-provision-mostly-manual)
+    - [*Requirements*](#provision-req)
+    - [*Step 1: Create and configure a GCP Project*](#provision-step1)
+    - [*Step 2: Create and configure a Apps Script Project*](#provision-step2)
   - [2.2. Configure *(Automated)*](#22-configure-automated)
   - [2.3. Continuous Deployment (CD)](#23-continuous-deployment-cd)
 - [3. Background](#3-background)
@@ -95,9 +98,9 @@ The **Middleware** backend component requires the [Core app ID](#coreappid), and
 It is a Django app providing the following features:
 - **Authentication:** User sign-in through a full OAuth2 authentication flow.
 - **Sessions:** Based on [Django Sessions](https://docs.djangoproject.com/en/3.1/topics/http/sessions/#using-sessions-in-views), allow users (identified by their parsed OIDC tokens) to access the webapp independently from any active Google account in the browser. No user data is kept after logout.
-- **API Gateway:** ...
+- **API Gateway:** Aggregates calls to the **Core** app by providing API endpoints to *initialize*, *retrieve* and *update* app settings. This enables the development of client-side apps, which typically use the [OAuth2 consent flow](https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow) for [installed applications](https://developers.google.com/identity/protocols/oauth2/native-app) and store both *access* and *refresh tokens*. The **Middleware** app here acts as a proxy, by checking HTTP Authorization headers for bearer tokens and translating requests and responses between the custom client and the **Core** app.
 - **Data validation:** Form data (App settings) validation and multi-level error handling: *HTTP request, [Django Forms API](https://docs.djangoproject.com/en/3.1/ref/forms/api/#using-forms-to-validate-data) data validation, Apps Script API and **Core** App errors*.
-- **App URLs handling:** mapping between *features*, *URLs* and *views*: *Home page*, *Login*, *Authentication* *(OAuth2 [authorized redirect URI](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred))*, *Getting App settings*, *Updating App settings*, *App reset* and *Logout*.
+- **Handling App URLs:** mapping between *features*, *URLs* and *views*: *Home page*, *Login*, *Authentication* *(OAuth2 [authorized redirect URI](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred))*, *API Gateway endpoint URLs*, *Getting/Updating App settings*, *App reset* and *Logout*.
 
 
 ### 1.3. Frontend: *Django templates + {CSS framework}*
@@ -110,11 +113,17 @@ The **Frontend** part is basically a Django template providing access to all nee
 ## 2. Setup and Run
 ### 2.1. Provision *(Mostly manual)*
 
-| Requirements : |
-| :------------- |
-| <ul><li>[`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)</li><li>[`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) (and [`paramiko`](http://www.paramiko.org/installing.html))</li><li>[`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)</li><li>A Google account</li><li>A Linux (CEntOS 7) server, manageable through SSH</li></ul>|
+<br>
 
-- **Step 1:** [Create](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) and configure a Google Cloud Platform (GCP) Project:
+> ℹ Had it not been for `clasp` and `gcloud` command line tools [limitations](worklog.md#2020-04-13-update-2021-03-27), this stage would have been fully automatable.
+
+<br>
+
+| <a name="provision-req">Requirements :</a> |
+| :------------- |
+| <ul><li>[`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)</li><li>[`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) (and [`paramiko`](http://www.paramiko.org/installing.html))</li><li>[`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)</li><li>Google account</li><li>Linux (CEntOS 7) server with root/sudo access, manageable through SSH</li></ul>|
+
+- <a name="provision-step1">**Step 1:** [Create](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) and configure a Google Cloud Platform (GCP) Project:</a>
 	- Enable required [Google APIs](https://cloud.google.com/service-usage/docs/enable-disable): 
     	- `Apps Script API`
     	- `Google Drive API`
@@ -135,7 +144,7 @@ The **Frontend** part is basically a Django template providing access to all nee
 		- Set **`Redirect URIs`**: `http://127.0.0.1:8000/auth/` *(local, development)*, `{APP_BASE_URL}/auth/` *(staging, production)*.
 		- Download the JSON file containing the *client ID* and *client secret* and save it as [`credentials.json`](/app/backend/python/credentials_template.json).
 
-- **Step 2:** Create a Google Apps Script Project:
+- <a name="provision-step2">**Step 2:** Create a Google Apps Script Project:</a>
 
 	- Enable Google Apps Script API, from the [Apps Script dashboard](https://script.google.com/home/usersettings).
 	- Create a API Executable Apps Script project and push Core app code to it:
@@ -158,8 +167,9 @@ The **Frontend** part is basically a Django template providing access to all nee
 
 ### 2.2. Configure *(Automated)*
 
-- **Tools to be considered:** Ansible, Python, Bash
-- Install and configure (Server-side, Centos): OpenSSH/SCP, NGINX, uWSGI, SSL (HTTPS)
+- **Requirements:** `Ansible` (control node), `Python`/`Bash` scripting capability.
+- **Tasks to be automated:**
+  - Install and configure on the CEntOS server: `NGINX`, `uWSGI`, `certbot`.
 
 ### 2.3. Continuous Deployment (CD)
 
@@ -178,11 +188,13 @@ Three deployment modes are supported:
 
 <a name="user">[1]</a> **User:** The Google account the Apps Script (Core) app is run as.
 
-<a name="devmode">[2]</a> **devMode:** *(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))* Boolean value of the HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run). `False` implies a [*versioned deployment*](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), while `True` lets the Core app [run at the latest version](https://developers.google.com/apps-script/api/how-tos/execute#the_scriptsrun_method) of the Apps Script project code.
+<a name="devmode">[2]</a> **devMode:** Boolean value of the HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run). `False` implies a [*versioned deployment*](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), while `True` lets the Core app [run at the latest version](https://developers.google.com/apps-script/api/how-tos/execute#the_scriptsrun_method) of the Apps Script project code. 
+<br>*(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))*
 
 <a name="versioneddeploy">[3]</a> **Versioned deployment:** whether to create a *versioned deployment* of the Apps Script (Core) app, i.e. a version deployed for use with the Apps Script API. In that case, a [*Deployment ID*](https://developers.google.com/apps-script/concepts/deployments#find_a_deployment_id) is used as the Core app ID, instead of the [*Script ID*](https://developers.google.com/apps-script/reference/script/script-app#getScriptId()).
 
-<a name="coreappid">[4]</a> **Core app ID:** *(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))* *Deployment ID* for versioned deployments, or *Script ID* when `devMode` is set to `True`.
+<a name="coreappid">[4]</a> **Core app ID:** [*Deployment ID*](https://developers.google.com/apps-script/concepts/deployments#find_a_deployment_id) for versioned deployments, or [*Script ID*](https://developers.google.com/apps-script/reference/script/script-app#getScriptId()) when `devMode` is set to `True`. 
+<br>*(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))*
 
 <a name="httpsvr">[5]</a> **HTTP Server:** HTTP server used to run the Django project (Middleware app): either the [Django built-in development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server), or the {`NGinx` + `uWSGI` + `certbot`} software suite to provide *HTTP server*, *Reverse proxy* and *HTTPS* functionalities.
 
@@ -205,7 +217,7 @@ clasp push --force
 
 ## 3. Background
 
-I [started](https://github.com/amindeed/Gmail-AutoResponder/blob/master/worklog.md#2017-07-26-code) **Gmail AutoResponder** back in 2017 as a script to manage automatic email responses outside the active hours of a company I worked for.   
+I [started](worklog.md#2017-07-26-code) **Gmail AutoResponder** back in 2017 as a script to manage automatic email responses outside the active hours of a company I worked for.   
 Although it was possible to set Gmail to individually send [canned responses](https://support.google.com/mail/thread/14877273?hl=en&msgid=14879088), I could neither make time-specific filters nor programmatically make Gmail trigger an event upon email reception. So, inspired by an [answer](https://webapps.stackexchange.com/a/90089) on one of StackExchange forums, I had to figure out a way around and ultimately ended up with a [basic Apps Script app](https://github.com/amindeed/Gmail-AutoResponder/tree/796a6d84f1e7287b8a936083ae8f507035a28215/app), 6 instances of which have amazingly run for almost 3 years and processed more than 17k messages!  
   
 To see how the project progressed, check [`worklog.md`](worklog.md).
