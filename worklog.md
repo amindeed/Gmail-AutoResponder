@@ -1,8 +1,12 @@
 # Work Log
 
-## 2021-03-26
+## 2021-03-27
 
-- Some useful resources:
+- Overall revisions of the README file and the Setup process (still in progress).
+- Noted some useful resources:
+    - [Google Cloud Platform Guide — Ansible Documentation](https://docs.ansible.com/ansible/latest/scenario_guides/guide_gce.html)
+    - [Ansible Galaxy](https://galaxy.ansible.com/google/cloud)
+    - [Google.Cloud — Ansible Documentation](https://docs.ansible.com/ansible/latest/collections/google/cloud/)
     - [What is a API Gateway (vs “Aggregator Microservices”)?](https://github.com/iluwatar/java-design-patterns-web/blob/cbfe9dcb09abc66a6fb95119c94f40e3c5ed3b97/faq.md#q9-whats-the-difference-between-api-gateway-and-aggregator-microservices-isnt-it-the-same-q9)
 
 ## 2021-03-25

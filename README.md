@@ -1,5 +1,9 @@
 # Gmail AutoResponder
 
+![GitHub last commit](https://img.shields.io/github/last-commit/amindeed/Gmail-AutoResponder)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amindeed/gmail-autoResponder)
+![GitHub](https://img.shields.io/github/license/amindeed/Gmail-AutoResponder)
+
 **Gmail AutoResponder** is a full-stack web application for automated email processing.
 
 
@@ -111,9 +115,11 @@ The **Frontend** part is basically a Django template providing access to all nee
 
 <br>
 
-| <a name="provision-req">Requirements :</a> |
+| <a name="provision-req">Requirements :</a><br>*(for development machine or Ansible control node)* |
 | :------------- |
-| <ul><li>[`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)</li><li>[`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) (and [`paramiko`](http://www.paramiko.org/installing.html))</li><li>[`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)</li><li>Google account</li><li>Linux (CEntOS 7) server with root/sudo access, manageable through SSH</li></ul>|
+| <ul><li>[`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)</li><li>[`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) (and [`paramiko`](http://www.paramiko.org/installing.html))</li><li>[`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)</li><li>Google account</li><li>Linux (CEntOS 7) server with root/sudo access, manageable through SSH</li></ul> |
+
+- **Parameters/Variables:** `GIT_CREDENTIALS`
 
 - <a name="provision-step1">**Step 1:** [Create](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) and configure a Google Cloud Platform (GCP) Project:</a>
 	- Enable required [Google APIs](https://cloud.google.com/service-usage/docs/enable-disable): 
@@ -122,14 +128,19 @@ The **Frontend** part is basically a Django template providing access to all nee
     	- `Gmail API`
     	- `Google Sheets API`
 	- [Configure](https://support.google.com/cloud/answer/6158849?ref_topic=3473162#userconsent) the OAuth Consent Screen: 
-		- Set [OAuth2 scopes](https://developers.google.com/identity/protocols/oauth2/scopes):
-			- `openid`
-			- `https://www.googleapis.com/auth/script.scriptapp`
-			- `https://mail.google.com/`
-			- `https://www.googleapis.com/auth/drive`
-			- `https://www.googleapis.com/auth/userinfo.email`
-			- `https://www.googleapis.com/auth/spreadsheets`
-			- `https://www.googleapis.com/auth/userinfo.profile`
+    	- Provide (at least) the required information: App name, User support email, Developer contact information
+		- Add [OAuth2 scopes](https://developers.google.com/identity/protocols/oauth2/scopes) (manually by copy/pasting):
+
+			```
+			openid
+			https://www.googleapis.com/auth/script.scriptapp
+			https://mail.google.com/
+			https://www.googleapis.com/auth/drive
+			https://www.googleapis.com/auth/userinfo.email
+			https://www.googleapis.com/auth/spreadsheets
+			https://www.googleapis.com/auth/userinfo.profile
+			```
+
 	- Get the [Project number](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects).
 	- [Create OAuth credentials](https://developers.google.com/apps-script/guides/cloud-platform-projects#creating_oauth_credentials): 
     	- Create **OAuth client ID** credentials for a **Web Application**.
@@ -143,29 +154,32 @@ The **Frontend** part is basically a Django template providing access to all nee
 
 		```bash
 		mkdir ./gmail-autoresponder && cd ./gmail-autoresponder/
-		git clone git@github.com:amindeed/Gmail-AutoResponder.git .
+		git clone https://github.com/amindeed/Gmail-AutoResponder.git .
 		cd app/core
-		clasp login
-		# Default (global) credentials will be saved to: ~/.clasprc.json
-		# N.B. If that didn't work, use the '--no-localhost' option, 
-		# visit the provided URL, grant `clasp` required permissions, 
-		# and copy/paste the code from the next web page. 
+		clasp login --no-localhost
 		clasp create --type api --title "Gmail AutoResponder"
+		clasp open # to get project's edit URL
 		clasp push --force
 		```
 
 	- Switch Apps Script project's Google Cloud Project association to the standard (user-managed) project created in ***Step 1***, by [providing its number](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project).
 	- ~~Deploy as an API Executable Google Apps Script project~~
 
-### 2.2. Configure *(Automated)*
+### 2.2. Configure *(Mostly automated)*
 
 - **Requirements:** `Ansible` (control node), `Python`/`Bash` scripting capability.
-- **Tasks to be automated:**
-  - Install and configure on the CEntOS server: `NGINX`, `uWSGI`, `certbot`.
+- **Tasks to be automated:** 
+    - *(First deployment of the Apps Script project)*.
+    - Install and configure on the CEntOS server: `NGINX`, `uWSGI`, `certbot`.
+- **Parameters:** 
+    - **Files:** [`credentials.json`](/app/backend/python/credentials_template.json), [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py) (`CORE_APP_ID`, `devMode`)
+    - **Variables:** `SERVER_IP_ADDRESS`, `SSH_CREDENTIALS`, `GIT_CREDENTIALS`, `SITE_FILES_PATH`, `[SUB]DOMAIN`, `SITE_BASE_URL`[+`PATH`], `OAUTH_REDIRECT_URI_PATH`.
 
 ### 2.3. Continuous Deployment (CD)
 
-Three deployment modes are supported:
+**Variables:** (`DEPLOY_TYPE`), `TIMEZONE`, `AppLogger` class name.
+
+Three deployment modes:
 
 |                             | 💻 Development               | 🧪 Staging                       | 🏭 Production                    |
 |-----------------------------|---------------------------|-------------------------------|-------------------------------|
