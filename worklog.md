@@ -1,5 +1,10 @@
 # Work Log
 
+## 2021-03-28
+
+- Been Drafting and pseudo-coding the steps of the *Setup & Run* *(Provision, Configure and Deploy)* process in a separate temporary file (`setup__draft.sh`). Testing on a CEntOS 7 VM.
+- Restructured the repo.
+
 ## 2021-03-27
 
 - Overall revisions of the README file and the Setup process (still in progress).

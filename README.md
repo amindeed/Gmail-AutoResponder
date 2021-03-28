@@ -1,8 +1,10 @@
 # Gmail AutoResponder
 
-![GitHub last commit](https://img.shields.io/github/last-commit/amindeed/Gmail-AutoResponder)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amindeed/Gmail-AutoResponder)
-![GitHub](https://img.shields.io/github/license/amindeed/Gmail-AutoResponder)
+[![GitHub last commit](https://img.shields.io/github/last-commit/amindeed/Gmail-AutoResponder?logo=git&logoColor=ffffff)](https://github.com/amindeed/Gmail-AutoResponder)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amindeed/Gmail-AutoResponder?logo=github)](https://github.com/amindeed/Gmail-AutoResponder/commits/master)
+[![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-ES6-orange?logo=v8&logoColor=ffffff)](https://developers.google.com/apps-script/guides/v8-runtime)
+[![Django](https://img.shields.io/badge/Django-v3.1.5-yellowgreen?logo=django)](https://docs.djangoproject.com/en/3.1/releases/3.1.5/)
+[![License](https://img.shields.io/github/license/amindeed/Gmail-AutoResponder?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAB3RJTUUH5QMcESAcS1MDzAAAAj1JREFUOMuVlDtoVFEQhr+zu0pik0C6YLQwIDaJjRY2aSyNj9ikkaC1QhAjFkI0YhWrgCJ2SnwgiqAiNhaiVnY+IqTQ+AoWSrLiIyZmPwvnLtc12dWBwz13Zs7MPzP/OYkQNdsWgFWx7wDGgATsB96F/htQSSmRP1SVMFwDnsWaAGaAT8CL0D0FzqeU8slJ2U8YdgI3gBFA4AnwCqgAnUAXsACcALamlO6p5JGh7lC/qhfUfvW5v2VGnY39hLpHPad+UbdX26KiXg/Hy+qB2I+rzblETZFEdUi9GvtbmUOz+lo9pvaFcXd+CPleqL3hs00dVstqIQs0pR5RJ9VxlpEsYJT2Mc7MZIHWRYZ98W2hgagd4Tsc366sP3fVjepsDafqoVpUe9RH6pUC0A5MAStjtP8qi0AJeAm0o3YHvH7rQfkTVWtueqo9BWASeANsAKbVk8uVl9MdBD4DLcAs8LAQDBb4EPdqSF1fewUyBqurgaPAcWA6zBXUknpH/a7uVS+pc+qA2lpTzoD6M4g7EOy+n89WDMOiOqYORu1z6nSsudAdVkfVSiQuEc9DHvYgMAr0Ak1AT0wnAUXgAVAGbgKHUkpn/rq0OXTZZZ1Xf6hn1dOBaCFsjxuNNUO4Kco8pb5V36sjUU5n3rcRa7sj+1q1JVZbBFqzFD2WeiGrvQOKKaVySqkcParaavtSakDiiloAVgTXlpVCHVsCtgDzManN9QLVQ1QELgYdEnCb/5V4o+bVvpxuV7C6bakzvwBluHvhBl+OCQAAAABJRU5ErkJggg==)](/LICENSE)
 
 **Gmail AutoResponder** is a full-stack web application for automated email processing.
 
@@ -109,11 +111,12 @@ The **Frontend** part is basically a Django template providing access to all nee
 
 
 ## 2. Setup and Run
+
+- ***Notes:***
+    - *This section is still being worked on. Check [`setup__draft.sh`](/setup__draft.sh).*
+	- *Had it not been for `clasp` and `gcloud` command line tools [limitations](worklog.md#2020-04-13-update-2021-03-27), most (if not all) Setup and Run tasks would have been fully automatable.*
+
 ### 2.1. Provision *(Mostly manual)*
-
-ℹ *Had it not been for `clasp` and `gcloud` command line tools [limitations](worklog.md#2020-04-13-update-2021-03-27), this stage would have been fully automatable.*
-
-<br>
 
 | <a name="provision-req">Requirements :</a><br>*(for development machine or Ansible control node)* |
 | :------------- |
@@ -163,7 +166,6 @@ The **Frontend** part is basically a Django template providing access to all nee
 		```
 
 	- Switch Apps Script project's Google Cloud Project association to the standard (user-managed) project created in ***Step 1***, by [providing its number](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project).
-	- ~~Deploy as an API Executable Google Apps Script project~~
 
 ### 2.2. Configure *(Mostly automated)*
 
@@ -172,7 +174,7 @@ The **Frontend** part is basically a Django template providing access to all nee
     - *(First deployment of the Apps Script project)*.
     - Install and configure on the CEntOS server: `NGINX`, `uWSGI`, `certbot`.
 - **Parameters:** 
-    - **Files:** [`credentials.json`](/app/backend/python/credentials_template.json), [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py) (`CORE_APP_ID`, `devMode`)
+    - **Files:** [`credentials.json`](/app/backend/python/credentials_template.json), [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py) (`SCRIPT_ID`, `DEPLOYMENT_ID`, `CORE_APP_ID`, `devMode`)
     - **Variables:** `SERVER_IP_ADDRESS`, `SSH_CREDENTIALS`, `GIT_CREDENTIALS`, `SITE_FILES_PATH`, `[SUB]DOMAIN`, `SITE_BASE_URL`[+`PATH`], `OAUTH_REDIRECT_URI_PATH`.
 
 ### 2.3. Continuous Deployment (CD)
@@ -205,20 +207,6 @@ Three deployment modes:
 <a name="httpsvr">[5]</a> **HTTP Server:** HTTP server used to run the Django project (Middleware app): either the [Django built-in development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server), or the {`NGinx` + `uWSGI` + `certbot`} software suite to provide *HTTP server*, *Reverse proxy* and *HTTPS* functionalities.
 
 <a name="testmode">[6]</a> **Test Mode:** The app is set to *“Test Mode”* by calling the `initSettings()` function with a valid test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`, which would set the Apps Script user property `testEmail` to `testadress@mydomain.com`.
-
-<br>
-
-```bash
-# Stop any running Django App
-cd ./gmail-autoresponder/
-git pull origin master
-cd app/core
-clasp push --force
-# Set `TIMEZONE`, `AppLogger` class name
-# Deploy using clasp
-# Get Deployment ID --> ../backend/python/script_deployment_id.py
-# Launch Django App
-```
 
 
 ## 3. Background

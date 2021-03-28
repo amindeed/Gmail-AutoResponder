@@ -1,14 +1,24 @@
-# Centos 7
+# ------------ PROVISION: Development machine ------------
+# - OpenSSH client, Remote access to a CI/CD tool (typically through a web interface)
 
-# ------------ PROVISION ------------
+# ------------ PROVISION: Control machine ------------
+# - [OpenSSH client, Python3 + Paramiko]
+# - Config. Management and/or CI/CD tool: Ansible, Jenkins, GitHub Actions
+
+# ------------ PROVISION: Target server ------------
 yum -y install epel-release
 sudo yum update -y
 #sudo reboot
-#sudo yum install python3 ansible
+
+## -- Core app requirements --
 sudo yum -y install git curl gcc-c++ make
 curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
 sudo yum -y install nodejs
 sudo npm i @google/clasp -g
+
+## -- Middleware app requirements --
+sudo yum -y install python3
+#pip install virtualenv uwsgi
 read -p "Create and configure GCP and Apps Script projects (as instructed in this script\'s comments) before continuing..."
 read -p "Are you ready to continue? [Press any key to confirm]"
 
@@ -36,20 +46,26 @@ git clone https://github.com/amindeed/Gmail-AutoResponder.git .
 cd app/core
 clasp login --no-localhost
 clasp create --type api --title "Gmail AutoResponder"
-# Note project's edit URL and Script ID --> SCRIPT_ID
+# Note project's edit URL and Script ID:
+    # SCRIPT_ID >> ../middleware/script_run_parameters.py
 # It is possible to fetch Script ID from '.clasp.json' file
 clasp open # If you need project's edit URL or Scrit ID
 clasp push --force
-
 # - Go to project's edit URL > 'Project Settings' > 'Google Cloud Platform (GCP) Project: Change project'
     # - Set the created GCP project by entering its number
+clasp deploy # Note Deployment ID: 
+    # DEPLOYMENT_ID >> ../middleware/script_run_parameters.py
 
-clasp deploy # Note Deployment ID --> DEPLOYMENT_ID
+cd ../middleware
+virtualenv venv
+source ./venv/Scripts/activate
+pip install -r requirements.txt
 
 
-# ------------ CD ------------
+# ------------ CI/CD ------------
 cd gmail-autoresponder/
 git pull origin master
 cd app/core/
 clasp push --force
 clasp deploy -i DEPLOYMENT_ID
+# Restart Django App/WSGI/NGINX
