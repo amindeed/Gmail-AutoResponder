@@ -1,7 +1,7 @@
 # Gmail AutoResponder
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/amindeed/Gmail-AutoResponder)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amindeed/gmail-autoResponder)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amindeed/Gmail-AutoResponder)
 ![GitHub](https://img.shields.io/github/license/amindeed/Gmail-AutoResponder)
 
 **Gmail AutoResponder** is a full-stack web application for automated email processing.
