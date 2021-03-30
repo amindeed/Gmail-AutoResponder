@@ -1,5 +1,69 @@
 # Work Log
 
+## 2021-03-30
+
+- The `setup__draft.sh` can now be pretty much run for a guided and semi-automatic initial configuration. The script is still unfinished though.
+- I believe it makes some sense to try first to configure and deploy the code manually (using Bash) before using a CI/CD or a configuration management tool.
+- Online resources:
+    - [[EPEL] How to install Python 3.6 on CentOS 7](https://stackoverflow.com/a/23317640/3208373)
+    - [nginx + uwsgi + virtual environment. What goes inside?](https://stackoverflow.com/a/29134999/3208373)
+    - [Restructuring Django’s Settings](https://www.digitalocean.com/community/tutorials/how-to-harden-your-production-django-project#step-1-%E2%80%94-restructuring-django%E2%80%99s-settings)
+    - SQLite version issue:
+        - Chosen solution:
+            - ★ [How to override an old sqlite3 module with pysqlite3 in django settings.py](https://gist.github.com/defulmere/8b9695e415a44271061cc8e272f3c300)
+            - [charles leifer | Compiling SQLite for use with Python Applications](https://charlesleifer.com/blog/compiling-sqlite-for-use-with-python-applications/)
+        - [python - django can't find new sqlite version? (SQLite 3.8.3 or later is required (found 3.7.17)) - Stack Overflow](https://stackoverflow.com/questions/55674176/django-cant-find-new-sqlite-version-sqlite-3-8-3-or-later-is-required-found)
+
+            ```
+            $ wget https://www.sqlite.org/2018/sqlite-autoconf-3240000.tar.gz
+            $ tar zxvf sqlite-autoconf-3240000.tar.gz
+            $ ./configure --prefix=/usr/local
+            $ make
+            $ sudo make install
+
+            $ python3.6 -c "import sqlite3; print(sqlite3.sqlite_version)"
+            3.7.17
+
+            $ export LD_LIBRARY_PATH=/usr/local/lib
+            $ python3.6 -c "import sqlite3; print(sqlite3.sqlite_version)"
+            3.24.0
+            ```
+
+            ```
+            $ cd ~
+            $ wget https://www.sqlite.org/2019/sqlite-autoconf-3290000.tar.gz
+            $ tar zxvf sqlite-autoconf-3290000.tar.gz
+            cd sqlite-autoconf-3290000
+
+            $./configure --prefix=$HOME/opt/sqlite
+            $ make && make install
+
+            export PATH=$HOME/opt/sqlite/bin:$PATH
+            export LD_LIBRARY_PATH=$HOME/opt/sqlite/lib
+            export LD_RUN_PATH=$HOME/opt/sqlite/lib
+
+            sqlite3 --version 
+            3.29.0 2019-07-10 17:32:03
+            ```
+
+        - [Trying to upgrade SQLite 3.7.17 to version 3.8 on CentOS 7 for MediaWiki : linuxadmin](https://www.reddit.com/r/linuxadmin/comments/c9hy5w/trying_to_upgrade_sqlite_3717_to_version_38_on/ezrtbkm?utm_source=share&utm_medium=web2x&context=3)
+
+            ```
+            $ wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-devel-3.8.11-1.fc21.x86_64.rpm
+
+            $ wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-3.8.11-1.fc21.x86_64.rpm
+
+            $ sudo yum install sqlite-3.8.11-1.fc21.x86_64.rpm sqlite-devel-3.8.11-1.fc21.x86_64.rpm
+
+            $ sqlite3 --version
+            3.8.11 2015-07-27 13:49:41 b8e92227a469de677a66da62e4361f099c0b79d0
+            ```
+
+        - [RPM Fedora 19 sqlite 3.8.3 x86_64 rpm](http://rpm.pbone.net/info_idpl_48495875_distro_fedora19_com_sqlite-3.8.3-1.fc19.x86_64.rpm.html)
+            - > *Fedora repositories are not likely to be compatible with CentOS. Repositories for other Enterprise Linux distros derived from the same upstream sources are more likely to be compatible, but should still be used with care.* - [Source](https://wiki.centos.org/AdditionalResources/Repositories#An_example_of_what_NOT_to_do)
+        - [atomic-sqlite-3.8.5-6803.el7.art.x86_64.rpm CentOS 7 Download](https://centos.pkgs.org/7/atomic-x86_64/atomic-sqlite-3.8.5-6803.el7.art.x86_64.rpm.html)
+            - > *Be particularly careful about the Atomic repo as they enable their repo by default when installed, and overwrite user changes in the configuration without notice when the release package is updated. **Atomic will replace many core packages as configured when installed**.* - [Source](https://wiki.centos.org/AdditionalResources/Repositories#Known_Problem_Repositories)
+
 ## 2021-03-28
 
 - Been Drafting and pseudo-coding the steps of the *Setup & Run* *(Provision, Configure and Deploy)* process in a separate temporary file (`setup__draft.sh`). Testing on a CEntOS 7 VM.

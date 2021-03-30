@@ -183,7 +183,7 @@ The **Frontend** part is basically a Django template providing access to all nee
 
 Three deployment modes:
 
-|                             | 💻 Development               | 🧪 Staging                       | 🏭 Production                    |
+|                             | 💻 Development / Test            | 🧪 Staging                       | 🏭 Production                    |
 |-----------------------------|---------------------------|-------------------------------|-------------------------------|
 | **User <sup>[[1]](#user)</sup>** | Apps Script project owner                     | Any allowed Google user               | Any allowed Google user               |
 | **devMode <sup>[[2]](#devmode)</sup>**                     | True                      | False                         | False                         |
