@@ -1,5 +1,9 @@
 # Work Log
 
+## 2021-04-03
+
+Been developing, enhancing and thoroughly testing a setup bash script: [`setup_centos7__draft.sh`](setup_centos7__draft.sh).
+
 ## 2021-03-30
 
 - The `setup__draft.sh` can now be pretty much run for a guided and semi-automatic initial configuration. The script is still unfinished though.
