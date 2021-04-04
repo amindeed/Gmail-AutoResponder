@@ -1,8 +1,12 @@
 # Work Log
 
+## 2021-04-04
+
+- Up to now, `setup_centos7.sh` deploys Gmail AutoResponder web-app in **Development/Test** mode.
+
 ## 2021-04-03
 
-Been developing, enhancing and thoroughly testing a setup bash script: [`setup_centos7__draft.sh`](setup_centos7__draft.sh).
+Been developing, enhancing and thoroughly testing a setup bash script: [`setup_centos7__draft.sh`](https://github.com/amindeed/Gmail-AutoResponder/blob/978534092cbc1030d0ac8f78e75bcd832f8df027/setup_centos7__draft.sh).
 
 ## 2021-03-30
 

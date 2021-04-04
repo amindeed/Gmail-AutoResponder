@@ -1,11 +1,12 @@
 #!/bin/bash
 
-echo -e "\n\
+echo -e "\n$(tput setaf 6)\
 ☆.。.:*・°☆..。.:*・°☆.。.:*・°☆.。..:*・°☆☆.。.:*・°☆\n\
 ╔═╗┌┬┐┌─┐┬┬    ╔═╗┬ ┬┌┬┐┌─┐╦═╗┌─┐┌─┐┌─┐┌─┐┌┐┌┌┬┐┌─┐┬─┐\n\
 ║ ╦│││├─┤││    ╠═╣│ │ │ │ │╠╦╝├┤ └─┐├─┘│ ││││ ││├┤ ├┬┘\n\
 ╚═╝┴ ┴┴ ┴┴┴─┘  ╩ ╩└─┘ ┴ └─┘╩╚═└─┘└─┘┴  └─┘┘└┘─┴┘└─┘┴└─\n\
-☆.。.:*・°☆.。..:*・°☆.。.:*・°☆.。.:*・°☆☆..。.:*・°☆\n"
+☆.。.:*・°☆.。..:*・°☆.。.:*・°☆.。.:*・°☆☆..。.:*・°☆\n\
+$(tput sgr0)"
 
 FULL_DISTRO_NAME=$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)
 
@@ -33,7 +34,7 @@ if [[ ${FULL_DISTRO_NAME} =~ .*CENTOS.* ]] && \
 		yum update -y
 		
 		## -- Core app requirements --
-		yum -y install git curl curl jq
+		yum -y install git curl jq
 
 		# Install clasp
 		if yum list installed nodejs >/dev/null 2>&1 ; then
@@ -58,15 +59,16 @@ if [[ ${FULL_DISTRO_NAME} =~ .*CENTOS.* ]] && \
 		yum -y install nginx certbot python3 python3-pip uwsgi uwsgi-plugin-python3
 	}
 
-	echo -e "\n$(tput setaf 5)## Installing system-wide requirements (sudo required): $(tput sgr0)\n"
+	echo -e "\n$(tput setaf 5)## Installing system-wide requirements (sudo required): ##$(tput sgr0)\n"
 	FUNC=$(declare -f install_req)
 	sudo bash -c "$FUNC; install_req"
 	echo -e "\n$(tput setaf 2)Finished checking system software requirements.$(tput sgr0)"
 
-	echo -e "\n$(tput setaf 5)## Creating and configuring the Google Cloud Platform (GCP) Project: $(tput sgr0)\n\n\
-$(tput setaf 6)- Login to Google account\n\
-- Go to: https://console.cloud.google.com/projectcreate\n\
-- Create GCP project: 'Gmail AutoResponder'\n\
+	echo -e "\n$(tput setaf 5)## Creating and configuring the Google Cloud Platform (GCP) Project: ##\n"
+	sleep 2
+	echo -e "$(tput setaf 6)- Login to Google account\n\
+- Go to: $(tput sgr0)https://console.cloud.google.com/projectcreate$(tput setaf 6)\n\
+- Create GCP project: $(tput sgr0)Gmail AutoResponder$(tput setaf 6)\n\
 - Go to: 'APIs & Services' > 'Library': \n\
   - Enable required APIs: $(tput sgr0)Apps Script, Drive, Gmail, Sheets\n$(tput setaf 6)\
 - Go to: 'APIs & Services' > 'OAuth consent screen':\n\
@@ -76,17 +78,19 @@ $(tput setaf 6)- Login to Google account\n\
 $(tput sgr0)openid, https://www.googleapis.com/auth/script.scriptapp, https://mail.google.com/, https://www.googleapis.com/auth/drive, https://www.googleapis.com/auth/userinfo.email, https://www.googleapis.com/auth/spreadsheets, https://www.googleapis.com/auth/userinfo.profile\
 \n\n$(tput sgr0)"
 
-read -p "Press any key to continue...\n"
+	read -p "Press any key to continue..."
 
-echo -e "$(tput setaf 5)## Getting OAuth2 Client ID credentials files of the GCP project: \n\n\
-$(tput setaf 6)- Go to: 'APIs & Services' > 'Credentials' > 'Create Credentials' > 'OAuth client ID': \n\
-  - 'Application type: $(tput sgr0)Web Application'\n\
-  - '$(tput setaf 6)Name: $(tput sgr0)Gmail AutoResponder Django Middleware'\n\
-  - '$(tput setaf 6)Authorized redirect URIs: $(tput sgr0)http://127.0.0.1:8000/auth/'\n\n\
+	echo -e "$(tput setaf 5)\n## Getting OAuth2 Client ID credentials files of the GCP project: ##\n"
+	sleep 2
+	echo -e "$(tput setaf 6)- Go to: 'APIs & Services' > 'Credentials' > 'Create Credentials' > 'OAuth client ID': \n\
+  - Application type: $(tput sgr0)Web Application\n\
+  - $(tput setaf 6)Name: $(tput sgr0)Gmail AutoResponder Django Middleware\n\
+  - $(tput setaf 6)Authorized redirect URIs: $(tput sgr0)http://127.0.0.1:8000/auth/\n\n\
     $(tput setaf 3)Note: Any IP address or hostname/FQDN of a redirect URI set here should be\n\
-    added to Django's app 'ALLOWED_HOSTS' list in 'project/settings.py'.\n\n\
+    later added to Django's app 'ALLOWED_HOSTS' list in 'project/settings.py'.\n\n\
   $(tput setaf 6)- Download credentials file and save it as $(tput sgr0)'credentials.json'$(tput setaf 6).\n\
-  - Open the file with a text editor and copy/paste its content here, then press 'ENTER': $(tput sgr0)"
+  - Open the file with a text editor and copy/paste its content here, \n\
+    then press 'ENTER': \n$(tput sgr0)"
 
 	n=0
 	until [ "$n" -ge 3 ]
@@ -110,14 +114,14 @@ $(tput setaf 6)- Go to: 'APIs & Services' > 'Credentials' > 'Create Credentials'
 	done
 
 	echo -e "$(tput setaf 6)- Get GCP project number:\n\
-  - Go to: 'Home' > 'Dashboard' > Note 'Project number'\n\
+  - Go to: 'Home' > 'Dashboard' > Note $(tput setaf 3)'Project number'$(tput setaf 6)\n\
 \n\
 - Enable 'Google Apps Script API':\n\
-  - Go to $(tput sgr0)https://script.google.com/home/usersettings$(tput setaf 6) and enable 'Google Apps Script API'.$(tput sgr0)\n"
+  - Go to $(tput sgr0)https://script.google.com/home/usersettings$(tput setaf 6) and enable Google Apps Script API$(tput sgr0)\n"
 	
 	read -p "Press any key to continue..."
 
-	echo -e "\n\n$(tput setaf 5)## Cloning 'Gmail AutoResponder' git repository: $(tput sgr0)\n"
+	echo -e "\n\n$(tput setaf 5)## Cloning 'Gmail AutoResponder' git repository: ##$(tput sgr0)\n"
 	
 	# ------------ CONFIGURE ------------
 	mkdir ./gmail-autoresponder && cd ./gmail-autoresponder/
@@ -130,10 +134,10 @@ $(tput setaf 6)- Go to: 'APIs & Services' > 'Credentials' > 'Create Credentials'
 	
 	## -- Config. Core app --
 	cd app/core
-	echo -e "\n$(tput setaf 5)## Creating the Google Apps Script Project (Core backend app): $(tput sgr0)\n"
+	echo -e "\n$(tput setaf 5)## Creating the Google Apps Script Project (Core backend app): ##$(tput sgr0)\n"
 	clasp login --no-localhost
 	
-	echo "SCRIPT_ID = \"$(clasp create --type api --title "Gmail AutoResponder" | grep -oP '(?<=https://script.google.com/d/)(.+?)(?=/)')\"" >> ../middleware/script_run_parameters.py
+	echo -e "SCRIPT_ID = \"$(clasp create --type api --title "Gmail AutoResponder" | grep -oP '(?<=https://script.google.com/d/)(.+?)(?=/)')\"" >> ../middleware/script_run_parameters.py
 	
 	# It is also possible to fetch Script ID from '.clasp.json' file
 	    # jq -r '."scriptId"' .clasp.json
@@ -143,17 +147,17 @@ $(tput setaf 6)- Go to: 'APIs & Services' > 'Credentials' > 'Create Credentials'
 	
 	echo -e "\
 $(tput setaf 6)\n- Go to project's edit URL > 'Project Settings' > 'Google Cloud Platform (GCP) Project: Change project'\n\
-  - Set the created GCP project by entering its number$(tput sgr0)\n"
+  - Set the created GCP project by entering its number $(tput setaf 3)(Project Number)$(tput sgr0)\n"
 	
-	read -p "Press any key to continue...\n"
+	read -p "Press any key to continue..."
 	
-	echo "$(tput setaf 3)Deploying the Apps Script (Core) app...$(tput sgr0)"
+	echo -e "$(tput setaf 3)\nDeploying the Apps Script (Core) app...$(tput sgr0)"
 	echo "DEPLOYMENT_ID = \"$(clasp deploy | grep -oP '(?<=-\s)(.+?)(?=\s@)')\"" >> ../middleware/script_run_parameters.py
 	
 	echo -e "CORE_APP_ID = SCRIPT_ID\ndevMode = True" >> ../middleware/script_run_parameters.py
 	
 	## -- Config. Middleware app --
-	echo -e "\n$(tput setaf 5)## Configuring Middleware Django app: $(tput sgr0)\n"
+	echo -e "\n$(tput setaf 5)## Configuring the Django app (backend middleware app): ##$(tput sgr0)\n"
 	cd ../middleware
 	python3 -m venv venv
 	source venv/bin/activate # On Windows: `source venv/Scripts/activate`
@@ -194,4 +198,4 @@ else
 fi
 
 shopt -u nocasematch
-echo -e "\n☆.。.:*・°☆..。.:*・°☆.。.:*・°☆.。..:*・°☆☆.。.:*・°☆\n"
+echo -e "$(tput setaf 6)\n☆.。.:*・°☆..。.:*・°☆.。.:*・°☆.。..:*・°☆☆.。.:*・°☆\n$(tput sgr0)"
