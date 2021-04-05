@@ -1,8 +1,11 @@
 # Work Log
 
-## 2021-04-04
+## 2021-04-05
 
 - Up to now, `setup_centos7.sh` deploys Gmail AutoResponder web-app in **Development/Test** mode.
+- Published an asciicast: [Gmail AutoResponder - Dev/Test Deployment](https://asciinema.org/a/EDpbwZVOK6rGogNFHiwo3xGJQ)
+- Added sample execution output of `setup_centos7.sh` on a base CEntOS 7 system ([`setup_centos7_output.html`](/setup_centos7_output.html)).
+- Revising "Setup and Run" section of README.
 
 ## 2021-04-03
 
@@ -858,30 +861,34 @@ Still refining `README.md`, along with some modifications here and there.
 ## 2020-04-14
 - Cleaning up `README.md`
 
-## 2020-04-13 *(Update: [2021-03-27](https://github.com/amindeed/Gmail-AutoResponder/commit/1ec905e00887d51a0d0446748ed14d572342319e#diff-cd1a514362e350155053de1daf34ce172ee737dbdf904fdc0b54ad7b5e087b60))*
-- Exploring `gcloud` capabilities. Trying to automate/script the "GCP Project" part of the Apps Script application setup process.
-- I've been trying to find a way to automate, or bypass altogether, the process described in [`clasp run` CLI doc](https://github.com/google/clasp/blob/master/docs/run.md). But, for the time being, and according to the official documentation, there is no automated way to associate a Google Apps Script project to a Standard GCP Project to allow Script functions calls through [Apps Script API](https://developers.google.com/apps-script/api/) :
+## 2020-04-13 *(Update: 2021-04-04)*
 
-    - > […] <br> 2. Deploy the Script as an API executable ***(Easiest done via GUI at the moment)***. <br><br> *—Source [🌎](https://github.com/google/clasp/tree/4464f73465dd9697ae22fab81c42370ca98232c6#run)*
-    - > _**Setup Instructions :** <br> […] <br> 3. Set the `projectId` to your Apps Script project : <br>  […] <br>  - In the menu, click `Resources > Cloud Platform project...` <br>  - Paste `Project number` in `Change Project` and click `Set Project`._ <br><br>  *—Soucre [🌎](https://github.com/google/clasp/blob/master/docs/run.md#setup-instructions)*
-    - > **General procedure for using the Apps Script API to execute Apps Script functions :** <br> [...] <br> **Step 2:** Set up the common Cloud Platform project : _Both your script and the calling application need to share the same Cloud Platform (GCP) project. This GCP project can be an existing project or a new project created for this purpose. Once you have a GCP project, you must **switch your script project to use it**._ <br><br> *—Soucre [🌎](https://developers.google.com/apps-script/api/how-tos/execute#step_2_set_up_the_common_cloud_platform_project)*
-        - > _**Switching to a different standard GCP project :** <br> […] <br> **(4).** In the Apps Script editor, open the script whose GCP project you want to replace. <br> **(5).** Click **Resources > Cloud Platform project.** <br> **(6).** In the **Change Project** section, paste the project number you copied into the text field, then click **Set Project**. <br> **(7).** A warning screen explains the effects of changing the Cloud Platform project. Read the notice carefully, and click **Confirm**._ <br><br>  *—Source [🌎](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project)*
-    - > _The GCP project must be a [standard GCP project](https://developers.google.com/apps-script/guides/cloud-platform-projects#standard_cloud_platform_projects); default projects created for Apps Script projects are insufficient._ <br><br>  *—Soucre [🌎](https://developers.google.com/apps-script/api/how-tos/execute)*
-        - > _**When standard GCP projects are required :** <br> […] <br> - When you have an application that needs to execute functions in your script project using the Apps Script API's scripts.run method._ <br><br> *—Source [🌎](https://developers.google.com/apps-script/guides/cloud-platform-projects#when_standard_gcp_projects_are_required)*
+- `clasp` limitations:
+    - There seems to be a [long standing open issue](https://github.com/google/clasp/issues/225) about CI pipelines and services integration.
+    - I've been trying to find a way to automate, or bypass altogether, the process described in [`clasp run` CLI doc](https://github.com/google/clasp/blob/master/docs/run.md). But, for the time being, and according to the official documentation, there is no automated way to associate a Google Apps Script project to a Standard GCP Project to allow Script functions calls through [Apps Script API](https://developers.google.com/apps-script/api/) :
 
-- Apparently, there is no possibility to create credentials for a GCP project through `gcloud` CLI, which is really frustrating :
-    - `gcloud` offers only the possibility to [create keys for Service Accounts](https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/keys/create).
-    - [credentials - Create Api Key using gcloud? - Stack Overflow](https://stackoverflow.com/a/49465325)
-        - [Create API key using gcloud [76227920] - Visible to Public - Issue Tracker](https://issuetracker.google.com/issues/76227920)
-    - [google cloud platform - how to create a oauth client id for gcp programmatically - Stack Overflow](https://stackoverflow.com/questions/51549109/how-to-create-a-oauth-client-id-for-gcp-programmatically)
-        - [New API to manage API OAuth client Credentials [116182848] - Visible to Public - Issue Tracker](https://issuetracker.google.com/issues/116182848#comment77)
-        - [Resource to create OAuth 2.0 credentials · Issue #1287 · terraform-providers/terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google/issues/1287)
-    - [How to get application_default_credentials.json file? - Google Groups](https://groups.google.com/forum/#!topic/google-cloud-dev/I5uU7fO89-U)
-- Many online resources suggest the use of Identity-Aware Proxy (IAP) service to programmatically create OAuth clients :
-    - [**Suggesting IAP as a solution :** New API to manage API OAuth client Credentials - Issue Tracker](https://issuetracker.google.com/issues/116182848#comment75)
-    - [Programmatically creating OAuth clients for IAP](https://cloud.google.com/iap/docs/programmatic-oauth-clients)
-    - [apps-script-oauth2/CloudIdentityAwareProxy.gs](https://github.com/gsuitedevs/apps-script-oauth2/blob/master/samples/CloudIdentityAwareProxy.gs)
-- **<u>Conslusion :</u>** Using `gcloud` would make some sense only if Google Cloud SDK is already installed and actively used by the developer wanting to deploy this Apps Script project.
+        - > […] <br> 2. Deploy the Script as an API executable ***(Easiest done via GUI at the moment)***. <br><br> *—Source [🌎](https://github.com/google/clasp/tree/4464f73465dd9697ae22fab81c42370ca98232c6#run)*
+        - > _**Setup Instructions :** <br> […] <br> 3. Set the `projectId` to your Apps Script project : <br>  […] <br>  - In the menu, click `Resources > Cloud Platform project...` <br>  - Paste `Project number` in `Change Project` and click `Set Project`._ <br><br>  *—Soucre [🌎](https://github.com/google/clasp/blob/master/docs/run.md#setup-instructions)*
+        - > **General procedure for using the Apps Script API to execute Apps Script functions :** <br> [...] <br> **Step 2:** Set up the common Cloud Platform project : _Both your script and the calling application need to share the same Cloud Platform (GCP) project. This GCP project can be an existing project or a new project created for this purpose. Once you have a GCP project, you must **switch your script project to use it**._ <br><br> *—Soucre [🌎](https://developers.google.com/apps-script/api/how-tos/execute#step_2_set_up_the_common_cloud_platform_project)*
+            - > _**Switching to a different standard GCP project :** <br> […] <br> **(4).** In the Apps Script editor, open the script whose GCP project you want to replace. <br> **(5).** Click **Resources > Cloud Platform project.** <br> **(6).** In the **Change Project** section, paste the project number you copied into the text field, then click **Set Project**. <br> **(7).** A warning screen explains the effects of changing the Cloud Platform project. Read the notice carefully, and click **Confirm**._ <br><br>  *—Source [🌎](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project)*
+        - > _The GCP project must be a [standard GCP project](https://developers.google.com/apps-script/guides/cloud-platform-projects#standard_cloud_platform_projects); default projects created for Apps Script projects are insufficient._ <br><br>  *—Soucre [🌎](https://developers.google.com/apps-script/api/how-tos/execute)*
+            - > _**When standard GCP projects are required :** <br> […] <br> - When you have an application that needs to execute functions in your script project using the Apps Script API's scripts.run method._ <br><br> *—Source [🌎](https://developers.google.com/apps-script/guides/cloud-platform-projects#when_standard_gcp_projects_are_required)*
+
+- `gcloud` limitations:
+    - Exploring `gcloud` capabilities. Trying to automate/script the "GCP Project" part of the Apps Script application setup process.
+    - Apparently, there is no possibility to create credentials for a GCP project through `gcloud` CLI, which is really frustrating :
+        - `gcloud` offers only the possibility to [create keys for Service Accounts](https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/keys/create).
+        - [credentials - Create Api Key using gcloud? - Stack Overflow](https://stackoverflow.com/a/49465325)
+            - [Create API key using gcloud [76227920] - Visible to Public - Issue Tracker](https://issuetracker.google.com/issues/76227920)
+        - [google cloud platform - how to create a oauth client id for gcp programmatically - Stack Overflow](https://stackoverflow.com/questions/51549109/how-to-create-a-oauth-client-id-for-gcp-programmatically)
+            - [New API to manage API OAuth client Credentials [116182848] - Visible to Public - Issue Tracker](https://issuetracker.google.com/issues/116182848#comment77)
+            - [Resource to create OAuth 2.0 credentials · Issue #1287 · terraform-providers/terraform-provider-google](https://github.com/terraform-providers/terraform-provider-google/issues/1287)
+        - [How to get application_default_credentials.json file? - Google Groups](https://groups.google.com/forum/#!topic/google-cloud-dev/I5uU7fO89-U)
+    - Many online resources suggest the use of Identity-Aware Proxy (IAP) service to programmatically create OAuth clients :
+        - [**Suggesting IAP as a solution :** New API to manage API OAuth client Credentials - Issue Tracker](https://issuetracker.google.com/issues/116182848#comment75)
+        - [Programmatically creating OAuth clients for IAP](https://cloud.google.com/iap/docs/programmatic-oauth-clients)
+        - [apps-script-oauth2/CloudIdentityAwareProxy.gs](https://github.com/gsuitedevs/apps-script-oauth2/blob/master/samples/CloudIdentityAwareProxy.gs)
+    - **<u>Conslusion :</u>** Using `gcloud` would make some sense only if Google Cloud SDK is already installed and actively used by the developer wanting to deploy this Apps Script project.
 
 ## 2020-04-03 - 04-12 (intermittently)
 - I had to use [`Fiddler`](https://superuser.com/a/1354620/291080) to intercept sequences of HTTP requests to Drive API URLs while using [`gdrive`](https://github.com/gdrive-org/gdrive) . Trying to mimic these requests using `CURL`.
