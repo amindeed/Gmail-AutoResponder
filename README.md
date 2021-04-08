@@ -17,14 +17,11 @@
   	- [1.1.2. Execution](#112-execution)
   	- [1.1.3. Logging](#113-logging)
   - [1.2. Backend – Middleware: *Django*](#12-backend--middleware-django)
-  - [1.3. Frontend: *Django templates + {CSS framework}*](#13-frontend-django-templates--css-framework)
-- [2. Setup and Run](#2-setup-and-run)
-  - [2.1. Provision *(Mostly manual)*](#21-provision-mostly-manual)
-    - [*Requirements*](#provision-req)
-    - [*Step 1: Create and configure a GCP Project*](#provision-step1)
-    - [*Step 2: Create and configure a Apps Script Project*](#provision-step2)
-  - [2.2. Configure *(Mostly Automated)*](#22-configure-mostly-automated)
-  - [2.3. Continuous Deployment (CD)](#23-continuous-deployment-cd)
+  - [1.3. Frontend](#13-frontend)
+- [2. Setup](#2-setup)
+  - [2.1. Provision](#21-provision)
+  - [2.2. Configure](#22-configure)
+  - [2.3. Deploy](#23-deploy)
 - [3. Background](#3-background)
 - [4. License](#4-license)
 
@@ -93,7 +90,7 @@ The default logger is a **[Google Spreadsheet](/app/core/GSpreadsheetLogger.js)*
 
 <br /><img src="/assets/django-logo.png" alt="django--logo.png" height="90"/><br />
 
-The **Middleware** backend component requires the [Core app ID](#coreappid), and the [Client ID credentials](https://support.google.com/cloud/answer/6158849) file ([`credentials.json`](/app/backend/python/credentials_template.json)) of the associated GCP project.
+The **Middleware** backend component requires the [Core app ID](#versioneddeploy), and the [Client ID credentials](https://support.google.com/cloud/answer/6158849) file ([`credentials.json`](/app/backend/python/credentials_template.json)) of the associated GCP project.
 
 It is a Django app providing the following features:
 - **Authentication:** User sign-in through a full OAuth2 authentication flow.
@@ -103,80 +100,80 @@ It is a Django app providing the following features:
 - **Handling App URLs:** mapping between *features*, *URLs* and *views*: *Home page*, *Login*, *Authentication* *(OAuth2 [authorized redirect URI](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred))*, *API Gateway endpoint URLs*, *Getting/Updating App settings*, *App reset* and *Logout*.
 
 
-### 1.3. Frontend: *Django templates + {CSS framework}*
+### 1.3. Frontend
 
 <br /><img src="/assets/frontend--logos.png" alt="frontend--logos.png" height="100"/><br />
+
+*Django templates + {CSS framework}.*
 
 The **Frontend** part is basically a Django template providing access to all needed features: Logged-in user information on top of a form to view and update [App Settings](#111-app-settings), along with ***Logout*** and App ***Enable/Disable/Reset*** commands.
 
 
-## 2. Setup and Run
+## 2. Setup
 
-<a href="https://asciinema.org/a/EDpbwZVOK6rGogNFHiwo3xGJQ" target="_top"><img align="right" width="202" height="130" alt="Asciinema: Gmail AutoResponder - Dev/Test Deployment" src="/assets/asciinema_setup_centos7.png"></a>
+<a href="https://asciinema.org/a/9mZzpFW7Ie86P2kGTbKct9vbT" target="_top"><img align="right" width="202" height="130" alt="Asciinema: Gmail AutoResponder - Dev/Test Deployment" src="/assets/asciinema_setup_centos7.png"></a>
 
 - ***Notes:***
-    - *This section is still being actively worked on. You can meanwhile check [`setup_centos7.sh`](/setup_centos7.sh) updates and this [asciicast](https://asciinema.org/a/EDpbwZVOK6rGogNFHiwo3xGJQ).*
-	- *Had it not been for `clasp` and `gcloud` command line tools [limitations](worklog.md#2020-04-13-update-2021-04-04), most (if not all) Setup and Run tasks would have been fully automatable.*
+    - *This section is still being actively worked on. You can meanwhile check [`setup_centos7.sh`](/setup_centos7.sh) with a [sample output](/setup_centos7_output.html), and this [asciicast](https://asciinema.org/a/9mZzpFW7Ie86P2kGTbKct9vbT).*
+	- *Had it not been for `clasp` and `gcloud` command line tools [limitations](worklog.md#2020-04-13-update-2021-04-04), most (if not all) of the tasks would have been fully automatable.*
 
-### 2.1. Provision *(Mostly manual)*
+### 2.1. Provision
 
-| <a name="provision-req">Requirements :</a><br>*(for development machine or Ansible control node)* |
-| :------------- |
-| <ul><li>[`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)</li><li>[`Python 3`](https://wiki.python.org/moin/BeginnersGuide/Download) (and [`paramiko`](http://www.paramiko.org/installing.html))</li><li>[`Node.js`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-nodejs-and-npm) and [`clasp`](https://www.npmjs.com/package/@google/clasp#install)</li><li>Google account</li><li>Linux (CEntOS 7) server with root/sudo access, manageable through SSH</li></ul> |
+Install software requirements and configure ***development***, ***test*** and ***deployment*** environments:
 
-- <a name="provision-step1">**Step 1:** [Create](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) and configure a Google Cloud Platform (GCP) Project:</a>
-	- Enable required [Google APIs](https://cloud.google.com/service-usage/docs/enable-disable): `Apps Script API`, `Google Drive API`, `Gmail API`, `Google Sheets API`.
-	- [Configure](https://support.google.com/cloud/answer/6158849?ref_topic=3473162#userconsent) the OAuth Consent Screen: 
-    	- Provide (at least) the required information: App name, User support email, Developer contact information
-		- Add [OAuth2 scopes](https://developers.google.com/identity/protocols/oauth2/scopes):
+- **Development machine:** Git, Python3, a modern and updated web browser, text editor/IDE, SSH client, virtualization software *(optional, but recommended)*, and—when required—remote access (typically through a web interface) to a CI/CD server.
 
-			```
-			openid
-			https://www.googleapis.com/auth/script.scriptapp
-			https://mail.google.com/
-			https://www.googleapis.com/auth/drive
-			https://www.googleapis.com/auth/userinfo.email
-			https://www.googleapis.com/auth/spreadsheets
-			https://www.googleapis.com/auth/userinfo.profile
-			```
+- **Control Machine** or **Deployment Server**: A dedicated host with SSH service installed and configured; typically with a configuration management software like Ansible, and—if need be—a CI/CD software or service, like Jenkins and GitHub Actions.
 
-	- Get the [Project number](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects).
-	- [Create OAuth credentials](https://developers.google.com/apps-script/guides/cloud-platform-projects#creating_oauth_credentials): 
-    	- Create **OAuth client ID** credentials for a **Web Application**.
-		- Set **Authorized Redirect URIs**: `http://127.0.0.1:8000/auth/` *(local, development)*, `{APP_BASE_URL}/auth/` *(staging, production)*.
-		- Download the JSON file containing the *client ID* and *client secret* and save it as [`credentials.json`](/app/backend/python/credentials_template.json).
+- **Target Server:** Install dependencies and make required configurations:
+    - Install system-wide software requirements, generally: `git`, `curl`, `jq`, `clasp`, `nginx`, `certbot`, `python3` and `uwsgi`.
+    - [Setup](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) a Google Cloud Platform (GCP) Project:
+        - Note the [Project Number](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects)
+        - Enable required Google [APIs](https://cloud.google.com/service-usage/docs/enable-disable): `Apps Script API`, `Google Drive API`, `Gmail API`, `Google Sheets API`.
+        - [Configure](https://support.google.com/cloud/answer/6158849?ref_topic=3473162#userconsent) OAuth consent screen: 
+            - Add [scopes](https://developers.google.com/identity/protocols/oauth2/scopes):
 
-- <a name="provision-step2">**Step 2:** Create a Google Apps Script Project:</a>
+                ```
+                openid
+                https://www.googleapis.com/auth/script.scriptapp
+                https://mail.google.com/
+                https://www.googleapis.com/auth/drive
+                https://www.googleapis.com/auth/userinfo.email
+                https://www.googleapis.com/auth/spreadsheets
+                https://www.googleapis.com/auth/userinfo.profile
+                ```
 
-	- Enable Google Apps Script API, from the [Apps Script dashboard](https://script.google.com/home/usersettings).
-	- Create an *API Executable* Apps Script project and push Core app code ([`/app/core`](/app/core) content) to it.
-	- [Switch](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project) Apps Script project's Google Cloud Project association to the standard (user-managed) project created in ***Step 1***, by providing its number.
+            - [Create](https://developers.google.com/apps-script/guides/cloud-platform-projects#creating_oauth_credentials) a OAuth2 Client ID for a web application. Set redirect URIs, depending on the deployment stage. Get [credentials JSON file](/app/backend/python/credentials_template.json).
+    - Configure Google Apps Script:
+        - Enable Google Apps Script API (from the [Apps Script dashboard](https://script.google.com/home/usersettings)).
+        - [Authorize](https://github.com/google/clasp#login) `clasp` command line tool.
+        - [Create](https://github.com/google/clasp#create) a new Apps Script project to be deployed as an *API Executable*.
+        - [Switch](https://developers.google.com/apps-script/guides/cloud-platform-projects#switching_to_a_different_standard_gcp_project) Apps Script's Google Cloud Project association from the default project to the standard (user-managed) project already created.
 
-### 2.2. Configure *(Mostly automated)*
+### 2.2. Configure
 
-- **Requirements:** `Ansible` (control node), `Python`/`Bash` scripting capability.
-- **Tasks to be automated:** 
-    - *(First deployment of the Apps Script project)*.
-    - Install and configure on the CEntOS server: `NGINX`, `uWSGI`, `certbot`.
-- **Parameters:** 
-    - **Files:** [`credentials.json`](/app/backend/python/credentials_template.json), [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py) (`SCRIPT_ID`, `DEPLOYMENT_ID`, `CORE_APP_ID`, `devMode`)
-    - **Variables:** `SERVER_IP_ADDRESS`, `SSH_CREDENTIALS`, `GIT_CREDENTIALS`, `SITE_FILES_PATH`, `[SUB]DOMAIN`, `SITE_BASE_URL`[+`PATH`], `OAUTH_REDIRECT_URI_PATH`.
+Install app dependencies and make a base deployment of the backend:
+- [Push](https://github.com/google/clasp#push) and [deploy](https://github.com/google/clasp#deploy) **Core** app code (`/app/core` content) to the newly created Apps Script project.
+- Create and configure a Django app:
+    - Install Python3 requirements (`/app/middleware/requirements.txt`) in a virtual environment.
+    - Apply all migrations (`python manage.py migrate`)
+- Configure NGINX, uWSGI and Certbot (for *Staging* and *Production* deployments).
 
-### 2.3. Continuous Deployment (CD)
+### 2.3. Deploy
 
-**Variables:** (`DEPLOY_TYPE`), `TIMEZONE`, `AppLogger` class name.
+**Continuous Deployment (CD):** *versioned* for the ***Core*** and *incremental* for the ***Middleware***.
 
-Three deployment modes:
+There are three deployments stages:
 
-|                             | 💻 Development / Test     | 🧪 Staging                       | 🏭 Production                    |
+| `Parameters`                  | 💻 Development           | 🧪 Staging                       | 🏭 Production                    |
 |-----------------------------|---------------------------|-------------------------------|-------------------------------|
 | **User <sup>[[1]](#user)</sup>** | Apps Script project owner                     | Any allowed Google user               | Any allowed Google user               |
 | **devMode <sup>[[2]](#devmode)</sup>**                     | True                      | False                         | False                         |
-| **Versioned deployment <sup>[[3]](#versioneddeploy)</sup>** | No                   | Yes                        | Yes                |
-| **Core app ID <sup>[[4]](#coreappid)</sup>** | Script ID                   | Deployment ID                        | Deployment ID                |
-| **HTTP Server <sup>[[5]](#httpsvr)</sup>**                 | Django Development Server | `NGinx` + `uWSGI` <br>+ `certbot` (specifically for public cloud deployments) | `NGinx` + `uWSGI` + `certbot` |
-| **Test Mode <sup>[[6]](#testmode)</sup>**               | –                         | Yes                           | No                            |
-| **Hosts <sup>[[7]](#hosts)</sup>** | `localhost`, `127.0.0.1`      | ● **LAN:** hostnames or privates IP addresses of an external hosts.<br>● **Internet:** [sub]domain name or public IP address, ideally with HTTP Basic Auth. | [sub]domain name or public IP address |
+| **Versioned deployment <sup>[[3]](#versioneddeploy)</sup>** | No<br>(use `SCRIPT_ID`) | Yes<br>(use `DEPLOYMENT_ID`) | Yes<br>(use `DEPLOYMENT_ID`) |
+| **HTTP Server <sup>[[4]](#httpsvr)</sup>**                 | Django Development Server | `NGinx` + `uWSGI` <br>+ `certbot` (specifically for public cloud deployments) | `NGinx` + `uWSGI` + `certbot` |
+| **Test Mode <sup>[[5]](#testmode)</sup>**               | –                         | Yes                           | No                            |
+| **Hosts <sup>[[6]](#hosts)</sup>** | `localhost`, `127.0.0.1`      | **- LAN:** hostnames or private IP addresses of external hosts.<br>**- Internet:** [sub]domain names or public IP addresses, ideally with HTTP Basic Auth. | [sub]domain name or public IP address |
+| **Debug & Log <sup>[[7]](#debug-log)</sup>** | Yes      | *OK*			  | No [`DEBUG`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-DEBUG) mode |
 
 <br>
 
@@ -185,16 +182,15 @@ Three deployment modes:
 <a name="devmode">[2]</a> **devMode:** Boolean value of the HTTP Request body field [`devMode`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run#request-body), of the Apps Script API method [`scripts.run`](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run). `False` implies a [*versioned deployment*](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments), while `True` lets the Core app [run at the latest version](https://developers.google.com/apps-script/api/how-tos/execute#the_scriptsrun_method) of the Apps Script project code. 
 <br>*(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))*
 
-<a name="versioneddeploy">[3]</a> **Versioned deployment:** whether to create a *versioned deployment* of the Apps Script (Core) app, i.e. a version deployed for use with the Apps Script API. In that case, a [*Deployment ID*](https://developers.google.com/apps-script/concepts/deployments#find_a_deployment_id) is used as the Core app ID, instead of the [*Script ID*](https://developers.google.com/apps-script/reference/script/script-app#getScriptId()).
+<a name="versioneddeploy">[3]</a> **Versioned deployment:** whether to create a *versioned deployment* of the Apps Script (Core) app. In that case, a [*Deployment ID*](https://developers.google.com/apps-script/concepts/deployments#find_a_deployment_id) is used as the *Core app ID (defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py) with the name `CORE_APP_ID`)*, instead of the [*Script ID*](https://developers.google.com/apps-script/reference/script/script-app#getScriptId()).
 
-<a name="coreappid">[4]</a> **Core app ID:** [*Deployment ID*](https://developers.google.com/apps-script/concepts/deployments#find_a_deployment_id) for versioned deployments, or [*Script ID*](https://developers.google.com/apps-script/reference/script/script-app#getScriptId()) when `devMode` is set to `True`. 
-<br>*(Defined in [`script_run_parameters.py`](/app/backend/python/script_run_parameters_example.py))*
+<a name="httpsvr">[4]</a> **HTTP Server:** HTTP server used to run the Django project (Middleware app): either the [Django built-in development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server), or the {`NGinx` + `uWSGI` + `certbot`} software suite to provide *HTTP server*, *Reverse proxy* and *HTTPS* functionalities.
 
-<a name="httpsvr">[5]</a> **HTTP Server:** HTTP server used to run the Django project (Middleware app): either the [Django built-in development server](https://docs.djangoproject.com/en/3.1/intro/tutorial01/#the-development-server), or the {`NGinx` + `uWSGI` + `certbot`} software suite to provide *HTTP server*, *Reverse proxy* and *HTTPS* functionalities.
+<a name="testmode">[5]</a> **Test Mode:** The app is set to *“Test Mode”* by calling the `initSettings()` function with a valid test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`, which would set the Apps Script user property `testEmail` to `testadress@mydomain.com`.
 
-<a name="testmode">[6]</a> **Test Mode:** The app is set to *“Test Mode”* by calling the `initSettings()` function with a valid test email address parameter, e.g. `initSettings(true, 'testadress@mydomain.com')`, which would set the Apps Script user property `testEmail` to `testadress@mydomain.com`.
+<a name="hosts">[6]</a> **Hosts:** All IP addresses or/and hostnames/FQDNs of the GCP project's OAuth2 authorized redirect URIs, that should also be added to Django app's (Backend Middlware) [`ALLOWED_HOSTS`](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts) list in [`project/settings.py`](/app/middleware/project/settings.py).
 
-<a name="hosts">[7]</a> **Hosts:** All IP addresses or/and hostnames/FQDNs of the GCP project's OAuth2 authorized redirect URIs, that should also be added to Django's app (Backend Middlware) [`ALLOWED_HOSTS`](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts) list in [`project/settings.py`](/app/middleware/project/settings.py).
+<a name="debug-log">[7]</a> **Debug & Log:** Whether to use Django's [debugging](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-DEBUG) and [logging](https://docs.djangoproject.com/en/3.1/topics/logging/) capabilities.
 
 
 ## 3. Background

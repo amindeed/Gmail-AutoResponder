@@ -1,0 +1,272 @@
+﻿
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1181" height="922" shape-rendering="optimizeSpeed">
+                
+            <g>
+                <rect x="50" y="80" width="167" height="30" style="fill:#a5d6a7; stroke:#444; stroke-width:2"></rect>
+                    
+                <line x1="60" y1="80" x2="60" y2="110" style="fill:#a5d6a7; stroke:#444; stroke-width:2"></line>
+                <line x1="207" y1="80" x2="207" y2="110" style="fill:#a5d6a7; stroke:#444; stroke-width:2"></line>
+             
+                <title>function main()</title>
+            <text x="75" y="100" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="75" y="100">function main()</tspan>
+            </text>
+                
+            </g><g>
+            <rect x="117" y="143.5" width="177" height="30" rx="3" ry="3" style="fill:#ce93d8; stroke:#444; stroke-width:2"></rect>                
+            <polygon points="87,158.5 117,128.5 147,158.5 117,188.5" style="fill:#ce93d8; stroke:#444; stroke-width:2"></polygon>
+            <title>(execCondition)</title>
+            <text x="162" y="163.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="162" y="163.5">(execCondition)</tspan>
+            </text>
+            
+            <text x="109.2" y="163.5" font-family="monospace" font-size="13" fill="#222">if</text> <text x="124.8" y="190.45" font-family="monospace" font-size="13" fill="#222">+</text> 
+        </g>
+                <g>
+                   <rect x="137" y="198.5" width="326.4" height="30" rx="3" ry="3" style="fill:#90caf9; stroke:#444; stroke-width:2"></rect>
+                   <title>threads = GmailApp.search(searchQuery)</title>
+            <text x="152" y="218.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="152" y="218.5">threads = GmailApp.search(searchQuery)</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="137" y="247" width="443.4" height="30" rx="2" ry="2" style="fill:#C5E1A5; stroke:#444; stroke-width:2"></rect>
+                   <title>loggerInstance.append([searchQuery, date, threads.length], 'EXECUTIONS')</title>
+            <text x="152" y="267" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="152" y="267">loggerInstance.append([searchQuery, date, threads....</tspan>
+            </text>
+                   
+                   
+                </g><g>
+
+            <rect x="167" y="330.5" width="200.4" height="30" rx="3" ry="3" style="fill:#b39ddb; stroke:#444; stroke-width:2"></rect>
+            <polygon points="137,345.5 167,315.5 197,345.5 167,375.5" style="fill:#b39ddb; stroke:#444; stroke-width:2"></polygon>
+                
+            <title>i &lt; threads.length</title>
+            <text x="212" y="350.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="212" y="350.5">i &lt; threads.length</tspan>
+            </text>
+            
+            <text x="155.3" y="350.5" font-family="monospace" font-size="13" fill="#222">for</text>
+        </g>
+                <g>
+                   <rect x="187" y="385.5" width="53.4" height="30" rx="3" ry="3" style="fill:#90caf9; stroke:#444; stroke-width:2"></rect>
+                   <title>i++</title>
+            <text x="202" y="405.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="202" y="405.5">i++</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="187" y="434" width="342" height="30" rx="3" ry="3" style="fill:#90caf9; stroke:#444; stroke-width:2"></rect>
+                   <title>var lastMsg = getLastMessage(threads[i])</title>
+            <text x="202" y="454" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="202" y="454">var lastMsg = getLastMessage(threads[i])</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="187" y="482.5" width="381" height="30" rx="3" ry="3" style="fill:#90caf9; stroke:#444; stroke-width:2"></rect>
+                   <title>var isFilteredOut = filterResult['filterOut']</title>
+            <text x="202" y="502.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="202" y="502.5">var isFilteredOut = filterResult['filterOut']</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="187" y="531" width="349.8" height="30" rx="3" ry="3" style="fill:#90caf9; stroke:#444; stroke-width:2"></rect>
+                   <title>var isAlreadyProcessed = cache.get(msgId)</title>
+            <text x="202" y="551" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="202" y="551">var isAlreadyProcessed = cache.get(msgId)</tspan>
+            </text>
+                   
+                   
+                </g><g>
+            <rect x="217" y="594.5" width="223.79999999999998" height="30" rx="3" ry="3" style="fill:#ce93d8; stroke:#444; stroke-width:2"></rect>                
+            <polygon points="187,609.5 217,579.5 247,609.5 217,639.5" style="fill:#ce93d8; stroke:#444; stroke-width:2"></polygon>
+            <title>(!isAlreadyProcessed)</title>
+            <text x="262" y="614.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="262" y="614.5">(!isAlreadyProcessed)</tspan>
+            </text>
+            
+            <text x="209.2" y="614.5" font-family="monospace" font-size="13" fill="#222">if</text> <text x="224.8" y="641.45" font-family="monospace" font-size="13" fill="#222">+</text> 
+        </g><g>
+            <rect x="267" y="664.5" width="184.8" height="30" rx="3" ry="3" style="fill:#ce93d8; stroke:#444; stroke-width:2"></rect>                
+            <polygon points="237,679.5 267,649.5 297,679.5 267,709.5" style="fill:#ce93d8; stroke:#444; stroke-width:2"></polygon>
+            <title>(!isFilteredOut)</title>
+            <text x="312" y="684.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="312" y="684.5">(!isFilteredOut)</tspan>
+            </text>
+            
+            <text x="259.2" y="684.5" font-family="monospace" font-size="13" fill="#222">if</text> <text x="274.8" y="711.45" font-family="monospace" font-size="13" fill="#222">+</text> <text x="455.7" y="677.55" font-family="monospace" font-size="13" fill="#222">-</text>
+        </g>
+                <g>
+                   <rect x="287" y="719.5" width="193.79999999999998" height="30" rx="2" ry="2" style="fill:#C5E1A5; stroke:#444; stroke-width:2"></rect>
+                   <title>autoReply(threads[i])</title>
+            <text x="302" y="739.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="302" y="739.5">autoReply(threads[i])</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="287" y="768" width="303" height="30" rx="2" ry="2" style="fill:#C5E1A5; stroke:#444; stroke-width:2"></rect>
+                   <title>processedMsgsLog.push(['REP_SENT'])</title>
+            <text x="302" y="788" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="302" y="788">processedMsgsLog.push(['REP_SENT'])</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="287" y="816.5" width="404.4" height="30" rx="2" ry="2" style="fill:#C5E1A5; stroke:#444; stroke-width:2"></rect>
+                   <title>cache.put(msgId, msgId, (timeinterval + 6) * 60)</title>
+            <text x="302" y="836.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="302" y="836.5">cache.put(msgId, msgId, (timeinterval + 6) * 60)</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="751.4" y="719.5" width="295.2" height="30" rx="2" ry="2" style="fill:#C5E1A5; stroke:#444; stroke-width:2"></rect>
+                   <title>processedMsgsLog.push(['SKIPPED'])</title>
+            <text x="766.4" y="739.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="766.4" y="739.5">processedMsgsLog.push(['SKIPPED'])</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="751.4" y="768" width="404.4" height="30" rx="2" ry="2" style="fill:#C5E1A5; stroke:#444; stroke-width:2"></rect>
+                   <title>cache.put(msgId, msgId, (timeinterval + 6) * 60)</title>
+            <text x="766.4" y="788" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="766.4" y="788">cache.put(msgId, msgId, (timeinterval + 6) * 60)</tspan>
+            </text>
+                   
+                   
+                </g>
+                <g>
+                   <rect x="137" y="866.5" width="443.4" height="30" rx="2" ry="2" style="fill:#C5E1A5; stroke:#444; stroke-width:2"></rect>
+                   <title>loggerInstance.append(processedMsgsLog, 'PROCESSED')</title>
+            <text x="152" y="886.5" font-family="monospace" font-size="13" fill="#222">
+                <tspan x="152" y="886.5">loggerInstance.append(processedMsgsLog, 'PROCESSED...</tspan>
+            </text>
+                   
+                   
+                </g>
+            <g>
+               <path d="M68.5, 110 L68.5 154.5 Q68.5 158.5
+                72.5 158.5
+                L79 158.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M79, 155.5 L87, 158.5 L79, 161.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M117, 188.5 L117 209.5 Q117 213.5
+                121 213.5
+                L129 213.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M129, 210.5 L137, 213.5 L129, 216.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M117, 188.5 L117 258 Q117 262
+                121 262
+                L129 262 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M129, 259 L137, 262 L129, 265 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M117, 188.5 L117 341.5 Q117 345.5
+                121 345.5
+                L129 345.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M129, 342.5 L137, 345.5 L129, 348.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M167, 375.5 L167 396.5 Q167 400.5
+                171 400.5
+                L179 400.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M179, 397.5 L187, 400.5 L179, 403.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M167, 375.5 L167 445 Q167 449
+                171 449
+                L179 449 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M179, 446 L187, 449 L179, 452 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M167, 375.5 L167 493.5 Q167 497.5
+                171 497.5
+                L179 497.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M179, 494.5 L187, 497.5 L179, 500.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M167, 375.5 L167 542 Q167 546
+                171 546
+                L179 546 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M179, 543 L187, 546 L179, 549 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M167, 375.5 L167 605.5 Q167 609.5
+                171 609.5
+                L179 609.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M179, 606.5 L187, 609.5 L179, 612.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M217, 639.5 L217 675.5 Q217 679.5
+                221 679.5
+                L229 679.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M229, 676.5 L237, 679.5 L229, 682.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M267, 709.5 L267 730.5 Q267 734.5
+                271 734.5
+                L279 734.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M279, 731.5 L287, 734.5 L279, 737.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M267, 709.5 L267 779 Q267 783
+                271 783
+                L279 783 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M279, 780 L287, 783 L279, 786 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M267, 709.5 L267 827.5 Q267 831.5
+                271 831.5
+                L279 831.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M279, 828.5 L287, 831.5 L279, 834.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M451.8, 679.5 L727.4 679.5  Q731.4 679.5
+                731.4 683.5
+                L731.4 726.5 Q731.4 734.5
+                735.4 734.5
+                L743.4 734.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M743.4, 731.5 L751.4, 734.5 L743.4, 737.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M451.8, 679.5 L727.4 679.5  Q731.4 679.5
+                731.4 683.5
+                L731.4 775 Q731.4 783
+                735.4 783
+                L743.4 783 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M743.4, 780 L751.4, 783 L743.4, 786 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M1155.8, 783 L1171.8 783  Q1175.8 783
+                1175.8 779
+                L1175.8 303.5 Q1175.8 295.5
+                1171.8 295.5
+                L175 295.5  Q167 295.5
+                167 299.5
+                L167 307.5" style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M164, 307.5 L167, 315.5 L170, 307.5 Z" fill="#333"></path>
+            </g>
+            <g>
+               <path d="M117, 188.5 L117 877.5 Q117 881.5
+                121 881.5
+                L129 881.5 " style="fill:none; stroke:#444; stroke-width:2"></path>
+               <path d="M129, 878.5 L137, 881.5 L129, 884.5 Z" fill="#333"></path>
+            </g>
+            </svg>

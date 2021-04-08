@@ -1,5 +1,24 @@
 # Work Log
 
+## 2021-04-08
+
+- Further enhancements of the setup script. Published a new execution demo as a [asciicast](https://asciinema.org/a/9mZzpFW7Ie86P2kGTbKct9vbT), and added a sample output (as a HTML file).
+- Revised the "Setup" section of the README file.
+- Plans for upcoming updates of the setup script
+    - Interactive or automatic (retries...).
+    - Enable/Disable debugging; Levels: Info/Success, Warning, Error.
+    - Revert changes back in case of an error.
+    - User should have read/write access rights to the current directory.
+    - User should be a 'sudoer'.
+- About [`clasp deploy`](https://github.com/google/clasp#deploy) and Google Apps Script project [versions](https://developers.google.com/apps-script/concepts/deployments#versioned_deployments) *(summary for future reference)*:
+    - It is possible to create immutable versions of a script.
+    - Each version can have multiple deployments (each with its own deployment ID) or redeployed (which create a new deployment with a new ID).
+    - When a Apps Script project is redeployed using an existing deployment ID, a new version is automatically created.
+- Interesting resources:
+    - [How to Update Your Live Django Website | Towards Data Science](https://towardsdatascience.com/how-to-update-your-live-django-website-b84645753ea1)
+        - [Automating Django Deployments with Fabric and Ansible – Real Python](https://realpython.com/automating-django-deployments-with-fabric-and-ansible/)
+    - [scripting - How to determine if a bash variable is empty? - Server Fault](https://serverfault.com/a/382740/205939)
+
 ## 2021-04-05
 
 - Up to now, `setup_centos7.sh` deploys Gmail AutoResponder web-app in **Development/Test** mode.
@@ -861,11 +880,11 @@ Still refining `README.md`, along with some modifications here and there.
 ## 2020-04-14
 - Cleaning up `README.md`
 
-## 2020-04-13 *(Update: 2021-04-04)*
+## 2020-04-13 *(Update: 2021-04-06)*
 
 - `clasp` limitations:
     - There seems to be a [long standing open issue](https://github.com/google/clasp/issues/225) about CI pipelines and services integration.
-    - I've been trying to find a way to automate, or bypass altogether, the process described in [`clasp run` CLI doc](https://github.com/google/clasp/blob/master/docs/run.md). But, for the time being, and according to the official documentation, there is no automated way to associate a Google Apps Script project to a Standard GCP Project to allow Script functions calls through [Apps Script API](https://developers.google.com/apps-script/api/) :
+    - As I was trying to find a way to automate, or bypass altogether, the process described in [`clasp run` CLI doc](https://github.com/google/clasp/blob/master/docs/run.md), I came to the conclusion that there is **no automated way** to associate a Google Apps Script project to a Standard GCP Project :
 
         - > […] <br> 2. Deploy the Script as an API executable ***(Easiest done via GUI at the moment)***. <br><br> *—Source [🌎](https://github.com/google/clasp/tree/4464f73465dd9697ae22fab81c42370ca98232c6#run)*
         - > _**Setup Instructions :** <br> […] <br> 3. Set the `projectId` to your Apps Script project : <br>  […] <br>  - In the menu, click `Resources > Cloud Platform project...` <br>  - Paste `Project number` in `Change Project` and click `Set Project`._ <br><br>  *—Soucre [🌎](https://github.com/google/clasp/blob/master/docs/run.md#setup-instructions)*

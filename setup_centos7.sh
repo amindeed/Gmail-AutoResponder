@@ -19,14 +19,15 @@ if [[ ${FULL_DISTRO_NAME} =~ .*CENTOS.* ]] && \
 	echo -e "\n$(tput setaf 3)Running setup on a CentOS 7 system.$(tput sgr0)"
 
     # ------------ PROVISION: Development machine ------------
-	# - Requirements: OpenSSH client, Remote access to a CI/CD tool (typically through a web interface)
+	# - Requirements: OpenSSH client, and -if need be- remote access (typically through a web interface) to a CI/CD tool 
 	
 	# ------------ PROVISION: Control machine ------------
-	# - Requirements:
-	# 	- [OpenSSH client, Python3 + Paramiko]
-	# 	- Config. Management and/or CI/CD tool: Ansible, Jenkins, GitHub Actions
+	# - Requirements: Typically a SSH client/server and Config. Management and/or CI/CD tool/service, like Ansible, Jenkins, GitHub Actions
 	
 	# ------------ PROVISION: Target server ------------
+	
+	setup_dir_name="gm-autoresp-setup-tmp_$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 12)"
+	mkdir $setup_dir_name && cd $setup_dir_name
 	
 	function install_req()
 	{
@@ -98,6 +99,7 @@ $(tput sgr0)openid, https://www.googleapis.com/auth/script.scriptapp, https://ma
 		read creds
 		if jq -e . >/dev/null 2>&1 <<<"$creds"; then
 			echo $creds > credentials.json
+			creds_file_path="$(pwd)/credentials.json"
 			echo -e "\n$(tput setaf 2)JSON text parsed and saved as '$(pwd)/credentials.json'.$(tput sgr0)\n"
 			break
 		else
@@ -121,35 +123,59 @@ $(tput sgr0)openid, https://www.googleapis.com/auth/script.scriptapp, https://ma
 	
 	read -p "Press any key to continue..."
 
+	clasp login --no-localhost
+
+	apps_script_project_url=$(clasp create --type api --title "Gmail AutoResponder" | grep -oP 'http.?://\S+')
+	clasp_file_path="$(pwd)/.clasp.json"
+	rm appsscript.json
+	cd ..
+
+	echo -e "\
+$(tput setaf 6)\n- Go to project's edit URL > 'Project Settings' \n\
+ > 'Google Cloud Platform (GCP) Project: Change project'\n\n\
+    $(tput sgr0)$apps_script_project_url\n\n\
+  - $(tput setaf 6)Set the created GCP project by entering its number \n\
+    ($(tput setaf 3)Project Number $(tput setaf 6)you previously noted)$(tput sgr0)\n\n\
+  - $(tput setaf 6)While there, you can check the box next to $(tput sgr0)\"Show 'appsscript.json' manifest file in editor\"\n"
+	
+	read -p "Press any key to continue..."
+
+	## Output: $creds_file_path, $clasp_file_path
+
+	# ------------ CONFIGURE ------------
+
+	## Iutput: $creds_file_path (-> Allowed hosts), $clasp_file_path (-> Script ID), $git_repo_url 
+	##         [Core and Middleware apps relative paths, w/ default values]
+	
 	echo -e "\n\n$(tput setaf 5)## Cloning 'Gmail AutoResponder' git repository: ##$(tput sgr0)\n"
 	
-	# ------------ CONFIGURE ------------
-	mkdir ./gmail-autoresponder && cd ./gmail-autoresponder/
+	git_repo_url="https://github.com/amindeed/Gmail-AutoResponder.git"
 
-	git clone https://github.com/amindeed/Gmail-AutoResponder.git .
+	mkdir gmail-autoresponder && cd gmail-autoresponder/
 
-	if [ -f ../credentials.json ]; then
-    	mv ../credentials.json app/middleware/
+	git clone $git_repo_url .
+
+	if [[ -n $creds_file_path ]] && \
+	   [[ -f $creds_file_path ]]; then 
+	    mv "$creds_file_path" app/middleware/
+	else
+		echo -e "$(tput setaf 1)Required file 'credentials.json' is missing.$(tput sgr0)"
+	fi
+
+	if [[ -n $clasp_file_path ]] && \
+	   [[ -f $clasp_file_path ]]; then 
+	    mv "$clasp_file_path" app/core/
+	else
+		echo -e "$(tput setaf 1)Required file '.clasp.json' is missing.$(tput sgr0)"
 	fi
 	
 	## -- Config. Core app --
 	cd app/core
 	echo -e "\n$(tput setaf 5)## Creating the Google Apps Script Project (Core backend app): ##$(tput sgr0)\n"
-	clasp login --no-localhost
-	
-	echo -e "SCRIPT_ID = \"$(clasp create --type api --title "Gmail AutoResponder" | grep -oP '(?<=https://script.google.com/d/)(.+?)(?=/)')\"" >> ../middleware/script_run_parameters.py
-	
-	# It is also possible to fetch Script ID from '.clasp.json' file
-	    # jq -r '."scriptId"' .clasp.json
-	    # echo "SCRIPT_ID = \"$(jq -r '."scriptId"' .clasp.json)\"" >> app/middleware/script_run_parameters.py
+		
+	echo "SCRIPT_ID = \"$(jq -r '."scriptId"' .clasp.json)\"" >> ../middleware/script_run_parameters.py
 	
 	clasp push --force
-	
-	echo -e "\
-$(tput setaf 6)\n- Go to project's edit URL > 'Project Settings' > 'Google Cloud Platform (GCP) Project: Change project'\n\
-  - Set the created GCP project by entering its number $(tput setaf 3)(Project Number)$(tput sgr0)\n"
-	
-	read -p "Press any key to continue..."
 	
 	echo -e "$(tput setaf 3)\nDeploying the Apps Script (Core) app...$(tput sgr0)"
 	echo "DEPLOYMENT_ID = \"$(clasp deploy | grep -oP '(?<=-\s)(.+?)(?=\s@)')\"" >> ../middleware/script_run_parameters.py
@@ -168,10 +194,10 @@ $(tput setaf 6)\n- Go to project's edit URL > 'Project Settings' > 'Google Cloud
 	
 	pip install -r requirements.txt
 
-	if [ -f credentials.json ]; then
+	if [[ -f credentials.json ]]; then
     	python manage.py migrate
 	else
-		echo -e "\n$(tput setaf 6)Get OAuth2 Client ID credentials file 'credentials.json' and place it in '/app/middleware/', and run 'python manage.py migrate' within the virtual environement.$(tput sgr0)"
+		echo -e "\n$(tput setaf 6)Get OAuth2 Client ID credentials file 'credentials.json' and place it in '/app/middleware/', and run $(tput sgr0)'python manage.py migrate'$(tput setaf 6) within the virtual environement.$(tput sgr0)"
 	fi
 
 	deactivate
@@ -183,6 +209,7 @@ $(tput setaf 6)\n- Go to project's edit URL > 'Project Settings' > 'Google Cloud
 	# - Configure firewallD
 	
 	# ------------ CI/CD ------------
+	## Input: devMode, ...
 	# cd gmail-autoresponder/
 	# git pull origin master
 	# cd app/core/
