@@ -153,6 +153,7 @@ $(tput setaf 6)\n- Go to project's edit URL > 'Project Settings' \n\
 
 	mkdir gmail-autoresponder && cd gmail-autoresponder/
 
+	# TODO: Consider using a bare repository instead
 	git clone $git_repo_url .
 
 	if [[ -n $creds_file_path ]] && \

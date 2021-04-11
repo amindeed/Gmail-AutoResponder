@@ -3,7 +3,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/amindeed/Gmail-AutoResponder?logo=git&logoColor=ffffff)](https://github.com/amindeed/Gmail-AutoResponder)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amindeed/Gmail-AutoResponder?logo=github)](https://github.com/amindeed/Gmail-AutoResponder/commits/master)
 [![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-ES6-orange?logo=v8&logoColor=ffffff)](https://developers.google.com/apps-script/guides/v8-runtime)
-[![Django](https://img.shields.io/badge/Django-v3.1.5-yellowgreen?logo=django)](https://docs.djangoproject.com/en/3.1/releases/3.1.5/)
+[![Django](https://img.shields.io/badge/Django-v3.1.8-yellowgreen?logo=django)](https://docs.djangoproject.com/en/3.1/releases/3.1.8/)
 [![License](https://img.shields.io/github/license/amindeed/Gmail-AutoResponder?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAYCAYAAAD3Va0xAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAB3RJTUUH5QMcESAcS1MDzAAAAj1JREFUOMuVlDtoVFEQhr+zu0pik0C6YLQwIDaJjRY2aSyNj9ikkaC1QhAjFkI0YhWrgCJ2SnwgiqAiNhaiVnY+IqTQ+AoWSrLiIyZmPwvnLtc12dWBwz13Zs7MPzP/OYkQNdsWgFWx7wDGgATsB96F/htQSSmRP1SVMFwDnsWaAGaAT8CL0D0FzqeU8slJ2U8YdgI3gBFA4AnwCqgAnUAXsACcALamlO6p5JGh7lC/qhfUfvW5v2VGnY39hLpHPad+UbdX26KiXg/Hy+qB2I+rzblETZFEdUi9GvtbmUOz+lo9pvaFcXd+CPleqL3hs00dVstqIQs0pR5RJ9VxlpEsYJT2Mc7MZIHWRYZ98W2hgagd4Tsc366sP3fVjepsDafqoVpUe9RH6pUC0A5MAStjtP8qi0AJeAm0o3YHvH7rQfkTVWtueqo9BWASeANsAKbVk8uVl9MdBD4DLcAs8LAQDBb4EPdqSF1fewUyBqurgaPAcWA6zBXUknpH/a7uVS+pc+qA2lpTzoD6M4g7EOy+n89WDMOiOqYORu1z6nSsudAdVkfVSiQuEc9DHvYgMAr0Ak1AT0wnAUXgAVAGbgKHUkpn/rq0OXTZZZ1Xf6hn1dOBaCFsjxuNNUO4Kco8pb5V36sjUU5n3rcRa7sj+1q1JVZbBFqzFD2WeiGrvQOKKaVySqkcParaavtSakDiiloAVgTXlpVCHVsCtgDzManN9QLVQ1QELgYdEnCb/5V4o+bVvpxuV7C6bakzvwBluHvhBl+OCQAAAABJRU5ErkJggg==)](/LICENSE)
 
 **Gmail AutoResponder** is a full-stack web application for automated email processing.
@@ -114,8 +114,8 @@ The **Frontend** part is basically a Django template providing access to all nee
 <a href="https://asciinema.org/a/9mZzpFW7Ie86P2kGTbKct9vbT" target="_top"><img align="right" width="202" height="130" alt="Asciinema: Gmail AutoResponder - Dev/Test Deployment" src="/assets/asciinema_setup_centos7.png"></a>
 
 - ***Notes:***
-    - *This section is still being actively worked on. You can meanwhile check [`setup_centos7.sh`](/setup_centos7.sh) with a [sample output](/setup_centos7_output.html), and this [asciicast](https://asciinema.org/a/9mZzpFW7Ie86P2kGTbKct9vbT).*
-	- *Had it not been for `clasp` and `gcloud` command line tools [limitations](worklog.md#2020-04-13-update-2021-04-04), most (if not all) of the tasks would have been fully automatable.*
+    - *This section is still being actively worked on. The whole process logic is currently drafted as a Bash script you can check [here](/setup_centos7.sh) along with a [sample output](/setup_centos7_output.html). You can also check this [asciicast](https://asciinema.org/a/9mZzpFW7Ie86P2kGTbKct9vbT).* 
+	- *Had it not been for `clasp` and `gcloud` command line tools [limitations/design choices](worklog.md#2020-04-13-update-2021-04-06), most (if not all) of the tasks would have been fully automatable.*
 
 ### 2.1. Provision
 

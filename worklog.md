@@ -1,5 +1,14 @@
 # Work Log
 
+## 2021-04-10
+
+- Studying project setup as a pipeline to make the process as automatable as possible, and the Bash script easily convertible.
+- Resources:
+    - [makeusabrew/bootbox: Wrappers for JavaScript alert(), confirm() and other flexible dialogs using Twitter's bootstrap framework](https://github.com/makeusabrew/bootbox)
+    - [How to create flow charts in draw.io - draw.io](https://drawio-app.com/flowcharts/)
+    - [Flowcharts Describing Loops - Problem Solving with Python](https://problemsolvingwithpython.com/09-Loops/09.04-Flowcharts-Describing-Loops/)
+
+
 ## 2021-04-08
 
 - Further enhancements of the setup script. Published a new execution demo as a [asciicast](https://asciinema.org/a/9mZzpFW7Ie86P2kGTbKct9vbT), and added a sample output (as a HTML file).
@@ -893,7 +902,8 @@ Still refining `README.md`, along with some modifications here and there.
         - > _The GCP project must be a [standard GCP project](https://developers.google.com/apps-script/guides/cloud-platform-projects#standard_cloud_platform_projects); default projects created for Apps Script projects are insufficient._ <br><br>  *—Soucre [🌎](https://developers.google.com/apps-script/api/how-tos/execute)*
             - > _**When standard GCP projects are required :** <br> […] <br> - When you have an application that needs to execute functions in your script project using the Apps Script API's scripts.run method._ <br><br> *—Source [🌎](https://developers.google.com/apps-script/guides/cloud-platform-projects#when_standard_gcp_projects_are_required)*
 
-- `gcloud` limitations:
+- `gcloud` limitations: <br>
+    ***Conslusion :** Using `gcloud` would make some sense only if Google Cloud SDK is already installed and actively used by the developer wanting to deploy this Apps Script project.*
     - Exploring `gcloud` capabilities. Trying to automate/script the "GCP Project" part of the Apps Script application setup process.
     - Apparently, there is no possibility to create credentials for a GCP project through `gcloud` CLI, which is really frustrating :
         - `gcloud` offers only the possibility to [create keys for Service Accounts](https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/keys/create).
@@ -907,7 +917,7 @@ Still refining `README.md`, along with some modifications here and there.
         - [**Suggesting IAP as a solution :** New API to manage API OAuth client Credentials - Issue Tracker](https://issuetracker.google.com/issues/116182848#comment75)
         - [Programmatically creating OAuth clients for IAP](https://cloud.google.com/iap/docs/programmatic-oauth-clients)
         - [apps-script-oauth2/CloudIdentityAwareProxy.gs](https://github.com/gsuitedevs/apps-script-oauth2/blob/master/samples/CloudIdentityAwareProxy.gs)
-    - **<u>Conslusion :</u>** Using `gcloud` would make some sense only if Google Cloud SDK is already installed and actively used by the developer wanting to deploy this Apps Script project.
+    - 
 
 ## 2020-04-03 - 04-12 (intermittently)
 - I had to use [`Fiddler`](https://superuser.com/a/1354620/291080) to intercept sequences of HTTP requests to Drive API URLs while using [`gdrive`](https://github.com/gdrive-org/gdrive) . Trying to mimic these requests using `CURL`.
