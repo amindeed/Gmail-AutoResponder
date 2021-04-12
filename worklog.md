@@ -98,7 +98,7 @@ Been developing, enhancing and thoroughly testing a setup bash script: [`setup_c
             3.8.11 2015-07-27 13:49:41 b8e92227a469de677a66da62e4361f099c0b79d0
             ```
 
-        - [RPM Fedora 19 sqlite 3.8.3 x86_64 rpm](http://rpm.pbone.net/info_idpl_48495875_distro_fedora19_com_sqlite-3.8.3-1.fc19.x86_64.rpm.html)
+        - <a name="centos7-sqlite3v"></a> [RPM Fedora 19 sqlite 3.8.3 x86_64 rpm](http://rpm.pbone.net/info_idpl_48495875_distro_fedora19_com_sqlite-3.8.3-1.fc19.x86_64.rpm.html)
             - > *Fedora repositories are not likely to be compatible with CentOS. Repositories for other Enterprise Linux distros derived from the same upstream sources are more likely to be compatible, but should still be used with care.* - [Source](https://wiki.centos.org/AdditionalResources/Repositories#An_example_of_what_NOT_to_do)
         - [atomic-sqlite-3.8.5-6803.el7.art.x86_64.rpm CentOS 7 Download](https://centos.pkgs.org/7/atomic-x86_64/atomic-sqlite-3.8.5-6803.el7.art.x86_64.rpm.html)
             - > *Be particularly careful about the Atomic repo as they enable their repo by default when installed, and overwrite user changes in the configuration without notice when the release package is updated. **Atomic will replace many core packages as configured when installed**.* - [Source](https://wiki.centos.org/AdditionalResources/Repositories#Known_Problem_Repositories)
