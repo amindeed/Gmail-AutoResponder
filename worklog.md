@@ -1,5 +1,11 @@
 # Work Log
 
+## 2021-04-28
+
+- It would be better to deploy the Core (Apps Script) app using the Google API Python client library instead of `clasp`. This saves ~100 MB of disk space and leverages installed project (Middleware app's) dependencies. Some useful resources in this regard:
+    - [Google Apps Script API Python Quickstart](https://github.com/googleworkspace/python-samples/tree/master/apps_script/quickstart)
+    - [Google's discovery based APIs: *Apps Script API*](https://googleapis.github.io/google-api-python-client/docs/dyn/script_v1.html)
+
 ## 2021-04-10
 
 - Studying project setup as a pipeline to make the process as automatable as possible, and the Bash script easily convertible.
@@ -32,7 +38,7 @@
 
 - Up to now, `setup_centos7.sh` deploys Gmail AutoResponder web-app in **Development/Test** mode.
 - Published an asciicast: [Gmail AutoResponder - Dev/Test Deployment](https://asciinema.org/a/EDpbwZVOK6rGogNFHiwo3xGJQ)
-- Added sample execution output of `setup_centos7.sh` on a base CEntOS 7 system ([`setup_centos7_output.html`](/setup_centos7_output.html)).
+- Added sample execution output of `setup_centos7.sh` on a base CEntOS 7 system ([`setup_centos7_output.html`](setup_centos7_output.html)).
 - Revising "Setup and Run" section of README.
 
 ## 2021-04-03
@@ -137,7 +143,7 @@ Drafting the "Setup and Run" part of the README and updating code accordingly.
 - Added a wrapper function **`autoReply()`** which will either call `replyTest()` or `replyToThread()`, depending on the value and validity of the `testEmail` script user property.
 - **`checkSpreadsheetById(id)`** method of the **`GSpreadsheetLogger`** now additionally checks if the Spreadsheet is trashed.
 - [`raw_notes.md`](https://github.com/amindeed/Gmail-AutoResponder/blob/7bb3232790055560dbd3fa6b02ca5d002c936a60/raw_notes.md) updated and renamed `TODO.md` for convenience, as a number of issues have already been addressed.
-- Some [`main.js`](/app/core/main.js) refinements.
+- Some [`main.js`](app/core/main.js) refinements.
 
 ## 2021-03-18
 
@@ -244,8 +250,8 @@ A massive refactoring of the whole core/Apps Script code: the code is now cleane
 
 Core (Apps Script) code is still broken, as it is being refactored:
 
-- Removed Google Sheets formatting code from [`app/core/Code.js`](/app/core/Code.js).
-- Updated functions: `getSettings()` and `setProperties(objParams)`, of [`app/core/gmail-autoresponder.js`](/app/core/gmail-autoresponder.js).
+- Removed Google Sheets formatting code from [`app/core/Code.js`](app/core/Code.js).
+- Updated functions: `getSettings()` and `setProperties(objParams)`, of [`app/core/gmail-autoresponder.js`](app/core/gmail-autoresponder.js).
 - Renamed script user properties, to keep the same names between `core`, `backend` and `frontend` parts of the code.
 - Converting blocks of code to reusable functions.
 - Exploring possible ways to modularize logging features (of executed sessions and processed messages), by abstracting format _(JSON...)_, log entry data structure and target _(Google Sheets, store to a Document DB through a JSON POST request...)_. I'm thinking of the following inheritance mechanism of both `SessionLogger` and `ProcessedMessageLogger` objects, from a parent object `AppLogger`. Intended structure / Pseudo-code *(check [next worklog entry](#2021-03-11) for update)* :
@@ -281,7 +287,7 @@ Core (Apps Script) code is still broken, as it is being refactored:
 
 - Now the Django app can load settings from Apps Script backend into the frontend, through AJAX requests.
 
-    <br /><img src="/assets/django-ajax-load-settings.gif" alt="django-ajax-load-settings.gif" width="500"/><br />
+    <br /><img src="assets/django-ajax-load-settings.gif" alt="django-ajax-load-settings.gif" width="500"/><br />
 
 - Handling access to some special URLs like `/auth` and `/getsettings`.
 - Refactoring `views.py` to use a function decorator `@check_user_session` to check whether the user is authenticated or not.
@@ -421,7 +427,7 @@ Core (Apps Script) code is still broken, as it is being refactored:
 
 - Triggers of manually deleted Apps Script projects will keep running unless their files are removed from Drive's trash. Even then, these triggers would still show on `https://script.google.com/home/triggers` as anonymous/blank.
 
-    <br /><img src="/assets/triggers-of-deleted-projects.png" alt="triggers-of-deleted-projects.png" width="700"/><br />
+    <br /><img src="assets/triggers-of-deleted-projects.png" alt="triggers-of-deleted-projects.png" width="700"/><br />
 
     That is, in fact, what caused the error I noted on [2020-05-25](#2020-05-25): _`Authorization is required to perform that action`_. So, to avoid this, we have to [delete the triggers programmatically](https://developers.google.com/apps-script/reference/script/script-app#deletetriggertrigger), or through ["My Triggers - Apps Script"](https://script.google.com/home/triggers) page.
 - Planning to refactor both project's structure and code, by splitting it into four components:
@@ -456,7 +462,7 @@ Core (Apps Script) code is still broken, as it is being refactored:
 ## 2020-05-28
 - I've decided to give the idea of _"making an API proxy"_ another go, after checking [@tanaikech](https://github.com/tanaikech)'s great [write-up about GAS Web Apps](https://github.com/tanaikech/taking-advantage-of-Web-Apps-with-google-apps-script). Here is the summary :
 
-    <br /><img src="/assets/AppsScript_doPost().png" alt="AppsScript_doPost().png" width="700"/><br />
+    <br /><img src="assets/AppsScript_doPost().png" alt="AppsScript_doPost().png" width="700"/><br />
 
     - The web app will be executed as the user accessing it, either the owner or any other Google user.
     - The Apps Script project needs to be shared with any Google user that we would want to access the web app.
@@ -479,7 +485,7 @@ Core (Apps Script) code is still broken, as it is being refactored:
     I don't want to resort to "hacky ways", so I think (for the time being) I'll just continue developing and refining functions as I have been and consider [using Apps Script API to run them](https://developers.google.com/apps-script/api/reference/rest/v1/scripts/run) from any third party application.
 - I'm receiving daily a summary of a significant number of the same error message for a running instance of the application. Unfortunately, regular Stackdriver logs do not provide any useful information, so I think I'll associate the Script app to a GCP project to get access to advanced logging.
 
-    <br /><img src="/assets/2020-05-25 16_01_38-Summary of failures for Google Apps Script_ Copy of Gmail AutoResponder Dev - te.png" alt="GApps Errors" width="400"/><br />
+    <br /><img src="assets/2020-05-25 16_01_38-Summary of failures for Google Apps Script_ Copy of Gmail AutoResponder Dev - te.png" alt="GApps Errors" width="400"/><br />
 
 ## 2020-05-19 : _Last commit of the month of Ramadan_ 🌙
 - Preparing code to test and progressively convert JavaScript client code to Ajax POST requests to be processed by the `doPost()` backend function.
@@ -507,7 +513,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 ## 2020-05-14
 - Bringing together all the needed [Materialize](https://materializecss.com/) components to rebuild the frontend page.
 
-    <br /><img src="/assets/2020-05-14 23_37_54-Materialize.png" alt="Materialize" width="400"/><br />
+    <br /><img src="assets/2020-05-14 23_37_54-Materialize.png" alt="Materialize" width="400"/><br />
 
 - Exploring Materialize website, checking and testing examples and sample codes.
 
@@ -532,7 +538,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 - First complete (backend and frontend) implementation of the cycle : `Initialize WebApp` ➝ `Modify settings` ➝ `Show updated settings` ➝ `Reset WebApp`:
     - New 3rd party component : [`SweetAlert2`](https://sweetalert2.github.io/), used instead of JavaScript's `alert()`.
 
-    <br /><img src="/assets/2020-05-10 22_56_04-init-reset-demo.gif" alt="Init-Reset-Demo" width="500"/><br />
+    <br /><img src="assets/2020-05-10 22_56_04-init-reset-demo.gif" alt="Init-Reset-Demo" width="500"/><br />
 
 #### _[`ScriptApp.getService().getUrl()`](https://developers.google.com/apps-script/reference/script/service#getUrl()) return values, WTF?_
 - I had some fun checking and comparing return values of the Apps Script method `ScriptApp.getService().getUrl()`, depending on multiple factors :
@@ -633,11 +639,11 @@ Since I often start working late at night, it is sometimes challenging to commit
     - When Chrome V8 runtime is disabled, `ScriptApp.getService().getUrl()` returns : `https://script.google.com/a/mydomain.com/macros/s/{deployment-id}/(exec|dev)`.
 - Tried [Templated HTML with scriplets](https://developers.google.com/apps-script/guides/html/templates) to "simulate" a page reload after `resetApp()` function is run : _it is not possible to load a URL, dynamically provided by the scriplet `<?= ScriptApp.getService().getUrl() ?>` and using [`window.open()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open), into the active window, unless you override the recommended [default behaviour](https://developers.google.com/apps-script/reference/html/x-frame-options-mode) of Google Apps Script, which protects against clickjacking by setting the `X-Frame-Options` HTTP header._
 
-    <br /><img src="/assets/2020-05-08 22_54_03-Gmail AutoResponder - Settings.png" alt="X-Frame-Options" width="500"/><br />
+    <br /><img src="assets/2020-05-08 22_54_03-Gmail AutoResponder - Settings.png" alt="X-Frame-Options" width="500"/><br />
 
 - Using `window.write()`, overwrite index page with its same code returned, as a HTML templated code, by a backend function : _page content seems to load without issues except `CKEditor`._
 
-    <br /><img src="/assets/2020-05-07 23_53_00-https___script.google.com.png" alt="window.write()" width="500"/><br />
+    <br /><img src="assets/2020-05-07 23_53_00-https___script.google.com.png" alt="window.write()" width="500"/><br />
 
 ## 2020-05-06
 - Exploring ways to implement a "first time run" process to initialize the webapp, without having to go/redirect to a custom URL.
@@ -647,7 +653,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 ## 2020-05-05
 - So I forgot that script properties accept only string values, and any other type would be converted, including boolean. Consequently, a `if` statement didn't work as expected since `true` and `false` were evaluated as literal non empty strings that are both equivalent to the boolean value `true`. Adjusted code accordingly.
 
-    <br /><img src="/assets/2020-05-05 01_05_08-Executions.png" alt="Properties_strings" width="600"/><br />
+    <br /><img src="assets/2020-05-05 01_05_08-Executions.png" alt="Properties_strings" width="600"/><br />
 
 - Adjusted project's scopes : `https://www.googleapis.com/auth/drive`, instead of `https://www.googleapis.com/auth/drive.readonly`.
 - Now all app settings are configurable from the web frontend.
@@ -734,7 +740,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 - Since it is [not possible](https://stackoverflow.com/a/44401527/3208373) to change script time zone from within a Script app, I'm trying to figure out a way for providing a "script user-side" time zone parameter that can be modified using the frontend, and leave script's time zone at "GMT+00".
 - A Google user isn't given a default profile picture if he has never set one manually. So, the app should provide an alternate/default picture in case [`getPhotoUrl()`](https://developers.google.com/apps-script/reference/drive/user#getPhotoUrl()) returns `null`.
 
-    <br /><img src="/assets/2020-04-25 11_36_11-test user photo.png" alt="No Profile Picture" width="500"/><br />
+    <br /><img src="assets/2020-04-25 11_36_11-test user photo.png" alt="No Profile Picture" width="500"/><br />
 
 - Added a default user profile picture encoded in base64
 - It would make sense to retrieve app's settings on page load if a "enable/disable app" switch is used. There seem to be two choices for an app status switch :
@@ -766,7 +772,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 - A couple of backend functions now use objects as parameters, instead of arrays. Consequently, there was one less function needed which was removed.
 - Added some basic styling to highlight data retrieved from backend app.
 
-    <br /><img src="/assets/2020-04-23 17_37_40-demo_basic_get_set.gif" alt="Basic Get/Set" width="500"/><br />
+    <br /><img src="assets/2020-04-23 17_37_40-demo_basic_get_set.gif" alt="Basic Get/Set" width="500"/><br />
 
 - All frontend functions moved to `gmail-autoresponder.js`.
 
@@ -774,11 +780,11 @@ Since I often start working late at night, it is sometimes challenging to commit
 ## 2020-04-22
 - Got a basic file upload example to work properly. **[(Code)](https://github.com/amindeed/Gmail-AutoResponder/tree/020eca4709463f3262002dac292bb2aca472ae63/draft_code/client-to-server)**
 
-    <br /><img src="/assets/2020-04-23 00_07_14-sucess-upload-drive.gif" alt="Successful Upload to Drive" width="500"/><br />
+    <br /><img src="assets/2020-04-23 00_07_14-sucess-upload-drive.gif" alt="Successful Upload to Drive" width="500"/><br />
 
 - First working frontend example that retrieves App settings from backend. **Code : [`frontend_index.html`](https://github.com/amindeed/Gmail-AutoResponder/blob/020eca4709463f3262002dac292bb2aca472ae63/app/frontend_index.html), [`frontend.js`](https://github.com/amindeed/Gmail-AutoResponder/blob/020eca4709463f3262002dac292bb2aca472ae63/app/frontend.js)**
 
-    <br /><img src="/assets/2020-04-22 23_51_20-demo-load-settings.gif" alt="Demo Load From Backend" width="500"/><br />
+    <br /><img src="assets/2020-04-22 23_51_20-demo-load-settings.gif" alt="Demo Load From Backend" width="500"/><br />
 
 - Refined a little bit `worklog.md`.
 
@@ -786,7 +792,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 ## 2020-04-21 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/22a47df9cd312c2dcfb28bf41dbc5617e901f829/draft_code/client-to-server)
 - For some reason, files created on Drive from Blob data (= input file of a submitted form) lose their MIME type and get corrupted. What I couldn't understand is that up until the file is uploaded to the server, and right before a Drive file is created with its data by calling [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)), the blob type is correct. The backend function `processForm()` of `draft_code\client-to-server\Code.js` was modified to illustrate the issue :
 
-    <br /><img src="/assets/2020-04-21 11_45_15-_corrupted-drive-files.gif" alt="Corrupted Drive Files" width="500"/><br />
+    <br /><img src="assets/2020-04-21 11_45_15-_corrupted-drive-files.gif" alt="Corrupted Drive Files" width="500"/><br />
 
 - So basically, some fairly reliable resources and accepted solutions on the web suggest to first process the submitted file with [`FileReader()`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), and pass it as a [data URL](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) to a backend function for a second process that extracts content type from it, [decodes the submitted base64 data](https://developers.google.com/apps-script/reference/utilities/utilities#base64Decode(String)), and calls [`Utilities.newBlob()`](https://developers.google.com/apps-script/reference/utilities/utilities#newBlob(Byte,String)) to create a new blob object for [`DriveApp.createFile(blob)`](https://developers.google.com/apps-script/reference/drive/drive-app#createFile(BlobSource)).
 - Here is a basic draft code as a wrap-up of what I've understood so far from the examples I studied. For the time being, this focuses only on that content type issue. Further development is needed to process forms with multiple types of input data (not only file upload) :
@@ -851,7 +857,7 @@ Since I often start working late at night, it is sometimes challenging to commit
 - **Objective :** Provide a same web page / frontend to both get current app's parameters' values _(= prefill form fields on page load using [`google.script.run`](https://developers.google.com/apps-script/guides/html/reference/run) to call server-side "getters")_ and update them on submit.
 - Researching and testing code about [Google Apps Script Client-to-Server Communication](https://developers.google.com/apps-script/guides/html/communication)
 
-    <br /><img src="/assets/2020-04-20 23_47_11-c2s_demo.png" alt="C2S_Demo" width="700"/><br />
+    <br /><img src="assets/2020-04-20 23_47_11-c2s_demo.png" alt="C2S_Demo" width="700"/><br />
 
 - There are still concepts that I'm trying to deeply understand how they imply or impact each other, namely script scopes, APIs' scopes, whether or not it is required to connect to a GCP project, deploying as "a web app" vs "API Executable"... For instance, I had to publish the app as "API Executable" to be able to run through the Apps Script API some initialization functions _(providing 'Logs' and 'Filters' spreadsheets' IDs...etc)_. But now, as I'm working on a frontend, I have to publish the app as "a web app" to issue client-to-server calls and provide a convenient way to show and update app's configs. So I guess, I will just make my best to both learn and enhance my code as I go.
 
@@ -947,7 +953,7 @@ Drafting instructions for project setup using both [`clasp`](https://github.com/
 
 ## 2020-03-29, 03-31 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/4de2d9853bd5d869f795209ae16459321bd1db0f/app)
 Exploring [`clasp`](https://github.com/google/clasp) tool for automated deployment of Google Apps Script project. Successfully deployed a first version of the code.
-    <br /><img src="/assets/2020-03-30 22_51_53-Gmail AutoResponder Dev.png" alt="Associate_AppsScript_to_GCP" width="500"/><br />
+    <br /><img src="assets/2020-03-30 22_51_53-Gmail AutoResponder Dev.png" alt="Associate_AppsScript_to_GCP" width="500"/><br />
 
 ## 2020-03-28 : _First commit during COVID-19 national lockdown_ 😷 [(code)](https://github.com/amindeed/Gmail-AutoResponder/commit/de9ba3b6137a64de4cd3815f814324f02d179169#diff-deb3f38e414de594d3421071ed162325)
 Documenting: Collecting notes about app logic, features and auto-deployment
