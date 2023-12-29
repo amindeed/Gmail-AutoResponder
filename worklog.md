@@ -1,5 +1,33 @@
 # Work Log
 
+## 2023-12-29: _TODO_
+
+- ***Setup (1/2):*** 
+    - `Bash`: Configure NGINX, WSGI and Certbot.
+    - Finish Bash script and/or port to a Python script.
+    - Unit tests.
+    - Draft a simple CI/CD pipeline.
+- ***Middleware (1/2):***
+    - Form data validation.
+    - Better error handling.
+- ***Frontend:***
+    - Complete form fields and commands
+    - Responsive (Bootstrap)
+    - Thoroughly test AJAX requests
+- ***Setup (2/2):***
+    - Design as a pipeline with inputs and outputs, covering all deployment stages.
+    - Automate configuration and deployment
+    - Deploy as a Docker image.
+- ***Middleware (2/2):***
+    - Implement API gateway. Test full workflow (e.g. with Postman).
+- ***Core:***
+    - Testing (with Middleware and frontend).
+    - 1 or 2 more **`BaseLogger`** sub-classes.
+    - **`query()`** method for `BaseLogger` class.
+- ***README:***
+    - `main()` flowchart
+    - Setup pipeline diagram
+
 ## 2021-04-28
 
 - It would be better to deploy the Core (Apps Script) app using the Google API Python client library instead of `clasp`. This saves ~100 MB of disk space and leverages installed project (Middleware app's) dependencies. Some useful resources in this regard:
