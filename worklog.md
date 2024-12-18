@@ -954,6 +954,7 @@ Still refining `README.md`, along with some modifications here and there.
     - 
 
 ## 2020-04-03 - 04-12 (intermittently)
+- ***⚠️ Findings documented [here](https://github.com/amindeed/Gmail-AutoResponder/blob/89d642c689c2476a6bbd18f4da89a045529a4c19/raw_notes.md#draft--using-google-drive-api).***
 - I had to use [`Fiddler`](https://superuser.com/a/1354620/291080) to intercept sequences of HTTP requests to Drive API URLs while using [`gdrive`](https://github.com/gdrive-org/gdrive) . Trying to mimic these requests using `CURL`.
 - After days of researching, I finally managed to find `CURL` command lines corresponding to each of the following Drive operations :
     1. [Not Curl] Construct Access Token request URL; Get the code to use in the next step
