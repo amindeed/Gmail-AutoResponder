@@ -997,461 +997,345 @@ Added first draft of `README.md`.
 
 Added and updated sample frontend code using [Material Design Lite](https://getmdl.io/components/index.html).
 
-----------------
-
-<h3 align="center"><strong><em>Entries to be translated from the <a href="https://github.com/amindeed/Gmail-AutoResponder/blob/929a26bdae365a69f56a1e951871575352800642/worklog.md">old worklog</a> :</em></strong></h3>
-
-
 ## 2018-09-10
-_Original :_
-> Revue du code source de l’application web, après plus d’un an d’exécution continue en production, avec plus de **6700** réponses automatiques envoyées.
->
-> Liste exhaustive des types d'erreurs reportées par **Google Apps Scripts** (résumés en provenance de l'adresse `apps-scripts-notifications@google.com`) durant l'année, illustré chacun par un exemple. Informations à prendre en considération dans les prochaines améliorations du code:
->
-> | Start            | Function    | Error Message                                                                                                                                    | Trigger    | End              |
-> |------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------|
-> | 10/07/2018 20:06 | autoReply   | Limit Exceeded: Email Body Size. (line 99, file "Code")                                                                                          | time-based | 10/07/2018 20:06 |
-> | 10/04/2018 20:43 | autoReply   | Document {DOCUMENT-ID-DELETED} is missing (perhaps it was deleted, or you don't have read access?) (line 22, file "Code") | time-based | 10/04/2018 20:44 |
-> | 9/17/18 12:53 AM | autoReply   | Service error: Spreadsheets (line 63, file "Code")                                                                                               | time-based | 9/17/18 12:53 AM |
-> | 7/26/18 11:16 PM | autoReply   | Gmail operation not allowed. (line 62, file "Code")                                                                                              | time-based | 7/26/18 11:16 PM |
-> | 4/24/18 4:52 AM  | autoReply   | Service timed out: Spreadsheets (line 63, file "Code")                                                                                           | time-based | 4/24/18 4:53 AM  |
-> | 3/23/18 10:46 PM | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again.                                                                           | time-based | 3/23/18 10:46 PM |
-> | 1/25/18 8:22 PM  | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again. (line 125, file "Code")                                                   | time-based | 1/25/18 8:24 PM  |
-> | 12/01/2017 08:45 | archiveLog | Sorry, it is not possible to delete all non-frozen rows. (line 26, file "Archive_Log")                                                           | time-based | 12/01/2017 08:45 |
-> | 10/02/2017 20:58 | autoReply   | Argument too large: subject (line 97, file "Code")                                                                                               | time-based | 10/02/2017 20:58 |
-> | 10/01/2017 08:02 | archiveLog | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
-> | 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
+
+Source code review of the web application, after more than a year of continuous production execution, with more than **6700** automatic responses sent.
+
+Exhaustive list of error types reported by **Google Apps Scripts** (summaries from the address `apps-scripts-notifications@google.com`) during the year, each illustrated by an example. Information to be taken into consideration in future code improvements:
+
+| Start            | Function    | Error Message                                                                                                                                    | Trigger    | End              |
+|------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------------|
+| 10/07/2018 20:06 | autoReply   | Limit Exceeded: Email Body Size. (line 99, file "Code")                                                                                          | time-based | 10/07/2018 20:06 |
+| 10/04/2018 20:43 | autoReply   | Document {DOCUMENT-ID-DELETED} is missing (perhaps it was deleted, or you don't have read access?) (line 22, file "Code") | time-based | 10/04/2018 20:44 |
+| 9/17/18 12:53 AM | autoReply   | Service error: Spreadsheets (line 63, file "Code")                                                                                               | time-based | 9/17/18 12:53 AM |
+| 7/26/18 11:16 PM | autoReply   | Gmail operation not allowed. (line 62, file "Code")                                                                                              | time-based | 7/26/18 11:16 PM |
+| 4/24/18 4:52 AM  | autoReply   | Service timed out: Spreadsheets (line 63, file "Code")                                                                                           | time-based | 4/24/18 4:53 AM  |
+| 3/23/18 10:46 PM | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again.                                                                           | time-based | 3/23/18 10:46 PM |
+| 1/25/18 8:22 PM  | autoReply   | We're sorry, a server error occurred. Please wait a bit and try again. (line 125, file "Code")                                                   | time-based | 1/25/18 8:24 PM  |
+| 12/01/2017 08:45 | archiveLog | Sorry, it is not possible to delete all non-frozen rows. (line 26, file "Archive_Log")                                                           | time-based | 12/01/2017 08:45 |
+| 10/02/2017 20:58 | autoReply   | Argument too large: subject (line 97, file "Code")                                                                                               | time-based | 10/02/2017 20:58 |
+| 10/01/2017 08:02 | archiveLog | You do not have permissions to access the requested document. (line 11, file "Archive_Log")                                                      | time-based | 10/01/2017 08:02 |
+| 8/30/17 11:06 PM | autoReply   | Invalid email: Judith Pin &lt;&gt; (line 92, file &quot;Code&quot;)                                                                              | time-based | 8/30/17 11:06 PM |
 
 
 ## 2017-12-11 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/796a6d84f1e7287b8a936083ae8f507035a28215/app/Archive_log.js)
-_Original :_
-> Modification des codes source afin de rectifier un problème empêchant la réinitialisation mensuelle de la feuille du journal des sessions d’exécutions.
+
+Modification of source codes to fix a problem preventing the monthly reset of the execution session log sheet.
 
 
 ## 2017-11-14
-_Original :_
-> En vérifiant les journaux des messages traités ainsi que les occurrences d’exécution de la session du 13/11/2017 : la session s’est déroulée correctement après les dernières mises à jours des codes source.
+
+While checking the logs of processed messages as well as the execution occurrences of the 11/13/2017 session: the session ran correctly after the latest source code updates.
 
 
 ## 2017-11-13 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/205b51e16b5800dbdfab2a6402adc20100a6da58/app)
-_Original :_
-> Les sessions d’exécution du **11/11/2017** et le **12/11/2017** du programme de réponses mail automatiques du compte **OPERATIONS** se sont correctement déroulées après la dernière mise à jour du code source.
-> Les changements ont été généralisés sur les autres programmes des comptes **OPERATIONS2**, **OPERATIONS3**, **OPERATIONS4**, **OPERATIONS5** et **OPERATIONS6**.
-> Par ailleurs, des fonctions pour effacer mensuellement le journal des occurrences de chaque session d’exécution des programmes ont été ajoutées à leurs codes source respectifs.
+
+The execution sessions of **11/11/2017** and **12/11/2017** of the automatic email response program for the **OPERATIONS** account ran correctly after the latest source code update.
+The changes have been generalized to the other programs of the **OPERATIONS2**, **OPERATIONS3**, **OPERATIONS4**, **OPERATIONS5** and **OPERATIONS6** accounts.
+Furthermore, functions to monthly clear the log of occurrences of each program execution session have been added to their respective source codes.
 
 
 ## 2017-11-11
-_Original :_
-> Fin de la nouvelle version du code source. Premier déploiement pour le compte `OPERATIONS`. Le code sera au fur et à mesure amélioré selon les résultats.
+
+Completion of the new version of the source code. First deployment for the `OPERATIONS` account. The code will be progressively improved according to the results.
 
 
 ## 2017-11-10
-_Original :_
-> Continuation du développement du code amélioré du programme des réponses mail automatiques.
+
+Continuation of the development of the improved code for the automatic email response program.
 
 
 ## 2017-11-09
-_Original :_
-> Continuation du développement et test des premières améliorations du code source pour une meilleure performance d’exécution.
+
+Continuation of the development and testing of the first source code improvements for better execution performance.
 
 
 ## 2017-11-08
-_Original :_
-> Début d’optimisation du code source pour une meilleure performance d’exécution :
-> **_Mise à jour du code envisagés :_** Au lieu d’extraire, à chaque exécution, tous les identifiants des messages traités durant tout le mois depuis le journal des opérations pour vérifier si un message n’a pas été déjà traité, le programme vérifierait juste les identifiants des messages traités dans la dernière occurrence qui seraient déjà mis en cache.
+
+Beginning of source code optimization for better execution performance:
+**_Planned code update:_** Instead of extracting, at each execution, all message identifiers processed during the entire month from the operations log to verify if a message has not already been processed, the program would only check the identifiers of messages processed in the last occurrence which would already be cached.
 
 
 ## 2017-11-01
-_Original :_
-> Vérification des programmes (journaux et configurations) :
-> - L’archivage des journaux du mois d’octobre a été correctement exécuté pour toutes les instances du programme.
-> - Adresses ajoutées à la liste d’exclusion `From` de chacun des documents de configuration.
+
+Program verification (logs and configurations):
+- Archiving of October logs was correctly executed for all program instances.
+- Addresses added to the `From` exclusion list of each configuration document.
 
 
 ## 2017-10-30
-_Original :_
-> Les codes sources des programmes de réponses mail automatiques ont été mis à jour suite au changement de l’heure locale qui a eu lieu le 29/10/2017.
+
+The source codes of the automatic email response programs have been updated following the local time change that took place on 10/29/2017.
 
 
 ## 2017-10-23
-_Original :_
-> Les deux premières sessions d’exécution des programmes de réponses mail automatiques associés aux comptes **OPERATIONS5** et **OPERATIONS6** ont été respectivement exécuté le **21/10/2017** et le **22/10/2017**.
-> **4** réponses automatiques ont été envoyées, **9** messages reçus sautés.
-> Les adresses expéditrices avec la mention **`do-not-reply`** ont été ajoutées à la liste d’exclusion.
-> Les résultats des sessions **OPERATIONS5** et **OPERATIONS6** seront suivis durant toute la semaine afin de corriger toute éventuelle anomalie.
-> _**N.B. :**_ Depuis l’exécution de la première session de réponse mail automatique le 23/08/2017, **1203** réponses ont été envoyées.
+
+The first two execution sessions of the automatic email response programs associated with the **OPERATIONS5** and **OPERATIONS6** accounts were respectively executed on **10/21/2017** and **10/22/2017**.
+**4** automatic responses were sent, **9** received messages skipped.
+Sender addresses with the mention **`do-not-reply`** have been added to the exclusion list.
+The results of the **OPERATIONS5** and **OPERATIONS6** sessions will be monitored throughout the week to correct any potential anomaly.
+_**N.B.:**_ Since the execution of the first automatic email response session on 08/23/2017, **1203** responses have been sent.
 
 
 ## 2017-10-21
-_Original :_
-> Configurations des programmes de réponses mail automatiques pour les comptes `OPERATIONS5 <operations5@mycompany.com>` et `OPERATIONS6 <operations6@mycompany.com>`.
-> Les premières sessions seront exécutées le jour même à partir de 20:00 (heure locale).
+
+Configurations of the automatic email response programs for the accounts `OPERATIONS5 <operations5@mycompany.com>` and `OPERATIONS6 <operations6@mycompany.com>`.
+The first sessions will be executed on the same day starting from 20:00 (local time).
 
 
 ## 2017-10-05
-_Original :_
-> Etudes, rectification et suggestion d’amélioration suite aux remarques formulées dans le rapport du 03/10/2017:
-> - Rectification du document de configuration du programme de `OPERATIONS2` auquel une opération d’archivage a été appliquée par erreur ; ce qui causait le traitement de l’intégralité des messages reçu sans aucun filtrage.
-> - Une amélioration du code est à envisager suite aux erreurs reportées par le service `Google Apps Script` :
->
->     ![2017-10-05 - Gmail-AutoResponder](assets/2017-10-05%20-%20Gmail-AutoResponder.png)
->
->     - Les messages d’erreur `Argument too large: subject (line 97, file "Code") et Limit Exceeded: Email Body Size. (line 97, file "Code")` indiquent que le corps du message de réponse composé du texte informatif principal et de l’historique de la conversation peut potentiellement dépasser la limite de [la taille maximale du corps de message de réponse](https://developers.google.com/apps-script/reference/gmail/gmail-thread#reply(String)).
->     - Le concept permettant de contourner ce problème peut être résumé comme suit :
->         - L’ensemble du message (texte informatif + historique de la conversation) sera initialement stocké dans une chaîne de caractère (String).
->         - Si la taille de la chaîne dépasse 20Ko l’excédent sera supprimé et remplacé par des points de suspension.
+
+Studies, correction and improvement suggestion following the remarks formulated in the report of 10/03/2017:
+- Correction of the configuration document of the `OPERATIONS2` program to which an archiving operation was applied by mistake; this caused the processing of all received messages without any filtering.
+- A code improvement is to be considered following the errors reported by the `Google Apps Script` service:
+
+    ![2017-10-05 - Gmail-AutoResponder](assets/2017-10-05%20-%20Gmail-AutoResponder.png)
+
+    - The error messages `Argument too large: subject (line 97, file "Code") and Limit Exceeded: Email Body Size. (line 97, file "Code")` indicate that the response message body composed of the main informative text and the conversation history can potentially exceed the limit of [the maximum size of the response message body](https://developers.google.com/apps-script/reference/gmail/gmail-thread#reply(String)).
+    - The concept to work around this problem can be summarized as follows:
+        - The entire message (informative text + conversation history) will initially be stored in a character string (String).
+        - A function will be called to count the number of characters.
+        - If that number exceeds the limit, it will be automatically reduced.
+        - This final method presents risks since it is not guaranteed that the body of the automatic response message will be correctly formed if the message is truncated beyond a certain character limit. Otherwise, no message will be sent and a warning will be inserted in the execution log. This topic will be carefully studied in the coming sessions.
 
 
 ## 2017-10-03
-_Original :_
-> Retour sur les résultats des sessions d’exécution des programmes associés aux comptes `OPERATIONS`, `OPERATIONS2`, `OPERATIONS3` et `OPERATIONS4` entre le 22/09/2017 et 02/10/2017.
-> - _Premières remarques_ :
->     - Aucun filtrage n’a été appliqué aux messages reçus durant la session du 01/10/2017 et le 02/10/2017 du programme de `OPERATIONS2`. Une réponse automatique a été envoyée pour chaque message détecté et traité.
->     - La nécessité d’ajouter une colonne au journal contenant l’éventuelle raison d’exclusion d’un message se confirme.
->     - La couleur de remplissage des lignes, distinguant les messages sautés des réponses automatiques envoyée, n’a pas été correctement appliquée entre le 24/09/2017 et le 30/09/2017 aux journaux de `OPERATIONS` et `OPERATIONS2`. Il ne peut s’agir que d’un bug/disfonctionnement du programme.
+
+Session reports (02/10/2017 to 03/10/2017) - All 6 program instances:
+
+- Programs' operational times:
+    - **OPERATIONS** : 20:00 - 7:00
+    - **OPERATIONS2** : 20:00 - 7:00
+    - **OPERATIONS3** : 20:00 - 7:00
+    - **OPERATIONS4** : 20:00 - 7:00
+    - **OPERATIONS5** : 20:00 - 7:00
+    - **OPERATIONS6** : 20:00 - 7:00
+
+- Number of responses sent:
+    - **OPERATIONS** : **7**
+    - **OPERATIONS2** : **38**
+    - **OPERATIONS3** : **28**
+    - **OPERATIONS4** : **22**
+    - **OPERATIONS5** : **18**
+    - **OPERATIONS6** : **15**
+
+**Remarks (For all sessions) :**
+
+- The program of account **OPERATIONS2** does not perform any filtering. It sends automatic responses to any message from any sender. Although this may appear to be a code or configuration issue, this behavior was designed to send a proof of concept to the Operations Department management.
+- Email addresses with the mention **`do-not-reply`** were not included in the `From` exclusion list. This will be corrected in the coming update/verification that will be coordinated with the Operations Department management.
+
+**Remarks specific to the OPERATIONS session :**
+
+- The program was started late during the day of 02/10/2017 compared to other programs; it was set up around 22:00 instead of 20:00.
+- The program recorded in its executions log a report of an error that occurred on 03/10/2017 around 20:00. After analysis:
+    - This is due to a timeout error. According to the resources below, the error reported by Google Apps Script results from reaching the maximum number of simultaneous executions. This problem will be resolved in the next code update which already includes the necessary improvements.
+        - https://developers.google.com/apps-script/guides/services/quotas#current_quotas
+        - https://issuetracker.google.com/issues/36763096
 
 
-## 2017-09-23
-_Original :_
-> Configuration du programme de réponses mail automatique pour un quatrième compte Google: **`OPERATIONS4 <operations4@mycompany.com>`**.
+## 2017-10-02
+
+Update of the `OPERATIONS` account program code following the reports of errors and anomalies:
+- **Script runtime errors :**
+    - <span style="color:#a00">**Error Message**</span> **:** `Argument too large: subject (line 97, file "Code")`
+
+        <span style="color:#a00">**Error Analysis**</span> **:** The message subject length exceeds [the maximum allowed size](https://developers.google.com/apps-script/reference/gmail/gmail-thread#reply(String))  (250 characters). The subject is composed of the prefix "`Re: `" + "`[OUT-OF-OFFICE]`" + "`subject of the message to which you are responding`".
+
+        <span style="color:#a00">**Correction**</span> **:** Truncate the subject if necessary (the final limit after truncation may be less than 250 characters ; 230 characters for example).
+
+- **Configuration update :**
+    - List `From` : Incomplete filtering.
+
+        Email addresses with the mention **`no-reply`** or **`do-not-reply`** are excluded in the conditions present in the source code. The list `From` will therefore only include the addresses of employees that do not meet this condition, and any address subject to future additions.
+
+    - List `From` : Manual update.
+
+        Some partner addresses (including those of employees of subsidiaries) do not have [DKIM](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) signature. Due to the particularity of the DKIM verification method (comparison of the signature according to the email header `From` and not the header `Sender`) which is adopted by Gmail, the program will be unable to verify if the address of one of our correspondents, not having DKIM signature, has not been spoofed. Therefore, and as a temporary measure, an exclusion list of `From` addresses that the program will check against (in parallel with checking DKIM signatures and `mycompany.com` domains) will be integrated into the configuration document.
+
+    - Test the program with new configuration. Eventual manual adjustments may be made according to the results.
+
+
+## 2017-09-29
+
+Study and preparation of automatic email response programs for the accounts `OPERATIONS2`, `OPERATIONS3`, `OPERATIONS4`, `OPERATIONS5` and `OPERATIONS6`.
+
+
+## 2017-09-28
+
+Verification of the code source and coordination in preparation for expanding the program to the other Operations Department accounts.
+
+
+## 2017-09-27
+
+Session reports (27/09/2017) :
+- Program's operational time: 20:30 - 7:00
+- **11** automatic responses sent.
+- **2** messages skipped.
+
+The two skipped messages are among the auto-generated emails sent by `MyCompany`'s systems :
+
+    From: mailer@mycompany.com
+    Date: 27 sept. 2017 à 23:04
+    Subject: ...
+
+
+## 2017-09-26
+
+A full test of the script (with execution every 15 min from 8pm to 6am) was successfully carried out on the test account overnight of 26/09/2017.
+
+![2017-09-26 - Gmail-AutoResponder](assets/2017-09-26%20-%20Gmail-AutoResponder.png)
+
+- Configuration and deployment of the automatic email response program on the production account **`operations@mycompany.com`**.
+
+
+## 2017-09-25
+
+Improvement and optimization to the code.
+
+- More detailed execution logs in `Google Spreadsheet`: Successful / Failed executions (with reported error message) → Execution time → Email metadata (From, To, Date, Subject), ...
 
 
 ## 2017-09-22
-_Original :_
-> Evaluation des résultats des sessions d’exécution du 20/09/2017 et 21/09/2017: **23** réponses envoyées.
+
+Study of the feasibility of an improvement consisting in reading and writing an execution log from/to a `Google Spreadsheet` document for better operational monitoring. This log will be monthly-archived to avoid accumulating a large amount of data in the same working document.
 
 
-## 2017-09-20 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/e46a511320e5f6197b24f73e6f3ab58493e4a002/app/Code.js)
-_Original :_
-> - Evaluation des résultats des sessions d’exécution du 19/09/2017: **26** réponses envoyées :
-> - **Mise à jour du code:** Extension de deux minutes de l’intervalle de recherche des derniers emails reçus sur chacune des trois boîtes emails à chaque itération du programme afin de ne pas rater les emails coïncidant avec l’instant d’exécution.
+## 2017-09-20
+
+Code optimization: Avoid repetitive processing of the same message.
+
+Instead of using the Gmail label that was previously used to mark messages already automatically responded to as a means to avoid processing messages already treated, a more efficient method has been implemented:
+
+- Once the message has been processed (after an automatic response is sent), the unique identifier (ID) and metadata (from, to, subject, date) that characterize that email message will be recorded in a dedicated log document (`Google Spreadsheet`).
+
+    ![2017-09-20_01 - Gmail-AutoResponder](assets/2017-09-20_01%20-%20Gmail-AutoResponder.png)
+
+- At each run of the script, the identifiers of messages that have previously been recorded in the log are extracted and compared against those of messages recently received to be processed. Messages whose identifier exists in the execution log are therefore considered already processed and will therefore be systematically excluded.
+
+    ![2017-09-20_02 - Gmail-AutoResponder](assets/2017-09-20_02%20-%20Gmail-AutoResponder.png)
 
 
-## 2017-09-19 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/44a42e3a03b2518d9bde6bd348897d47587ce0a2/app/Autorespond-config-OPS3.xlsx)
-_Original :_
-> - Evaluation des résultats des sessions d’exécution du 18/09/2017: **19** réponses automatiques envoyées :
->     - **`OPERATIONS`** : **60** itérations du programme ayant récupérés **68** `threads`. **68** messages traités, dont **50** sautés et **18** réponses automatiques envoyées.
->     - **OPERATIONS2** :
->         - **60** itérations du programme ayant récupérés **38** `threads`.  **38** messages traités et  sautés.
->         - **1** message non traité:
->             - L’heure de réception a coïncidé avec le déclenchement de la deuxième itération du programme pendant la session d’exécution du 18/09/2017. La partie du code recherchant et récupérant les derniers mails reçus l’aurait, par conséquent, raté.
->             - Le script du compte `OPERATIONS3` a détecté et sauté le message, comme il est configuré pour exclure les messages à destination de `OPERATIONS` et `OPERATIONS2` (adresses respectives ajoutées à la colonne `TO_BLACKLIST` du document de configuration `Autorespond-config` de l'instance de l'application associée au compte Google `OPERATIONS3`).
->             - Le script du compte `OPERATIONS` n’a pas détecté le message vu que l’itération qu’il l’aurait traité (exécutée à 19:26:02 GMT) a détecté un message plus récent dans la même conversation et auquel une réponse a été en effet envoyée.
->             - De toute façon, le message a été traité peu après par l’équipe `OPERATIONS2` même.
->     - **OPERATIONS3** : **60** itérations du programme ayant récupérés **25** `threads`. **25** messages traités, dont **24** sautés et une réponse envoyée.
-> - Ajout du fichier `Autorespond-config-OPS3.xlsx` au code source:
->     - Un deuxième modèle du fichier `Autorespond-config` a été ajouté au code source, illustrant -à titre d'exemple- la configuration utilisée pour l'application associée au compte **`OPERATIONS3`**, l'empêchant d'envoyer une réponse à un message reçu si celui-ci est aussi destiné au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com` et serait donc traité par l'une des applications respectives leur étant associées.
->     - A cet égard, les 3 instances en exécution sont en effet configurées comme suit:
->         - **_OPERATIONS :_** Traite tous les messages répondant aux critères de filtrage préconfigurés, excluant ainsi:
->             - les accusés de lectures
->             - les messages d'administration système (`postmaster`, `mailer-daemon`)
->             - les messages en provenance des adresses mail de la société (`*@mycompany.*`)
->             - les messages en provenance des adresses avec l'alias `noreply/no-reply`.
->             - les messages en provenance des adresses ajoutées au fur et à mesure à la liste d'exclusion `FROM_REGEX_BLACKLIST`
->             - les messages à destinations anonymes `undisclosed-recipients`.
->         - **_OPERATIONS2 :_** en plus des critères de filtrage précités, elle ne traite pas les messages destinés aussi à `operations@mycompany.com`.
->         - **_OPERATIONS3 :_** en plus des critères de filtrage précités, elle ne traite pas les messages destinés aussi au moins à l'une des adresses `operations@mycompany.com` et `operations2@mycompany.com`.
->     - Une même approche sera adoptée pour les autres instances de l'application qui seraient ultérieurement ajoutées et associées à d'autres compte Google.
+## 2017-09-19
+
+Verification of email authentication to minimize the risk of sending automatic responses to spoofed emails. Implementation of a code using an internal function [`isDomainVerified()`](https://gist.github.com/amindeed/9ceeb8bf8ed10ac93c8be4ba8a15f55b) documented to check [DKIM signature](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) present in the email message header:
+
+```javascript
+for (var i = 0; i < msgs.length; i++) {
+    var msg = msgs[i];
+    isDKIMverified = msg.isDomainVerified();
+    ...
+```
 
 
-## 2017-09-18 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/7d67f6a683eedaf3e82a418670e2a7e66eb75c30/app/Code.js)
-_Original :_
-> Evaluation des résultats des sessions d’exécution du 16/09/2017 et 17/09/2017 : **31** réponses automatiques envoyées :
-> - `OPERATIONS` :
->     - **120** itérations du programme ayant récupérés **84** `threads`. **84** messages traités, dont **63** sautées et **21** réponses automatiques envoyées.
-> - `OPERATIONS2` :
->     - **120** itérations du programme ayant récupérés **53** `threads`.  **53** messages traités, dont **51** sautées et **2** réponses automatiques envoyées.
-> - `OPERATIONS3` :
->     - **120** itérations du programme ayant récupérés **95** `threads`.  **95** messages traités, dont **88** sautées et **7** réponses automatiques envoyées.
-> - _Améliorations et mises à jour_ :
->     - Les codes source ont été mis à jour pour activer le suivi (= ajouter `une étoile` au message sur le client webmail `Gmail`) de chaque message traité.
+## 2017-09-18
+
+Verification and validation of script execution results.
 
 
-## 2017-09-16 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/98a14d321fe76297b620b05c4f1655945decd5a4/app)
-_Original :_
-> Evaluation des résultats des sessions d’exécution du 14/09/2017 et 15/09/2017.
-> - Améliorations et mises à jour :
->     - Ajout d'une nouvelle adresse aux listes d’exclusions respectives `From :` de chaque compte (i.e. `OPERATIONS`, `OPERATIONS2`, `OPERATIONS3`).
->     - Modification du code pour la mise en copie normale `Cc` (au lieu de `Cci`) des adresses d’administration pour un meilleur filtrage et suivi des réponses automatiques envoyées (i.e. pour une meilleure lisibilité sur l’application web `Gmail` avec des libellés personnalisés, par exemple). L'adresse mise en copie est en effet un [alias](https://support.google.com/a/answer/33327?hl=en) de **`amine@mycompany.com`**; Dans le cas des réponses automatiques programmées jusqu’au 16/09/2017, les alias sont respectivement : **it-operations@mycompany.com**, **it-operations2@mycompany.com**, **it-operations3@mycompany.com**.
->     - `OPERATIONS`2 et `OPERATIONS3` : A partir de la session d’exécution du 16/09/2017, le système de filtrage des messages reçus par destination vérifiera les champs `Cc :` et `Cci :` en plus du champ `To :`.
->     - _Prévisions :_ Comme [un identifiant unique](https://developers.google.com/apps-script/reference/gmail/gmail-message#getid) est attribué à chaque version d’un même message envoyé à plusieurs destinataires de **`*@mycompany.*`**, il va falloir penser à un autre critère de filtrage de tels messages pour qu’ils ne soient pas traités plusieurs fois. L’identifiant **`Message-ID`**, selon les spécifications du document **[« RFC 822 »](https://www.w3.org/Protocols/rfc822/)** de l’**IETF**, répond le plus aux critères requis. Une expression régulière pour l’extraction de cet identifiant a été développée et préparée pour utilisation dans de prochaines versions du programme : **```^Message-ID:\s*[<A-Za-z0-9!#$%&'*+-/=?^_`{}|~.@]*```**
->         - _**Révision (2019-06-09):** Il est possible d'extraire l'en-tête `Message-ID` sans avoir à utiliser une expression régulière sur tout le contenu du message original, et ce en utilisant la méthode [`getHeader(name)`](https://developers.google.com/apps-script/reference/gmail/gmail-message#getHeader(String)) de la classe `GmailMessage`._
+## 2017-09-15
 
+**_Requirements_** :
+- **Domains and contacts exclusion**: Automated emails sent from `mycompany.com` addresses will be excluded from the automatic email response rule since these are emails exchanged between employees of the company.
+- **Automatic messages exclusion**: Automatically generated messages (notably newsletters) are often marked with headers that help differentiate them from personal messages. Google, for example, automatically sets the label `Bulk` (`CATEGORY_PROMOTIONS`) on messages it has detected as "advertising" or "mass-mailed". Therefore, emails received and filtered under this label will be systematically excluded from the automatic email response rule.
 
-## 2017-09-14
-_Original :_
->Evaluation des résultats de la session d’exécution du 13/09/2017 : **60** itérations correctes du programme ayant récupérés **33** `threads`. **33** messages traités, dont **19** sautées et **14** réponses automatiques envoyées.
->Déploiement de versions adaptées du programme pour les deux comptes **`OPERATIONS2`** et **`OPERATIONS3`**.
+**_Improvements and additions to consider in future code updates_** :
 
+- **Emails from `mycompany.com` partners**: Several people working for subsidiaries and/or partner organizations of `MyCompany` communicate with company employees from email addresses belonging to the domain of these organizations (not from `@mycompany.com` addresses). It would be preferable that when these correspondents send an email, an automatic response is not sent to them. Although it is possible to add an intermediate routine to the script that verifies the identity and legitimacy of these correspondents through authentication checks of DKIM signatures (an authentication method adopted by Gmail), it would be more practical to simply read the addresses of these correspondents from a list of exclusions. This functionality will later be added once the list of exclusions is available and ready.
+- **Message threading** : Google Groups conversations as discussion threads (message groups). Once a person has received a first automatic response from an `operations@mycompany.com` employee, it would be preferable that the person is notified of the "out-of-office" status only once even if that person sends several emails (all part of the same discussion/thread). A variable will be therefore used to exclude the thread from being checked once it received its first automatic response.
 
-## 2017-09-13
-_Original :_
-> Evaluation des résultats de la session d’exécution du 12/09/2017 : **60** itérations correctes du programme ayant récupérés **53** `threads`.  **53** messages traités, dont **42** sautées et **11** réponses automatiques envoyées.
+Optional :
+- A template of the `Autorespond-config` file will later be added to the source code in XLSX format.
 
+![2017-08-23 - Gmail-Autoresponder](assets/2017-08-23%20-%20Gmail-Autoresponder.png)
 
-## 2017-09-12
-_Original :_
-> Evaluation des résultats de la session d’exécution du 11/09/2017 : **60** itérations correctes du programme ayant récupérés **66** `threads`. **66** messages traités, dont **45** sautées et **21** réponses automatiques envoyées.
-> Un message récupéré depuis la boîte email `operations@OldMailServer.com` n’a pas été traité. L’hypothèse établie dans le rapport du 09/09/2017 se tient.
-> - _**Révision (2019-06-08) :** Le script de test initial aurait été créé pour vérifier si l'application avait déjà traité des messages envoyés au compte non-Google `operations@OldMailServer.com` et récupérés sur la boîte Gmail G-Suite `operations@mycompany.com`, et ce en vérifiant les IDs des threads (auxquels ces messages sont respectivement attribués par Gmail), retournés par la requête de recherche, contre ceux des messages/threads traités journalisés dans le document Google Spreadsheet `Autorespond-log`. Néanmoins, l'analyse du 12/09/2017 porte ici à confusion, et comme les résulats du 11/09/2017 ne sont plus vérifiables, un nouveau script de test **[(voir code)](https://github.com/amindeed/Gmail-AutoResponder/blob/fb6665b9ab7bc662f2184463db6a97ba875adaf4/app/test_2017-09-12.js)** a été développé afin de confirmer que ces threads sont traités d'une façon normale, c.à.d. que l'**ID Gmail** (qui est différent du **`Message-ID`** de la norme **`RFC 822`**) du thread correspond à l'**ID** de son premier message. A noter que ces messages risquent quand même de ne pas être relevés par l'application à cause des éventuels retards mis à [leur récupération](https://support.google.com/mail/answer/21289?hl=en)._
+- Code testing and debugging.
 
-
-## 2017-09-11
-_Original :_
-> Evaluation des résultats des sessions d’exécution du 09/09/2017 et 10/09/2017 : **73** messages traités, dont **51** sautées et **22** réponses automatiques envoyées.
-
-
-## 2017-09-09
-_Original :_
-> Analyse des résultats de la session d’exécution du 08/09/2017 :
-> - **58** messages traités, dont **44** sautées pour des raisons valides et **14** réponses envoyées.
-> - **2** messages non traités :
->     - **MESSAGE (1):** L’heure de réception du message était très proche (en amont) de l’instant de l’itération du programme qui a eu lieu exactement à 19:06 (GMT).
->     - **MESSAGE (2):** Le message a été reçu sur la boîte email `operations@OldMailServer.com` et [récupéré](https://support.google.com/mail/answer/21289?hl=en&authuser=2) sur la boîte principale `operations@mycompany.com`.
->         - Rédaction en cours d'un script de test [(voir code)](https://github.com/amindeed/Gmail-AutoResponder/blob/98a14d321fe76297b620b05c4f1655945decd5a4/app/test_2017-09-09.js) afin de vérifier si de tels messages auraient compromis un traitement pertinent des messages: _Récupération des IDs des `threads` auxquels appartiennent les messages envoyés [exclusivement] à l’adresse `operations@OldMailServer.com`. Vérifier les valeurs récupérées contre les journaux des messages traités._
-
-
-## 2017-09-08
-_Original :_
-> Evaluation des résultats de la session d’exécution du **07/09/2017** : **36** messages traités, dont **27** sautées pour des raisons valides et **9** réponses envoyées.
-
-
-## 2017-09-07 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/a2ea53c5e9039b5c3ca7412970b650b0a51716b8/app)
-_Original :_
-> Analyse des résultats de la session d’exécution du 06/09/2017 :
-> - Le projet Google Apps Script `AutoRespond` est configuré avec un déclencheur en fonctions du temps qui se lance après chaque 10 minute. Les heures des premières et dernières exécutions effectives du programme sont respectivement 19:06 (GMT) et 04:56 (GMT). _En effet, le programme s’exécute continument après chaque 10 minute durant toutes les 24 heures. Cependant le traitement des messages reçus n’est effectué que si la condition est satisfaite, à savoir : être dans la plage horaire [20h-06h]._
-> - Comme les messages Gmail sont organisés sous forme de [threads](https://developers.google.com/apps-script/reference/gmail/gmail-thread#) (conversations), le programme récupère à chaque exécution les nouveaux `threads` ainsi que ceux mis à jour _(c.à.d. réception de nouvelles réponses à une ancienne conversation (échange))_ dans les dernières 10 minutes et traite ensuite leurs derniers messages respectifs.
-> - Pour chaque `thread`, si le dernier message ne répond à aucun critère d’exclusion, une réponse automatique lui serait envoyée ; sinon, le programme passe au `thread` suivant. Dans chacun des deux cas, les messages traités ainsi que le nombre de `threads` récupérés à chaque exécution sont journalisés. Les informations du journal (log) permettent le suivi, l’analyse et le diagnostic des éventuels problèmes rencontrés.
-> - Deux cas de figures se sont présentés suite à la dernière session d’exécution; qui peuvent nécessiter une analyse de comportement du programme, une évaluation des risques ainsi que des éventuelles améliorations du code source :
->     - **MESSAGE (1):** Le message a été reçu vers 21:16 mais n’a pas été traité.
->         - Vu qu’il était le dernier message de son `thread` jusqu’à la fin de la session d’exécution, la seule cause apparente serait le fait que sa réception a coïncidé avec le déclenchement du programme et il n’a pas été récupéré parmi les messages reçus dans les dernières 10 minutes.
->         - Le message n’a pas été non plus récupéré dans l’itération suivante.
->         - Il serait donc plus prudent d’ajouter une marge d’erreur à l’intervalle de temps. Ce serait pratique d’attribuer une valeur dynamique à cet intervalle, soit par exemple **1.5x** la durée séparant deux exécutions (automatique) consécutives du programme. Documentation en cours sur [les moyens disponibles](https://developers.google.com/apps-script/reference/script/trigger) pour y parvenir.
->     - **MESSAGE (2):** Deux minutes après, et dans le même `thread`, le message a été suivi par un autre (i.e. une réponse) envoyé par (`accounting@mycompany.com`) avec l’adresse (`operations@mycompany.com`) en copie.
->         - Vu que le dernier message du `thread` venait d’une adresse mail exclue, il a été sauté.
->         - Le présent cas laisse à penser à d’autres cas probables pouvant être critique, comme celui d’un message répondant à tous les critères de réponse automatique suivi juste après, dans le même `thread`, d’un mail exclu mais sans qu’il soit envoyé depuis une autre adresse email de `MyCompany`; cas d’un accusé de lecture d’un ancien message dans le même `thread` reçu du même expéditeur, par exemple.
->         - Etude en cours d’améliorations et méthodes alternatives pour traiter avec plus de prudence les files des derniers messages reçus.
-
-
-## 2017-09-06
-_Original :_
-> Analyse des résultats de la session d’exécution du 05/09/2017 :
-> - 57 messages traités : 18 réponses envoyées, 39 messages sautés pour des raisons valides.
-> - Les réponses automatiques envoyées ont couverts tous les `threads` Gmail reçus dans la plage horaire [20h-06h].
-> - Mises à jour mineures du code source.
-> - Documentation sur les améliorations envisagées :
->     - Utilisation du [Cache](https://developers.google.com/apps-script/reference/cache/) : pour le stockage temporaire et la consultation rapide des identifiants des derniers messages traités, au lieu d’extraire et de rechercher dans toutes les valeurs de la colonne D `Message ID` de la première feuille du document `Google Spreadsheet` de journalisation `Autorespond-log`.
->     - Etude d’une nouvelle architecture `Master/Slave` du programme pour déclencher simultanément les réponses automatiques de plusieurs comptes depuis un même script asynchrone avec des requêtes `HTTP POST`.
-
-
-## 2017-09-05
-_Original :_
-> Évaluation de l’exécution du programme du compte `OPERATIONS` entre le 31/08/2017 (soir) et le 05/09/2017 (matinée):
-> - 162 threads détectés, dont 114 sautés et 48 réponses envoyées.
-> - Ajout d'adresse mails à la liste d’exclusion.
-
-
-## 2017-08-31
-_Original :_
-> Evaluation de l’exécution de la session du 31/07/2017 :
-> - 50 mails traités, dont 37 sautés.
-> - Ajoutée des adresses à la liste d’exclusion
-> - Un message `SPAM` sans une vraie adresse `envelop sender` ni `From :` a déclenché une erreur, puisque la méthode [`GmailMessage.getFrom()`](https://developers.google.com/apps-script/reference/gmail/gmail-message#getfrom) dans le code a retourné la valeur `Judith Pin  <>` qui n’est pas une adresse valide pour envoyer une réponse avec la méthode [`GmailThread.reply(body, options)`](https://developers.google.com/apps-script/reference/gmail/gmail-thread#replybody-options). Bien que l’erreur n’était pas bloquante et ait été bien reportée par email, il serait plus judicieux de journaliser de tels cas avec le message d’erreur comme note. Cette suggestion peut faire objet d’une future amélioration du code avec des éventuels [traitements d’exceptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch).
-> -  _Idées et prévisions_ : Exécution du programme sur toutes les boîtes emails depuis un même programme central :
->     - La méthode la plus sûre serait de communiquer, depuis le script `operations`, avec d’autres scripts `Google Apps Script` associés aux autres comptes, en utilisant des requêtes HTTP POST sur des connexions chiffrées (SSL/TLS).
->     - Comme prérequis, il va falloir d’abord publier chacun des autres scripts en tant qu’application web (avec d’éventuelles restrictions d’accès pour protéger les données).
->     - Les autres scripts auraient les droits suivant :
->         - Modification du document `Google Spreadsheet` : `Autorespond-log`, propriété du compte `operations@mycompany.com`.
->         - Lecture depuis le document `Google Spreadsheet` : `Autorespond-config`, propriété du compte `operations@mycompany.com`.
->     - Consultation en cours des documentations ainsi que les forums d’aide et support officiels aux sujets précités.
-
-
-## 2017-08-30 [(code)](https://github.com/amindeed/Gmail-AutoResponder/tree/f13a3c815bba3059f40e1bab617e449647090313/app)
-_Original :_
-> Confirmation de l’exécution optimale de la session du 29/07/2017 du programme associé au compte Google `operations@mycompany.com`.
-> Le test d’archivage du journal des messages traités s’est exécuté comme planifié et avec succès. Dorénavant, au début de chaque mois, l’historique des opérations du mois précédent sera archivé dans une feuille séparée du même fichier.
-> Etude en cours de la possibilité de gérer les réponses automatiques de toutes les boîtes emails de la société avec un seul programme lisant les configurations depuis un même fichier et enregistrant toutes les opérations exécutées dans le même journal. Si cela s’avère faisable, une révision considérable du tout le code source serait nécessaire.
-
-
-## 2017-08-29
-_Original :_
-> Confirmation de l’exécution optimale de la session du 28/07/2017 du programme associé au compte Google `operations@mycompany.com` avec les dernières mises à jours du code.
-> - Améliorations :
->     - Inclusion du code HTML constituant le corps du message de réponse dans un fichier HTML du même projet `Google Apps Script`, au lieu de l’importer depuis un fichier externe hébergé sur un espace d’hébergement web tiers.
->     - Rajout d’un fichier de script supplémentaire au même projet et sa programmation pour exécution automatique mensuelle. Le script archivera les opérations (i.e. réponses envoyées, et messages sautés) de chaque mois dans une nouvelle feuille du document log `Spreadsheet` `Autorespond-log` afin d’alléger la feuille principale du journal.
->     - Le code source sera publié le 30/08/2017
-> - Configuration provisoire pour test et validation : le script `Archive_log.gs` a été paramétré pour exécution automatique mensuelle le 30 de chaque mois ; en l’occurrence, une première exécution aurait lieu le lendemain 30/08/2017.
-
-
-## 2017-08-28
-_Original :_
-> Evaluation des performances du programme associé au compte `operations@mycompany.com` durant son exécution du 26/08/2017 au 28/08/2017 :
-> - **87** messages traités:
->     - **16** réponses automatiques envoyées, dont **5** étaient non pertinentes (adresses email à ajouter à la liste d'exclusion)
->     - **71** messages sautés pour des raisons valides.
-> - Améliorations du code :
->     - Ajout d’une nouvelle feuille dans le fichier de journalisation `Autorespond-log` pour l’enregistrement de l’heure d’exécution ainsi que le nombre de conversations (threads) Gmail (récupérés et traités) du dernier intervalle de temps (prédéfini, et après lequel le programme se ré-exécute).
->     - Marquage de la fin de session d’exécution globale (20h-06h) sur chacune des feuilles du journal afin d’en faciliter la lecture et l’analyse.
->     - Le code source sera publié le 30/08/2017
-
-
-## 2017-08-26
-_Original :_
-> Evaluation des performances du programme associé au compte `operations@mycompany.com` durant son exécution entre 25/08/2017 à 20:00 et 26/08/2017 à 06:00 :
-> - **32/33** des messages reçus dans la plage horaire 20h-06h ont été traités.
->     - **1** message non détecté. Il s’agit d’un deuxième accusé de lecture du même message par le même destinataire. Vu que les deux emails font partie de la même conversation (thread) Gmail, seul le plus récent a été traité.
->     - **3** réponses automatiques envoyées
->     - **29** messages exclus pour des raisons valides
-> - Vu le résultat assez satisfaisant de son exécution, le code source -en sa dernière version- sera retenu.
-
-
-## 2017-08-25 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/5dd721f5dedab3a6b3547f4fea1c4a912aaf0840/Code.js)
-_Original :_
-> Bilan de l’exécution du programme pour le compte `operations@mycompany.com` pour le 24/08/2017 :
-> - 17 réponses automatiques envoyées entre 20:28 et 06:35 (heure locale)
-> - Amélioration du programme :
->     - Réorganisation des lignes de déclaration des variables pour une meilleure lisibilité et portabilité du code.
->     - Enregistrement des configurations sur une seule feuille du document `Autorespond-config` avec plusieurs colonnes, au lieu de plusieurs feuilles contenant chacune un filtre. L'ancienne version fichier a été archivée sous le nom [`Autorespond-config_OLD-till-2017-08-24`](https://github.com/amindeed/Gmail-AutoResponder/blob/dd7a8278fe437169f68f611b59e95e1ee2ce0c93/app/Autorespond-config_OLD-till-2017-08-24.xlsx). Adaptation du code.
-> - Rajout d’une valeur de décalage pour faciliter l’ajustement de la plage horaire d’exécution en cas de changement de l’heure locale.
-> - Utilisation d’une adresse générique `no-reply` afin de dissuader les destinataires de répondre directement aux messages automatiques. Par ailleurs, cela nous épargnera de configurer et maintenir sur chaque installation du logiciel `Outlook` un filtre pour en supprimer les copies reçues.
-> - Exclusion des adresses email contenant les mots `noreply` et `no-reply`.
-> - Journalisation de tous les emails, traités et sautés.
-
-
-## 2017-08-24
-_Original :_
-> Bilan de l’exécution du programme pour le compte `operations@mycompany.com` :
-> - 24 réponses automatiques envoyées entre 21:06 et 06:26 (heure locale).
-> - La stratégie adoptée par les services et applications Google pour déterminer l’heure exacte des événements (l’heure de réception des messages en l’occurrence) porte plutôt à confusion. Par conséquent, comme Google affirme  qu’elle [utilise l’heure UTC](https://support.google.com/calendar/answer/37064?hl=en) sur ses services en ligne, une plage horaire plus large sera utilisée pour que l’intervalle **20h-06h** (heure locale) soit toujours couvert malgré les éventuels changements (i.e. début, suspension et fin de l’heure d’été). La ligne de code suivante :
->     - `if (((hour < 6) || (hour >= 20)) && ((threads = GmailApp.search('is:inbox after:' + timeFrom)).length !== 0)) {` sera donc modifié en :
->     - **`if (((hour < 6) || (hour >= 19)) && ((threads = GmailApp.search('is:inbox after:' + timeFrom)).length !== 0)) {`**.
-> - Confirmation avec l'équipe des Opérations de la liste des contacts à exclure de la réponse automatique.
-> - Désinscription de quelques newsletters via les liens fournis dans les corps de leurs messages respectifs.
-> - Modification du message de réponse automatique : l’adresse de modération `amine@mycompany.com` en `Cci` au lieu de `Cc`.
-> - Groupement des fichiers du programme dans un même dossier sous `Google Drive`. Partage avec le compte Google de `AMINE` (lecture et modification) pour faciliter (centraliser) les consultations et les mises à jour.
-
-
-## 2017-08-23 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/d2bd4d61f82f5c7d3263340f00c7b4bf60527633/Code.js)
-_Original :_
-> Fin du développement de la deuxième version (améliorée).
-> - Tests appliqués et réussis :
->     - Exclusion des conversations Gmail (avec de nouveau message) au-delà des dernières 10 minutes
->     - Exclusions des messages envoyés depuis des adresses avec les alias `MAILER-DAEMON@*` et `postmaster@*`
->     - Exclusion des messages en provenance des adresses emails de `MyCompany` (domaine principal + tous les domaines alias)
->     - Exclusion des accusés de lecture
->     - Exclusion des messages avec des destinations anonymes (`undisclosed-recipients`)
->     - Exclusion des messages déjà traités (i.e. journalisés sur le fichier `Autorespond-log`)
-
-
-## 2017-08-22
-_Original :_
-> Correction et amélioration du code :
-> - Résolu : Interprétation comme expression régulière des chaînes de caractères extraites des fichiers de configuration.
-> - Tests, adaptations et corrections.
-
-
-## 2017-08-19
-_Original :_
-> Problèmes en cours de traitement :
-> - Le contenu extrait des cellules de la feuille `From_regex_blacklist` du document `Google Spreadsheet` `Autorespond-config`, par la fonction `MatchesRegex()` ne semble pas être correctement interprété comme étant une expression régulière contre laquelle l’expéditeur devrait être vérifié afin d’exclure les adresses email de `MyCompany` ainsi que les adresses emails d’administrateur système réservées `postmaster@...` et `mailer-daemon@...`.
-> - La fonction `ContainsString()` appliquée sur les en-têtes de l’email (i.e. message brut/original) ne détecte pas la présence des expressions `report-type=disposition-notification` et `report-type=delivery-status`, ce qui aurait permis l’exclusion des accusés de lecture et des rapports de remise.
-
-
-## 2017-08-18 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/f948d191cc8f2856a21768ef1621029f790d0aa7/Code.js)
-_Original :_
-> - Définitions complètes des fonctions d’extractions et de vérification de valeurs depuis des documents `Google Spreadsheet` (configurations et journaux `Logs`). Le fichier des configuration `Autorespond-config` contient les feuilles suivantes: `To_whitelist`, `To_regex_whitelist`, `To_blacklist`, `To_regex_blacklist`, `From_whitelist`, `From_regex_whitelist`, `From_blacklist`, `From_regex_blacklist`, `msgHeaders_blacklist`, `msgHeaders_regex_blacklist`.
-> - Un modèle du fichier `Autorespond-config` sera ultérieurement ajouté au code source sous le format XLSX.
->
-> ![2017-08-23 - Gmail-Autoresponder](assets/2017-08-23%20-%20Gmail-Autoresponder.png)
->
-> - Test et débogage du code.
->
-> ![2017-08-18 - Gmail-AutoResponder](assets/2017-08-18%20-%20Gmail-AutoResponder.png)
+![2017-08-18 - Gmail-AutoResponder](assets/2017-08-18%20-%20Gmail-AutoResponder.png)
 
 
 ## 2017-08-17 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/95193ad863ea52cd2eb06162e30fc608239bbefa/Code.js)
-_Original :_
-> Optimisation du code :
-> - Améliorations apportées ou en cours de développement :
->     - Lecture de configurations depuis un document `Google Spreadsheets` (`Autorespond-config`),
->     - Enregistrement (journalisation) et vérification des informations identifiant les messages traités dans/depuis un document `Google Spreadsheets` (`Autorespond-log`),
->     - Définition de fonctions génériques pour vérifier les données des en-têtes des messages contre les données extraites des documents précités,
->     - Récupération du message de réponse automatique (corps HTML) depuis un emplacement sécurisé sur l’espace d’hébergement web de la société.
->     - Utilisation d’une combinaison de configurations pour filtrer les messages à traiter,
+
+Code optimization:
+- Improvements made or under development:
+    - Reading configurations from a `Google Spreadsheets` document (`Autorespond-config`),
+    - Recording (logging) and verification of information identifying processed messages in/from a `Google Spreadsheets` document (`Autorespond-log`),
+    - Definition of generic functions to check message header data against data extracted from the aforementioned documents,
+    - Retrieval of the automatic response message (HTML body) from a secure location on the company's web hosting space.
+    - Use of a combination of configurations to filter messages to be processed,
 
 
 ## 2017-08-11
-_Original :_
-> Test et évaluation de la lecture et écriture de données sur des documents `Google Spreadsheet`, pour la journalisation des opérations et la lecture de configurations.
+
+Testing and evaluation of reading and writing data on `Google Spreadsheet` documents, for operations logging and configuration reading.
 
 
 ## 2017-08-09
-_Original :_
-> Améliorations du code : Premiers essais et évaluation d’une journalisation des opérations vers des documents `Google Spreadsheet`, proprité du même compte Google exécutant le script.
+
+Code improvements: First trials and evaluation of operations logging to `Google Spreadsheet` documents, owned by the same Google account running the script.
 
 
 ## 2017-08-08
-_Original :_
-> La solution finalement retenue et implémentée pour le stockage et l’importation du contenu du corps de message de réponse est l’hébergement d’un fichier HTML sur notre espace web, sous un répertoire protégé par nom d’utilisateur et un mot de passe. Tests et validation.
+
+The solution finally adopted and implemented for the storage and importation of the response message body content is hosting an HTML file on our web space, in a directory protected by username and password. Testing and validation.
 
 
 ## 2017-08-07
-_Original :_
-> **_Problématique_** : Inclusion d’un texte unique dans le corps du message de réponse sans aucune mention d’informations de contact au format texte. La solution envisagée et d’inclure un tableau de contacts sous format Image dans le corps du message.
-> **Améliorations étudiées** :
-> - Inclusion du corps de message au format HTML depuis un fichier externe :
->     - Cas d’un fichier texte au format HTML stocké sur `Google Drive`. **Difficulté** : Aucune procédure simple et fonctionnelle n’a été trouvée pour lire le contenu brut d’un fichier texte stocké sur `Google Drive`.
->     - Cas d’un document `Google Docs` exporté au format HTML. **Difficulté** : Il était possible de récupérer le contenu d’un document `Google Docs` sous forme de code HTML et l’insérer dans le corps du message de réponse, mais l’image est par défaut bloquée par la plupart des clients de messagerie modernes puisqu’elle est hébergée dans un emplacement externe.
->     - Cas d’un fichier texte au format HTML récupéré via un URL : Un fichier contenant le contenu du corps du message au format HTML a été stocké sur notre espace d’hébergement web, et récupéré via l’URL `http://mycompany.com/email_body.html`. L’image présentant le tableau des contacts y a été codée en Base64 . **Difficulté** : Le corps du message généré dépasse ainsi la taille maximale autorisée pour un script/projet `Google Apps Script`.
+
+**_Issue_**: Inclusion of unique text in the response message body without any mention of contact information in text format. The planned solution is to include a contact table in Image format in the message body.
+**Improvements studied**:
+- Inclusion of message body in HTML format from an external file:
+    - Case of a text file in HTML format stored on `Google Drive`. **Difficulty**: No simple and functional procedure was found to read the raw content of a text file stored on `Google Drive`.
+    - Case of a `Google Docs` document exported in HTML format. **Difficulty**: It was possible to retrieve the content of a `Google Docs` document as HTML code and insert it into the response message body, but the image is by default blocked by most modern email clients since it is hosted in an external location.
+    - Case of a text file in HTML format retrieved via a URL: A file containing the message body content in HTML format was stored on our web hosting space, and retrieved via the URL `http://mycompany.com/email_body.html`. The image presenting the contact table was encoded in Base64. **Difficulty**: The generated message body thus exceeds the maximum size allowed for a `Google Apps Script` script/project.
 
 
 ## 2017-08-02
-_Original :_
-> Optimisation du code source du script associé à la boîte email `operations@mycompany.com` :
-> - Exclusion des messages (souvent spam) dont la destination est anonyme (`undisclosed-recipients`)
-> - Exclusion des messages automatiques envoyés depuis des administrateurs de serveurs de messagerie (`mailer-daemon`, `postmaster`)
-> - Exclusion des accusés de lecture et des rapports de remise.
+
+Optimization of the source code of the script associated with the email box `operations@mycompany.com`:
+- Exclusion of messages (often spam) whose destination is anonymous (`undisclosed-recipients`)
+- Exclusion of automatic messages sent from mail server administrators (`mailer-daemon`, `postmaster`)
+- Exclusion of read receipts and delivery reports.
 
 
 ## 2017-08-01
-_Original :_
-> Coordination avec l’équipe des opérations et discussions à propos de la meilleure stratégie à adopter pour la programmation des messages de réponse automatique envisagée hors les heures de travail.
+
+Coordination with the operations team and discussions about the best strategy to adopt for the programming of the automatic response messages planned outside working hours.
 
 
 ## 2017-07-29
-_Original :_
-> - Véirication des résultats de la première exécution programmée entre 06:00GMT et 20:00GMT.
-> - **Idées pour amélioration:**
->     - Exclusion des accusés de lecture. Il va falloir interpréter en-avale les en-têtes dans le code source (en-têtes) de chaque email traité afin de vérifier si le contenu [MIME](https://en.wikipedia.org/wiki/MIME#Report) `multipart/report` est de type : `report-type=disposition-notification`.
->     - Précautions pour assurer une exécution continue du programme jusqu’à la fin de la plage horaire prédéfinie. Cela dépend de plusieurs facteurs :
->         - Le temps d’exécution maximal autorisé durant une journée (24h). Les références en ligne à ce sujet ([documentation Google officielle](https://developers.google.com/apps-script/guides/services/quotas#current_limitations) comprise) laissent des ambiguïtés : ce serait entre [1h](https://webapps.stackexchange.com/a/90089) et [6h](https://developers.google.com/apps-script/guides/services/quotas#current_quotas). Par conséquent, l’intervalle de temps entre chaque exécution du script devra être convenablement choisi selon le temps moyen nécessaire pour le traitement des derniers messages reçus sur le compte mail.
->         - Le fuseau horaire et l’heure d’été. Afin d’éviter toute confusion, [Google utilise à la base l’heure UTC sur ses plateformes et services](https://support.google.com/calendar/answer/37064?hl=en), y compris Google Apps Script. Par conséquent, et suite aux changements de l’heure locale, il serait difficile d’inclure des référence horaires dynamiques dans le code source du script ou bien de les modifier manuellement à chaque changement. A concevoir donc, éventuellement, une solution pour adapter automatiquement la plage horaire. En attendant, une plage horaire plus inclusive ; 19h-6h (GMT), soit 20h-7h (GMT+1), sera utilisée.
->         - Voir la possibilité de vérifier l’authenticité des expéditeurs (signatures des e-mails…)
->         - Externaliser les filtres et les contenus personnalisés pour une meilleure portabilité du code.
+
+- Verification of the results of the first scheduled execution between 06:00GMT and 20:00GMT.
+- **Ideas for improvement:**
+    - Exclusion of read receipts. It will be necessary to interpret downstream the headers in the source code (headers) of each processed email to verify if the [MIME](https://en.wikipedia.org/wiki/MIME#Report) `multipart/report` content is of type: `report-type=disposition-notification`.
+    - Precautions to ensure continuous execution of the program until the end of the predefined time range. This depends on several factors:
+        - The maximum authorized execution time during a day (24h). Online references on this subject (including [official Google documentation](https://developers.google.com/apps-script/guides/services/quotas#current_limitations)) leave ambiguities: it would be between [1h](https://webapps.stackexchange.com/a/90089) and [6h](https://developers.google.com/apps-script/guides/services/quotas#current_quotas). Therefore, the time interval between each script execution should be appropriately chosen according to the average time needed to process the latest messages received on the mail account.
+        - The time zone and daylight saving time. To avoid any confusion, [Google basically uses UTC time on its platforms and services](https://support.google.com/calendar/answer/37064?hl=en), including Google Apps Script. Therefore, and following local time changes, it would be difficult to include dynamic time references in the script source code or to modify them manually at each change. To be designed therefore, possibly, a solution to automatically adapt the time range. In the meantime, a more inclusive time range; 19h-6h (GMT), i.e. 20h-7h (GMT+1), will be used.
+        - See the possibility of verifying the authenticity of senders (email signatures…)
+        - Externalize filters and personalized content for better code portability.
 
 
 ## 2017-07-28 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/328c9e135917e3ea50b523039dace52472977bc7/Code.js)
-_Original :_
-> - Fin de développement de la première version du script.
-> - Première exécution (automatique) de test pour la boîte email `operations@mycompany.com` prévue entre 28/07/2017, 20:00GMT et 29/07/2017 06:00GMT.
->
-> ![2017-07-28 - Gmail-Autoresponder](assets/2017-07-28%20-%20Gmail-Autoresponder.png)
+
+- Completion of development of the first version of the script.
+- First (automatic) test execution for the email box `operations@mycompany.com` scheduled between 07/28/2017, 20:00GMT and 07/29/2017 06:00GMT.
+
+![2017-07-28 - Gmail-Autoresponder](assets/2017-07-28%20-%20Gmail-Autoresponder.png)
 
 
 ## 2017-07-27 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/15601924647c0576cf0d1f88ca486a67e25c7a73/Code.js)
-XXXXXXXX
-- **Specifications and requirements** :
+
+- **Specifications and requirements**:
     - The script will be configured for steady auto-execution between 8pm and 6am, under every Google user account.
 
-_Original :_
-> Continuation de l’étude et développement.
-> - **Spécifications et cahier de charges** :
->     - Le script sera configuré pour exécution automatique régulière entre 20h et 6h sur chaque compte utilisateur Google.
->     - Il vérifiera les derniers messages reçu. Puisque les messages sont interprétés par Gmail comme des groupes de > discussion (threads), les discussions avec de nouveaux messages (réponses ou transferts) seront inclues.
->     - Les messages en provenance des contacts de `MyCompany` seront exclus.
->     - Option : Les messages/discussions avec le libellé Gmail `_autoRep` seront considérés comme déjà traités et seront > donc systématiquement exclus.
->     - Traitement des messages : Envoie du corp de la réponse automatique sous forme de texte riche (HTML) suivie des > informations (date, expéditeur, destinataires, objet) et une citation du contenu du message traité.
->     - Attribution du libellé Gmail `_autoRep` pour marquer le message comme traité.
+
+Continuation of study and development.
+- **Specifications and requirements**:
+    - The script will be configured for regular automatic execution between 8pm and 6am on each Google user account.
+    - It will check the latest messages received. Since messages are interpreted by Gmail as discussion groups (threads), discussions with new messages (replies or forwards) will be included.
+    - Messages from `MyCompany` contacts will be excluded.
+    - Option: Messages/discussions with the Gmail label `_autoRep` will be considered as already processed and will therefore be systematically excluded.
+    - Message processing: Sending of the automatic response body as rich text (HTML) followed by information (date, sender, recipients, subject) and a quote of the processed message content.
+    - Attribution of the Gmail label `_autoRep` to mark the message as processed.
 
 
 ## 2017-07-26 [(code)](https://github.com/amindeed/Gmail-AutoResponder/blob/6f6100735ee16a48a7d1ada8c79a07915ab96108/Code.js)
